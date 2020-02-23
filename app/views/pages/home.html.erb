@@ -1,0 +1,13 @@
+<div
+  id='home'
+  data-starting-tag-id="<%= @home_tag_id %>"
+  data-first-name="<%= @first_name %>"
+  data-comment-tag-id="<%= @comment_tag_id %>"
+  data-all-tags="<%= @all_tags.to_json %>"
+  data-tag-groups="<%= @tag_groups.to_json %>"
+  data-tags-by-type="<%= @tags_by_type.to_json %>"
+  data-all-tag-types="<%= @all_tag_types.to_json %>"
+  data-ratings="<%= @ratings.to_json %>"
+  data-priorities="<%= @priorities.to_json %>"
+/>
+<%= javascript_pack_tag 'Home' %>
