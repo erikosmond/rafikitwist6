@@ -68,7 +68,6 @@ class AccountMenu extends React.Component {
         >
           <a href="/users/sign_out"> Sign Out </a>
         </MenuItem>
-        ))}
         </Menu>
     </StyledIcon>
     )

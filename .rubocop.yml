@@ -1,0 +1,23 @@
+AllCops:
+  TargetRubyVersion: 2.7
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+
+Layout/LineLength:
+  Max: 90
+
+Metrics/AbcSize:
+  Max: 22
+
+Style/HashEachMethods:
+  Enabled: false
+
+Style/HashTransformKeys:
+  Enabled: false
+
+Style/HashTransformValues:
+  Enabled: false
