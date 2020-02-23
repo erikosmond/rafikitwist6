@@ -1,0 +1,60 @@
+version: '3'
+services:
+  # rt6_db:
+  #   image: postgres:12.2-alpine
+  #   environment:
+  #     - POSTGRES_USER="${DB_USER}"
+  #     - POSTGRES_PASSWORD="${DB_PASSWORD}"
+  #   volumes:
+  #     - ./tmp/db:/var/lib/postgresql/data
+  db:
+    image: 'postgres:9.6-alpine'
+    # image: postgres:12.2-alpine
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - 'db:/var/lib/postgresql/data'
+      - '/tmp:/tmp'
+    expose:
+      - "${DB_PORT}"
+    ports:
+      - "${DB_PORT}:5432"
+  web:
+    build: .
+    tty: true
+    stdin_open: true
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    environment:
+      - DB_PASSWORD="${DB_PASSWORD}"
+      - WEBPACK_PORT=${WEBPACK_PORT}
+      - SIGNUP_CODES=${SIGNUP_CODES}
+      - RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES}
+      - RAILS_ENV=${RAILS_ENV}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+    volumes:
+      - .:/recipes6
+      - packs:/recipes6/public/packs
+      - node_modules:/recipes6/node_modules
+    ports:
+      - ${API_PORT}:3000
+    depends_on:
+      - db
+  webpacker:
+    build: .
+    # command: bash -c "rm -rf /recipes/public/packs; /recipes6/bin/webpack-dev-server --hot --inline --port ${WEBPACK_PORT}"
+    command: bash -c "rm -rf /recipes6/public/packs; /recipes6/bin/webpack-dev-server --port ${WEBPACK_PORT}"
+    environment:
+      - WEBPACK_PORT="${WEBPACK_PORT}"
+    volumes:
+      - .:/recipes6
+      - packs:/recipes6/public/packs
+      - node_modules:/recipes6/node_modules
+    ports:
+      - "${WEBPACK_PORT}:${WEBPACK_PORT}"
+    expose:
+      - 9229
+volumes:
+  db:
+  packs:
+  node_modules:
