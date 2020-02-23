@@ -26,35 +26,35 @@ RSpec.describe GroupTags, type: :interactor do
     end
     let(:expected_family_result) do
       {
-        "child_tags" => {nut.id=>"Nut"},
-        "description" => nil,
-        "grandchild_tags" => {almond.id=>"Almond"},
-        "grandparent_tags" => {},
-        "id" => protein.id,
-        "modification_tags" => {},
-        "modified_tags" => {},
-        "name" => "Protein",
-        "recipe_id" => nil,
-        "sister_tags" => {},
-        "tag_type_id" => protein.tag_type_id,
-        "tags" => {protein.id=>"Protein"} 
+        'child_tags' => { nut.id => 'Nut' },
+        'description' => nil,
+        'grandchild_tags' => { almond.id => 'Almond' },
+        'grandparent_tags' => {},
+        'id' => protein.id,
+        'modification_tags' => {},
+        'modified_tags' => {},
+        'name' => 'Protein',
+        'recipe_id' => nil,
+        'sister_tags' => {},
+        'tag_type_id' => protein.tag_type_id,
+        'tags' => { protein.id => 'Protein' }
       }
     end
     let(:expected_ingredient_result) do
       {
-        "child_tags" => {},
-        "description" => nil,
-        "grandchild_tags" => {},
-        "grandparent_tags" => {protein.id=>"Protein"},
-        "id" => almond.id,
-        "modification_tags" => {},
-        "modified_tags" => {},
-        "name" => "Almond",
-        "parent_tags" => {nut.id=>"Nut"},
-        "recipe_id" => nil,
-        "sister_tags" => {},
-        "tag_type_id" => almond.tag_type_id,
-        "tags" => {almond.id=>"Almond"}
+        'child_tags' => {},
+        'description' => nil,
+        'grandchild_tags' => {},
+        'grandparent_tags' => { protein.id => 'Protein' },
+        'id' => almond.id,
+        'modification_tags' => {},
+        'modified_tags' => {},
+        'name' => 'Almond',
+        'parent_tags' => { nut.id => 'Nut' },
+        'recipe_id' => nil,
+        'sister_tags' => {},
+        'tag_type_id' => almond.tag_type_id,
+        'tags' => { almond.id => 'Almond' }
       }
     end
     it 'will return proper groups for ingredient type' do

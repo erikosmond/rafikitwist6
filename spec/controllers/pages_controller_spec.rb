@@ -86,7 +86,7 @@ describe PagesController, type: :controller do
     it { expect(assigns[:all_tag_types]).to eq(tag_types_by_id) }
     it { expect(assigns[:tag_groups]).to eq(tag_groups) }
     it { expect(assigns[:ratings]).to eq(rating_tag.name => rating_tag.id) }
-    it { expect(assigns[:tags_by_type]).to eq(tags_by_type)  }
+    it { expect(assigns[:tags_by_type]).to eq(tags_by_type) }
     it { expect(assigns[:priorities]).to eq(priority_tag.name => priority_tag.id) }
 
     it { is_expected.to render_template :home }

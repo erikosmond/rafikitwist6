@@ -56,7 +56,7 @@ class RecipeByTag
            select(recipes_with_detail_select + [
              'tag_selections_recipes.id',
              'tag_selections_recipes.body'
-            ]).
+           ]).
            left_outer_joins [
              :access,
              recipe: {
@@ -68,17 +68,17 @@ class RecipeByTag
 
     def add_predicates(tag_selections)
       ts = tag_selections.
-        where("tag_selections.tag_id = #{context.tag.id}").
-        where("tag_selections.taggable_type = 'Recipe'").
-        where("tag_selections_recipes.taggable_type = 'Recipe'").
-        where('tag_selections.id IS NOT NULL').
-        where('recipes.id IS NOT NULL').
-        where('tag_selections_recipes.id IS NOT NULL')
+           where("tag_selections.tag_id = #{context.tag.id}").
+           where("tag_selections.taggable_type = 'Recipe'").
+           where("tag_selections_recipes.taggable_type = 'Recipe'").
+           where('tag_selections.id IS NOT NULL').
+           where('recipes.id IS NOT NULL').
+           where('tag_selections_recipes.id IS NOT NULL')
       add_access_predicates(ts)
     end
 
     def add_access_predicates(ts)
-        ts.where('accesses_selected_recipes.id IS NOT NULL').
+      ts.where('accesses_selected_recipes.id IS NOT NULL').
         where('accesses.id IS NOT NULL').
         where('accesses_tag_selections.id IS NOT NULL').
         where("accesses_selected_recipes.user_id = #{context.current_user&.id} OR
@@ -87,8 +87,7 @@ class RecipeByTag
           "accesses.user_id =
           #{context.current_user&.id} OR accesses.status = 'PUBLIC'"
         ).
-        where("accesses_tag_selections.user_id =  #{context.current_user&.id} OR 
-          accesses_tag_selections.status = 'PUBLIC'"
-        )
+        where("accesses_tag_selections.user_id =  #{context.current_user&.id} OR
+          accesses_tag_selections.status = 'PUBLIC'")
     end
 end

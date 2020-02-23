@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_context 'tags', shared_context: :metadata do
   let(:type_ingredient) { create :tag_type, name: 'Ingredient' }
   let(:type_ingredient_type) { create :tag_type, name: 'IngredientType' }

@@ -54,7 +54,7 @@ describe Tag, type: :model do
           modification1.id => 'toasted',
           modification2.id => 'crushed'
         },
-        'modified_tags' => {},
+        'modified_tags' => {}
       }
     end
 
@@ -124,11 +124,11 @@ describe Tag, type: :model do
     end
     it 'returns recipe level detail for ingredient family' do
       result = RecipeByTag.call(tag: protein, current_user: user).result
-      expect(GroupRecipeDetail.call(recipe_details: result).result.map { |r| r['id'] } ).to eq([martini.id, vesper.id, manhattan.id])
+      expect(GroupRecipeDetail.call(recipe_details: result).result.map { |r| r['id'] }).to eq([martini.id, vesper.id, manhattan.id])
     end
     it 'returns recipe level detail for ingredient type' do
       result = RecipeByTag.call(tag: nut, current_user: user).result
-      expect(GroupRecipeDetail.call(recipe_details: result).result.map { |r| r['id'] } ).to eq([martini.id, vesper.id])
+      expect(GroupRecipeDetail.call(recipe_details: result).result.map { |r| r['id'] }).to eq([martini.id, vesper.id])
     end
   end
 
@@ -178,7 +178,7 @@ describe Tag, type: :model do
 
     describe '#collect_tag_ids' do
       let(:tag_subject) { create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type) }
-      let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1)}
+      let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1) }
       let(:detail_ids) do
         [
           tag_selection1.id,
@@ -198,7 +198,7 @@ describe Tag, type: :model do
       let!(:tag_subject) { create(:tag, name: 'Verbena', tag_type: tag_type_ingredient_type) }
       let!(:result) { RecipeByTag.call(tag: tag_subject, current_user: user).result }
       let(:recipe_result) { GroupRecipeDetail.call(recipe_details: result).result }
-      # todo: make sure i always grab the same element out of the set of two
+      # TODO: make sure i always grab the same element out of the set of two
       let(:recipe_result2) { recipe_result.find { |r| r['name'] == recipe2_name } }
       it 'returns only one valid row' do
         expect(recipe_result.size).to eq(2)
@@ -213,19 +213,19 @@ describe Tag, type: :model do
         expect(recipe_result2['ingredients'][tag_selection2b.tag_id].modification_name).to eq(modification_name)
       end
       it 'returns tag name' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].tag_name ).to eq(ingredient1_name)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].tag_name).to eq(ingredient1_name)
       end
       it 'returns value attribute' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].value ).to eq(value)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].value).to eq(value)
       end
       it 'returns property attribute' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].property ).to eq(property)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].property).to eq(property)
       end
       it 'returns ingredient type' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].parent_tag ).to eq(ingredient1_type_name)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].parent_tag).to eq(ingredient1_type_name)
       end
       it 'returns ingredient family' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].grandparent_tag ).to eq(ingredient1_family_name)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].grandparent_tag).to eq(ingredient1_family_name)
       end
     end
   end

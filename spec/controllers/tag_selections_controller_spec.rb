@@ -14,14 +14,14 @@ describe Api::TagSelectionsController, type: :controller do
     before do
       sign_in user
       post :create,
-          params: {
-            tag_selection: {
-              taggable_type: 'Recipe',
-              taggable_id: recipe.id,
-              tag_id: tag.id
-            }
-          },
-          format: 'json'
+           params: {
+             tag_selection: {
+               taggable_type: 'Recipe',
+               taggable_id: recipe.id,
+               tag_id: tag.id
+             }
+           },
+           format: 'json'
     end
     it 'returns a 200 and creates the record' do
       expect(response.status).to eq(200)

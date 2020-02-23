@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_context 'recipes', shared_context: :metadata do
   let(:modification_name) { 'chili infused' }
   let(:recipe1_name) { 'Pizza' }
@@ -52,7 +54,7 @@ RSpec.shared_context 'recipes', shared_context: :metadata do
   let!(:access3e) { create(:access, user: user, accessible: tag_selection_mod, status: 'PUBLIC') }
 
   let!(:access4a) { create(:access, user: user, accessible: lemon_verbena, status: 'PUBLIC') }
-  
+
   let!(:access2) { create(:access, user: user, accessible: soup, status: 'PUBLIC') }
   let!(:recipes) { RecipeByTag.call(tag: tag_subject, current_user: user).result }
 end

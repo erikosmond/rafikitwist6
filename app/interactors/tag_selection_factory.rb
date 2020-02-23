@@ -19,7 +19,7 @@ class TagSelectionFactory
     def create(params)
       context.tag_selection = TagSelection.create!(params)
       context.tag_selection_access = AccessService.
-        create_access!(context.user.id, context.tag_selection)
+                                     create_access!(context.user.id, context.tag_selection)
       invoke_side_effects
     end
 

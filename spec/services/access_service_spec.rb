@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe AccessService do
@@ -11,7 +13,7 @@ describe AccessService do
   end
 
   it 'does not save an access record for a tag_type' do
-    expect{AccessService.create_access!(user.id, tag_type) }.
+    expect { AccessService.create_access!(user.id, tag_type) }.
       to raise_error(ArgumentError)
   end
 end

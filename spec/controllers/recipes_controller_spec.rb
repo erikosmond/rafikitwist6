@@ -55,7 +55,8 @@ describe Api::RecipesController, type: :controller do
         [ingredient1.id, 'salt'],
         [ingredient1_type.id, 'spices'],
         [ingredient1_family.id, 'seasoning'],
-        [modification.id, 'chili infused']]
+        [modification.id, 'chili infused']
+      ]
     end
 
     it 'returns a 200' do
@@ -68,7 +69,7 @@ describe Api::RecipesController, type: :controller do
     it 'returns the recipe details' do
       body = JSON.parse(response.body)
       expect(body['recipes'].size).to eq(2)
-      expect(body['recipes'].map{ |r| r['name'] } - ['Pizza', 'Chesnut Soup']).to eq([])
+      expect(body['recipes'].map { |r| r['name'] } - ['Pizza', 'Chesnut Soup']).to eq([])
     end
     it 'returns the ingredients' do
       body = JSON.parse(response.body)
@@ -84,7 +85,7 @@ describe Api::RecipesController, type: :controller do
 
   describe 'GET - index (modification)' do
     let(:tag_subject) { create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type) }
-    let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1)}
+    let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1) }
 
     let(:filter_array) do
       [
@@ -115,7 +116,7 @@ describe Api::RecipesController, type: :controller do
 
   describe 'GET - index for user with no recipe associations' do
     let(:tag_subject) { create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type) }
-    let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1)}
+    let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1) }
 
     before do
       sign_in no_data_user

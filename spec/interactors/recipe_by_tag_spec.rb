@@ -34,16 +34,16 @@ RSpec.describe RecipeByTag, type: :interactor do
     let!(:access3) { create(:access, user: other_user, accessible: tag_selection3, status: 'PRIVATE') }
     let!(:access_t6) { create(:access, user: other_user, accessible: tag_selection6, status: 'PUBLIC') }
     let!(:access_t7) { create(:access, user: other_user, accessible: tag_selection7, status: 'PUBLIC') }
-    
+
     let!(:result) do
-        RecipeByTag.call(
+      RecipeByTag.call(
         tag: tag,
         current_user: user
       )
     end
     it 'returns recipes only for that user' do
-        expect(GroupRecipeDetail.call(recipe_details: result.result).result.count).to eq 1
-        expect(GroupRecipeDetail.call(recipe_details: result.result).result.first['name']).to eq 'pho'
+      expect(GroupRecipeDetail.call(recipe_details: result.result).result.count).to eq 1
+      expect(GroupRecipeDetail.call(recipe_details: result.result).result.first['name']).to eq 'pho'
     end
   end
 end
