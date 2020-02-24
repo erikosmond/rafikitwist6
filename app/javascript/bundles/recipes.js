@@ -9,7 +9,7 @@ import {
 } from 'services/recipeFilters'
 
 // Actions
-const LOGOUT = 'accounts/logout'
+// const LOGOUT = 'accounts/logout'
 const LOAD_RECIPES = 'recipes/loadRecipes'
 const LOAD_RECIPES_SUCCESS = 'recipes/loadRecipesSuccess'
 const LOAD_ALL_TAGS = 'recipes/loadAllTags'
@@ -74,7 +74,7 @@ export default function recipesReducer(state = initialState, action = {}) {
       return {
         ...state,
         selectedTag: {},
-        loading: true,
+        loading: true
       }
     case LOAD_RECIPES_SUCCESS:
       return {

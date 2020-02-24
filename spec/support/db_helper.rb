@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Postgres views are not saved to schema.rb.
+# This helper creates required views after running `rake db:test:prepare`
 class DbHelper
   def self.create_views
     dbh = DbHelper.new
