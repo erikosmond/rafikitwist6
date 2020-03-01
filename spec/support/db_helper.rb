@@ -2,6 +2,7 @@
 
 # Postgres views are not saved to schema.rb.
 # This helper creates required views after running `rake db:test:prepare`
+# Relevant migrations: 20181112133338, 20190121172312
 class DbHelper
   def self.create_views
     dbh = DbHelper.new

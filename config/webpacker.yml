@@ -77,6 +77,7 @@ development:
     watch_options:
       ignored: '**/node_modules/**'
     cache_manifest: true    
+    alias: { 'react-dom': '@hot-loader/react-dom'  }
 
 test:
   <<: *default
