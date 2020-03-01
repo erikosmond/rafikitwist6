@@ -17,7 +17,7 @@ const RecipeFormIngredient = (props) => {
       <HeaderDropdown
         dropdownOptions={ingredientOptions}
         loadOptions={recipesAreLoaded}
-        placeholder="New Ingredient"
+        placeholder="Ingredient"
         updateHistory={selectionChanged}
       />
   )

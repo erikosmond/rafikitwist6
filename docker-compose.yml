@@ -35,7 +35,7 @@ services:
       - db
   webpacker:
     build: .
-    command: bash -c "rm -rf /recipes6/public/packs; /recipes6/bin/webpack-dev-server --hot --inline --port ${WEBPACK_PORT}"
+    command: bash -c "rm -rf /recipes6/public/packs; yarn && /recipes6/bin/webpack-dev-server --hot --inline --port ${WEBPACK_PORT}"
     environment:
       - WEBPACK_PORT="${WEBPACK_PORT}"
     volumes:
