@@ -16,13 +16,20 @@ class RecipeFormSkeleton extends React.Component {
     }
 
     submit = values => {
-    // send the values to the store
-    const {handleRecipeSubmit} = this.props
-    handleRecipeSubmit(values)
-  }
-  render() {
-    return <RecipeForm onSubmit={this.submit} />
-  }
+      // send the values to the store
+      const {handleRecipeSubmit} = this.props
+      handleRecipeSubmit(values)
+    }
+
+    componentDidMount() {
+      const { loadIngredientOptions } = this.props
+      loadIngredientOptions("Ingredients")
+    }
+
+    render() {
+      const {ingredientOptions } = this.props
+      return <RecipeForm ingredientOptions={ingredientOptions} onSubmit={this.submit} />
+    }
 }
 
 export default RecipeFormSkeleton

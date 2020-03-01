@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # # frozen_string_literal: true
 
 # Helper methods to generate SQL to connect tags to their related tags.

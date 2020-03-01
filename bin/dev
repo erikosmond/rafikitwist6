@@ -1,2 +1,2 @@
-docker-compose up -d && docker attach b0ec5d6941fd7fba2105a0d2b3638905930d3ac2df66ab1988ef2ac5421c0fd0
+docker-compose up -d && docker attach $(docker-compose ps -q web)
 

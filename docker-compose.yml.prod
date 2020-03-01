@@ -1,0 +1,46 @@
+version: '3'
+services:
+  db:
+    image: 'postgres:9.6-alpine'
+    environment:
+      - POSTGRES_USER="${DB_USER}"
+      - POSTGRES_PASSWORD="${DB_PASSWORD}"
+    volumes:
+      - 'db:/var/lib/postgresql/data'
+      - '/tmp:/tmp'
+    expose:
+      - "${DB_PORT}"
+    ports:
+      - "${DB_PORT}:5432"
+  web:
+    build: .
+    tty: true
+    stdin_open: true
+    command: bash -c "bundle exec puma -b tcp://0.0.0.0:3000"
+    environment:
+      - DB_PASSWORD="${DB_PASSWORD}"
+      - WEBPACK_PORT="${WEBPACK_PORT}"
+      - SIGNUP_CODES=${SIGNUP_CODES}
+      - RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES}
+      - RAILS_ENV=${RAILS_ENV}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+    volumes:
+      - .:/recipes
+    ports:
+      - ${API_PORT}:3000
+    depends_on:
+      - db
+
+  server:
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    depends_on:
+      - web
+    volumes:
+      - '../letsencrypt/:/etc/letsencrypt'
+    ports:
+      - 80:80
+      - 443:443
+volumes:
+  db:

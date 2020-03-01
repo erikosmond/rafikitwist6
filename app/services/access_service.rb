@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccessService
   def self.create_access!(user_id, subject, status = 'PRIVATE')
     if subject.respond_to?(:access)

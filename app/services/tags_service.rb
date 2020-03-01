@@ -25,7 +25,9 @@ module TagsService
 
   def grandparent_tags_with_grouped_children(hierarchy)
     all_families = []
-    current_family, current_type, current_ingredient = nil, nil, nil
+    current_family = nil
+    current_type = nil
+    current_ingredient = nil
     hierarchy.each do |result|
       if current_family&.id != result.tag_id
         ing_family = Tag.new(name: result.tag_name, id: result.tag_id, tag_type_id: TagType.family_id)

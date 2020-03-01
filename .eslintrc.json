@@ -1,0 +1,22 @@
+{
+    "root": true,
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "react/display-name": 2,
+      "react/jsx-filename-extension":0,
+      "react/jsx-no-bind": [2, {}],
+      "semi": [ 2, "never" ],
+      "no-confusing-arrow": 0,
+      "max-len": [2, 100],
+      "import/no-extraneous-dependencies": 0,
+      "no-use-before-define": 0,
+      "import/prefer-default-export": 0,
+      "import/no-unresolved": 0,
+      "import/extensions": 0
+    }
+}
+

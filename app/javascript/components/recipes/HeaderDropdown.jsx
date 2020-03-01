@@ -16,6 +16,7 @@ class HeaderDropdown extends React.Component {
   }
 
   handleChange = (selectedOption) => {
+    this.setState(state => ({ ...state, selectedOption }))
     const { updateHistory } = this.props
     if (selectedOption && selectedOption.value) {
       updateHistory(selectedOption.value)

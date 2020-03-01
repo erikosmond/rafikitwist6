@@ -1,15 +1,7 @@
 version: '3'
 services:
-  # rt6_db:
-  #   image: postgres:12.2-alpine
-  #   environment:
-  #     - POSTGRES_USER="${DB_USER}"
-  #     - POSTGRES_PASSWORD="${DB_PASSWORD}"
-  #   volumes:
-  #     - ./tmp/db:/var/lib/postgresql/data
   db:
     image: 'postgres:9.6-alpine'
-    # image: postgres:12.2-alpine
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -39,11 +31,11 @@ services:
     ports:
       - ${API_PORT}:3000
     depends_on:
+      - webpacker
       - db
   webpacker:
     build: .
-    # command: bash -c "rm -rf /recipes/public/packs; /recipes6/bin/webpack-dev-server --hot --inline --port ${WEBPACK_PORT}"
-    command: bash -c "rm -rf /recipes6/public/packs; /recipes6/bin/webpack-dev-server --port ${WEBPACK_PORT}"
+    command: bash -c "rm -rf /recipes6/public/packs; /recipes6/bin/webpack-dev-server --hot --inline --port ${WEBPACK_PORT}"
     environment:
       - WEBPACK_PORT="${WEBPACK_PORT}"
     volumes:

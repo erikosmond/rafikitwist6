@@ -27,7 +27,7 @@ module Api
           current_user: current_user
         )
         result = GroupTags.call(hierarchy_context_params(hierarchy_result))
-        render json: result.json and return if result.success?
+        render(json: result.json) && return if result.success?
       end
       render json: {}, status: :not_found
     end

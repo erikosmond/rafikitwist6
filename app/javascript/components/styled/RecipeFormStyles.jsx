@@ -7,40 +7,40 @@ export default {
       // height: `300px`,
       height: `auto`,
     },
-    itemAlabel: {
+    nameLabel: {
       gridColumnStart: 2,
       gridColumnEnd: 3,
       gridRowStart: 1,
       gridRowEnd: 2,
       alignSelf: `center`,
     },
-    itemAfield: {
+    nameField: {
       gridColumnStart: 3,
       gridColumnEnd: 4,
       gridRowStart: 1,
       gridRowEnd: 2,
     },
-    itemBlabel: {
+    descriptionLabel: {
       gridColumnStart: 2,
       gridColumnEnd: 3,
       gridRowStart: 2,
       gridRowEnd: 3,
       alignSelf: `center`,
     },
-    itemBfield: {
+    descriptionField: {
       gridColumnStart: 3,
       gridColumnEnd: 4,
       gridRowStart: 2,
       gridRowEnd: 3,
     },
-    itemClabel: {
+    instructionsLabel: {
       gridColumnStart: 2,
       gridColumnEnd: 3,
       gridRowStart: 3,
       gridRowEnd: 4,
       alignSelf: `center`,
     },
-    itemCfield: {
+    instructionsField: {
       gridColumnStart: 3,
       gridColumnEnd: 4,
       gridRowStart: 3,

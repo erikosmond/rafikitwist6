@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Recipe, type: :model do
@@ -11,11 +13,11 @@ describe Recipe, type: :model do
 
   describe 'Verify validations are working' do
     let(:recipe) { build :recipe, name: nil, instructions: nil }
-    let(:errors) {
+    let(:errors) do
       {
         name: ["can't be blank"], instructions: ["can't be blank"]
       }
-    }
+    end
     it 'validates presense of name and instructions' do
       recipe.valid?
       expect(recipe.errors.messages).to eq(errors)
@@ -53,7 +55,7 @@ describe Recipe, type: :model do
     let!(:ketchup_amount) { build :tag_attribute, property: 'Amount', value: '1 dollup' }
     let!(:ketchup_display) { build :tag_attribute, property: 'Display', value: 'smeared' }
     let(:mustard) { create :tag, tag_type: tag_type, name: 'Mustard' }
-    let!(:mustard_amount) { build :tag_attribute, property: 'Amount', value: 'One Squeeze'}
+    let!(:mustard_amount) { build :tag_attribute, property: 'Amount', value: 'One Squeeze' }
     it 'creates ingredients with detail' do
       subject.tag_selections.create([{ tag: ketchup, tag_attributes: [ketchup_amount, ketchup_display] }, { tag: mustard, tag_attributes: [mustard_amount] }])
       expect(subject.ingredients_with_detail.length).to eq(2)

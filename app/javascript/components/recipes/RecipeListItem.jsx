@@ -62,7 +62,7 @@ class RecipeListItem extends React.Component {
             />
           }
         />
-        <CardActions className={classes.actions} disableActionSpacing>
+        <CardActions className={classes.actions}>
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded,
