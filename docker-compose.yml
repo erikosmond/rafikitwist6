@@ -25,9 +25,9 @@ services:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
     volumes:
-      - .:/recipes6
-      - packs:/recipes6/public/packs
-      - node_modules:/recipes6/node_modules
+      - .:/recipes
+      - packs:/recipes/public/packs
+      - node_modules:/recipes/node_modules
     ports:
       - ${API_PORT}:3000
     depends_on:
@@ -35,13 +35,13 @@ services:
       - db
   webpacker:
     build: .
-    command: bash -c "rm -rf /recipes6/public/packs; yarn && /recipes6/bin/webpack-dev-server --hot --inline --port ${WEBPACK_PORT}"
+    command: bash -c "rm -rf /recipes/public/packs; yarn && /recipes/bin/webpack-dev-server --hot --inline --port ${WEBPACK_PORT}"
     environment:
       - WEBPACK_PORT="${WEBPACK_PORT}"
     volumes:
-      - .:/recipes6
-      - packs:/recipes6/public/packs
-      - node_modules:/recipes6/node_modules
+      - .:/recipes
+      - packs:/recipes/public/packs
+      - node_modules:/recipes/node_modules
     ports:
       - "${WEBPACK_PORT}:${WEBPACK_PORT}"
     expose:
