@@ -14,7 +14,7 @@ function getModalStyle() {
     boxShadow: 5,
     padding: 3,
     width: 400,
-  };
+  }
 }
 
 export default function CommentModal(props) {

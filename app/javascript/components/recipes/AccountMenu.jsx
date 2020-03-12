@@ -18,19 +18,22 @@ const StyledIcon = styled.div`
 `
 
 class AccountMenu extends React.Component {
-
-  state = {
-    anchorEl: null,
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      anchorEl: null,
+    }
+  }
 
   handleClick = (event) => {
     this.setState({ anchorEl: event.currentTarget })
   }
 
+  // eslint-disable-next-line no-unused-vars
   handleClose = (_event) => {
     this.setState({ anchorEl: null })
   }
- 
+
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
@@ -39,47 +42,45 @@ class AccountMenu extends React.Component {
     return (
       <StyledIcon>
         <IconButton
-            aria-label="Account"
-            aria-owns={open ? 'long-menu' : undefined}
-            aria-haspopup="true"
-            onClick={this.handleClick}
+          aria-label="Account"
+          aria-owns={open ? 'long-menu' : undefined}
+          aria-haspopup="true"
+          onClick={this.handleClick}
         >
           <SvgIcon>
             <path d={accountIcon} />
           </SvgIcon>
         </IconButton>
         <Menu
-            id="long-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={this.handleClose}
-            PaperProps={{
-              style: {
-                maxHeight: ITEM_HEIGHT * 4.5,
-                width: 200,
-              },
-            }}
+          id="long-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={this.handleClose}
+          PaperProps={{
+            style: {
+              maxHeight: ITEM_HEIGHT * 4.5,
+              width: 200,
+            },
+          }}
         >
-        <MenuItem
-        >
+          <MenuItem>
             {`Welcome ${firstName}`}
-        </MenuItem>
-        <MenuItem
-        >
-          <a href="/users/sign_out"> Sign Out </a>
-        </MenuItem>
+          </MenuItem>
+          <MenuItem>
+            <a href="/users/sign_out"> Sign Out </a>
+          </MenuItem>
         </Menu>
-    </StyledIcon>
+      </StyledIcon>
     )
   }
 }
 
 AccountMenu.propTypes = {
-    firstName: PropTypes.string
+  firstName: PropTypes.string,
 }
 
 AccountMenu.defaultProps = {
-    firstName: ''
+  firstName: '',
 }
 
 export default AccountMenu

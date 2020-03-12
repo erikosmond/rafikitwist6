@@ -65,14 +65,15 @@ class RecipeList extends React.Component {
     this.displayShown = this.displayShown.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      nextProps.clearFilters()
-      nextProps.resetPagedCount()
-      const { tagId } = nextProps.match.params
+  componentDidUpdate(lastProps) {
+    const { location, match } = this.props
+    if (lastProps.location !== location) {
+      lastProps.clearFilters()
+      lastProps.resetPagedCount()
+      const { tagId } = match.params
       if (tagId) {
-        nextProps.loadRecipes(tagId)
-        nextProps.loadTagInfo(tagId)
+        lastProps.loadRecipes(tagId)
+        lastProps.loadTagInfo(tagId)
       }
     }
   }

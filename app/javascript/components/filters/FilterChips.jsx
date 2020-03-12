@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Chip from '@material-ui/core/Chip'
 import Paper from '@material-ui/core/Paper'
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
@@ -17,24 +17,29 @@ const styles = theme => ({
 })
 
 class FilterChips extends React.Component {
-  state = {
-    chipData: [],
+  constructor(props) {
+    super(props)
+    this.state = {
+      chipData: [],
+    }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { allTags, selectedFilters } = nextProps
-    this.setChips(allTags, selectedFilters)
+  componentDidUpdate(lastProps) {
+    if (lastProps !== this.props) {
+      const { allTags, selectedFilters } = this.props
+      this.setChips(allTags, selectedFilters)
+    }
   }
 
   setChips(allTags, selectedFilters) {
-    const chipData = selectedFilters.map(filter => ({
+    const chipData = selectedFilters.map((filter) => ({
       key: filter, label: allTags[filter],
     }
     ))
-    this.setState(state => ({ ...state, chipData }))
+    this.setState((state) => ({ ...state, chipData }))
   }
 
-  handleDelete = data => () => {
+  handleDelete = (data) => () => {
     const { handleFilter } = this.props
     handleFilter(data.key, false)
 
@@ -48,35 +53,38 @@ class FilterChips extends React.Component {
 
   render() {
     const { classes, selectedTag } = this.props
+    const { chipData } = this.state
     return (
       <Paper className={classes.root}>
         <Chip
           label={selectedTag.name}
           className={classes.chip}
         />
-        {this.state.chipData.map(data => (
+        {chipData.map((data) => (
           <Chip
             key={data.key}
             label={data.label}
             onDelete={this.handleDelete(data)}
             className={classes.chip}
           />
-          ))}
+        ))}
       </Paper>
     )
   }
 }
 
 FilterChips.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
+  classes: PropTypes.shape({
+    root: PropTypes.string.isRequired, chip: PropTypes.string.isRequired,
+  }).isRequired,
   handleFilter: PropTypes.func.isRequired,
   allTags: PropTypes.shape({}).isRequired,
   selectedFilters: PropTypes.arrayOf(PropTypes.number),
-  selectedTag: PropTypes.shape({}).isRequired,
+  selectedTag: PropTypes.shape({ name: PropTypes.string }).isRequired,
 }
 
 FilterChips.defaultProps = {
-  selectedFilters: []
+  selectedFilters: [],
 }
 
 export default withStyles(styles)(FilterChips)

@@ -30,11 +30,12 @@ class RecipeSkeleton extends React.Component {
     loadRecipe(recipeId)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      const { recipeId } = nextProps.match.params
+  componentDidUpdate(lastProps) {
+    const { loadRecipe, location, match } = this.props
+    if (lastProps.location !== location) {
+      const { recipeId } = match.params
       if (recipeId) {
-        nextProps.loadRecipe(recipeId)
+        loadRecipe(recipeId)
       }
     }
   }
