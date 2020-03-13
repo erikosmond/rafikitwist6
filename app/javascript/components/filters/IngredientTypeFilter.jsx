@@ -39,13 +39,8 @@ class IngredientTypeFilter extends React.Component {
     handleFilter(id, event.target.checked)
   }
 
-  isVisible = () => {
-    const { id, visibleTags } = this.props
-    return Array.isArray(visibleTags) && visibleTags.indexOf(parseInt(id, 10)) > -1
-  }
-
   render() {
-    if (this.isVisible() || this.hasVisibleChildren()) {
+    if (this.hasVisibleChildren()) {
       const {
         visibleTags,
         tagNameById,

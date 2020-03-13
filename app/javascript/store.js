@@ -6,8 +6,9 @@ import createSagaMiddleware, { END } from 'redux-saga'
 export default function configureStore(rootReducer, rootSaga, initialState) {
   const sagaMiddleware = createSagaMiddleware()
 
+  // Redux DevTools Extension
   /* eslint-disable no-underscore-dangle */
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose // Redux DevTools Extension
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   /* eslint-enable */
   const store = createStore(
     rootReducer,

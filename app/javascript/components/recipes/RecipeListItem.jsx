@@ -66,7 +66,7 @@ class RecipeListItem extends React.Component {
             />
           )}
         />
-        <CardActions className={classes.actions}>
+        <CardActions>
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: expanded,
@@ -104,10 +104,9 @@ RecipeListItem.propTypes = {
     ingredients: PropTypes.shape({}).isRequired,
   }),
   classes: PropTypes.shape({
-    card: PropTypes.string.isRequired,
-    actions: PropTypes.string.isRequired,
-    expand: PropTypes.string.isRequired,
-    expandOpen: PropTypes.string.isRequired,
+    card: PropTypes.string,
+    expand: PropTypes.string,
+    expandOpen: PropTypes.string,
   }).isRequired,
   ratings: PropTypes.shape({}).isRequired,
   priorities: PropTypes.shape({}).isRequired,
@@ -116,9 +115,9 @@ RecipeListItem.propTypes = {
 }
 
 RecipeListItem.defaultProps = {
-  recipe: PropTypes.shape({
+  recipe: {
     hidden: false,
-  }),
+  },
 }
 
 export default withStyles(styles)(RecipeListItem)

@@ -51,6 +51,7 @@ export default function CommentModal(props) {
         aria-labelledby="recipe-comment"
         aria-describedby="simple-modal-description"
         open={commentModalOpen}
+        // eslint-disable-next-line react/jsx-no-bind
         onClose={handleClose}
       >
         <div style={getModalStyle()}>

@@ -46,13 +46,8 @@ class IngredientFamilyFilter extends React.Component {
     handleFilter(id, event.target.checked)
   }
 
-  isVisible = () => {
-    const { id, visibleTags } = this.props
-    return Array.isArray(visibleTags) && visibleTags.indexOf(parseInt(id, 10)) > -1
-  }
-
   render() {
-    if (this.isVisible() || this.hasVisibleChildren()) {
+    if (this.hasVisibleChildren()) {
       const {
         visibleTags,
         tagNameById,
@@ -104,7 +99,7 @@ IngredientFamilyFilter.propTypes = {
   childTags: PropTypes.shape({}),
   handleFilter: PropTypes.func.isRequired,
   selectedFilters: PropTypes.arrayOf(PropTypes.number),
-  visibleTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  visibleTags: PropTypes.shape({}).isRequired,
   tagNameById: PropTypes.func.isRequired,
 }
 
