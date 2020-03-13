@@ -16,7 +16,9 @@ const IngredientListItem = ({ ingredient }) => {
     `${amount} ${presentModificationName} ${tagName}`
   return (
     <li>
-      <Link to={`/tags/${tagId}/recipes`}> {ingredientDetails} </Link>
+      <Link to={`/tags/${tagId}/recipes`}>
+        {ingredientDetails}
+      </Link>
     </li>
   )
 }

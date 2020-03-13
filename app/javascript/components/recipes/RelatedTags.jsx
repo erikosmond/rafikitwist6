@@ -6,10 +6,12 @@ const RelatedTags = ({ tags }) => {
   if (tags) {
     return (
       <div>
-        {Object.keys(tags).map(k => (
+        {Object.keys(tags).map((k) => (
           <div key={tags[k]}>
-            <Link key={k} to={`/tags/${k}/recipes`}> {tags[k]} </Link>
-            <br/>
+            <Link key={k} to={`/tags/${k}/recipes`}>
+              {tags[k]}
+            </Link>
+            <br />
           </div>
         ))}
       </div>
@@ -23,7 +25,7 @@ RelatedTags.propTypes = {
 }
 
 RelatedTags.defaultProps = {
-  tags: {}
+  tags: {},
 }
 
 export default RelatedTags

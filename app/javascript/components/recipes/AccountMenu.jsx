@@ -29,8 +29,7 @@ class AccountMenu extends React.Component {
     this.setState({ anchorEl: event.currentTarget })
   }
 
-  // eslint-disable-next-line no-unused-vars
-  handleClose = (_event) => {
+  handleClose = () => {
     this.setState({ anchorEl: null })
   }
 

@@ -16,7 +16,7 @@ import {
 } from 'bundles/recipes'
 
 export default withRouter(connect(
-  state => ({
+  (state) => ({
     selectedRecipes: state.recipesReducer.selectedRecipes,
     recipesLoaded: state.recipesReducer.recipesLoaded,
     selectedTag: state.recipesReducer.selectedTag,

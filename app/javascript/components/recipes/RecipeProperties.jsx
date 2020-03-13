@@ -7,25 +7,25 @@ const RecipeProperties = (props) => {
   const { title, tags } = props
   return (
     <div>
-      {tags && tags.length > 0 &&
+      {tags && tags.length > 0 && (
         <div>
           <Typography paragraph variant="body2">
             {title}
           </Typography>
           <ul>
-            {Object.values(tags).map(ingredient => (
+            {Object.values(tags).map((ingredient) => (
               <IngredientListItem key={ingredient.tagId} ingredient={ingredient} />
-              ))}
+            ))}
           </ul>
         </div>
-      }
+      )}
     </div>
   )
 }
 
 RecipeProperties.propTypes = {
   title: PropTypes.string.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.shape()),
+  tags: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 }
 
 export default RecipeProperties

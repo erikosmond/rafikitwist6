@@ -6,7 +6,7 @@ import RecipeSkeleton from 'components/recipes/RecipeSkeleton'
 import { loadRecipe, clearRecipe } from 'bundles/recipes'
 
 export default withRouter(connect(
-  state => ({
+  (state) => ({
     recipe: state.recipesReducer.recipe,
     noRecipe: state.recipesReducer.noRecipe,
   }),

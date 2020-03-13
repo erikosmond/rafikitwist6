@@ -8,7 +8,7 @@ export function allIngredients(recipe) {
 function getList(ingredients) {
   if (ingredients instanceof Object) {
     return Object.values(ingredients)
-  } else if (ingredients instanceof Array) {
+  } if (ingredients instanceof Array) {
     return ingredients
   }
   return []

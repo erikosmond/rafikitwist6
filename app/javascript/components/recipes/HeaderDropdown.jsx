@@ -16,7 +16,7 @@ class HeaderDropdown extends React.Component {
   }
 
   handleChange = (selectedOption) => {
-    this.setState(state => ({ ...state, selectedOption }))
+    this.setState((state) => ({ ...state, selectedOption }))
     const { updateHistory } = this.props
     if (selectedOption && selectedOption.value) {
       updateHistory(selectedOption.value)
@@ -45,6 +45,8 @@ export default HeaderDropdown
 HeaderDropdown.propTypes = {
   loadOptions: PropTypes.func.isRequired,
   updateHistory: PropTypes.func.isRequired,
-  dropdownOptions: PropTypes.arrayOf(PropTypes.shape({name: PropTypes.string, id: PropTypes.number})).isRequired,
+  dropdownOptions: PropTypes.arrayOf(PropTypes.shape(
+    { name: PropTypes.string, id: PropTypes.number },
+  )).isRequired,
   placeholder: PropTypes.string.isRequired,
 }
