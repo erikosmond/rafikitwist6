@@ -24,28 +24,28 @@ module TagsService
   end
 
   def grandparent_tags_with_grouped_children(hierarchy)
-    all_families = []
-    current_family = nil
-    current_type = nil
-    current_ingredient = nil
-    hierarchy.each do |result|
-      if current_family&.id != result.tag_id
-        ing_family = Tag.new(name: result.tag_name, id: result.tag_id, tag_type_id: TagType.family_id)
-        current_family = ing_family
-        all_families << current_family
-      end
-      if current_type&.id != result.child_tag_id
-        ing_type = ChildTag.new(name: result.child_tag_name, id: result.child_tag_id, tag_type_id: TagType.type_id)
-        current_family.child_tags << ing_type
-        current_type = ing_type
-      end
-      next if current_ingredient&.id == result.grandchild_tag_id
-
-      ingredient = ChildTag.new(name: result.grandchild_tag_name, id: result.grandchild_tag_id, tag_type_id: TagType.ingredient_id)
-      current_type.child_tags << ingredient
-      current_ingredient = ingredient
+    families = []
+    hierarchy.each do |h|
+      new_family, new_type, new_ingredient =
+        build_heirarchy(families, @current_family, @current_type, @current_ingredient, h)
+      @current_ingredient = new_ingredient || @current_ingredient
+      @current_type = new_type || @current_type
+      @current_family = new_family || @current_family
     end
-    all_families
+    families
+  end
+
+  def build_heirarchy(families, current_family, current_type, current_ingredient, result)
+    if current_family&.id != result.tag_id
+      families << current_family = new_family_tag(result)
+    end
+    if current_type&.id != result.child_tag_id
+      current_family.child_tags << current_type = new_type_tag(result)
+    end
+    return if current_ingredient&.id == result.grandchild_tag_id
+
+    current_type.child_tags << current_ingredient = new_ingredient_tag(result)
+    [current_family, current_type, current_ingredient]
   end
 
   def tags_by_type
@@ -71,5 +71,17 @@ module TagsService
     hierarchy = all_family_tags_with_hierarchy(current_user)
     groups = grandparent_tags_with_grouped_children(hierarchy)
     group_grandparent_hierarchy_by_id(groups.sort_by(&:name))
+  end
+
+  def new_family_tag(result)
+    Tag.new(name: result.tag_name, id: result.tag_id, tag_type_id: TagType.family_id)
+  end
+
+  def new_type_tag(result)
+    ChildTag.new(name: result.child_tag_name, id: result.child_tag_id, tag_type_id: TagType.type_id)
+  end
+
+  def new_ingredient_tag(result)
+    ChildTag.new(name: result.grandchild_tag_name, id: result.grandchild_tag_id, tag_type_id: TagType.ingredient_id)
   end
 end

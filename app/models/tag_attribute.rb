@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# model for tag_attributes table
 class TagAttribute < ApplicationRecord
   belongs_to :tag_attributable,
              polymorphic: true,

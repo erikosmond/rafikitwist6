@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# model for recipes table
 class Recipe < ApplicationRecord
   include AssociatedRecipesService
 
