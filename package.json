@@ -1,5 +1,5 @@
 {
-  "name": "recipes6",
+  "name": "recipes",
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.8.3",

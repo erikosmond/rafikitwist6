@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to create tag_types table
 class CreateTagTypes < ActiveRecord::Migration[5.1]
   def change
     create_table :tag_types do |t|

@@ -5,6 +5,7 @@ require 'rails_helper'
 
 require_relative '../contexts/tag_context.rb'
 
+# rubocop: disable Metrics/BlockLength
 describe Api::TagsController, type: :controller do
   before(:each) do
     TagType.delete_cache
@@ -117,7 +118,9 @@ describe Api::TagsController, type: :controller do
           'tags' => { nut.id.to_s => 'Nut' },
           'child_tags' => { almond.id.to_s => 'Almond' },
           'parent_tags' => { protein.id.to_s => 'Protein' },
-          'modification_tags' => { toasted.id.to_s => 'toasted', crushed.id.to_s => 'crushed' },
+          'modification_tags' => {
+            toasted.id.to_s => 'toasted', crushed.id.to_s => 'crushed'
+          },
           'modified_tags' => {}
         }
       end
@@ -152,3 +155,4 @@ describe Api::TagsController, type: :controller do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

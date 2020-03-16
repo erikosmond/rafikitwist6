@@ -5,6 +5,7 @@ require 'rails_helper'
 require_relative '../contexts/recipe_context.rb'
 require_relative '../contexts/tag_context.rb'
 
+# rubocop: disable Metrics/BlockLength
 describe Api::RecipesController, type: :controller do
   include_context 'recipes'
   let!(:user) { create(:user) }
@@ -20,9 +21,20 @@ describe Api::RecipesController, type: :controller do
   let!(:tag_selection_rating) { create(:tag_selection, tag: rating, taggable: recipe) }
   let!(:tag_selection_menu) { create(:tag_selection, tag: menu_tag, taggable: recipe) }
   # let!(:access_ing) { create(:access, accessible: tag_selection_ing, user: user) }
-  let!(:access_ing) { create(:access, accessible: tag_selection_ing, user: user, status: 'PUBLIC') }
-  let!(:access_rating) { create(:access, accessible: tag_selection_rating, user: different_user, status: 'PRIVATE') }
-  let!(:access_rating) { create(:access, accessible: tag_selection_menu, user: user, status: 'PRIVATE') }
+  let!(:access_ing) do
+    create(:access, accessible: tag_selection_ing, user: user, status: 'PUBLIC')
+  end
+  let!(:access_rating) do
+    create(
+      :access,
+      accessible: tag_selection_rating,
+      user: different_user,
+      status: 'PRIVATE'
+    )
+  end
+  let!(:access_rating) do
+    create(:access, accessible: tag_selection_menu, user: user, status: 'PRIVATE')
+  end
   let(:tag_subject) { create(:tag, name: 'Rice', tag_type: tag_type_ingredient_type) }
 
   describe 'GET - show' do
@@ -84,8 +96,12 @@ describe Api::RecipesController, type: :controller do
   end
 
   describe 'GET - index (modification)' do
-    let(:tag_subject) { create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type) }
-    let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1) }
+    let(:tag_subject) do
+      create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type)
+    end
+    let!(:mod_selection) do
+      create(:tag_selection, tag: tag_subject, taggable: tag_selection1)
+    end
 
     let(:filter_array) do
       [
@@ -115,8 +131,12 @@ describe Api::RecipesController, type: :controller do
   end
 
   describe 'GET - index for user with no recipe associations' do
-    let(:tag_subject) { create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type) }
-    let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1) }
+    let(:tag_subject) do
+      create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type)
+    end
+    let!(:mod_selection) do
+      create(:tag_selection, tag: tag_subject, taggable: tag_selection1)
+    end
 
     before do
       sign_in no_data_user
@@ -185,3 +205,4 @@ describe Api::RecipesController, type: :controller do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

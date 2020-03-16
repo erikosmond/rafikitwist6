@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+# Migration to create users table with devise
 class DeviseCreateUsers < ActiveRecord::Migration[5.1]
+  # rubocop: disable Metrics/MethodLength
   def change
     create_table :users do |t|
       ## Database authenticatable
-      t.string :email,              null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+      t.string :email,              null: false, default: ''
+      t.string :encrypted_password, null: false, default: ''
 
       t.string :first_name
       t.string :last_name
@@ -25,7 +27,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.1]
       t.inet     :current_sign_in_ip
       t.inet     :last_sign_in_ip
 
-
       t.timestamps null: false
     end
 
@@ -33,4 +34,5 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.1]
     add_index :users, :username,             unique: true
     add_index :users, :reset_password_token, unique: true
   end
+  # rubocop: enable Metrics/MethodLength
 end

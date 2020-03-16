@@ -3,6 +3,7 @@
 require 'rails_helper'
 require_relative '../contexts/tag_context.rb'
 
+# rubocop: disable Metrics/BlockLength
 RSpec.describe BuildTagHierarchy, type: :interactor do
   describe '.call' do
     include_context 'tags'
@@ -30,7 +31,11 @@ RSpec.describe BuildTagHierarchy, type: :interactor do
       expect(result.tags_with_hierarchy.map(&:child_tag_id).uniq).to eq [almond.id]
     end
     it 'returns correct modification tags' do
-      expect(result.tags_with_hierarchy.map(&:modification_tag_id).uniq - expected_modifications).to eq []
+      expect(
+        result.tags_with_hierarchy.map(&:modification_tag_id).
+          uniq - expected_modifications
+      ).to eq []
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

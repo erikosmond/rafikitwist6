@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to create tag views
 class AddTagViews < ActiveRecord::Migration[5.1]
   def up
     command = %(

@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop: disable Metrics/BlockLength
 describe Recipe, type: :model do
   subject { create :recipe }
 
@@ -55,15 +56,24 @@ describe Recipe, type: :model do
     let!(:ketchup_amount) { build :tag_attribute, property: 'Amount', value: '1 dollup' }
     let!(:ketchup_display) { build :tag_attribute, property: 'Display', value: 'smeared' }
     let(:mustard) { create :tag, tag_type: tag_type, name: 'Mustard' }
-    let!(:mustard_amount) { build :tag_attribute, property: 'Amount', value: 'One Squeeze' }
+    let!(:mustard_amount) do
+      build :tag_attribute, property: 'Amount', value: 'One Squeeze'
+    end
     it 'creates ingredients with detail' do
-      subject.tag_selections.create([{ tag: ketchup, tag_attributes: [ketchup_amount, ketchup_display] }, { tag: mustard, tag_attributes: [mustard_amount] }])
+      subject.tag_selections.create(
+        [
+          { tag: ketchup, tag_attributes: [ketchup_amount, ketchup_display] },
+          { tag: mustard, tag_attributes: [mustard_amount] }
+        ]
+      )
       expect(subject.ingredients_with_detail.length).to eq(2)
       expect(subject.ingredients_with_detail[ketchup.id].length).to eq(2)
       expect(subject.ingredients_with_detail[ketchup.id].first.name).to eq(ketchup.name)
       expect(subject.ingredients_with_detail[mustard.id].length).to eq(1)
-      expect(subject.ingredients_with_detail[mustard.id].first.property).to eq(mustard_amount.property)
-      expect(subject.ingredients_with_detail[mustard.id].first.value).to eq(mustard_amount.value)
+      expect(subject.ingredients_with_detail[mustard.id].first.property).
+        to eq(mustard_amount.property)
+      expect(subject.ingredients_with_detail[mustard.id].first.value).
+        to eq(mustard_amount.value)
     end
   end
 
@@ -85,3 +95,4 @@ describe Recipe, type: :model do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

@@ -3,6 +3,7 @@
 require 'spec_helper'
 require 'rails_helper'
 
+# rubocop: disable Metrics/BlockLength
 describe Api::TagSelectionsController, type: :controller do
   let!(:user) { create(:user) }
   let!(:recipe) { create(:recipe) }
@@ -50,3 +51,4 @@ describe Api::TagSelectionsController, type: :controller do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength
