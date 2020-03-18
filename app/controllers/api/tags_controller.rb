@@ -1,19 +1,13 @@
 # frozen_string_literal: true
 
 module Api
+  # Controller for tags
   class TagsController < ApplicationController
     def index
       tag_type = params.permit(:type)[:type]
       tags = check_type(tag_type)
       if tags
-        if tag_type
-          render json: { tags: tags.json }
-        else
-          render json: {
-            tags: tags,
-            tag_groups: Tag.ingredient_group_hierarchy_filters(current_user)
-          }
-        end
+        render_tags(tag_type, tags, current_user)
       else
         render json: { tag_type: tag_type.to_s }, status: :not_found
       end
@@ -51,6 +45,17 @@ module Api
           tags_with_hierarchy: hierarchy_result.tags_with_hierarchy,
           sister_tags: hierarchy_result.sister_tags
         }
+      end
+
+      def render_tags(tag_type, tags, current_user)
+        if tag_type
+          render json: { tags: tags.json }
+        else
+          render json: {
+            tags: tags,
+            tag_groups: Tag.ingredient_group_hierarchy_filters(current_user)
+          }
+        end
       end
   end
 end

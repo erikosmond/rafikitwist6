@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# model for tag_selections table
 class TagSelection < ApplicationRecord
   has_many :tag_attributes, # i.e. Amount
            -> { where(tag_attributable_type: 'TagSelection') },

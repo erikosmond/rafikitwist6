@@ -18,13 +18,14 @@ RUN apt-get -y update && \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir /recipes6
-WORKDIR /recipes6
-COPY Gemfile /recipes6/Gemfile
-COPY Gemfile.lock /recipes6/Gemfile.lock
+RUN mkdir /recipes
+WORKDIR /recipes
+COPY Gemfile /recipes/Gemfile
+COPY Gemfile.lock /recipes/Gemfile.lock
 RUN bundle install
 RUN yarn install
-COPY . /recipes6
+RUN yarn add eslint
+COPY . /recipes
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/

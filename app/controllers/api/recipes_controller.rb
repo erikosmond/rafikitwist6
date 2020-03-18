@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Api
+  # Controller for recipes and recipes by tag
   class RecipesController < ApplicationController
     def index
       tag_id = params.permit(:tag_id)[:tag_id]
@@ -48,7 +49,12 @@ module Api
       def all_recipe_json
         # Used by drop down header to search all recipes a user has access to.
         recipe_json = Recipe.joins(:access).
-                      where(["accesses.user_id = ? OR accesses.status = 'PUBLIC'", current_user&.id]).
+                      where(
+                        [
+                          "accesses.user_id = ? OR accesses.status = 'PUBLIC'",
+                          current_user&.id
+                        ]
+                      ).
                       sort_by(&:name).as_json(only: %i[id name])
         recipe_json.map { |r| { 'Label' => r['name'], 'Value' => r['id'] } }
       end

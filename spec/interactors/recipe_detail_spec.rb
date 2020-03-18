@@ -3,10 +3,13 @@
 require 'rails_helper'
 require_relative '../contexts/recipe_context.rb'
 
+# rubocop: disable Metrics/BlockLength
 RSpec.describe RecipeDetail, type: :interactor do
   describe '.call' do
     include_context 'recipes'
-    let(:tag_subject) { create(:tag, name: 'Marinara', tag_type: tag_type_ingredient_type) }
+    let(:tag_subject) do
+      create(:tag, name: 'Marinara', tag_type: tag_type_ingredient_type)
+    end
 
     let(:result) do
       RecipeDetail.call(
@@ -48,3 +51,4 @@ RSpec.describe RecipeDetail, type: :interactor do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

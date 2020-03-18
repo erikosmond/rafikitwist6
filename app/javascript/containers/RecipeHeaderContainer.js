@@ -6,7 +6,7 @@ import RecipeHeader from 'components/recipes/RecipeHeader'
 import { loadRecipeOptions, loadIngredientOptions } from 'bundles/recipes'
 
 export default withRouter(connect(
-  state => ({
+  (state) => ({
     recipeOptions: state.recipesReducer.recipeOptions,
     ingredientOptions: state.recipesReducer.ingredientOptions,
     categoryOptions: state.recipesReducer.categoryOptions,

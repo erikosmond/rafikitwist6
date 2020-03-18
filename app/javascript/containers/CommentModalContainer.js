@@ -6,7 +6,7 @@ import CommentModal from 'components/recipes/CommentModal'
 import { handleCommentModal, submitRecipeComment } from 'bundles/recipes'
 
 export default withRouter(connect(
-  state => ({
+  (state) => ({
     commentModalOpen: state.recipesReducer.commentModalOpen,
     commentRecipeId: state.recipesReducer.commentRecipeId,
     commentTagSelectionId: state.recipesReducer.commentTagSelectionId,

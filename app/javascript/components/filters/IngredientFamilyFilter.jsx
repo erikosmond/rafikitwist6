@@ -32,7 +32,8 @@ class IngredientFamilyFilter extends React.Component {
         const values = childTags[key]
         if (visibleTags[key]) {
           return true
-        } else if (values && values.length > 0) {
+        }
+        if (values && values.length > 0) {
           return this.hasVisibleLevel(values, visibleTags)
         }
       }
@@ -40,18 +41,13 @@ class IngredientFamilyFilter extends React.Component {
     return false
   }
 
-  handleChange = id => (event) => {
+  handleChange = (id) => (event) => {
     const { handleFilter } = this.props
     handleFilter(id, event.target.checked)
   }
 
-  isVisible = () => {
-    const { id, visibleTags } = this.props
-    return Array.isArray(visibleTags) && visibleTags.indexOf(parseInt(id, 10)) > -1
-  }
-
   render() {
-    if (this.isVisible() || this.hasVisibleChildren()) {
+    if (this.hasVisibleChildren()) {
       const {
         visibleTags,
         tagNameById,
@@ -65,18 +61,18 @@ class IngredientFamilyFilter extends React.Component {
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <FormControlLabel
-              control={
+              control={(
                 <Checkbox
                   checked={selectedFilters.indexOf(parseInt(id, 10)) > -1}
                   onChange={this.handleChange(id)}
                   value={id}
                 />
-              }
+              )}
               label={tagNameById(id)}
             />
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.details}>
-            {childTags && Object.keys(childTags).map(t => (
+            {childTags && Object.keys(childTags).map((t) => (
               <IngredientTypeFilter
                 key={`${id}--${t}`}
                 id={t}

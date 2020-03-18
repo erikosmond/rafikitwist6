@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop: disable Metrics/BlockLength
 describe TagSelection, type: :model do
   subject { create :tag_selection }
 
@@ -30,7 +31,9 @@ describe TagSelection, type: :model do
     let(:recipe) { create(:recipe, name: 'cake') }
     let(:recipe_ingredient) { create(:tag_selection, tag: ingredient, taggable: recipe) }
     let(:modification) { create(:tag, name: 'bleached', tag_type: tag_type) }
-    let!(:modification_assignment) { create(:tag_selection, tag: modification, taggable: recipe_ingredient) }
+    let!(:modification_assignment) do
+      create(:tag_selection, tag: modification, taggable: recipe_ingredient)
+    end
     it 'modified tags' do
       expect(modification.modified_tags.map(&:name)).to eq([ingredient.name])
     end
@@ -86,3 +89,4 @@ describe TagSelection, type: :model do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

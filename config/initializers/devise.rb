@@ -8,7 +8,8 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '0cef804e2cb5a440ce976814e67005bc000bf39aad08442dbf582db942ba2c996ff18d431c5e40f12e0a518e5ef1031867af9f918ea9abda8216fd4be6a9cbc8'
+  # config.secret_key = '0cef804e2cb5a440ce976814e67005bc000bf39aad08442dbf582db942ba2c996
+  # ff18d431c5e40f12e0a518e5ef1031867af9f918ea9abda8216fd4be6a9cbc8'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -114,7 +115,8 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 11
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = 'd18802bd52c6f82176c683f8a3654aa7acb9b2ba24cb632a06f7622aca6430014849de23adb5a5d949e38605625ef3998de9e7ba63cfa3c8ca3057a3a0ffbddc'
+  # config.pepper = 'd18802bd52c6f82176c683f8a3654aa7acb9b2ba24cb632a06f7622aca6430014849
+  # de23adb5a5d949e38605625ef3998de9e7ba63cfa3c8ca3057a3a0ffbddc'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -285,7 +287,8 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
   # ==> Turbolinks configuration
-  # If your app is using Turbolinks, Turbolinks::Controller needs to be included to make redirection work correctly:
+  # If your app is using Turbolinks, Turbolinks::Controller needs to be included to make
+  # redirection work correctly:
   #
   # ActiveSupport.on_load(:devise_failure_app) do
   #   include Turbolinks::Controller
@@ -294,6 +297,7 @@ Devise.setup do |config|
   # ==> Configuration for :registerable
 
   # When set to false, does not sign a user in automatically after their password is
-  # changed. Defaults to true, so a user is signed in automatically after changing a password.
+  # changed. Defaults to true, so a user is signed in automatically after
+  # changing a password.
   # config.sign_in_after_change_password = true
 end

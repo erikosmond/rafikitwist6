@@ -7,12 +7,7 @@ class TagsByType
   def call
     tag_type = context.tag_type
     type_ids = tag_types(tag_type).pluck(:id)
-    tag_json =
-      if tag_type.to_s.casecmp('ingredients').zero?
-        Tag.where(tag_type_id: type_ids).as_json(only: %i[id name])
-      else
-        tags_by_type_ids(type_ids)
-      end
+    tag_json = fetch_tag_json(tag_type, type_ids)
     context.json = tag_json.sort_by { |t| t['name'] }.map do |r|
       { 'Label' => r['name'], 'Value' => r['id'] }
     end
@@ -37,6 +32,14 @@ class TagsByType
         TagType.where.not(name: ingredient_types)
       else
         TagType.all
+      end
+    end
+
+    def fetch_tag_json(tag_type, type_ids)
+      if tag_type.to_s.casecmp('ingredients').zero?
+        Tag.where(tag_type_id: type_ids).as_json(only: %i[id name])
+      else
+        tags_by_type_ids(type_ids)
       end
     end
 end

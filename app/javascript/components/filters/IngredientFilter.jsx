@@ -9,7 +9,7 @@ class IngredientFilter extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  handleChange = id => (event) => {
+  handleChange = (id) => (event) => {
     const { handleFilter } = this.props
     handleFilter(id, event.target.checked)
   }
@@ -22,13 +22,13 @@ class IngredientFilter extends React.Component {
     } = this.props
     return (
       <FormControlLabel
-        control={
+        control={(
           <Checkbox
             checked={selectedFilters.indexOf(id) > -1}
             onChange={this.handleChange(id)}
-            value={"#{id}"}
+            value={id}
           />
-        }
+        )}
         label={label}
       />
     )

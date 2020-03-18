@@ -16,7 +16,10 @@ const styles = () => ({
 })
 
 class IngredientTypeFilter extends React.Component {
-  state = {}
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
   hasVisibleChildren = () => {
     const { childTags, visibleTags, id } = this.props
@@ -31,18 +34,13 @@ class IngredientTypeFilter extends React.Component {
     return false
   }
 
-  handleChange = id => (event) => {
+  handleChange = (id) => (event) => {
     const { handleFilter } = this.props
     handleFilter(id, event.target.checked)
   }
 
-  isVisible = () => {
-    const { id, visibleTags } = this.props
-    return Array.isArray(visibleTags) && visibleTags.indexOf(parseInt(id, 10)) > -1
-  }
-
   render() {
-    if (this.isVisible() || this.hasVisibleChildren()) {
+    if (this.hasVisibleChildren()) {
       const {
         visibleTags,
         tagNameById,
@@ -54,24 +52,27 @@ class IngredientTypeFilter extends React.Component {
         selectable,
         label,
       } = this.props
+      const { expansionPanelOpen } = this.state
       return (
-        <ExpansionPanel expanded={this.state.expansionPanelOpen}>
+        <ExpansionPanel expanded={expansionPanelOpen}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            {selectable && <FormControlLabel
-              control={
+            {selectable && (
+            <FormControlLabel
+              control={(
                 <Checkbox
                   checked={selectedFilters.indexOf(parseInt(id, 10)) > -1}
                   onChange={this.handleChange(id)}
                   value={id}
                 />
-              }
+              )}
               label={tagNameById(id)}
-            />}
+            />
+            )}
             { !selectable && label }
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.details}>
-            {childTags.map(t => (
-              visibleTags[parseInt(t, 10)] &&
+            {childTags.map((t) => (
+              visibleTags[parseInt(t, 10)] && (
                 <IngredientFilter
                   key={`${id}--${t}`}
                   id={t}
@@ -80,7 +81,8 @@ class IngredientTypeFilter extends React.Component {
                   handleFilter={handleFilter}
                   selectedFilters={selectedFilters}
                 />
-              ))}
+              )
+            ))}
           </ExpansionPanelDetails>
         </ExpansionPanel>
       )

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to create access table
 class AddAccessTable < ActiveRecord::Migration[5.1]
   def change
     create_table :accesses do |t|

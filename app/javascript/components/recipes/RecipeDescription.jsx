@@ -25,6 +25,7 @@ RecipeDescription.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string.isRequired,
     ingredients: PropTypes.shape({}).isRequired,
+    description: PropTypes.string,
   }).isRequired,
 }
 

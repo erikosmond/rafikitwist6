@@ -1,6 +1,7 @@
-import { put, call, select } from 'redux-saga/effects'
+import {
+  put, call, select, takeLatest, takeEvery,
+} from 'redux-saga/effects'
 // import { startSubmit, stopSubmit, getFormValues } from 'redux-form'
-import { takeLatest, takeEvery } from 'redux-saga/effects'
 import { callApi } from 'services/rest'
 import {
   selectedFilterService,
@@ -35,12 +36,12 @@ const RESET_PAGED_COUNT = 'recipes/resetPagedCount'
 const UPDATE_RECIPE_TAG = 'recipes/updateRecipeTag'
 const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
 const LOAD_RECIPE_FORM_DATA = 'recipes/loadRecipeFormData'
-const LOAD_RECIPE_FORM_DATA_SUCCESS = 'recipes/loadRecipeFormDataSuccess'
+// const LOAD_RECIPE_FORM_DATA_SUCCESS = 'recipes/loadRecipeFormDataSuccess'
 const HANDLE_COMMENT_MODAL = 'recipes/handleModal'
-const SUBMIT_RECIPE_COMMENT='recipes/submitRecipeComment'
-const UPDATE_RECIPE_COMMENT_SUCCESS='recipes/updateRecipeCommentSuccess'
-const SHOW_MORE_RECIPES='recipes/showMoreRecipes'
-const CLEAR_RECIPE='recipes/clearRecipe'
+const SUBMIT_RECIPE_COMMENT = 'recipes/submitRecipeComment'
+const UPDATE_RECIPE_COMMENT_SUCCESS = 'recipes/updateRecipeCommentSuccess'
+const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
+const CLEAR_RECIPE = 'recipes/clearRecipe'
 // const INCREMENT_VISIBLE_RECIPE_COUNT = 'recipes/incrementVisibleRecipeCount'
 const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
 
@@ -74,7 +75,7 @@ export default function recipesReducer(state = initialState, action = {}) {
       return {
         ...state,
         selectedTag: {},
-        loading: true
+        loading: true,
       }
     case LOAD_RECIPES_SUCCESS:
       return {
@@ -165,12 +166,12 @@ export default function recipesReducer(state = initialState, action = {}) {
     case UPDATE_RECIPE_TAG_SUCCESS:
       return {
         ...state,
-        selectedRecipes: state.selectedRecipes.map(r => tagSelectionReducer(r, { ...action })),
+        selectedRecipes: state.selectedRecipes.map((r) => tagSelectionReducer(r, { ...action })),
       }
     case UPDATE_RECIPE_COMMENT_SUCCESS:
       return {
         ...state,
-        selectedRecipes: state.selectedRecipes.map(r => commentReducer(r, { ...action })),
+        selectedRecipes: state.selectedRecipes.map((r) => commentReducer(r, { ...action })),
       }
     case SET_VISIBLE_RECIPE_COUNT:
       return {
@@ -188,7 +189,7 @@ export default function recipesReducer(state = initialState, action = {}) {
     case SHOW_MORE_RECIPES:
       return {
         ...state,
-        pagedRecipeCount: action.payload
+        pagedRecipeCount: action.payload,
       }
     case RESET_PAGED_COUNT:
       return {
@@ -508,7 +509,7 @@ function countVisibleRecipes(visibleRecipes) {
 // Saga
 
 export function* handleFilterTask({ payload: { id, checked } }) {
-  const selectRecipes = store => store.recipesReducer
+  const selectRecipes = (store) => store.recipesReducer
   const recipesState = yield select(selectRecipes)
   const selectedFilters = yield call(selectedFilterService, id, checked, recipesState)
   const selectedRecipes = yield call(
@@ -545,7 +546,7 @@ export function* loadTagInfoTask({ payload }) {
 }
 
 export function* loadAllTagsTask() {
-  const selectRecipes = store => store.recipesReducer
+  const selectRecipes = (store) => store.recipesReducer
   const recipesState = yield select(selectRecipes)
   const { allTags } = recipesState
   if (!allTags || allTags.length === 0) {
@@ -585,7 +586,6 @@ export function* loadRecipeOptionsTask() {
 }
 
 export function handleRecipeSubmitTask({ payload }) {
-  console.log('we are in the saga')
   console.log(payload)
 }
 
@@ -632,8 +632,10 @@ export function* updateTagSelectionTask({
   }
   const result = yield call(callApi, url, params)
   if (result.success) {
-    yield put(updateTagSelectionSuccess(taggableType, taggableId, mapping[tagType], tagId, result.data.id))
-    yield call(loadIngredientOptionsTask, { payload: { ingredientType: 'More' } } )
+    yield put(updateTagSelectionSuccess(
+      taggableType, taggableId, mapping[tagType], tagId, result.data.id,
+    ))
+    yield call(loadIngredientOptionsTask, { payload: { ingredientType: 'More' } })
   } else {
     console.log('Unable to update recipe')
   }
@@ -647,7 +649,7 @@ export function* submitRecipeCommentTask({
     taggableType,
   },
 }) {
-  const selectRecipes = store => store.recipesReducer
+  const selectRecipes = (store) => store.recipesReducer
   const recipesState = yield select(selectRecipes)
   const { commentTagId } = recipesState
   const method = tagSelectionId ? 'PUT' : 'POST'
@@ -667,7 +669,9 @@ export function* submitRecipeCommentTask({
   }
   const result = yield call(callApi, url, params)
   if (result.success) {
-    yield put(updateRecipeCommentSuccess(taggableType, taggableId, 'newComment', commentTagId, body, result.data.id))
+    yield put(updateRecipeCommentSuccess(
+      taggableType, taggableId, 'newComment', commentTagId, body, result.data.id,
+    ))
   } else {
     console.log('Unable to save comment')
   }

@@ -4,6 +4,13 @@ FROM nginx
 # Install dependencies
 RUN apt-get update -qq && apt-get -y install apache2-utils
 
+# TSL cert dependencies
+RUN apt-get install wget --fix-missing
+RUN wget https://dl.eff.org/certbot-auto
+RUN mv certbot-auto /usr/local/bin/certbot-auto
+RUN chown root /usr/local/bin/certbot-auto
+RUN chmod 0755 /usr/local/bin/certbot-auto
+
 # establish where Nginx should look for files
 ENV RAILS_ROOT /recipes
 
@@ -17,7 +24,7 @@ RUN mkdir log
 COPY public public/
 
 # Copy Nginx config template
-COPY server/nginx.conf.ssl /tmp/docker.nginx
+COPY server/nginx.conf /tmp/docker.nginx
 
 # substitute variable references in the Nginx config template for real values from the environment
 # put the final config in its place

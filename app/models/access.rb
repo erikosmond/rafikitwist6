@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# model for accesses table
 class Access < ApplicationRecord
   belongs_to :user
   belongs_to :accessible, polymorphic: true

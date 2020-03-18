@@ -21,7 +21,7 @@ const FilterByIngredients = ({
     <PaperSidebar>
       <h2> Filters </h2>
       <FormGroup>
-        {tagGroups && Object.keys(tagGroups).map(t => (
+        {tagGroups && Object.keys(tagGroups).map((t) => (
           <IngredientFamilyFilter
             key={t}
             id={t}
@@ -33,7 +33,7 @@ const FilterByIngredients = ({
             childTags={tagGroups[t]}
           />
         ))}
-        {tagsByType && Object.keys(tagsByType).map(t => (
+        {tagsByType && Object.keys(tagsByType).map((t) => (
           <IngredientTypeFilter
             key={t}
             id={t}

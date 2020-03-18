@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# model for users table
 class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles

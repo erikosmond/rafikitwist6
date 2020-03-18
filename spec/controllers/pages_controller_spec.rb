@@ -3,6 +3,7 @@
 require 'spec_helper'
 require 'rails_helper'
 
+# rubocop: disable Metrics/BlockLength
 describe PagesController, type: :controller do
   let!(:user) { create(:user) }
   let!(:recipe) { create(:recipe) }
@@ -23,7 +24,9 @@ describe PagesController, type: :controller do
   let!(:type_to_family) { create(:tag_selection, tag: family_tag, taggable: type_tag) }
   let!(:ing_to_type) { create(:tag_selection, tag: type_tag, taggable: ing_tag) }
   let!(:tag_selection) { create(:tag_selection, tag: ing_tag, taggable: recipe2) }
-  let!(:family_tag_selection) { create(:tag_selection, tag: family_tag, taggable: recipe) }
+  let!(:family_tag_selection) do
+    create(:tag_selection, tag: family_tag, taggable: recipe)
+  end
   let!(:access1) { create(:access, accessible: family_tag_selection, user: user) }
   let!(:access2) { create(:access, accessible: tag_selection, user: user) }
   let!(:access3) { create(:access, accessible: type_to_family, user: user) }
@@ -92,3 +95,4 @@ describe PagesController, type: :controller do
     it { is_expected.to render_template :home }
   end
 end
+# rubocop: enable Metrics/BlockLength

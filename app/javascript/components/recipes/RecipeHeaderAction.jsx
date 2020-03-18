@@ -8,9 +8,12 @@ import MenuItem from '@material-ui/core/MenuItem'
 const ITEM_HEIGHT = 48
 
 class RecipeHeaderAction extends React.Component {
-  state = {
-    anchorEl: null,
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      anchorEl: null,
+    }
+  }
 
   handleClick = (event) => {
     this.setState({ anchorEl: event.currentTarget })
@@ -21,7 +24,7 @@ class RecipeHeaderAction extends React.Component {
       recipeId,
       updateRecipeTag,
       selectedOption,
-      label
+      label,
     } = this.props
     if (event.currentTarget.value) {
       if (selectedOption && selectedOption.id) {
@@ -67,7 +70,7 @@ class RecipeHeaderAction extends React.Component {
             },
           }}
         >
-          {Object.keys(options).sort().reverse().map(option => (
+          {Object.keys(options).sort().reverse().map((option) => (
             <MenuItem
               key={option}
               value={options[option]}
@@ -87,7 +90,7 @@ RecipeHeaderAction.propTypes = {
   label: PropTypes.string.isRequired,
   iconSvgPath: PropTypes.string.isRequired,
   options: PropTypes.shape({}).isRequired,
-  selectedOption: PropTypes.shape({}),
+  selectedOption: PropTypes.shape({ id: PropTypes.number, tagId: PropTypes.number }),
   recipeId: PropTypes.number.isRequired,
   updateRecipeTag: PropTypes.func.isRequired,
 }

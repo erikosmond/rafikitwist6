@@ -14,9 +14,7 @@ services:
       - "${DB_PORT}:5432"
   web:
     build: .
-    tty: true
-    stdin_open: true
-    command: bash -c "bundle exec puma -b tcp://0.0.0.0:3000"
+    command: bash -c "yarn && bundle exec puma -b tcp://0.0.0.0:3000"
     environment:
       - DB_PASSWORD="${DB_PASSWORD}"
       - WEBPACK_PORT="${WEBPACK_PORT}"
@@ -26,6 +24,7 @@ services:
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
     volumes:
       - .:/recipes
+      - packs:/recipes/public/packs
     ports:
       - ${API_PORT}:3000
     depends_on:
@@ -39,8 +38,10 @@ services:
       - web
     volumes:
       - '../letsencrypt/:/etc/letsencrypt'
+      - packs:/recipes/public/packs
     ports:
       - 80:80
       - 443:443
 volumes:
   db:
+  packs:

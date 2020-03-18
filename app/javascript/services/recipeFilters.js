@@ -40,7 +40,7 @@ export function selectedRecipeService(
   selectedFilters,
   state,
 ) {
-  return state.selectedRecipes.map(r => recipeReducer(
+  return state.selectedRecipes.map((r) => recipeReducer(
     r,
     selectedFilters,
   ))

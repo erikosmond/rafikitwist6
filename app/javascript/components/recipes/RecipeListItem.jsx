@@ -23,10 +23,13 @@ const styles = () => ({
 })
 
 class RecipeListItem extends React.Component {
-  state = { expanded: false };
+  constructor(props) {
+    super(props)
+    this.state = { expanded: false }
+  }
 
   handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }))
+    this.setState((state) => ({ expanded: !state.expanded }))
   };
 
   render() {
@@ -38,9 +41,10 @@ class RecipeListItem extends React.Component {
       updateRecipeTag,
       handleCommentModal,
     } = this.props
-    const ingredientNames = Object.values(allIngredients(recipe)).map(ingredient => (
+    const ingredientNames = Object.values(allIngredients(recipe)).map((ingredient) => (
       ingredient.tagName
     ))
+    const { expanded } = this.state
     if (recipe.hidden) {
       return null
     }
@@ -49,7 +53,7 @@ class RecipeListItem extends React.Component {
         <CardHeader
           title={<Link to={`/recipes/${recipe.id}`}>{recipe.name}</Link>}
           subheader={ingredientNames.join(', ')}
-          action={
+          action={(
             <RecipeHeaderActions
               ratings={ratings}
               priorities={priorities}
@@ -60,21 +64,21 @@ class RecipeListItem extends React.Component {
               updateRecipeTag={updateRecipeTag}
               handleCommentModal={handleCommentModal}
             />
-          }
+          )}
         />
-        <CardActions className={classes.actions}>
+        <CardActions>
           <IconButton
             className={classnames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded,
+              [classes.expandOpen]: expanded,
             })}
             onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
+            aria-expanded={expanded}
             aria-label="Show more"
           >
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
             <RecipeProperties title="Ingredients" tags={allIngredients(recipe)} />
             <RecipeInstructions recipe={recipe} />
@@ -88,12 +92,21 @@ class RecipeListItem extends React.Component {
 
 RecipeListItem.propTypes = {
   recipe: PropTypes.shape({
+    hidden: PropTypes.bool,
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    newRating: PropTypes.shape({}),
+    ratings: PropTypes.arrayOf(PropTypes.shape({})),
+    newPriority: PropTypes.shape({}),
+    priorities: PropTypes.arrayOf(PropTypes.shape({})),
+    newComment: PropTypes.shape({}),
+    comments: PropTypes.arrayOf(PropTypes.shape({})),
     ingredients: PropTypes.shape({}).isRequired,
   }),
   classes: PropTypes.shape({
-    card: PropTypes.string.isRequired,
+    card: PropTypes.string,
+    expand: PropTypes.string,
+    expandOpen: PropTypes.string,
   }).isRequired,
   ratings: PropTypes.shape({}).isRequired,
   priorities: PropTypes.shape({}).isRequired,
@@ -102,9 +115,9 @@ RecipeListItem.propTypes = {
 }
 
 RecipeListItem.defaultProps = {
-  recipe: PropTypes.shape({
+  recipe: {
     hidden: false,
-  }),
+  },
 }
 
 export default withStyles(styles)(RecipeListItem)

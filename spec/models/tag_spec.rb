@@ -4,6 +4,7 @@ require 'rails_helper'
 require_relative '../contexts/tag_context.rb'
 require_relative '../contexts/recipe_context.rb'
 
+# rubocop: disable Metrics/BlockLength
 describe Tag, type: :model do
   before(:each) do
     TagType.delete_cache
@@ -124,11 +125,13 @@ describe Tag, type: :model do
     end
     it 'returns recipe level detail for ingredient family' do
       result = RecipeByTag.call(tag: protein, current_user: user).result
-      expect(GroupRecipeDetail.call(recipe_details: result).result.map { |r| r['id'] }).to eq([martini.id, vesper.id, manhattan.id])
+      expect(GroupRecipeDetail.call(recipe_details: result).result.map { |r| r['id'] }).
+        to eq([martini.id, vesper.id, manhattan.id])
     end
     it 'returns recipe level detail for ingredient type' do
       result = RecipeByTag.call(tag: nut, current_user: user).result
-      expect(GroupRecipeDetail.call(recipe_details: result).result.map { |r| r['id'] }).to eq([martini.id, vesper.id])
+      expect(GroupRecipeDetail.call(recipe_details: result).result.map { |r| r['id'] }).
+        to eq([martini.id, vesper.id])
     end
   end
 
@@ -149,7 +152,9 @@ describe Tag, type: :model do
   describe '#recipes_with_grouped_detail' do
     include_context 'recipes'
     describe '#collect_tag_ids' do
-      let(:tag_subject) { create(:tag, name: 'Lemon Verbena', tag_type: tag_type_ingredient_type) }
+      let(:tag_subject) do
+        create(:tag, name: 'Lemon Verbena', tag_type: tag_type_ingredient_type)
+      end
       let(:detail_ids) do
         [
           tag_selection1.id,
@@ -177,8 +182,12 @@ describe Tag, type: :model do
     end
 
     describe '#collect_tag_ids' do
-      let(:tag_subject) { create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type) }
-      let!(:mod_selection) { create(:tag_selection, tag: tag_subject, taggable: tag_selection1) }
+      let(:tag_subject) do
+        create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type)
+      end
+      let!(:mod_selection) do
+        create(:tag_selection, tag: tag_subject, taggable: tag_selection1)
+      end
       let(:detail_ids) do
         [
           tag_selection1.id,
@@ -190,12 +199,15 @@ describe Tag, type: :model do
         ]
       end
       it 'returns recipe level detail for modification' do
-        expect(RecipeByTag.call(tag: tag_subject, current_user: user).result.map(&:id).uniq.sort).to eq(detail_ids.sort)
+        expect(RecipeByTag.call(tag: tag_subject, current_user: user).result.
+          map(&:id).uniq.sort).to eq(detail_ids.sort)
       end
     end
 
     describe '#recipes_with_grouped_detail' do
-      let!(:tag_subject) { create(:tag, name: 'Verbena', tag_type: tag_type_ingredient_type) }
+      let!(:tag_subject) do
+        create(:tag, name: 'Verbena', tag_type: tag_type_ingredient_type)
+      end
       let!(:result) { RecipeByTag.call(tag: tag_subject, current_user: user).result }
       let(:recipe_result) { GroupRecipeDetail.call(recipe_details: result).result }
       # TODO: make sure i always grab the same element out of the set of two
@@ -210,22 +222,27 @@ describe Tag, type: :model do
         expect(recipe_result2['instructions']).to eq(recipe2_instructions)
       end
       it 'returns modification name' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].modification_name).to eq(modification_name)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].modification_name).
+          to eq(modification_name)
       end
       it 'returns tag name' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].tag_name).to eq(ingredient1_name)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].tag_name).
+          to eq(ingredient1_name)
       end
       it 'returns value attribute' do
         expect(recipe_result2['ingredients'][tag_selection2b.tag_id].value).to eq(value)
       end
       it 'returns property attribute' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].property).to eq(property)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].property).
+          to eq(property)
       end
       it 'returns ingredient type' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].parent_tag).to eq(ingredient1_type_name)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].parent_tag).
+          to eq(ingredient1_type_name)
       end
       it 'returns ingredient family' do
-        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].grandparent_tag).to eq(ingredient1_family_name)
+        expect(recipe_result2['ingredients'][tag_selection2b.tag_id].grandparent_tag).
+          to eq(ingredient1_family_name)
       end
     end
   end
@@ -249,3 +266,4 @@ describe Tag, type: :model do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

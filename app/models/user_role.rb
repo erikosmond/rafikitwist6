@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# model for user_roles table
 class UserRole < ApplicationRecord
   belongs_to :user
   belongs_to :role

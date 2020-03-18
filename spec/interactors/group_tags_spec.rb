@@ -3,6 +3,7 @@
 require 'rails_helper'
 require_relative '../contexts/tag_context.rb'
 
+# rubocop: disable Metrics/BlockLength
 RSpec.describe GroupTags, type: :interactor do
   describe '.call' do
     include_context 'tags' # from './tag_context.rb'
@@ -100,3 +101,4 @@ RSpec.describe GroupTags, type: :interactor do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

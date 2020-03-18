@@ -8,71 +8,30 @@ import PaperContent from '../styled/PaperContent'
 import PaperSidebar from '../styled/PaperSidebar'
 
 class RecipeList extends React.Component {
-  static propTypes = {
-    loadRecipes: PropTypes.func.isRequired,
-    loadTagInfo: PropTypes.func.isRequired,
-    handleCommentModal: PropTypes.func.isRequired,
-    handleFilter: PropTypes.func.isRequired,
-    clearFilters: PropTypes.func.isRequired,
-    resetPagedCount: PropTypes.func.isRequired,
-    updateRecipeTag: PropTypes.func.isRequired,
-    selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
-    recipesLoaded: PropTypes.bool,
-    loading: PropTypes.bool,
-    tagGroups: PropTypes.shape({}).isRequired,
-    allTags: PropTypes.shape({
-      id: PropTypes.number,
-    }).isRequired,
-    allTagTypes: PropTypes.shape({
-      id: PropTypes.number,
-    }).isRequired,
-    tagsByType: PropTypes.shape({}).isRequired,
-    visibleFilterTags: PropTypes.shape({}),
-    selectedFilters: PropTypes.arrayOf(PropTypes.number),
-    visibleRecipeCount: PropTypes.number,
-    pagedRecipeCount: PropTypes.number,
-    showMoreRecipes: PropTypes.func.isRequired,
-    noRecipes: PropTypes.bool,
-    startingTagId: PropTypes.string.isRequired,
-    selectedTag: PropTypes.shape({}).isRequired,
-    priorities: PropTypes.shape({}).isRequired,
-    ratings: PropTypes.shape({}).isRequired,
-    location: PropTypes.shape({
-      search: PropTypes.string,
-    }).isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        tagId: PropTypes.string,
-      }),
-    }).isRequired,
-  }
-
-  static defaultProps = {
-    recipesLoaded: false,
-    loading: true,
-    noRecipes: true,
-    selectedFilters: [],
-    selectedRecipes: [],
-    visibleFilterTags: {},
-    visibleRecipeCount: 0,
-    pagedRecipeCount: 10,
+  static displayShown(recipe) {
+    if (recipe.hidden !== true) {
+      return recipe
+    }
+    return {}
   }
 
   constructor(props) {
     super(props)
     this.noRecipes = false
     this.handleShowMoreRecipes = this.handleShowMoreRecipes.bind(this)
-    this.displayShown = this.displayShown.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      nextProps.clearFilters()
-      nextProps.resetPagedCount()
-      const { tagId } = nextProps.match.params
+  componentDidUpdate(lastProps) {
+    const {
+      loadRecipes, loadTagInfo, location, match,
+    } = this.props
+    if (lastProps.location !== location) {
+      lastProps.clearFilters()
+      lastProps.resetPagedCount()
+      const { tagId } = match.params
       if (tagId) {
-        nextProps.loadRecipes(tagId)
-        nextProps.loadTagInfo(tagId)
+        loadRecipes(tagId)
+        loadTagInfo(tagId)
       }
     }
   }
@@ -93,7 +52,11 @@ class RecipeList extends React.Component {
     const selectedRecipeCount = selectedRecipes.length
     const prefix = selectedRecipeCount === visibleRecipeCount ? '' : `${visibleRecipeCount} of `
     return (
-      <h2> Recipes ({prefix + selectedRecipeCount}) </h2>
+      <h2>
+        Recipes (
+        {prefix + selectedRecipeCount}
+        )
+      </h2>
     )
   }
 
@@ -101,15 +64,10 @@ class RecipeList extends React.Component {
     const { pagedRecipeCount, visibleRecipeCount } = this.props
     if (visibleRecipeCount && visibleRecipeCount > pagedRecipeCount) {
       return (
-        <button onClick={this.handleShowMoreRecipes} >Show more</button>
+        <button type="button" onClick={this.handleShowMoreRecipes}>Show more</button>
       )
     }
-  }
-
-  displayShown(recipe) {
-    if (recipe.hidden !== true) {
-      return recipe
-    }
+    return ''
   }
 
   render() {
@@ -133,21 +91,30 @@ class RecipeList extends React.Component {
       selectedFilters,
     } = this.props
     if (loading) {
-      return (<div> {'Loading...'} </div>)
-    } else if (this.noRecipes || noRecipes) {
-      return (<div> {"We don't have any recipes like that."} </div>)
-    } else if (!recipesLoaded) {
+      return (
+        <div>
+          Loading...
+        </div>
+      )
+    } if (this.noRecipes || noRecipes) {
+      return (
+        <div>
+          We do not have any recipes like that.
+        </div>
+      )
+    } if (!recipesLoaded) {
       return null
     }
     return (
       <div>
-        <h1>{selectedTag.name}</h1>
-        {selectedTag.description && selectedTag.description.length > 0 &&
+        <h4>{selectedTag.name}</h4>
+        {selectedTag.description && selectedTag.description.length > 0 && (
           <div>
             {selectedTag.description}
-            <br /><br />
+            <br />
+            <br />
           </div>
-        }
+        )}
 
         <FilterChips
           allTags={allTags}
@@ -166,10 +133,9 @@ class RecipeList extends React.Component {
           tagsByType={tagsByType}
         />
 
-
         <PaperContent>
           {this.renderHeaderWithCount()}
-          {selectedRecipes.filter(this.displayShown).splice(0, pagedRecipeCount).map(r => (
+          {selectedRecipes.filter(RecipeList.displayShown).splice(0, pagedRecipeCount).map((r) => (
             <RecipeListItem
               key={r.id}
               recipe={r}
@@ -195,6 +161,65 @@ class RecipeList extends React.Component {
       </div>
     )
   }
+}
+
+RecipeList.propTypes = {
+  loadRecipes: PropTypes.func.isRequired,
+  loadTagInfo: PropTypes.func.isRequired,
+  handleCommentModal: PropTypes.func.isRequired,
+  handleFilter: PropTypes.func.isRequired,
+  clearFilters: PropTypes.func.isRequired,
+  resetPagedCount: PropTypes.func.isRequired,
+  updateRecipeTag: PropTypes.func.isRequired,
+  selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
+  recipesLoaded: PropTypes.bool,
+  loading: PropTypes.bool,
+  tagGroups: PropTypes.shape({}).isRequired,
+  allTags: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
+  allTagTypes: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
+  tagsByType: PropTypes.shape({}).isRequired,
+  visibleFilterTags: PropTypes.shape({}),
+  selectedFilters: PropTypes.arrayOf(PropTypes.number),
+  visibleRecipeCount: PropTypes.number,
+  pagedRecipeCount: PropTypes.number,
+  showMoreRecipes: PropTypes.func.isRequired,
+  noRecipes: PropTypes.bool,
+  priorities: PropTypes.shape({}).isRequired,
+  ratings: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      tagId: PropTypes.string,
+    }),
+  }).isRequired,
+  selectedTag: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    grandparentTags: PropTypes.shape({}),
+    parentTags: PropTypes.shape({}),
+    childTags: PropTypes.shape({}),
+    grandchildTags: PropTypes.shape({}),
+    sisterTags: PropTypes.shape({}),
+    modificationTags: PropTypes.shape({}),
+    modifiedTags: PropTypes.shape({}),
+  }).isRequired,
+}
+
+RecipeList.defaultProps = {
+  recipesLoaded: false,
+  loading: true,
+  noRecipes: true,
+  selectedFilters: [],
+  selectedRecipes: [],
+  visibleFilterTags: {},
+  visibleRecipeCount: 0,
+  pagedRecipeCount: 10,
 }
 
 export default RecipeList

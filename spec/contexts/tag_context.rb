@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop: disable Metrics/BlockLength
 RSpec.shared_context 'tags', shared_context: :metadata do
   let(:type_ingredient) { create :tag_type, name: 'Ingredient' }
   let(:type_ingredient_type) { create :tag_type, name: 'IngredientType' }
@@ -28,21 +29,44 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   let(:alteration) { create(:tag_type, name: 'Alteration') }
   let(:toasted) { create(:tag, tag_type: alteration, name: modification_name1) }
   let(:crushed) { create(:tag, tag_type: alteration, name: modification_name2) }
-  let!(:tag_selection_mod1) { create(:tag_selection, tag: toasted, taggable: tag_selection4) }
-  let!(:tag_selection_mod2) { create(:tag_selection, tag: crushed, taggable: tag_selection4) }
+  let!(:tag_selection_mod1) do
+    create(:tag_selection, tag: toasted, taggable: tag_selection4)
+  end
+  let!(:tag_selection_mod2) do
+    create(:tag_selection, tag: crushed, taggable: tag_selection4)
+  end
   let!(:user) { create(:user) }
   let!(:non_active_user) { create(:user) }
   let!(:access1) { create(:access, user: user, accessible: vesper) }
   let!(:access2) { create(:access, user: user, accessible: martini) }
   let!(:access3) { create(:access, user: user, accessible: manhattan) }
 
-  let!(:access4) { create(:access, user: user, accessible: tag_selection4, status: 'PRIVATE') }
-  let!(:access4a) { create(:access, user: user, accessible: tag_selection4a, status: 'PUBLIC') }
-  let!(:access5) { create(:access, user: user, accessible: tag_selection5, status: 'PRIVATE') }
-  let!(:access6) { create(:access, user: user, accessible: tag_selection6, status: 'PRIVATE') }
-  let!(:access7) { create(:access, user: user, accessible: tag_selection_mod1, status: 'PRIVATE') }
-  let!(:access8) { create(:access, user: user, accessible: tag_selection_mod2, status: 'PRIVATE') }
-  let!(:access9) { create(:access, user: user, accessible: tag_selection1, status: 'PRIVATE') }
-  let!(:access10) { create(:access, user: user, accessible: tag_selection2, status: 'PRIVATE') }
-  let!(:access11) { create(:access, user: user, accessible: tag_selection3, status: 'PRIVATE') }
+  let!(:access4) do
+    create(:access, user: user, accessible: tag_selection4, status: 'PRIVATE')
+  end
+  let!(:access4a) do
+    create(:access, user: user, accessible: tag_selection4a, status: 'PUBLIC')
+  end
+  let!(:access5) do
+    create(:access, user: user, accessible: tag_selection5, status: 'PRIVATE')
+  end
+  let!(:access6) do
+    create(:access, user: user, accessible: tag_selection6, status: 'PRIVATE')
+  end
+  let!(:access7) do
+    create(:access, user: user, accessible: tag_selection_mod1, status: 'PRIVATE')
+  end
+  let!(:access8) do
+    create(:access, user: user, accessible: tag_selection_mod2, status: 'PRIVATE')
+  end
+  let!(:access9) do
+    create(:access, user: user, accessible: tag_selection1, status: 'PRIVATE')
+  end
+  let!(:access10) do
+    create(:access, user: user, accessible: tag_selection2, status: 'PRIVATE')
+  end
+  let!(:access11) do
+    create(:access, user: user, accessible: tag_selection3, status: 'PRIVATE')
+  end
 end
+# rubocop: enable Metrics/BlockLength

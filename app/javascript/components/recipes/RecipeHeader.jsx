@@ -52,7 +52,7 @@ const RecipeHeader = (props) => {
         placeholder="More"
         updateHistory={updateTags}
       />
-      <AccountMenu 
+      <AccountMenu
         firstName={firstName}
       />
     </StyledHeader>
@@ -64,10 +64,16 @@ export default RecipeHeader
 RecipeHeader.propTypes = {
   loadRecipeOptions: PropTypes.func.isRequired,
   firstName: PropTypes.string,
-  recipeOptions: PropTypes.arrayOf(PropTypes.shape({name: PropTypes.string, id: PropTypes.number})),
+  recipeOptions: PropTypes.arrayOf(PropTypes.shape(
+    { name: PropTypes.string, id: PropTypes.number },
+  )),
   loadIngredientOptions: PropTypes.func.isRequired,
-  ingredientOptions: PropTypes.arrayOf(PropTypes.shape({name: PropTypes.string, id: PropTypes.number})),
-  categoryOptions: PropTypes.arrayOf(PropTypes.shape({name: PropTypes.string, id: PropTypes.number})),
+  ingredientOptions: PropTypes.arrayOf(PropTypes.shape(
+    { name: PropTypes.string, id: PropTypes.number },
+  )),
+  categoryOptions: PropTypes.arrayOf(PropTypes.shape(
+    { name: PropTypes.string, id: PropTypes.number },
+  )),
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,

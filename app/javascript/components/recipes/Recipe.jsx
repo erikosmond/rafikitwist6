@@ -6,20 +6,6 @@ import RecipeDescription from 'components/recipes/RecipeDescription'
 import { allIngredients } from 'services/recipes'
 
 class Recipe extends React.Component {
-  static propTypes = {
-    recipe: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string.isRequired,
-      ingredients: PropTypes.shape({}).isRequired,
-    }),
-    noRecipe: PropTypes.bool,
-    clearRecipe: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-    recipe: {},
-  }
-
   componentWillUnmount() {
     const { clearRecipe } = this.props
     clearRecipe()
@@ -30,7 +16,9 @@ class Recipe extends React.Component {
     if (noRecipe) {
       return (
         <div>
-          <div> {"We don't have a recipe like that"} </div>
+          <div>
+            `We do not have a recipe like that`
+          </div>
         </div>
       )
     }
@@ -49,6 +37,34 @@ class Recipe extends React.Component {
       </div>
     )
   }
+}
+
+Recipe.propTypes = {
+  recipe: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string.isRequired,
+    ingredients: PropTypes.shape({}).isRequired,
+    ratings: PropTypes.arrayOf(PropTypes.shape({})),
+    sources: PropTypes.arrayOf(PropTypes.shape({})),
+    menus: PropTypes.arrayOf(PropTypes.shape({})),
+    preparations: PropTypes.arrayOf(PropTypes.shape({})),
+    priorities: PropTypes.arrayOf(PropTypes.shape({})),
+    vessels: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
+  noRecipe: PropTypes.bool,
+  clearRecipe: PropTypes.func.isRequired,
+}
+
+Recipe.defaultProps = {
+  recipe: {
+    ratings: [],
+    priorities: [],
+    sources: [],
+    menus: [],
+    preparations: [],
+    vessels: [],
+  },
+  noRecipe: false,
 }
 
 export default Recipe

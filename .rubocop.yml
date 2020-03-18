@@ -1,5 +1,12 @@
 AllCops:
   TargetRubyVersion: 2.7
+  Exclude:
+    - 'db/schema.rb'
+    - 'Gemfil*'
+    - 'node_modules/**/*'
+    - '*.spec'
+    - 'bin/bundle'
+    - 'bin/setup'
 
 Layout/DotPosition:
   EnforcedStyle: trailing

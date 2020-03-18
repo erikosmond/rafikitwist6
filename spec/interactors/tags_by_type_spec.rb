@@ -3,6 +3,7 @@
 require 'rails_helper'
 require_relative '../contexts/tag_context.rb'
 
+# rubocop: disable Metrics/BlockLength
 RSpec.describe TagsByType, type: :interactor do
   describe '.call' do
     include_context 'tags'
@@ -53,8 +54,10 @@ RSpec.describe TagsByType, type: :interactor do
         expect(result.size).to eq 7
       end
       it 'returns the correct tags for no type' do
-        expect(result.map { |r| r['Value'] } - (not_ingredient_ids + ingredient_ids)).to eq []
+        expect(result.map { |r| r['Value'] } - (not_ingredient_ids + ingredient_ids)).
+          to eq []
       end
     end
   end
 end
+# rubocop: enable Metrics/BlockLength
