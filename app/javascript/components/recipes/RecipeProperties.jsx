@@ -25,7 +25,11 @@ const RecipeProperties = (props) => {
 
 RecipeProperties.propTypes = {
   title: PropTypes.string.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.shape()),
+}
+
+RecipeProperties.defaultProps = {
+  tags: [],
 }
 
 export default RecipeProperties

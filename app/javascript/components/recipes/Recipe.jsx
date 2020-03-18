@@ -44,19 +44,26 @@ Recipe.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string.isRequired,
     ingredients: PropTypes.shape({}).isRequired,
-    ratings: PropTypes.shape({}).isRequired,
-    sources: PropTypes.shape({}).isRequired,
-    menus: PropTypes.shape({}).isRequired,
-    preparations: PropTypes.shape({}).isRequired,
-    priorities: PropTypes.shape({}).isRequired,
-    vessels: PropTypes.shape({}).isRequired,
+    ratings: PropTypes.arrayOf(PropTypes.shape({})),
+    sources: PropTypes.arrayOf(PropTypes.shape({})),
+    menus: PropTypes.arrayOf(PropTypes.shape({})),
+    preparations: PropTypes.arrayOf(PropTypes.shape({})),
+    priorities: PropTypes.arrayOf(PropTypes.shape({})),
+    vessels: PropTypes.arrayOf(PropTypes.shape({})),
   }),
   noRecipe: PropTypes.bool,
   clearRecipe: PropTypes.func.isRequired,
 }
 
 Recipe.defaultProps = {
-  recipe: {},
+  recipe: {
+    ratings: [],
+    priorities: [],
+    sources: [],
+    menus: [],
+    preparations: [],
+    vessels: [],
+  },
   noRecipe: false,
 }
 
