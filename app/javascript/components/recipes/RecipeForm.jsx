@@ -1,16 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import Multiselect from 'react-widgets/lib/Multiselect'
-import SelectList from 'react-widgets/lib/SelectList'
-import DropdownList from 'react-widgets/lib/DropdownList'
+// import Multiselect from 'react-widgets/lib/Multiselect'
+// import SelectList from 'react-widgets/lib/SelectList'
+// import DropdownList from 'react-widgets/lib/DropdownList'
 import { Field, reduxForm } from 'redux-form'
 import RecipeFormStyles from 'components/styled/RecipeFormStyles'
 import RecipeFormIngredient from 'components/recipes/RecipeFormIngredient'
 
 const styles = () => (RecipeFormStyles)
 
-let RecipeForm = props => {
+let RecipeForm = (props) => {
   const { classes, handleSubmit, ingredientOptions } = props
 
   const colors = [ { color: 'Red', value: 'ff0000' },
@@ -20,14 +20,22 @@ let RecipeForm = props => {
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
-        <label className={classes.nameLabel} htmlFor="recipeName">Name</label>
+        <div className={classes.nameLabel} htmlFor="recipeName">Name</div>
         <Field className={classes.nameField} name="recipeName" component="input" type="text" />
         <label className={classes.descriptionLabel} htmlFor="description">Description</label>
         <Field className={classes.descriptionField} name="description" component="input" type="text" />
         <label className={classes.instructionsLabel} htmlFor="instructions">Instructions</label>
         <Field className={classes.instructionsField} name="instructions" component="input" type="text" />
       </div>
-      <Field name="ingredient1" component={RecipeFormIngredient} props={{ingredientOptions}} />
+      {/* TODO: figure out how to pass a blank object into field values */}
+      <Field
+        name="ingredient1"
+        component={RecipeFormIngredient}
+        props={{ ingredientOptions, placeholder: 'Ingredient' }}
+        defaultValue={{}}
+        // eslint-disable-next-line react/jsx-no-bind
+        format={(value) => value === '' ? {} : value}
+      />
       {/* <RecipeFormIngredient
         ingredientOptions={ingredientOptions}
       /> */}
@@ -66,16 +74,21 @@ let RecipeForm = props => {
 
 RecipeForm = reduxForm({
   // a unique name for the form
-  form: 'recipeForm'
+  form: 'recipeForm',
 })(RecipeForm)
 
 RecipeForm.propTypes = {
   ingredientOptions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
-  }))  
+  })),
+  classes: PropTypes.shape({}),
 }
 
+RecipeForm.defaultProps = {
+  ingredientOptions: [],
+  classes: {},
+}
 
 export default withStyles(styles)(RecipeForm)
 // export default RecipeForm
