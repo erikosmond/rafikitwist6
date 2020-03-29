@@ -10,7 +10,6 @@ const styles = () => (RecipeFormStyles)
 
 let RecipeForm = (props) => {
   const { classes, handleSubmit, ingredientOptions } = props
-
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
@@ -31,7 +30,6 @@ let RecipeForm = (props) => {
           type="text"
         />
       </div>
-      {/* TODO: figure out how to pass a blank object into field values */}
       {[...Array(1).keys()].map((k) => (
         <div key={k}>
           <Field
@@ -58,7 +56,7 @@ let RecipeForm = (props) => {
             name={`ingredientPrep-${k}`}
             component="input"
             type="text"
-            placeholder="E.g. diced, cubed, crushed, etc."
+            placeholder="E.g. sliced, cubed, crushed, etc."
           />
           <br />
         </div>
@@ -98,6 +96,8 @@ RecipeForm.propTypes = {
     instructionsField: PropTypes.string,
     instructionsLabel: PropTypes.string,
   }),
+  // handleSubmit is passed in from ReduxForm, but if it's marked as required,
+  // a js error is logged has missing,
   // eslint-disable-next-line react/require-default-props
   handleSubmit: PropTypes.func,
 }
