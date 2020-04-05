@@ -121,6 +121,7 @@ export default function recipesReducer(state = initialState, action = {}) {
       return {
         ...state,
         ingredientOptions: action.payload.ingredientOptions,
+        ingredientModificationOptions: action.payload.ingredientModificationOptions,
       }
     case LOAD_CATEGORY_OPTIONS_SUCCESS:
       return {
@@ -340,10 +341,12 @@ export function loadIngredientOptions(payload) {
   }
 }
 
-export function loadIngredientOptionsSuccess({ ingredientOptions }) {
+export function loadIngredientOptionsSuccess(payload) {
+  const { ingredientOptions, ingredientModificationOptions } = payload
   return {
     type: LOAD_INGREDIENT_OPTIONS_SUCCESS,
     payload: {
+      ingredientModificationOptions,
       ingredientOptions,
     },
   }
@@ -594,7 +597,12 @@ export function* loadIngredientOptionsTask({ payload }) {
   const result = yield call(callApi, url)
   if (result.success) {
     if (payload.ingredientType === 'Ingredients') {
-      yield put(loadIngredientOptionsSuccess({ ingredientOptions: result.data.tags }))
+      const modUrl = '/api/tags?type=ingredient_modifications'
+      const modResult = yield call(callApi, modUrl)
+      yield put(loadIngredientOptionsSuccess({
+        ingredientOptions: result.data.tags,
+        ingredientModificationOptions: modResult.data.tags,
+      }))
     } else {
       yield put(loadCategoryOptionsSuccess({ ingredientOptions: result.data.tags }))
     }

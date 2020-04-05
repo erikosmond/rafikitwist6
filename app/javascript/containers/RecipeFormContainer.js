@@ -13,6 +13,7 @@ export default withRouter(connect(
   (state) => ({
     recipe: state.recipesReducer.recipe,
     ingredientOptions: state.recipesReducer.ingredientOptions,
+    ingredientModificationOptions: state.recipesReducer.ingredientModificationOptions,
     formData: state.recipesReducer.formData,
   }),
   {

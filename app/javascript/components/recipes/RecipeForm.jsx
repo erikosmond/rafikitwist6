@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-// import Multiselect from 'react-widgets/lib/Multiselect'
+import Multiselect from 'react-widgets/lib/Multiselect'
 import { Field, FieldArray, reduxForm } from 'redux-form'
 import RecipeFormStyles from 'components/styled/RecipeFormStyles'
 import RecipeFormIngredient from 'components/recipes/RecipeFormIngredient'
@@ -24,44 +24,75 @@ const renderField = (args) => {
 }
 
 const renderIngredients = (args) => {
-  const { fields, meta: { error, submitFailed } } = args
+  const {
+    fields,
+    ingredientModificationOptions,
+    ingredientOptions,
+    meta: { error, submitFailed }
+  } = args
   return (
     <ul>
       <li>
-        <button type="button" onClick={() => fields.push({})}>
-          Add Ingredient
-        </button>
         {submitFailed && error && <span>{error}</span>}
       </li>
       {fields.map((member, index) => (
         <li key={index}>
+          <Field
+            name="ingredientAmount"
+            component="input"
+            type="text"
+            placeholder="amount"
+          />
+          <Field
+            name="ingredientModification"
+            component={RecipeFormIngredient}
+            props={{
+              ingredientOptions: ingredientModificationOptions,
+              placeholder: 'Ingredient Modification',
+            }}
+            defaultValue={{}}
+            // eslint-disable-next-line react/jsx-no-bind
+            format={value => value === '' ? {} : value}
+          />
+          <Field
+            name="ingredient"
+            component={RecipeFormIngredient}
+            props={{ ingredientOptions, placeholder: 'Ingredient' }}
+            defaultValue={{}}
+            // eslint-disable-next-line react/jsx-no-bind
+            format={value => value === '' ? {} : value}
+          />
+          <Field
+            name="ingredientPrep"
+            component="input"
+            type="text"
+            placeholder="E.g. sliced, cubed, crushed, etc."
+          />
           <button
             type="button"
-            title="Remove Member"
+            title="Remove Ingredient"
             onClick={() => fields.remove(index)}
-          />
-          <h4>Member #{index + 1}</h4>
-          <Field
-            name={`${member}.firstName`}
-            type="text"
-            component={renderField}
-            label="First Name"
-          />
-          <Field
-            name={`${member}.lastName`}
-            type="text"
-            component={renderField}
-            label="Last Name"
-          />
+          >
+            Remove
+          </button>
         </li>
       ))}
+      <li>
+        <button type="button" onClick={() => fields.push({})}>
+          Add Ingredient
+        </button>
+      </li>
     </ul>
   )
 }
 
 let RecipeForm = (props) => {
-  const { classes, handleSubmit, ingredientOptions } = props
-
+  const {
+    classes,
+    handleSubmit,
+    ingredientModificationOptions,
+    ingredientOptions,
+  } = props
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
@@ -82,39 +113,12 @@ let RecipeForm = (props) => {
           type="text"
         />
       </div>
-      <FieldArray name="ingredients" component={renderIngredients} />
-      {/* {[...Array(1).keys()].map((k) => (
-        <div key={k}>
-          <Field
-            name={`ingredientAmount-${k}`}
-            component="input"
-            type="text"
-            placeholder="amount"
-          />
-          <Field
-            name={`ingredientMod-${k}`}
-            component="input"
-            type="text"
-            placeholder="will be dropdown"
-          />
-          <Field
-            name={`ingredient-${k}`}
-            component={RecipeFormIngredient}
-            props={{ ingredientOptions, placeholder: 'Ingredient' }}
-            defaultValue={{}}
-            // eslint-disable-next-line react/jsx-no-bind
-            format={(value) => value === '' ? {} : value}
-          />
-          <Field
-            name={`ingredientPrep-${k}`}
-            component="input"
-            type="text"
-            placeholder="E.g. sliced, cubed, crushed, etc."
-          />
-          <br />
-        </div>
-      ))} */}
-      {/*
+      <FieldArray
+        name="ingredients"
+        component={renderIngredients}
+        ingredientModificationOptions={ingredientModificationOptions}
+        ingredientOptions={ingredientOptions}
+      />
       <div>
         <label>Hobbies</label>
         <Field
@@ -124,7 +128,6 @@ let RecipeForm = (props) => {
           onBlur={() => props.onBlur()}
           data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
       </div>
-      */}
 
       <button type="submit">Save</button>
     </form>
@@ -137,6 +140,10 @@ RecipeForm = reduxForm({
 
 RecipeForm.propTypes = {
   ingredientOptions: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  })),
+  ingredientModificationOptions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
   })),
@@ -156,6 +163,7 @@ RecipeForm.propTypes = {
 }
 
 RecipeForm.defaultProps = {
+  ingredientModificationOptions: [],
   ingredientOptions: [],
   classes: {},
 }

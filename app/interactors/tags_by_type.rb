@@ -28,6 +28,8 @@ class TagsByType
       ingredient_types = TagType::INGREDIENT_TYPES
       if tag_type.to_s.casecmp('ingredients').zero?
         TagType.where(name: ingredient_types)
+      elsif tag_type.to_s.casecmp('ingredient_modifications').zero?
+        [{id: TagType.modification_id}]
       elsif tag_type
         TagType.where.not(name: ingredient_types)
       else
