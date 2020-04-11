@@ -694,6 +694,7 @@ export function* recipesSaga() {
   yield takeLatest(HANDLE_FILTER, handleFilterTask)
   yield takeLatest(LOAD_ALL_TAGS, loadAllTagsTask)
   yield takeEvery(LOAD_INGREDIENT_OPTIONS, loadIngredientOptionsTask)
+  yield takeEvery(LOAD_TAG_OPTIONS, loadTagOptionsTask)
   yield takeLatest(UPDATE_RECIPE_TAG, updateTagSelectionTask)
   yield takeLatest(SUBMIT_RECIPE_COMMENT, submitRecipeCommentTask)
   yield takeLatest(HANDLE_RECIPE_SUBMIT, handleRecipeSubmitTask)

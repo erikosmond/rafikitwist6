@@ -6,6 +6,7 @@ import RecipeFormSkeleton from 'components/recipes/RecipeFormSkeleton'
 import {
   loadIngredientOptions,
   loadRecipeFormData,
+  loadTagOptions,
   handleRecipeSubmit,
 } from 'bundles/recipes'
 
@@ -19,6 +20,7 @@ export default withRouter(connect(
   {
     loadIngredientOptions,
     loadRecipeFormData,
+    loadTagOptions,
     handleRecipeSubmit,
   },
 )(RecipeFormSkeleton))

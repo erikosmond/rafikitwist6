@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       end
 
       resources :tag_selections, only: %i[create update]
+      resources :tag_types, only: %i[index]
     end
     match '/*page' => 'pages#home', via: :get
   end

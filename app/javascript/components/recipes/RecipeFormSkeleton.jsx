@@ -4,8 +4,9 @@ import RecipeForm from './RecipeForm'
 
 class RecipeFormSkeleton extends React.Component {
   componentDidMount() {
-    const { loadIngredientOptions } = this.props
+    const { loadIngredientOptions, loadTagOptions } = this.props
     loadIngredientOptions('Ingredients')
+    loadTagOptions()
   }
 
   submit = (values) => {
@@ -37,6 +38,7 @@ RecipeFormSkeleton.propTypes = {
     name: PropTypes.string,
   })),
   loadIngredientOptions: PropTypes.func.isRequired,
+  loadTagOptions: PropTypes.func.isRequired,
 }
 
 RecipeFormSkeleton.defaultProps = {
