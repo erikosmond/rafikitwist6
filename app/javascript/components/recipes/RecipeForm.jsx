@@ -142,12 +142,14 @@ let RecipeForm = (props) => {
     handleSubmit,
     ingredientModificationOptions,
     ingredientOptions,
+    tagOptions,
   } = props
   const klasses = useStyles()
   // const theme = useTheme()
   const [personName, setPersonName] = React.useState([])
 
   const handleChange = (event) => {
+    debugger
     setPersonName(event.target.value)
   }
 
@@ -161,6 +163,7 @@ let RecipeForm = (props) => {
   //   }
   //   setPersonName(value)
   // }
+  debugger
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
@@ -196,13 +199,13 @@ let RecipeForm = (props) => {
           value={personName}
           onChange={handleChange}
           input={<Input />}
-          renderValue={(selected) => selected.join(', ')}
+          renderValue={(selected) => selected.map((person) => person.name).join(', ')}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
-            <MenuItem key={name} value={name}>
-              <Checkbox checked={personName.indexOf(name) > -1} />
-              <ListItemText primary={name} />
+          {tagOptions['source'].map((tag) => (
+            <MenuItem key={tag.id} value={tag}>
+              <Checkbox checked={personName.map((person) => person.id).indexOf(tag.id) > -1} />
+              <ListItemText primary={tag.name} />
             </MenuItem>
           ))}
         </Select>
