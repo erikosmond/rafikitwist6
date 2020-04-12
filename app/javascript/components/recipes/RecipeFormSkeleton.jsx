@@ -16,14 +16,18 @@ class RecipeFormSkeleton extends React.Component {
   }
 
   render() {
-    const { ingredientOptions, ingredientModificationOptions } = this.props
-    return (
-      <RecipeForm
-        ingredientOptions={ingredientOptions}
-        ingredientModificationOptions={ingredientModificationOptions}
-        onSubmit={this.submit}
-      />
-    )
+    const { ingredientOptions, ingredientModificationOptions, tagOptions } = this.props
+    if (ingredientOptions.length > 0 && ingredientModificationOptions.length > 0) {
+      return (
+        <RecipeForm
+          ingredientOptions={ingredientOptions}
+          ingredientModificationOptions={ingredientModificationOptions}
+          tagOptions={tagOptions}
+          onSubmit={this.submit}
+        />
+      )
+    }
+    return null
   }
 }
 
@@ -39,11 +43,13 @@ RecipeFormSkeleton.propTypes = {
   })),
   loadIngredientOptions: PropTypes.func.isRequired,
   loadTagOptions: PropTypes.func.isRequired,
+  tagOptions: PropTypes.shape(),
 }
 
 RecipeFormSkeleton.defaultProps = {
   ingredientOptions: [],
   ingredientModificationOptions: [],
+  tagOptions: {},
 }
 
 export default RecipeFormSkeleton

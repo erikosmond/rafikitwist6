@@ -25,6 +25,8 @@ const LOAD_RECIPE_OPTIONS_SUCCESS = 'recipes/loadRecipeOptionsSuccess'
 const LOAD_CATEGORY_OPTIONS_SUCCESS = 'recipes/loadCategoriesOptionsSuccess'
 const LOAD_INGREDIENT_OPTIONS = 'recipes/loadIngredientOptions'
 const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'recipes/loadIngredientOptionsSuccess'
+const LOAD_TAG_OPTIONS = 'recipes/loadTagOptions'
+const LOAD_TAG_OPTIONS_SUCCESS = 'recipes/loadTagOptionsSuccess'
 const NO_RECIPE_FOUND = 'recipes/noRecipeFound'
 const NOT_LOADING = 'recipes/notLoading'
 const HANDLE_FILTER = 'recipes/handleFilter'
@@ -127,6 +129,11 @@ export default function recipesReducer(state = initialState, action = {}) {
       return {
         ...state,
         categoryOptions: action.payload.ingredientOptions,
+      }
+    case LOAD_TAG_OPTIONS_SUCCESS:
+      return {
+        ...state,
+        tagOptions: action.payload,
       }
     case NO_RECIPE_FOUND:
       return {
@@ -349,6 +356,19 @@ export function loadIngredientOptionsSuccess(payload) {
       ingredientModificationOptions,
       ingredientOptions,
     },
+  }
+}
+
+export function loadTagOptions() {
+  return {
+    type: LOAD_TAG_OPTIONS,
+  }
+}
+
+export function loadTagOptionsSuccess({ tagOptions }) {
+  return {
+    type: LOAD_TAG_OPTIONS_SUCCESS,
+    payload: tagOptions,
   }
 }
 
@@ -606,6 +626,16 @@ export function* loadIngredientOptionsTask({ payload }) {
     } else {
       yield put(loadCategoryOptionsSuccess({ ingredientOptions: result.data.tags }))
     }
+  } else {
+    yield put(notLoading())
+  }
+}
+
+export function* loadTagOptionsTask() {
+  const url = '/api/tag_types?grouped=true'
+  const result = yield call(callApi, url)
+  if (result.success) {
+    yield put(loadTagOptionsSuccess({ tagOptions: result.data }))
   } else {
     yield put(notLoading())
   }

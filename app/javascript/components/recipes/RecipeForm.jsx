@@ -231,6 +231,7 @@ RecipeForm.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
   })),
+  tagOptions: PropTypes.shape(),
   ingredientModificationOptions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
@@ -253,6 +254,7 @@ RecipeForm.propTypes = {
 RecipeForm.defaultProps = {
   ingredientModificationOptions: [],
   ingredientOptions: [],
+  tagOptions: {},
   classes: {},
 }
 

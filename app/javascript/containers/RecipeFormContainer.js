@@ -16,6 +16,7 @@ export default withRouter(connect(
     ingredientOptions: state.recipesReducer.ingredientOptions,
     ingredientModificationOptions: state.recipesReducer.ingredientModificationOptions,
     formData: state.recipesReducer.formData,
+    tagOptions: state.recipesReducer.tagOptions,
   }),
   {
     loadIngredientOptions,
