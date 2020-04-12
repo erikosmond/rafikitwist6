@@ -5,6 +5,7 @@ import { Field, FieldArray, reduxForm } from 'redux-form'
 import FormControl from '@material-ui/core/FormControl'
 import RecipeFormStyles from 'components/styled/RecipeFormStyles'
 import RecipeFormIngredient from 'components/recipes/RecipeFormIngredient'
+import RecipeFormTagSelectors from 'components/recipes/RecipeFormTagSelectors'
 // import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input'
@@ -149,21 +150,9 @@ let RecipeForm = (props) => {
   const [personName, setPersonName] = React.useState([])
 
   const handleChange = (event) => {
-    debugger
     setPersonName(event.target.value)
   }
 
-  // const handleChangeMultiple = (event) => {
-  //   const { options } = event.target
-  //   const value = []
-  //   for (let i = 0, l = options.length; i < l; i += 1) {
-  //     if (options[i].selected) {
-  //       value.push(options[i].value)
-  //     }
-  //   }
-  //   setPersonName(value)
-  // }
-  debugger
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
@@ -189,6 +178,16 @@ let RecipeForm = (props) => {
         component={renderIngredients}
         ingredientModificationOptions={ingredientModificationOptions}
         ingredientOptions={ingredientOptions}
+      />
+      <Field
+        name='sources'
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: tagOptions['source'],
+        }}
+        // defaultValue={{}}
+        // eslint-disable-next-line react/jsx-no-bind
+        // format={value => value === '' ? {} : value}
       />
       <FormControl className={klasses.formControl}>
         <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
