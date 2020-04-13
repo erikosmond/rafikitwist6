@@ -161,7 +161,7 @@ let RecipeForm = (props) => {
       <br />
 
       <Field
-        name="preparation"
+        name="preparations"
         component={RecipeFormTagSelectors}
         props={{
           tagOptions: tagOptions.preparation,
@@ -171,7 +171,7 @@ let RecipeForm = (props) => {
       <br />
 
       <Field
-        name="flavor"
+        name="flavors"
         component={RecipeFormTagSelectors}
         props={{
           tagOptions: tagOptions.flavor,

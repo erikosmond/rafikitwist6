@@ -39,8 +39,17 @@ module Api
     private
 
       def recipe_params
-        allowed_columns = %i[recipe_name description instructions ingredients sources vessels]
-        params.require(:recipe).permit allowed_columns
+        allowed_columns = [
+          :recipe_name, :description, :instructions,
+          ingredients: [
+            :ingredient_amount, :ingredient_prep,
+            ingredient_modification: %i[label value],
+            ingredient: %i[label value]
+          ],
+          sources: %i[id name], vessels: %i[id name], recipe_types: %i[id name],
+          menus: %i[id name], preparations: %i[id name], flavors: %i[id name]
+        ]
+        params.permit allowed_columns
       end
 
       def recipes_by_tag(tag_id)
