@@ -26,7 +26,22 @@ module Api
       end
     end
 
+    def create
+      binding.pry
+      result = RecipeForm.call(
+        action: :create,
+        params: recipe_params,
+        user: current_user
+      )
+      render json: result.recipe
+    end
+
     private
+
+      def recipe_params
+        allowed_columns = %i[recipe_name description instructions ingredients sources vessels]
+        params.require(:recipe).permit allowed_columns
+      end
 
       def recipes_by_tag(tag_id)
         tag = Tag.find_by_id(tag_id)

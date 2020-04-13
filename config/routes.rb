@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   authenticate :user do
     root to: 'pages#home'
     namespace :api, defaults: { format: :json } do
-      resources :recipes, only: %i[index show]
+      resources :recipes, only: %i[create index show]
 
       resources :tags, only: %i[index show] do
         resources :recipes, only: %i[index]

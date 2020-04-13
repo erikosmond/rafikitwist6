@@ -608,8 +608,16 @@ export function* loadRecipeOptionsTask() {
   }
 }
 
-export function handleRecipeSubmitTask({ payload }) {
-  console.log(payload)
+export function* handleRecipeSubmitTask({ payload }) {
+  const url = '/api/recipes'
+  const params = { data: payload, method: 'POST' }
+  const result = yield call(callApi, url, params)
+  // if (result.success) {
+  //   yield put(updateTagSelectionSuccess(
+  //     taggableType, taggableId, mapping[tagType], tagId, result.data.id,
+  //   ))
+  // }
+  console.log(result)
 }
 
 export function* loadIngredientOptionsTask({ payload }) {

@@ -1,63 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
 import { Field, FieldArray, reduxForm } from 'redux-form'
-import FormControl from '@material-ui/core/FormControl'
 import RecipeFormStyles from 'components/styled/RecipeFormStyles'
 import RecipeFormIngredient from 'components/recipes/RecipeFormIngredient'
 import RecipeFormTagSelectors from 'components/recipes/RecipeFormTagSelectors'
-// import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Select from '@material-ui/core/Select'
-import Checkbox from '@material-ui/core/Checkbox'
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = () => (RecipeFormStyles)
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    maxWidth: 300,
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
-  },
-}))
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-}
-
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
 
 const renderField = (args) => {
   const {
@@ -145,13 +94,6 @@ let RecipeForm = (props) => {
     ingredientOptions,
     tagOptions,
   } = props
-  const klasses = useStyles()
-  // const theme = useTheme()
-  const [personName, setPersonName] = React.useState([])
-
-  const handleChange = (event) => {
-    setPersonName(event.target.value)
-  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -180,44 +122,63 @@ let RecipeForm = (props) => {
         ingredientOptions={ingredientOptions}
       />
       <Field
-        name='sources'
+        name="sources"
         component={RecipeFormTagSelectors}
         props={{
-          tagOptions: tagOptions['source'],
+          tagOptions: tagOptions.source,
+          title: 'Sources',
         }}
-        // defaultValue={{}}
-        // eslint-disable-next-line react/jsx-no-bind
-        // format={value => value === '' ? {} : value}
       />
-      <FormControl className={klasses.formControl}>
-        <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
-        <Select
-          labelId="demo-mutiple-checkbox-label"
-          id="demo-mutiple-checkbox"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<Input />}
-          renderValue={(selected) => selected.map((person) => person.name).join(', ')}
-          MenuProps={MenuProps}
-        >
-          {tagOptions['source'].map((tag) => (
-            <MenuItem key={tag.id} value={tag}>
-              <Checkbox checked={personName.map((person) => person.id).indexOf(tag.id) > -1} />
-              <ListItemText primary={tag.name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      {/* <div>
-        <label>Hobbies</label>
-        <Field
-          name="hobbies"
-          component={Multiselect}
-          defaultValue={[]}
-          onBlur={() => props.onBlur()}
-          data={[ 'Guitar', 'Cycling', 'Hiking' ]}/>
-      </div> */}
+      <br />
+      <Field
+        name="vessels"
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: tagOptions.vessel,
+          title: 'Vessels',
+        }}
+      />
+      <br />
+
+      <Field
+        name="recipe_types"
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: tagOptions.recipeType,
+          title: 'Recipe Types',
+        }}
+      />
+      <br />
+
+      <Field
+        name="menus"
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: tagOptions.menu,
+          title: 'Menus',
+        }}
+      />
+      <br />
+
+      <Field
+        name="preparation"
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: tagOptions.preparation,
+          title: 'Preparations',
+        }}
+      />
+      <br />
+
+      <Field
+        name="flavor"
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: tagOptions.flavor,
+          title: 'Flavors',
+        }}
+      />
+      <br />
 
       <button type="submit">Save</button>
     </form>
@@ -248,7 +209,7 @@ RecipeForm.propTypes = {
     instructionsLabel: PropTypes.string,
   }),
   // handleSubmit is passed in from ReduxForm, but if it's marked as required,
-  // a js error is logged has missing,
+  // a js error is logged as missing,
   // eslint-disable-next-line react/require-default-props
   handleSubmit: PropTypes.func,
 }

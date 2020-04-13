@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import FormControl from '@material-ui/core/FormControl'
 import RecipeFormStyles from 'components/styled/RecipeFormStyles'
-// import clsx from 'clsx';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -45,20 +44,20 @@ const MenuProps = {
 let RecipeFormTagSelectors = (props) => {
   const {
     tagOptions,
+    title,
     input: { onChange, value },
   } = props
-  const klasses = useStyles()
-  const theme = useTheme()
-  const [personName, setPersonName] = React.useState([])
+  const classes = useStyles()
+  const [tags, setTags] = React.useState([])
 
   const handleChange = (event) => {
-    setPersonName(event.target.value)
+    setTags(event.target.value)
     onChange(event.target.value)
   }
 
   return (
-    <FormControl className={klasses.formControl}>
-      <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
+    <FormControl className={classes.formControl}>
+      <InputLabel id="demo-mutiple-checkbox-label">{title}</InputLabel>
       <Select
         labelId="demo-mutiple-checkbox-label"
         id="demo-mutiple-checkbox"
@@ -66,12 +65,12 @@ let RecipeFormTagSelectors = (props) => {
         value={value || []}
         onChange={handleChange}
         input={<Input />}
-        renderValue={(selected) => selected.map((person) => person.name).join(', ')}
+        renderValue={(selected) => selected.map((tag) => tag.name).join(', ')}
         MenuProps={MenuProps}
       >
         {tagOptions.map((tag) => (
           <MenuItem key={tag.id} value={tag}>
-            <Checkbox checked={personName.map((person) => person.id).indexOf(tag.id) > -1} />
+            <Checkbox checked={tags.map((t) => t.id).indexOf(tag.id) > -1} />
             <ListItemText primary={tag.name} />
           </MenuItem>
         ))}
@@ -82,20 +81,16 @@ let RecipeFormTagSelectors = (props) => {
 
 RecipeFormTagSelectors.propTypes = {
   tagOptions: PropTypes.arrayOf(PropTypes.shape()),
-  classes: PropTypes.shape({
-    container: PropTypes.string,
-    nameLabel: PropTypes.string,
-    nameField: PropTypes.string,
-    descriptionLabel: PropTypes.string,
-    descriptionField: PropTypes.string,
-    instructionsField: PropTypes.string,
-    instructionsLabel: PropTypes.string,
-  }),
+  title: PropTypes.string,
+  input: PropTypes.shape({
+    value: '',
+    onChange: PropTypes.func,
+  }).isRequired,
 }
 
 RecipeFormTagSelectors.defaultProps = {
   tagOptions: [],
-  classes: {},
+  title: PropTypes.string,
 }
 
 export default withStyles(styles)(RecipeFormTagSelectors)
