@@ -17,7 +17,7 @@ RSpec.describe TagsByType, type: :interactor do
           {
             'ingredient_amount' => '2',
             'ingredient_prep' => 'diced',
-            'ingredient_modification' => { 
+            'ingredient_modification' => {
               'label' => 'Ancho Chile infused', 'value' => ancho_chili_infused.id
             },
             'ingredient' => { 'label' => 'Simple Syrup', 'value' => simple_syrup.id }
@@ -32,7 +32,7 @@ RSpec.describe TagsByType, type: :interactor do
           { 'id' => recipe_website.id, 'name' => 'Hannah Infographic' }
         ],
         'vessels' => [{ 'id' => coupe.id, 'name' => 'Snifter' }],
-        'recipe_types' => [{ 'id' => mocktails.id, 'name' => 'All Cocktails' }],
+        'recipetypes' => [{ 'id' => mocktails.id, 'name' => 'Mocktails' }],
         'menus' => [{ 'id' => home_bar.id, 'name' => 'Been Made' }],
         'preparations' => [{ 'id' => shaken.id, 'name' => 'Shaken' }],
         'flavors' => [{ 'id' => sweet.id, 'name' => 'Spicy' }],
@@ -99,3 +99,4 @@ RSpec.describe TagsByType, type: :interactor do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

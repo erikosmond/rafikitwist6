@@ -613,8 +613,8 @@ export function* handleRecipeSubmitTask({ payload }) {
   const params = { data: payload, method: 'POST' }
   const result = yield call(callApi, url, params)
   // if (result.success) {
-  //   yield put(updateTagSelectionSuccess(
-  //     taggableType, taggableId, mapping[tagType], tagId, result.data.id,
+  //   yield put(recipeSumbitSuccess(
+  //     TODO: update recipe dropdown
   //   ))
   // }
   console.log(result)

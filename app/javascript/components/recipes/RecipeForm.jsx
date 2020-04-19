@@ -51,7 +51,6 @@ const renderIngredients = (args) => {
               placeholder: 'Ingredient Modification',
             }}
             defaultValue={{}}
-            // eslint-disable-next-line react/jsx-no-bind
             format={(value) => value === '' ? {} : value}
           />
           <Field
@@ -59,7 +58,6 @@ const renderIngredients = (args) => {
             component={RecipeFormIngredient}
             props={{ ingredientOptions, placeholder: 'Ingredient' }}
             defaultValue={{}}
-            // eslint-disable-next-line react/jsx-no-bind
             format={(value) => value === '' ? {} : value}
           />
           <Field
