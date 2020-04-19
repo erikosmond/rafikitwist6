@@ -34,6 +34,9 @@ class Recipe extends React.Component {
         <RecipeProperties title="Priorities" tags={recipe.priorities} />
         <RecipeProperties title="Ratings" tags={recipe.ratings} />
         <RecipeProperties title="Vessels" tags={recipe.vessels} />
+        <RecipeProperties title="Flavors" tags={recipe.flavors} />
+        <RecipeProperties title="Recipe Types" tags={recipe.recipetypes} />
+        <RecipeProperties title="Components" tags={recipe.components} />
       </div>
     )
   }
@@ -63,6 +66,9 @@ Recipe.defaultProps = {
     menus: [],
     preparations: [],
     vessels: [],
+    flavors: [],
+    recipetypes: [],
+    components: [],
   },
   noRecipe: false,
 }

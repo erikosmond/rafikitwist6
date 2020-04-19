@@ -16,44 +16,72 @@ class RecipeForm
     def create(params)
       # TODO: initialize recipe and build all associations, then save
       recipe = create_recipe(params)
-      create_recipe_access(recipe)
+      create_access(recipe)
       create_ingredients(params, recipe)
       create_tags(params, recipe)
     end
 
     def create_recipe(params)
-      Recipe.create!({
-        name: params['recipe_name'],
-        instructions: params['instructions'],
-        description: params['description']
-      })
+      Recipe.create!(
+        {
+          name: params['recipe_name'],
+          instructions: params['instructions'],
+          description: params['description']
+        }
+      )
     end
 
-    def create_recipe_access(recipe)
-      AccessService.create_access!(user_id, recipe, access_status)
+    def create_access(accessible)
+      AccessService.create_access!(user_id, accessible, access_status)
     end
 
     def create_ingredients(params, recipe)
       params['ingredients'].each do |i|
-        ts = TagSelection.create!(taggable: recipe, tag_id: i['ingredient']['value'], body: i['ingredient_prep'])
-        TagAttribute.create!(tag_attribute: ts, property: 'amount', value: i['ingredient_amount'] )
-        if i['ingredient_modifiction'] && i['ingredient_modifiction']['value']
-          TagSelection.create!(taggable: ts, tag_id: i['ingredient_modification']['value'])
-        end
+        ts = TagSelection.create!(
+          taggable: recipe, tag_id: i['ingredient']['value'], body: i['ingredient_prep']
+        )
+        TagAttribute.create!(
+          tag_attributable: ts, property: 'amount', value: i['ingredient_amount']
+        )
+        create_access(ts)
+        create_modification(ts, i)
       end
+    end
+
+    def create_modification(tag_selection, ingredient)
+      return unless ingredient['ingredient_modification'] &&
+                    ingredient['ingredient_modification']['value']
+
+      ts = TagSelection.create!(
+        taggable: tag_selection, tag_id: ingredient['ingredient_modification']['value']
+      )
+      create_access(ts)
     end
 
     def create_tags(params, recipe)
       tag_ids = form_tag_ids(params)
       tag_ids.each do |id|
-        TagSelection.create!(tag: id, taggable: recipe)
+        ts = TagSelection.create!(tag_id: id, taggable: recipe)
+        create_access(ts)
       end
     end
 
     def form_tag_ids(params)
-      %w[sources vessels recipe_types menus preparations flavors].flat_map do |type|
+      tag_types.flat_map do |type|
         tag_ids_by_type(params[type])
       end.compact.uniq
+    end
+
+    def tag_types
+      %w[
+        sources
+        vessels
+        recipetypes
+        menus
+        preparations
+        flavors
+        components
+      ]
     end
 
     def tag_ids_by_type(tags)

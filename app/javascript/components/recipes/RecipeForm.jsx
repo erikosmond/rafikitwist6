@@ -28,7 +28,7 @@ const renderIngredients = (args) => {
     fields,
     ingredientModificationOptions,
     ingredientOptions,
-    meta: { error, submitFailed }
+    meta: { error, submitFailed },
   } = args
   return (
     <ul>
@@ -52,7 +52,7 @@ const renderIngredients = (args) => {
             }}
             defaultValue={{}}
             // eslint-disable-next-line react/jsx-no-bind
-            format={value => value === '' ? {} : value}
+            format={(value) => value === '' ? {} : value}
           />
           <Field
             name={`${member}.ingredient`}
@@ -60,7 +60,7 @@ const renderIngredients = (args) => {
             props={{ ingredientOptions, placeholder: 'Ingredient' }}
             defaultValue={{}}
             // eslint-disable-next-line react/jsx-no-bind
-            format={value => value === '' ? {} : value}
+            format={(value) => value === '' ? {} : value}
           />
           <Field
             name={`${member}.ingredientPrep`}
@@ -180,11 +180,20 @@ let RecipeForm = (props) => {
       />
       <br />
 
+      <Field
+        name="components"
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: tagOptions.component,
+          title: 'Component',
+        }}
+      />
       <button type="submit">Save</button>
     </form>
   )
 }
 
+// TODO: add initial field values
 RecipeForm = reduxForm({
   form: 'recipeForm',
 })(RecipeForm)
