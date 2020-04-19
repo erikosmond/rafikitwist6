@@ -10,13 +10,14 @@ Rails.application.routes.draw do
   authenticate :user do
     root to: 'pages#home'
     namespace :api, defaults: { format: :json } do
-      resources :recipes, only: %i[index show]
+      resources :recipes, only: %i[create index show]
 
       resources :tags, only: %i[index show] do
         resources :recipes, only: %i[index]
       end
 
       resources :tag_selections, only: %i[create update]
+      resources :tag_types, only: %i[index]
     end
     match '/*page' => 'pages#home', via: :get
   end

@@ -4,8 +4,9 @@ import RecipeForm from './RecipeForm'
 
 class RecipeFormSkeleton extends React.Component {
   componentDidMount() {
-    const { loadIngredientOptions } = this.props
+    const { loadIngredientOptions, loadTagOptions } = this.props
     loadIngredientOptions('Ingredients')
+    loadTagOptions()
   }
 
   submit = (values) => {
@@ -15,8 +16,18 @@ class RecipeFormSkeleton extends React.Component {
   }
 
   render() {
-    const { ingredientOptions } = this.props
-    return <RecipeForm ingredientOptions={ingredientOptions} onSubmit={this.submit} />
+    const { ingredientOptions, ingredientModificationOptions, tagOptions } = this.props
+    if (ingredientOptions.length > 0 && ingredientModificationOptions.length > 0) {
+      return (
+        <RecipeForm
+          ingredientOptions={ingredientOptions}
+          ingredientModificationOptions={ingredientModificationOptions}
+          tagOptions={tagOptions}
+          onSubmit={this.submit}
+        />
+      )
+    }
+    return null
   }
 }
 
@@ -26,11 +37,19 @@ RecipeFormSkeleton.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
   })),
+  ingredientModificationOptions: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  })),
   loadIngredientOptions: PropTypes.func.isRequired,
+  loadTagOptions: PropTypes.func.isRequired,
+  tagOptions: PropTypes.shape(),
 }
 
 RecipeFormSkeleton.defaultProps = {
   ingredientOptions: [],
+  ingredientModificationOptions: [],
+  tagOptions: {},
 }
 
 export default RecipeFormSkeleton

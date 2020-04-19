@@ -34,6 +34,26 @@ class Recipe < ApplicationRecord
     props('Vessel')
   end
 
+  def menus
+    props('Menu')
+  end
+
+  def preparations
+    props('Preparation')
+  end
+
+  def flavors
+    props('Flavor')
+  end
+
+  def recipe_types
+    props('RecipeType')
+  end
+
+  def components
+    props('Component')
+  end
+
   private
 
     def props_with_detail(name)
