@@ -19,11 +19,9 @@ function getModalStyle() {
 export default class TagFormModal extends React.Component {
   componentDidMount() {
     const { loadTagTypes, tagTypes } = this.props
-    if ( tagTypes === [] ) {
+    if ( tagTypes === []) {
       loadTagTypes()
     }
-    loadIngredientOptions('Ingredients')
-    loadTagOptions()
   }
 
   render() {
