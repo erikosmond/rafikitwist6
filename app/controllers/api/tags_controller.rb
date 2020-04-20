@@ -5,7 +5,7 @@ module Api
   class TagsController < ApplicationController
     def index
       tag_type = params.permit(:type)[:type]
-      tags = check_type(tag_type)
+      tags = check_type(tag_type, current_user)
       if tags
         render_tags(tag_type, tags, current_user)
       else
@@ -28,11 +28,13 @@ module Api
 
     private
 
-      def check_type(tag_type)
+      def check_type(tag_type, current_user)
         if tag_type
           TagsByType.call(tag_type: tag_type, current_user: current_user)
         else
-          tag_json = Tag.all.as_json(only: %i[id name])
+          tag_json = Tag.joins(:access).where(
+            "accesses.user_id = #{current_user.id} or accesses.status = 'PUBLIC'"
+          ).as_json(only: %i[id name])
           tag_json.map { |r| { 'Label' => r['name'], 'Value' => r['id'] } }
         end
       end

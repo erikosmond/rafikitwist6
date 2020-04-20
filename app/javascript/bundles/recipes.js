@@ -38,13 +38,13 @@ const RESET_PAGED_COUNT = 'recipes/resetPagedCount'
 const UPDATE_RECIPE_TAG = 'recipes/updateRecipeTag'
 const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
 const LOAD_RECIPE_FORM_DATA = 'recipes/loadRecipeFormData'
-// const LOAD_RECIPE_FORM_DATA_SUCCESS = 'recipes/loadRecipeFormDataSuccess'
 const HANDLE_COMMENT_MODAL = 'recipes/handleModal'
+const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
+const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
 const SUBMIT_RECIPE_COMMENT = 'recipes/submitRecipeComment'
 const UPDATE_RECIPE_COMMENT_SUCCESS = 'recipes/updateRecipeCommentSuccess'
 const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
 const CLEAR_RECIPE = 'recipes/clearRecipe'
-// const INCREMENT_VISIBLE_RECIPE_COUNT = 'recipes/incrementVisibleRecipeCount'
 const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
 
 // Reducer
@@ -63,6 +63,7 @@ const initialState = {
   visibleRecipeCount: 0,
   pagedRecipeCount: 10,
   openModal: false,
+  openTagFormModal: false,
 }
 
 export default function recipesReducer(state = initialState, action = {}) {
@@ -193,6 +194,11 @@ export default function recipesReducer(state = initialState, action = {}) {
         commentRecipeId: action.payload.commentRecipeId,
         commentTagSelectionId: action.payload.commentTagSelectionId,
         commentBody: action.payload.commentBody,
+      }
+    case HANDLE_TAG_FORM_MODAL:
+      return {
+        ...state,
+        tagFormModalOpen: action.payload.tagFormModalOpen,
       }
     case SHOW_MORE_RECIPES:
       return {
@@ -508,6 +514,20 @@ export function handleCommentModal(payload) {
   return {
     payload,
     type: HANDLE_COMMENT_MODAL,
+  }
+}
+
+export function handleTagFormModal(payload) {
+  return {
+    payload,
+    type: HANDLE_TAG_FORM_MODAL,
+  }
+}
+
+export function handleTagSubmit(payload) {
+  return {
+    payload,
+    type: HANDLE_TAG_SUBMIT,
   }
 }
 
