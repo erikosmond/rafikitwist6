@@ -1,87 +1,63 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CommentForm from 'components/recipes/CommentForm'
-import Modal from '@material-ui/core/Modal'
+import { Field, reduxForm } from 'redux-form'
+import TagFormStyles from 'components/styled/RecipeFormStyles'
+import RecipeFormTagSelectors from 'components/recipes/RecipeFormTagSelectors'
+import { withStyles } from '@material-ui/core/styles';
 
-function getModalStyle() {
-  return {
-    position: 'absolute',
-    top: '20%',
-    left: '30%',
-    backgroundColor: 'white',
-    border: '2px solid #000',
-    boxShadow: 5,
-    padding: 3,
-    width: 400,
-  }
-}
+const styles = () => (TagFormStyles)
 
-export default function CommentModal(props) {
+let TagForm = (props) => {
   const {
-    commentModalOpen,
-    commentRecipeId,
-    commentTagSelectionId,
-    commentBody,
-    handleCommentModal,
-    recipeOptions,
-    submitRecipeComment,
+    classes,
+    handleSubmit,
   } = props
 
-  const recipeNameFromId = (recipeOptionsArr, id) => {
-    for (let i = 0; i < recipeOptionsArr.length; i += 1) {
-      if (recipeOptionsArr[i].value === id) {
-        return recipeOptionsArr[i].label
-      }
-    }
-    return ''
-  }
-
-  const handleClose = () => {
-    handleCommentModal({
-      commentRecipeId,
-      commentTagSelectionId,
-      commentBody,
-      commentModalOpen: false,
-    })
-  }
-
   return (
-    <div>
-      <Modal
-        aria-labelledby="recipe-comment"
-        aria-describedby="simple-modal-description"
-        open={commentModalOpen}
-        onClose={handleClose}
-      >
-        <div style={getModalStyle()}>
-          <h2 id="simple-modal-title">{`${recipeNameFromId(recipeOptions, commentRecipeId)}`}</h2>
-          <CommentForm
-            handleCommentModal={handleCommentModal}
-            commentRecipeId={commentRecipeId}
-            commentTagSelectionId={commentTagSelectionId}
-            commentBody={commentBody}
-            submitRecipeComment={submitRecipeComment}
-          />
-        </div>
-      </Modal>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div className={classes.container}>
+        <div className={classes.nameLabel} htmlFor="recipeName">Recipe Name</div>
+        <Field name="tagName" component="input" type="text" />
+        {/* <Field className={classes.nameField} name="recipeName" component="input" type="text" /> */}
+      </div>
+      <Field
+        name="sources"
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: [{ Value: 'hi', Label: 'Bye' }],
+          title: 'Sources',
+        }}
+      />
+      <br />
+      <button type="submit">Save</button>
+    </form>
   )
 }
 
-CommentModal.propTypes = {
-  commentModalOpen: PropTypes.bool,
-  commentRecipeId: PropTypes.number,
-  commentTagSelectionId: PropTypes.number,
-  commentBody: PropTypes.string,
-  recipeOptions: PropTypes.arrayOf(PropTypes.shape({})),
-  handleCommentModal: PropTypes.func.isRequired,
-  submitRecipeComment: PropTypes.func.isRequired,
+// TODO: add initial field values
+TagForm = reduxForm({
+  form: 'tagForm',
+})(TagForm)
+
+TagForm.propTypes = {
+  // tagOptions: PropTypes.shape(),
+  classes: PropTypes.shape({
+    container: PropTypes.string,
+    nameLabel: PropTypes.string,
+    nameField: PropTypes.string,
+    descriptionLabel: PropTypes.string,
+    descriptionField: PropTypes.string,
+    instructionsField: PropTypes.string,
+    instructionsLabel: PropTypes.string,
+  }),
+  // handleSubmit is passed in from ReduxForm, but if it's marked as required,
+  // a js error is logged as missing,
+  // eslint-disable-next-line react/require-default-props
+  handleSubmit: PropTypes.func,
 }
 
-CommentModal.defaultProps = {
-  commentModalOpen: false,
-  commentRecipeId: null,
-  commentTagSelectionId: null,
-  commentBody: '',
-  recipeOptions: [],
+TagForm.defaultProps = {
+  classes: {},
 }
+
+export default withStyles(styles)(TagForm)

@@ -19,7 +19,7 @@ function getModalStyle() {
 export default class TagFormModal extends React.Component {
   componentDidMount() {
     const { loadTagTypes, tagTypes } = this.props
-    if ( tagTypes === []) {
+    if (tagTypes === []) {
       loadTagTypes()
     }
   }
@@ -33,43 +33,35 @@ export default class TagFormModal extends React.Component {
       tagTypes,
     } = this.props
 
-    if ( tagTypes === [] || !tagFormModalOpen ) {
+    if (tagTypes === [] || !tagFormModalOpen) {
       return null
     }
 
-    // const recipeNameFromId = (recipeOptionsArr, id) => {
-    //   for (let i = 0; i < recipeOptionsArr.length; i += 1) {
-    //     if (recipeOptionsArr[i].value === id) {
-    //       return recipeOptionsArr[i].label
-    //     }
-    //   }
-    //   return ''
-    // }
-    //
-    // const handleClose = () => {
-    //   handleCommentModal({
-    //     commentRecipeId,
-    //     commentTagSelectionId,
-    //     commentBody,
-    //     commentModalOpen: false,
-    //   })
-    // }
+    const handleClose = () => {
+      handleTagFormModal({
+        tagFormModalOpen: false,
+      })
+    }
+
+    const submit = (values) => {
+      // send the values to the store
+      submitTagForm(values)
+    }
 
     return (
       <div>
         <Modal
-          aria-labelledby="recipe-comment"
-          aria-describedby="simple-modal-description"
+          aria-labelledby="tag-form-modal"
+          aria-describedby="simple-modal-form"
           open={tagFormModalOpen}
           onClose={handleClose}
         >
           <div style={getModalStyle()}>
-            <h2 id="simple-modal-title">{`${recipeNameFromId(recipeOptions, commentRecipeId)}`}</h2>
             <TagForm
-              handleCommentModal={handleCommentModal}
+              handleTagFormModal={handleTagFormModal}
               allTags={allTags}
               tagTypes={tagTypes}
-              submitRecipeComment={submitTagForm}
+              onSubmit={submit}
             />
           </div>
         </Modal>
@@ -81,10 +73,13 @@ export default class TagFormModal extends React.Component {
 TagFormModal.propTypes = {
   allTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   handleTagFormModal: PropTypes.func.isRequired,
+  loadTagTypes: PropTypes.func.isRequired,
   submitTagForm: PropTypes.func.isRequired,
   tagFormModalOpen: PropTypes.bool,
+  tagTypes: PropTypes.arrayOf(PropTypes.shape({})),
 }
 
 TagFormModal.defaultProps = {
-  tagFormModalOpen: false
+  tagFormModalOpen: false,
+  tagTypes: [],
 }

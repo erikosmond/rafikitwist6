@@ -27,6 +27,8 @@ const LOAD_INGREDIENT_OPTIONS = 'recipes/loadIngredientOptions'
 const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'recipes/loadIngredientOptionsSuccess'
 const LOAD_TAG_OPTIONS = 'recipes/loadTagOptions'
 const LOAD_TAG_OPTIONS_SUCCESS = 'recipes/loadTagOptionsSuccess'
+const LOAD_TAG_TYPES = 'tags/loadTagTypes'
+const LOAD_TAG_TYPES_SUCCESS = 'tags/loadTagTypesSuccess'
 const NO_RECIPE_FOUND = 'recipes/noRecipeFound'
 const NOT_LOADING = 'recipes/notLoading'
 const HANDLE_FILTER = 'recipes/handleFilter'
@@ -378,6 +380,13 @@ export function loadTagOptionsSuccess({ tagOptions }) {
   }
 }
 
+export function loadTagTypesSuccess({ tagTypes }) {
+  return {
+    type: LOAD_TAG_TYPES_SUCCESS,
+    payload: tagTypes,
+  }
+}
+
 export function loadCategoryOptionsSuccess({ ingredientOptions }) {
   return {
     type: LOAD_CATEGORY_OPTIONS_SUCCESS,
@@ -669,6 +678,16 @@ export function* loadTagOptionsTask() {
   }
 }
 
+export function* loadTagTypesTask() {
+  const url = '/api/tag_types'
+  const result = yield call(callApi, url)
+  if (result.success) {
+    yield put(loadTagTypesSuccess({ tagTypes: result.data }))
+  } else {
+    yield put(notLoading())
+  }
+}
+
 export function* updateTagSelectionTask({
   payload: {
     tagId,
@@ -753,6 +772,7 @@ export function* recipesSaga() {
   yield takeLatest(LOAD_ALL_TAGS, loadAllTagsTask)
   yield takeEvery(LOAD_INGREDIENT_OPTIONS, loadIngredientOptionsTask)
   yield takeEvery(LOAD_TAG_OPTIONS, loadTagOptionsTask)
+  yield takeEvery(LOAD_TAG_TYPES, loadTagTypesTask)
   yield takeLatest(UPDATE_RECIPE_TAG, updateTagSelectionTask)
   yield takeLatest(SUBMIT_RECIPE_COMMENT, submitRecipeCommentTask)
   yield takeLatest(HANDLE_RECIPE_SUBMIT, handleRecipeSubmitTask)
