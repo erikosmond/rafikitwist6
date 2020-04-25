@@ -26,7 +26,21 @@ module Api
       render json: {}, status: :not_found
     end
 
+    def create
+      result = TagForm.call(
+        action: :create,
+        params: tag_params,
+        user: current_user
+      )
+      render json: result.recipe
+    end
+
     private
+
+      def tag_params
+        allowed_columns = [:name, :tag_type_id, :description, parent_tags: %i[id name]]
+        params.permit allowed_columns
+      end
 
       def check_type(tag_type, current_user)
         if tag_type

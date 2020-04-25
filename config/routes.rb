@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     namespace :api, defaults: { format: :json } do
       resources :recipes, only: %i[create index show]
 
-      resources :tags, only: %i[index show] do
+      resources :tags, only: %i[create index show] do
         resources :recipes, only: %i[index]
       end
 

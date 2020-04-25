@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 # class for handling params from recipes form
-class RecipeForm
-  include Interactor
+class RecipeForm < GeneralForm
 
   def call
     context.result = case context.action
@@ -15,13 +14,13 @@ class RecipeForm
 
     def create(params)
       # TODO: initialize recipe and build all associations, then save
-      recipe = create_recipe(params)
+      recipe = create_recipe!(params)
       create_access(recipe)
       create_ingredients(params, recipe)
       create_tags(params, recipe)
     end
 
-    def create_recipe(params)
+    def create_recipe!(params)
       Recipe.create!(
         {
           name: params['recipe_name'],
@@ -29,10 +28,6 @@ class RecipeForm
           description: params['description']
         }
       )
-    end
-
-    def create_access(accessible)
-      AccessService.create_access!(user_id, accessible, access_status)
     end
 
     def create_ingredients(params, recipe)
@@ -88,13 +83,5 @@ class RecipeForm
       return unless tags&.first
 
       tags.map { |t| t['id'] }
-    end
-
-    def access_status
-      user_id == 1 ? 'PUBLIC' : 'PRIVATE'
-    end
-
-    def user_id
-      context.user.id
     end
 end

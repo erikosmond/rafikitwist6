@@ -40,10 +40,11 @@ const RESET_PAGED_COUNT = 'recipes/resetPagedCount'
 const UPDATE_RECIPE_TAG = 'recipes/updateRecipeTag'
 const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
 const LOAD_RECIPE_FORM_DATA = 'recipes/loadRecipeFormData'
-const HANDLE_COMMENT_MODAL = 'recipes/handleModal'
+const HANDLE_COMMENT_MODAL = 'recipes/handleCommentModal'
 const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
 const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
 const SUBMIT_RECIPE_COMMENT = 'recipes/submitRecipeComment'
+const SUBMIT_TAG_FORM = 'tags'
 const UPDATE_RECIPE_COMMENT_SUCCESS = 'recipes/updateRecipeCommentSuccess'
 const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
 const CLEAR_RECIPE = 'recipes/clearRecipe'
@@ -137,6 +138,11 @@ export default function recipesReducer(state = initialState, action = {}) {
       return {
         ...state,
         tagOptions: action.payload,
+      }
+    case LOAD_TAG_TYPES_SUCCESS:
+      return {
+        ...state,
+        tagTypes: action.payload,
       }
     case NO_RECIPE_FOUND:
       return {
@@ -380,6 +386,12 @@ export function loadTagOptionsSuccess({ tagOptions }) {
   }
 }
 
+export function loadTagTypes() {
+  return {
+    type: LOAD_TAG_TYPES,
+  }
+}
+
 export function loadTagTypesSuccess({ tagTypes }) {
   return {
     type: LOAD_TAG_TYPES_SUCCESS,
@@ -429,6 +441,12 @@ export function clearRecipe() {
 export function resetPagedCount() {
   return {
     type: RESET_PAGED_COUNT,
+  }
+}
+
+export function submitTagForm() {
+  return {
+    type: HANDLE_TAG_SUBMIT,
   }
 }
 
@@ -649,6 +667,18 @@ export function* handleRecipeSubmitTask({ payload }) {
   console.log(result)
 }
 
+export function* handleTagSubmitTask({ payload }) {
+  const url = '/api/tags'
+  const params = { data: payload, method: 'POST' }
+  const result = yield call(callApi, url, params)
+  // if (result.success) {
+  //   yield put(recipeSumbitSuccess(
+  //     TODO: update recipe dropdown
+  //   ))
+  // }
+  console.log(result)
+}
+
 export function* loadIngredientOptionsTask({ payload }) {
   const url = `/api/tags?type=${payload.ingredientType}`
   const result = yield call(callApi, url)
@@ -775,5 +805,6 @@ export function* recipesSaga() {
   yield takeEvery(LOAD_TAG_TYPES, loadTagTypesTask)
   yield takeLatest(UPDATE_RECIPE_TAG, updateTagSelectionTask)
   yield takeLatest(SUBMIT_RECIPE_COMMENT, submitRecipeCommentTask)
+  yield takeLatest(HANDLE_TAG_SUBMIT, handleTagSubmitTask)
   yield takeLatest(HANDLE_RECIPE_SUBMIT, handleRecipeSubmitTask)
 }

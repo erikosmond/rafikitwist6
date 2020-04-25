@@ -69,7 +69,7 @@ let RecipeFormTagSelectors = (props) => {
         MenuProps={MenuProps}
       >
         {tagOptions.map((tag) => (
-          <MenuItem key={tag.id} value={tag}>
+          <MenuItem key={title + tag.id} value={tag}>
             <Checkbox checked={tags.map((t) => t.id).indexOf(tag.id) > -1} />
             <ListItemText primary={tag.name} />
           </MenuItem>

@@ -44,6 +44,7 @@ export default class TagFormModal extends React.Component {
     }
 
     const submit = (values) => {
+      console.log(values)
       // send the values to the store
       submitTagForm(values)
     }
@@ -71,7 +72,7 @@ export default class TagFormModal extends React.Component {
 }
 
 TagFormModal.propTypes = {
-  allTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  allTags: PropTypes.shape({}).isRequired,
   handleTagFormModal: PropTypes.func.isRequired,
   loadTagTypes: PropTypes.func.isRequired,
   submitTagForm: PropTypes.func.isRequired,

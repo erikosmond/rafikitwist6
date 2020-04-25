@@ -16,16 +16,28 @@ let TagForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
-        <div className={classes.nameLabel} htmlFor="recipeName">Recipe Name</div>
+        <div className={classes.nameLabel} htmlFor="tagName">Tag Name</div>
         <Field name="tagName" component="input" type="text" />
         {/* <Field className={classes.nameField} name="recipeName" component="input" type="text" /> */}
       </div>
+      <div className={classes.container}>
+        <div className={classes.nameLabel} htmlFor="description">Description</div>
+        <Field name="description" component="input" type="text" />
+      </div>
       <Field
-        name="sources"
+        name="parentTags"
         component={RecipeFormTagSelectors}
         props={{
           tagOptions: [{ Value: 'hi', Label: 'Bye' }],
-          title: 'Sources',
+          title: 'Parent Tags',
+        }}
+      />
+      <Field
+        name="parentTags"
+        component={RecipeFormTagSelectors}
+        props={{
+          tagOptions: [{ Value: 'hi', Label: 'Bye' }],
+          title: 'Tag Type',
         }}
       />
       <br />

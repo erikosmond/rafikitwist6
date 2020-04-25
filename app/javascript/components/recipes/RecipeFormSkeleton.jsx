@@ -16,10 +16,16 @@ class RecipeFormSkeleton extends React.Component {
   }
 
   render() {
-    const { ingredientOptions, ingredientModificationOptions, tagOptions } = this.props
+    const {
+      handleTagFormModal,
+      ingredientOptions,
+      ingredientModificationOptions,
+      tagOptions,
+    } = this.props
     if (ingredientOptions.length > 0 && ingredientModificationOptions.length > 0) {
       return (
         <RecipeForm
+          handleTagFormModal={handleTagFormModal}
           ingredientOptions={ingredientOptions}
           ingredientModificationOptions={ingredientModificationOptions}
           tagOptions={tagOptions}
@@ -44,6 +50,7 @@ RecipeFormSkeleton.propTypes = {
   loadIngredientOptions: PropTypes.func.isRequired,
   loadTagOptions: PropTypes.func.isRequired,
   tagOptions: PropTypes.shape(),
+  handleTagFormModal: PropTypes.func.isRequired,
 }
 
 RecipeFormSkeleton.defaultProps = {

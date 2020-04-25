@@ -88,10 +88,15 @@ let RecipeForm = (props) => {
   const {
     classes,
     handleSubmit,
+    handleTagFormModal,
     ingredientModificationOptions,
     ingredientOptions,
     tagOptions,
   } = props
+
+  const openTagForm = () => {
+    handleTagFormModal({ tagFormModalOpen: true })
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -113,6 +118,9 @@ let RecipeForm = (props) => {
           type="text"
         />
       </div>
+      <button type="button" onClick={openTagForm}>
+        Add Tag
+      </button>
       <FieldArray
         name="ingredients"
         component={renderIngredients}
@@ -219,6 +227,7 @@ RecipeForm.propTypes = {
   // a js error is logged as missing,
   // eslint-disable-next-line react/require-default-props
   handleSubmit: PropTypes.func,
+  handleTagFormModal: PropTypes.func.isRequired,
 }
 
 RecipeForm.defaultProps = {
