@@ -29,8 +29,8 @@ class TagForm < GeneralForm
     end
 
     def create_parent_tags(params, tag)
-      tag_ids = params['parent_tags'].map { |t| t['id'] }
-      tag_ids.each do |id|
+      tag_ids = params['parent_tags']&.map { |t| t['id'] }
+      tag_ids&.each do |id|
         ts = TagSelection.create!(tag_id: id, taggable: tag)
         create_access(ts)
       end

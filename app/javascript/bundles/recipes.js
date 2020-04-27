@@ -44,7 +44,6 @@ const HANDLE_COMMENT_MODAL = 'recipes/handleCommentModal'
 const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
 const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
 const SUBMIT_RECIPE_COMMENT = 'recipes/submitRecipeComment'
-const SUBMIT_TAG_FORM = 'tags'
 const UPDATE_RECIPE_COMMENT_SUCCESS = 'recipes/updateRecipeCommentSuccess'
 const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
 const CLEAR_RECIPE = 'recipes/clearRecipe'
@@ -59,6 +58,7 @@ const initialState = {
   visibleFilterTags: {},
   allTags: {},
   tagGroups: {},
+  tagTypes: [],
   recipesLoaded: false,
   noRecipes: false,
   noTags: false,
@@ -444,12 +444,6 @@ export function resetPagedCount() {
   }
 }
 
-export function submitTagForm() {
-  return {
-    type: HANDLE_TAG_SUBMIT,
-  }
-}
-
 export function handleFilter(id, checked) {
   return {
     type: HANDLE_FILTER,
@@ -551,17 +545,17 @@ export function handleTagFormModal(payload) {
   }
 }
 
-export function handleTagSubmit(payload) {
-  return {
-    payload,
-    type: HANDLE_TAG_SUBMIT,
-  }
-}
-
 export function handleRecipeSubmit(payload) {
   return {
     payload,
     type: HANDLE_RECIPE_SUBMIT,
+  }
+}
+
+export function submitTagForm(payload) {
+  return {
+    payload,
+    type: HANDLE_TAG_SUBMIT,
   }
 }
 

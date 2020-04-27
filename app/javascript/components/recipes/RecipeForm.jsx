@@ -8,21 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = () => (RecipeFormStyles)
 
-const renderField = (args) => {
-  const {
-    input, label, type, meta: { touched, error }
-  } = args
-  return (
-    <div>
-      <label>{label}</label>
-      <div>
-        <input {...input} type={type} placeholder={label} />
-        {touched && error && <span>{error}</span>}
-      </div>
-    </div>
-  )
-}
-
 const renderIngredients = (args) => {
   const {
     fields,

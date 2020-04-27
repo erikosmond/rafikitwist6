@@ -13,24 +13,25 @@ function getModalStyle() {
     boxShadow: 5,
     padding: 3,
     width: 400,
+    height: 350,
   }
 }
 
 export default class TagFormModal extends React.Component {
   componentDidMount() {
     const { loadTagTypes, tagTypes } = this.props
-    if (tagTypes === []) {
+    if (tagTypes.length === 0) {
       loadTagTypes()
     }
   }
 
   render() {
     const {
-      allTags,
       handleTagFormModal,
       submitTagForm,
       tagFormModalOpen,
       tagTypes,
+      tagOptions,
     } = this.props
 
     if (tagTypes === [] || !tagFormModalOpen) {
@@ -44,7 +45,6 @@ export default class TagFormModal extends React.Component {
     }
 
     const submit = (values) => {
-      console.log(values)
       // send the values to the store
       submitTagForm(values)
     }
@@ -60,7 +60,7 @@ export default class TagFormModal extends React.Component {
           <div style={getModalStyle()}>
             <TagForm
               handleTagFormModal={handleTagFormModal}
-              allTags={allTags}
+              tagOptions={tagOptions}
               tagTypes={tagTypes}
               onSubmit={submit}
             />
@@ -72,15 +72,16 @@ export default class TagFormModal extends React.Component {
 }
 
 TagFormModal.propTypes = {
-  allTags: PropTypes.shape({}).isRequired,
   handleTagFormModal: PropTypes.func.isRequired,
   loadTagTypes: PropTypes.func.isRequired,
   submitTagForm: PropTypes.func.isRequired,
   tagFormModalOpen: PropTypes.bool,
   tagTypes: PropTypes.arrayOf(PropTypes.shape({})),
+  tagOptions: PropTypes.shape({}),
 }
 
 TagFormModal.defaultProps = {
   tagFormModalOpen: false,
   tagTypes: [],
+  tagOptions: {},
 }
