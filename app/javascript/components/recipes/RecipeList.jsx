@@ -9,10 +9,7 @@ import PaperSidebar from '../styled/PaperSidebar'
 
 class RecipeList extends React.Component {
   static displayShown(recipe) {
-    if (recipe.hidden !== true) {
-      return recipe
-    }
-    return {}
+    return recipe.hidden !== true
   }
 
   constructor(props) {
@@ -135,8 +132,7 @@ class RecipeList extends React.Component {
 
         <PaperContent>
           {this.renderHeaderWithCount()}
-          {/* {selectedRecipes.filter(RecipeList.displayShown).splice(0, pagedRecipeCount).map((r) => ( */}
-          {selectedRecipes.filter(RecipeList.displayShown).map((r) => (
+          {selectedRecipes.filter(RecipeList.displayShown).splice(0, pagedRecipeCount).map((r) => (
             <RecipeListItem
               key={r.id}
               recipe={r}
