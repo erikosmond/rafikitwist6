@@ -135,7 +135,8 @@ class RecipeList extends React.Component {
 
         <PaperContent>
           {this.renderHeaderWithCount()}
-          {selectedRecipes.filter(RecipeList.displayShown).splice(0, pagedRecipeCount).map((r) => (
+          {/* {selectedRecipes.filter(RecipeList.displayShown).splice(0, pagedRecipeCount).map((r) => ( */}
+          {selectedRecipes.filter(RecipeList.displayShown).map((r) => (
             <RecipeListItem
               key={r.id}
               recipe={r}
