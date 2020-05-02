@@ -11,7 +11,7 @@ class GeneralForm
     end
 
     def access_status
-      user_id == 1 ? 'PUBLIC' : 'PRIVATE'
+      user.admin? ? 'PUBLIC' : 'PRIVATE'
     end
 
     def user_id

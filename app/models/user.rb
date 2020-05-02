@@ -10,6 +10,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  def admin?
+    roles&.map(:name)&.include? 'Admin'
+  end
+
   # attr_accessor :sign_up_code
   # validates :sign_up_code,
   #           on: :create,

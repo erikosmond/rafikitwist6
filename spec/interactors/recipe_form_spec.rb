@@ -47,7 +47,7 @@ RSpec.describe TagsByType, type: :interactor do
     it 'saves the recipe name' do
       expect(r.access).to_not eq nil
     end
-    it 'saves the recipe name' do
+    it 'saves the recipe description' do
       expect(r.description).to eq 'rdesc'
     end
     it 'saves the recipe instructions' do

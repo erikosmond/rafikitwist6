@@ -14,7 +14,7 @@ class TagForm < GeneralForm
     def create(params)
       # TODO: initialize tag and build all associations, then save
       tag = create_tag!(params)
-      create_parent_tags(tag, params)
+      create_parent_tags(params, tag)
       create_access(tag)
     end
 
