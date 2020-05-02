@@ -25,6 +25,8 @@ class RecipeFormSkeleton extends React.Component {
     if (ingredientOptions.length > 0 && ingredientModificationOptions.length > 0) {
       return (
         <RecipeForm
+          // TODO: add initial values when editing recipe
+          initialValues={{ description: 'initial descrip' }}
           handleTagFormModal={handleTagFormModal}
           ingredientOptions={ingredientOptions}
           ingredientModificationOptions={ingredientModificationOptions}

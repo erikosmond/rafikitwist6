@@ -184,7 +184,6 @@ let RecipeForm = (props) => {
   )
 }
 
-// TODO: add initial field values
 RecipeForm = reduxForm({
   form: 'recipeForm',
 })(RecipeForm)
