@@ -9,10 +9,7 @@ import PaperSidebar from '../styled/PaperSidebar'
 
 class RecipeList extends React.Component {
   static displayShown(recipe) {
-    if (recipe.hidden !== true) {
-      return recipe
-    }
-    return {}
+    return recipe.hidden !== true
   }
 
   constructor(props) {
