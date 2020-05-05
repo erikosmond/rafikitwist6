@@ -2,11 +2,12 @@
 
 # class for handling params from recipes form
 class RecipeForm < GeneralForm
-
   def call
     context.result = case context.action
                      when :create
                        create(context.params)
+                     when :edit
+                       edit(context.params)
                      end
   end
 
@@ -18,6 +19,7 @@ class RecipeForm < GeneralForm
       create_access(recipe)
       create_ingredients(params, recipe)
       create_tags(params, recipe)
+      recipe
     end
 
     def create_recipe!(params)
@@ -83,5 +85,28 @@ class RecipeForm < GeneralForm
       return unless tags&.first
 
       tags.map { |t| t['id'] }
+    end
+
+    def edit(params)
+      recipe = params[:recipe]
+      {
+        id: recipe.id,
+        description: recipe.description,
+        instructions: recipe.instructions,
+        recipe_name: recipe.name,
+        ingredients: recipe.ingredient_tag_selections.map(&:recipe_form_ingredient)
+      }.merge(property_tags(recipe))
+    end
+
+    def property_tags(recipe)
+      {
+        sources: recipe.sources.map(&:recipe_form_tag),
+        vessels: recipe.vessels.map(&:recipe_form_tag),
+        recipe_types: recipe.recipe_types.map(&:recipe_form_tag),
+        menus: recipe.menus.map(&:recipe_form_tag),
+        preparations: recipe.preparations.map(&:recipe_form_tag),
+        flavors: recipe.flavors.map(&:recipe_form_tag),
+        components: recipe.components.map(&:recipe_form_tag)
+      }
     end
 end

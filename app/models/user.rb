@@ -11,7 +11,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   def admin?
-    roles&.map(:name)&.include? 'Admin'
+    roles&.map(&:name)&.include? 'Admin'
   end
 
   # attr_accessor :sign_up_code

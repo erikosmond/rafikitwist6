@@ -22,11 +22,32 @@ class RecipeFormSkeleton extends React.Component {
       ingredientModificationOptions,
       tagOptions,
     } = this.props
+    const data = {
+      description: 'initial descrip',
+      instructions: 'initial instructions',
+      recipeName: 'existing name',
+      sources: [{ id: 1, name: 'a good source' }, { id: 2, name: 'a second source' }],
+      ingredients: [
+        {
+          ingredientAmount: '2 ounces',
+          ingredientModification: { value: 6, label: 'salty' },
+          ingredient: { value: 4, label: 'pepper' },
+          ingredientPrep: 'diced',
+        },
+        {
+          ingredientAmount: '1 ounce',
+          ingredientModification: { value: 15, label: 'peppery' },
+          ingredient: { value: 7, label: 'salt' },
+          ingredientPrep: 'minced',
+        },
+      ],
+    }
     if (ingredientOptions.length > 0 && ingredientModificationOptions.length > 0) {
       return (
         <RecipeForm
           // TODO: add initial values when editing recipe
-          initialValues={{ description: 'initial descrip' }}
+          // TODO: add hidden id field so I know it's an update, not create
+          initialValues={data}
           handleTagFormModal={handleTagFormModal}
           ingredientOptions={ingredientOptions}
           ingredientModificationOptions={ingredientModificationOptions}

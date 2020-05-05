@@ -54,6 +54,11 @@ class Recipe < ApplicationRecord
     props('Component')
   end
 
+  def ingredient_tag_selections
+    types = TagType::INGREDIENT_TYPES.map{ |tt| "'" + tt + "'" }
+    tag_selections.joins(tag: :tag_type).where("tag_types.name IN (#{types.join(', ')})")
+  end
+
   private
 
     def props_with_detail(name)

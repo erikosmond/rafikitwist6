@@ -27,17 +27,26 @@ module Api
     end
 
     def create
-      result = RecipeForm.call(
+      recipe = RecipeForm.call(
         action: :create,
-        params: recipe_params,
+        params: create_recipe_params,
         user: current_user
       )
-      render json: result.recipe
+      render json: recipe.result
+    end
+
+    def edit
+      recipe = Recipe.find params.permit :id
+      if Permission.new(current_user).can_edit?(recipe)
+        render json: RecipeForm.call(action: :edit, params: { recipe: recipe })
+      else
+        render json: {}, status: :unauthorized
+      end
     end
 
     private
 
-      def recipe_params
+      def create_recipe_params
         allowed_columns = [
           :recipe_name, :description, :instructions,
           ingredients: ingredient_fields,

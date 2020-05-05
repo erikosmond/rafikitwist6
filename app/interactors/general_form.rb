@@ -7,14 +7,14 @@ class GeneralForm
   protected
 
     def create_access(accessible)
-      AccessService.create_access!(user_id, accessible, access_status)
+      AccessService.create_access!(user.id, accessible, access_status)
     end
 
     def access_status
       user.admin? ? 'PUBLIC' : 'PRIVATE'
     end
 
-    def user_id
-      context.user.id
+    def user
+      context.user
     end
 end

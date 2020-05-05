@@ -111,4 +111,8 @@ class Tag < ApplicationRecord
   validates_uniqueness_of :name, scope: :tag_type
 
   delegate :name, to: :tag_type, prefix: true
+
+  def recipe_form_tag
+    {id: id, name: name}
+  end  
 end
