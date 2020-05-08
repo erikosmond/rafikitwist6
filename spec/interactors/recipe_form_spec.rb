@@ -106,6 +106,12 @@ RSpec.describe TagsByType, type: :interactor do
       let(:form) { RecipeForm.call(params: params, action: :edit) }
 
       it 'expects all recipe data ready for redux form' do
+        expected_sources = [
+          { id: recipe_website.id, name: 'Recipe Website' },
+          { id: recipe_book.id, name: 'Recipe Book' }
+        ]
+        expect(form.result[:sources] - expected_sources).to eq []
+        form.result.delete(:sources)
         expect(form.result).to eq(
           {
             id: recipe.id,
@@ -127,10 +133,6 @@ RSpec.describe TagsByType, type: :interactor do
             preparations: [{ id: shaken.id, name: 'Shaken' }],
             recipe_name: 'Recipe with everything',
             recipe_types: [{ id: mocktails.id, name: 'Mocktails' }],
-            sources: [
-              { id: recipe_website.id, name: 'Recipe Website' },
-              { id: recipe_book.id, name: 'Recipe Book' }
-            ],
             vessels: [{ id: coupe.id, name: 'Coupe' }]
           }
         )
