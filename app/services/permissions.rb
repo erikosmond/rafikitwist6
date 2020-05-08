@@ -8,8 +8,8 @@ class Permissions
 
   def can_edit?(record)
     return true if @user.admin?
-    return false unless record.responds_to? :access
+    return false unless record.respond_to? :access
 
-    record.access.user_id == @user.id
+    record&.access&.user_id == @user.id
   end
 end

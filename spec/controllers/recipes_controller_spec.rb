@@ -35,6 +35,9 @@ describe Api::RecipesController, type: :controller do
   let!(:access_rating) do
     create(:access, accessible: tag_selection_menu, user: user, status: 'PRIVATE')
   end
+  let!(:access_recipe) do
+    create(:access, accessible: recipe, user: user, status: 'PRIVATE')
+  end
   let(:tag_subject) { create(:tag, name: 'Rice', tag_type: tag_type_ingredient_type) }
 
   describe 'GET - show' do
@@ -48,6 +51,19 @@ describe Api::RecipesController, type: :controller do
       body = JSON.parse(response.body)
       expect(body['ingredients'][ingredient.id.to_s]['id']).to eq(tag_selection_ing.id)
       expect(body['ratings']).to be_nil
+    end
+  end
+
+  describe 'GET - edit' do
+    before do
+      sign_in user
+      get :edit,
+          params: { id: recipe.id },
+          format: 'json'
+    end
+    it 'returns a 200' do
+      body = JSON.parse(response.body)
+      expect(body['instructions']).to eq(recipe.instructions)
     end
   end
 
