@@ -113,6 +113,7 @@ class Tag < ApplicationRecord
   delegate :name, to: :tag_type, prefix: true
 
   def recipe_form_tag
-    {id: id, name: name}
-  end  
+    # TODO: for some reason this is creating an infinite loop
+    { id: id, name: name }
+  end
 end

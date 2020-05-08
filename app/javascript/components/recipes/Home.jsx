@@ -39,7 +39,7 @@ const Home = () => (
           />
           <Route
             path="/recipes/:recipeId/edit"
-            component={RecipeFormSkeleton}
+            render={(props) => <RecipeFormSkeleton {...props} edit />}
           />
           <Route
             path="/recipes/:recipeId"

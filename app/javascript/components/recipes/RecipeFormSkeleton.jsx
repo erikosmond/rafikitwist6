@@ -4,9 +4,19 @@ import RecipeForm from './RecipeForm'
 
 class RecipeFormSkeleton extends React.Component {
   componentDidMount() {
-    const { loadIngredientOptions, loadTagOptions } = this.props
+    const {
+      edit,
+      loadEditForm,
+      loadIngredientOptions,
+      loadTagOptions,
+      match,
+    } = this.props
     loadIngredientOptions('Ingredients')
     loadTagOptions()
+    if (edit) {
+      const { recipeId } = match.params
+      loadEditForm(recipeId)
+    }
   }
 
   submit = (values) => {
@@ -17,37 +27,20 @@ class RecipeFormSkeleton extends React.Component {
 
   render() {
     const {
+      edit,
       handleTagFormModal,
       ingredientOptions,
       ingredientModificationOptions,
+      recipeFormData,
       tagOptions,
     } = this.props
-    const data = {
-      description: 'initial descrip',
-      instructions: 'initial instructions',
-      recipeName: 'existing name',
-      sources: [{ id: 1, name: 'a good source' }, { id: 2, name: 'a second source' }],
-      ingredients: [
-        {
-          ingredientAmount: '2 ounces',
-          ingredientModification: { value: 6, label: 'salty' },
-          ingredient: { value: 4, label: 'pepper' },
-          ingredientPrep: 'diced',
-        },
-        {
-          ingredientAmount: '1 ounce',
-          ingredientModification: { value: 15, label: 'peppery' },
-          ingredient: { value: 7, label: 'salt' },
-          ingredientPrep: 'minced',
-        },
-      ],
+    if (edit && !recipeFormData.id) {
+      return null
     }
     if (ingredientOptions.length > 0 && ingredientModificationOptions.length > 0) {
       return (
         <RecipeForm
-          // TODO: add initial values when editing recipe
-          // TODO: add hidden id field so I know it's an update, not create
-          initialValues={data}
+          initialValues={recipeFormData}
           handleTagFormModal={handleTagFormModal}
           ingredientOptions={ingredientOptions}
           ingredientModificationOptions={ingredientModificationOptions}
@@ -61,6 +54,7 @@ class RecipeFormSkeleton extends React.Component {
 }
 
 RecipeFormSkeleton.propTypes = {
+  edit: PropTypes.bool,
   handleRecipeSubmit: PropTypes.func.isRequired,
   ingredientOptions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
@@ -70,16 +64,26 @@ RecipeFormSkeleton.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
   })),
+  loadEditForm: PropTypes.func.isRequired,
   loadIngredientOptions: PropTypes.func.isRequired,
   loadTagOptions: PropTypes.func.isRequired,
   tagOptions: PropTypes.shape(),
+  recipeFormData: PropTypes.shape(),
   handleTagFormModal: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      recipeId: PropTypes.string,
+    }),
+  }),
 }
 
 RecipeFormSkeleton.defaultProps = {
+  edit: false,
   ingredientOptions: [],
   ingredientModificationOptions: [],
+  recipeFormData: {},
   tagOptions: {},
+  match: { params: { recipeId: null } },
 }
 
 export default RecipeFormSkeleton

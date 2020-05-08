@@ -86,6 +86,11 @@ let RecipeForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
+        <Field
+          name="id"
+          component="input"
+          type="hidden"
+        />
         <div className={classes.nameLabel} htmlFor="recipeName">Recipe Name</div>
         <Field className={classes.nameField} name="recipeName" component="input" type="text" />
         <div className={classes.descriptionLabel} htmlFor="description">Description</div>

@@ -40,6 +40,8 @@ const RESET_PAGED_COUNT = 'recipes/resetPagedCount'
 const UPDATE_RECIPE_TAG = 'recipes/updateRecipeTag'
 const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
 const LOAD_RECIPE_FORM_DATA = 'recipes/loadRecipeFormData'
+const LOAD_EDIT_FORM = 'recipes/loadEditForm'
+const LOAD_EDIT_FORM_SUCCESS = 'recipes/loadEditFormSuccess'
 const HANDLE_COMMENT_MODAL = 'recipes/handleCommentModal'
 const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
 const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
@@ -48,6 +50,7 @@ const UPDATE_RECIPE_COMMENT_SUCCESS = 'recipes/updateRecipeCommentSuccess'
 const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
 const CLEAR_RECIPE = 'recipes/clearRecipe'
 const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
+const DEFAULT_PAGED_RECIPE_COUNT = 10
 
 // Reducer
 const initialState = {
@@ -67,6 +70,7 @@ const initialState = {
   pagedRecipeCount: 10,
   openModal: false,
   openTagFormModal: false,
+  recipeFormData: {},
 }
 
 export default function recipesReducer(state = initialState, action = {}) {
@@ -216,7 +220,12 @@ export default function recipesReducer(state = initialState, action = {}) {
     case RESET_PAGED_COUNT:
       return {
         ...state,
-        pagedRecipeCount: 10,
+        pagedRecipeCount: DEFAULT_PAGED_RECIPE_COUNT,
+      }
+    case LOAD_EDIT_FORM_SUCCESS:
+      return {
+        ...state,
+        recipeFormData: action.payload.recipeFormData,
       }
     default:
       return state
@@ -454,6 +463,13 @@ export function handleFilter(id, checked) {
   }
 }
 
+export function loadEditForm(id) {
+  return {
+    type: LOAD_EDIT_FORM,
+    payload: id,
+  }
+}
+
 export function handleFilterSuccess(selectedRecipes, selectedFilters, visibleFilters) {
   return {
     type: HANDLE_FILTER_SUCCESS,
@@ -462,6 +478,13 @@ export function handleFilterSuccess(selectedRecipes, selectedFilters, visibleFil
       selectedFilters,
       visibleFilters,
     },
+  }
+}
+
+export function loadEditFormSuccess(recipeFormData) {
+  return {
+    type: LOAD_EDIT_FORM_SUCCESS,
+    payload: { recipeFormData },
   }
 }
 
@@ -712,6 +735,16 @@ export function* loadTagTypesTask() {
   }
 }
 
+export function* loadEditFormTask({ payload }) {
+  const url = `/api/recipes/${payload}/edit`
+  const result = yield call(callApi, url)
+  if (result.success) {
+    yield put(loadEditFormSuccess(result.data))
+  } else {
+    yield put(notLoading())
+  }
+}
+
 export function* updateTagSelectionTask({
   payload: {
     tagId,
@@ -801,4 +834,5 @@ export function* recipesSaga() {
   yield takeLatest(SUBMIT_RECIPE_COMMENT, submitRecipeCommentTask)
   yield takeLatest(HANDLE_TAG_SUBMIT, handleTagSubmitTask)
   yield takeLatest(HANDLE_RECIPE_SUBMIT, handleRecipeSubmitTask)
+  yield takeLatest(LOAD_EDIT_FORM, loadEditFormTask)
 }
