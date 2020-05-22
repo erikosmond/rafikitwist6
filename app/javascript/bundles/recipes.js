@@ -673,15 +673,17 @@ export function* loadRecipeOptionsTask() {
 }
 
 export function* handleRecipeSubmitTask({ payload }) {
-  const url = '/api/recipes'
-  const params = { data: payload, method: 'POST' }
+  const method = payload.id ? 'PUT' : 'POST'
+  const id = payload.id ? `/${payload.id}` : ''
+  const url = `/api/recipes${id}`
+  const params = {
+    method,
+    data: payload,
+  }
   const result = yield call(callApi, url, params)
-  // if (result.success) {
-  //   yield put(recipeSumbitSuccess(
-  //     TODO: update recipe dropdown
-  //   ))
-  // }
-  console.log(result)
+  if (result.success) {
+    console.log(result)
+  }
 }
 
 export function* handleTagSubmitTask({ payload }) {

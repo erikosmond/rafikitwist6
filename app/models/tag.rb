@@ -111,9 +111,4 @@ class Tag < ApplicationRecord
   validates_uniqueness_of :name, scope: :tag_type
 
   delegate :name, to: :tag_type, prefix: true
-
-  def recipe_form_tag
-    # TODO: for some reason this is creating an infinite loop
-    { id: id, name: name }
-  end
 end

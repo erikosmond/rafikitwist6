@@ -6,8 +6,9 @@ class GeneralForm
 
   protected
 
-    def create_access(accessible)
-      AccessService.create_access!(user.id, accessible, access_status)
+    def create_access(accessible, status = nil)
+      status ||= access_status
+      AccessService.create_access!(user.id, accessible, status)
     end
 
     def access_status
