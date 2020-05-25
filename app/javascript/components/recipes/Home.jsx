@@ -11,6 +11,7 @@ import {
 import styled from 'styled-components'
 
 import CommentModal from 'containers/CommentModalContainer'
+import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormContainer'
 import RecipeList from 'containers/RecipeListContainer'
@@ -25,6 +26,7 @@ const Home = () => (
     <div>
       <RecipeHeader />
       <CommentModal />
+      <TagFormModal />
       <StyledContent>
         <Switch>
           <Route
@@ -37,7 +39,7 @@ const Home = () => (
           />
           <Route
             path="/recipes/:recipeId/edit"
-            component={RecipeFormSkeleton}
+            render={(props) => <RecipeFormSkeleton {...props} edit />}
           />
           <Route
             path="/recipes/:recipeId"

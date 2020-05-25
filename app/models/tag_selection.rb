@@ -66,4 +66,19 @@ class TagSelection < ApplicationRecord
   def no_self_assignment
     errors.add('Does not make sense to assign tag to itself') if taggable == tag
   end
+
+  def recipe_form_ingredient
+    {
+      ingredient_amount: tag_attributes&.find { |ta| ta.property == 'amount' }&.value,
+      ingredient: { value: tag.id, label: tag.name },
+      ingredient_prep: body
+    }.merge(modification_tag)
+  end
+
+  def modification_tag
+    modification = modifications.first
+    return {} unless modification
+
+    { ingredient_modification: { value: modification.id, label: modification.name } }
+  end
 end

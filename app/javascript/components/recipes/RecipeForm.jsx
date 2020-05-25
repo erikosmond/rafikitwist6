@@ -8,21 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = () => (RecipeFormStyles)
 
-const renderField = (args) => {
-  const {
-    input, label, type, meta: { touched, error }
-  } = args
-  return (
-    <div>
-      <label>{label}</label>
-      <div>
-        <input {...input} type={type} placeholder={label} />
-        {touched && error && <span>{error}</span>}
-      </div>
-    </div>
-  )
-}
-
 const renderIngredients = (args) => {
   const {
     fields,
@@ -88,14 +73,24 @@ let RecipeForm = (props) => {
   const {
     classes,
     handleSubmit,
+    handleTagFormModal,
     ingredientModificationOptions,
     ingredientOptions,
     tagOptions,
   } = props
 
+  const openTagForm = () => {
+    handleTagFormModal({ tagFormModalOpen: true })
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
+        <Field
+          name="id"
+          component="input"
+          type="hidden"
+        />
         <div className={classes.nameLabel} htmlFor="recipeName">Recipe Name</div>
         <Field className={classes.nameField} name="recipeName" component="input" type="text" />
         <div className={classes.descriptionLabel} htmlFor="description">Description</div>
@@ -113,6 +108,9 @@ let RecipeForm = (props) => {
           type="text"
         />
       </div>
+      <button type="button" onClick={openTagForm}>
+        Add Tag
+      </button>
       <FieldArray
         name="ingredients"
         component={renderIngredients}
@@ -191,7 +189,6 @@ let RecipeForm = (props) => {
   )
 }
 
-// TODO: add initial field values
 RecipeForm = reduxForm({
   form: 'recipeForm',
 })(RecipeForm)
@@ -219,6 +216,7 @@ RecipeForm.propTypes = {
   // a js error is logged as missing,
   // eslint-disable-next-line react/require-default-props
   handleSubmit: PropTypes.func,
+  handleTagFormModal: PropTypes.func.isRequired,
 }
 
 RecipeForm.defaultProps = {

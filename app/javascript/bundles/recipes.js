@@ -27,6 +27,8 @@ const LOAD_INGREDIENT_OPTIONS = 'recipes/loadIngredientOptions'
 const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'recipes/loadIngredientOptionsSuccess'
 const LOAD_TAG_OPTIONS = 'recipes/loadTagOptions'
 const LOAD_TAG_OPTIONS_SUCCESS = 'recipes/loadTagOptionsSuccess'
+const LOAD_TAG_TYPES = 'tags/loadTagTypes'
+const LOAD_TAG_TYPES_SUCCESS = 'tags/loadTagTypesSuccess'
 const NO_RECIPE_FOUND = 'recipes/noRecipeFound'
 const NOT_LOADING = 'recipes/notLoading'
 const HANDLE_FILTER = 'recipes/handleFilter'
@@ -38,14 +40,17 @@ const RESET_PAGED_COUNT = 'recipes/resetPagedCount'
 const UPDATE_RECIPE_TAG = 'recipes/updateRecipeTag'
 const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
 const LOAD_RECIPE_FORM_DATA = 'recipes/loadRecipeFormData'
-// const LOAD_RECIPE_FORM_DATA_SUCCESS = 'recipes/loadRecipeFormDataSuccess'
-const HANDLE_COMMENT_MODAL = 'recipes/handleModal'
+const LOAD_EDIT_FORM = 'recipes/loadEditForm'
+const LOAD_EDIT_FORM_SUCCESS = 'recipes/loadEditFormSuccess'
+const HANDLE_COMMENT_MODAL = 'recipes/handleCommentModal'
+const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
+const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
 const SUBMIT_RECIPE_COMMENT = 'recipes/submitRecipeComment'
 const UPDATE_RECIPE_COMMENT_SUCCESS = 'recipes/updateRecipeCommentSuccess'
 const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
 const CLEAR_RECIPE = 'recipes/clearRecipe'
-// const INCREMENT_VISIBLE_RECIPE_COUNT = 'recipes/incrementVisibleRecipeCount'
 const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
+const DEFAULT_PAGED_RECIPE_COUNT = 10
 
 // Reducer
 const initialState = {
@@ -56,6 +61,7 @@ const initialState = {
   visibleFilterTags: {},
   allTags: {},
   tagGroups: {},
+  tagTypes: [],
   recipesLoaded: false,
   noRecipes: false,
   noTags: false,
@@ -63,6 +69,8 @@ const initialState = {
   visibleRecipeCount: 0,
   pagedRecipeCount: 10,
   openModal: false,
+  openTagFormModal: false,
+  recipeFormData: {},
 }
 
 export default function recipesReducer(state = initialState, action = {}) {
@@ -135,6 +143,11 @@ export default function recipesReducer(state = initialState, action = {}) {
         ...state,
         tagOptions: action.payload,
       }
+    case LOAD_TAG_TYPES_SUCCESS:
+      return {
+        ...state,
+        tagTypes: action.payload,
+      }
     case NO_RECIPE_FOUND:
       return {
         ...state,
@@ -194,6 +207,11 @@ export default function recipesReducer(state = initialState, action = {}) {
         commentTagSelectionId: action.payload.commentTagSelectionId,
         commentBody: action.payload.commentBody,
       }
+    case HANDLE_TAG_FORM_MODAL:
+      return {
+        ...state,
+        tagFormModalOpen: action.payload.tagFormModalOpen,
+      }
     case SHOW_MORE_RECIPES:
       return {
         ...state,
@@ -202,7 +220,12 @@ export default function recipesReducer(state = initialState, action = {}) {
     case RESET_PAGED_COUNT:
       return {
         ...state,
-        pagedRecipeCount: 10,
+        pagedRecipeCount: DEFAULT_PAGED_RECIPE_COUNT,
+      }
+    case LOAD_EDIT_FORM_SUCCESS:
+      return {
+        ...state,
+        recipeFormData: action.payload.recipeFormData,
       }
     default:
       return state
@@ -372,6 +395,19 @@ export function loadTagOptionsSuccess({ tagOptions }) {
   }
 }
 
+export function loadTagTypes() {
+  return {
+    type: LOAD_TAG_TYPES,
+  }
+}
+
+export function loadTagTypesSuccess({ tagTypes }) {
+  return {
+    type: LOAD_TAG_TYPES_SUCCESS,
+    payload: tagTypes,
+  }
+}
+
 export function loadCategoryOptionsSuccess({ ingredientOptions }) {
   return {
     type: LOAD_CATEGORY_OPTIONS_SUCCESS,
@@ -427,6 +463,13 @@ export function handleFilter(id, checked) {
   }
 }
 
+export function loadEditForm(id) {
+  return {
+    type: LOAD_EDIT_FORM,
+    payload: id,
+  }
+}
+
 export function handleFilterSuccess(selectedRecipes, selectedFilters, visibleFilters) {
   return {
     type: HANDLE_FILTER_SUCCESS,
@@ -435,6 +478,13 @@ export function handleFilterSuccess(selectedRecipes, selectedFilters, visibleFil
       selectedFilters,
       visibleFilters,
     },
+  }
+}
+
+export function loadEditFormSuccess(recipeFormData) {
+  return {
+    type: LOAD_EDIT_FORM_SUCCESS,
+    payload: { recipeFormData },
   }
 }
 
@@ -511,10 +561,24 @@ export function handleCommentModal(payload) {
   }
 }
 
+export function handleTagFormModal(payload) {
+  return {
+    payload,
+    type: HANDLE_TAG_FORM_MODAL,
+  }
+}
+
 export function handleRecipeSubmit(payload) {
   return {
     payload,
     type: HANDLE_RECIPE_SUBMIT,
+  }
+}
+
+export function submitTagForm(payload) {
+  return {
+    payload,
+    type: HANDLE_TAG_SUBMIT,
   }
 }
 
@@ -609,7 +673,21 @@ export function* loadRecipeOptionsTask() {
 }
 
 export function* handleRecipeSubmitTask({ payload }) {
-  const url = '/api/recipes'
+  const method = payload.id ? 'PUT' : 'POST'
+  const id = payload.id ? `/${payload.id}` : ''
+  const url = `/api/recipes${id}`
+  const params = {
+    method,
+    data: payload,
+  }
+  const result = yield call(callApi, url, params)
+  if (result.success) {
+    console.log(result)
+  }
+}
+
+export function* handleTagSubmitTask({ payload }) {
+  const url = '/api/tags'
   const params = { data: payload, method: 'POST' }
   const result = yield call(callApi, url, params)
   // if (result.success) {
@@ -644,6 +722,26 @@ export function* loadTagOptionsTask() {
   const result = yield call(callApi, url)
   if (result.success) {
     yield put(loadTagOptionsSuccess({ tagOptions: result.data }))
+  } else {
+    yield put(notLoading())
+  }
+}
+
+export function* loadTagTypesTask() {
+  const url = '/api/tag_types'
+  const result = yield call(callApi, url)
+  if (result.success) {
+    yield put(loadTagTypesSuccess({ tagTypes: result.data }))
+  } else {
+    yield put(notLoading())
+  }
+}
+
+export function* loadEditFormTask({ payload }) {
+  const url = `/api/recipes/${payload}/edit`
+  const result = yield call(callApi, url)
+  if (result.success) {
+    yield put(loadEditFormSuccess(result.data))
   } else {
     yield put(notLoading())
   }
@@ -733,7 +831,10 @@ export function* recipesSaga() {
   yield takeLatest(LOAD_ALL_TAGS, loadAllTagsTask)
   yield takeEvery(LOAD_INGREDIENT_OPTIONS, loadIngredientOptionsTask)
   yield takeEvery(LOAD_TAG_OPTIONS, loadTagOptionsTask)
+  yield takeEvery(LOAD_TAG_TYPES, loadTagTypesTask)
   yield takeLatest(UPDATE_RECIPE_TAG, updateTagSelectionTask)
   yield takeLatest(SUBMIT_RECIPE_COMMENT, submitRecipeCommentTask)
+  yield takeLatest(HANDLE_TAG_SUBMIT, handleTagSubmitTask)
   yield takeLatest(HANDLE_RECIPE_SUBMIT, handleRecipeSubmitTask)
+  yield takeLatest(LOAD_EDIT_FORM, loadEditFormTask)
 }

@@ -27,25 +27,54 @@ module Api
     end
 
     def create
-      result = RecipeForm.call(
+      recipe = RecipeForm.call(
         action: :create,
-        params: recipe_params,
+        params: create_recipe_params,
         user: current_user
       )
-      render json: result.recipe
+      render json: recipe.result
+    end
+
+    def edit
+      recipe = Recipe.find params.permit(:id)['id']
+      if Permissions.new(current_user).can_edit?(recipe)
+        render json: RecipeForm.call(action: :edit, params: { recipe: recipe }).result
+      else
+        render json: {}, status: :unauthorized
+      end
+    end
+
+    def update
+      recipe = Recipe.find update_recipe_params['id']
+      if Permissions.new(current_user).can_edit?(recipe)
+        render json: RecipeForm.call(
+          action: :update,
+          params: { recipe: recipe, form_fields: update_recipe_params },
+          user: current_user
+        ).result
+      else
+        render json: {}, status: :unauthorized
+      end
     end
 
     private
 
-      def recipe_params
-        allowed_columns = [
+      def update_recipe_params
+        params.permit shared_columns << :id
+      end
+
+      def create_recipe_params
+        params.permit shared_columns
+      end
+
+      def shared_columns
+        [
           :recipe_name, :description, :instructions,
           ingredients: ingredient_fields,
           sources: %i[id name], vessels: %i[id name], recipe_types: %i[id name],
           menus: %i[id name], preparations: %i[id name], flavors: %i[id name],
           components: %i[id name]
         ]
-        params.permit allowed_columns
       end
 
       def ingredient_fields
