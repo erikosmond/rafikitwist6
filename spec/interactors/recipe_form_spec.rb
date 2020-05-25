@@ -5,7 +5,7 @@ require_relative '../contexts/tag_type_context.rb'
 require_relative '../contexts/recipe_form_context.rb'
 
 # rubocop: disable Metrics/BlockLength
-RSpec.describe TagsByType, type: :interactor do
+RSpec.describe RecipeForm, type: :interactor do
   describe '.call' do
     include_context 'tag_types'
     let(:user) { create(:user) }
