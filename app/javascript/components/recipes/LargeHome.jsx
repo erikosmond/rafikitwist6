@@ -50,7 +50,7 @@ const LargeHome = () => (
           component={RecipeList}
         />
       </Switch>
-    </StyledContent> 
+    </StyledContent>
   </Router>
 )
 

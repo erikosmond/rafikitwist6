@@ -11,13 +11,14 @@ import {
 import styled from 'styled-components'
 
 import CommentModal from 'containers/CommentModalContainer'
+import MobileRecipeList from 'containers/MobileRecipeListContainer'
 import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormContainer'
 import RecipeList from 'containers/RecipeListContainer'
 
 const StyledContent = styled.div`
-  margin-top: 70px;
+  margin-top: 1px;
 `
 
 const SmallHome = () => (
@@ -29,7 +30,7 @@ const SmallHome = () => (
       <Switch>
         <Route
           path="/tags/:tagId/recipes"
-          component={RecipeList}
+          component={MobileRecipeList}
         />
         <Route
           path="/recipes/new"
@@ -48,7 +49,7 @@ const SmallHome = () => (
           component={RecipeList}
         />
       </Switch>
-    </StyledContent> 
+    </StyledContent>
   </Router>
 )
 
