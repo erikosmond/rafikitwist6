@@ -198,7 +198,6 @@ export default function recipesReducer(state = initialState, action = {}) {
         selectedRecipes: state.selectedRecipes.map((r) => commentReducer(r, { ...action })),
       }
     case UPDATE_MOBILE_DRAWER_STATE:
-      console.log(action.payload)
       return {
         ...state,
         mobileDrawerState: action.payload.mobileDrawerState,
@@ -523,8 +522,6 @@ export function updateRecipeTag(recipeId, tagId, tagType, tagSelectionId) {
 }
 
 export function updateMobileDrawerState(mobileDrawerState) {
-  console.log('new drawer state')
-  console.log(mobileDrawerState)
   return {
     type: UPDATE_MOBILE_DRAWER_STATE,
     payload: { mobileDrawerState },
