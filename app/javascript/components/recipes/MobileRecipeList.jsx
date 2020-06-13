@@ -7,8 +7,16 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import GroupIcon from '@material-ui/icons/Group'
 import SearchIcon from '@material-ui/icons/Search'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
+import RecipeListColumn from 'components/recipes/RecipeListColumn'
 
 const useStyles = makeStyles({
+  mobileRecipeFooter: {
+    gridColumnStart: 1,
+    gridColumnEnd: 2,
+    gridRowStart: 3,
+    gridRowEnd: 4,
+    alignSelf: 'center',
+  },
   bottom: {
     width: '100%',
     position: 'fixed',
@@ -16,6 +24,12 @@ const useStyles = makeStyles({
   },
   header: {
     top: 5,
+  },
+  content: {
+    maxHeight: '650px',
+    height: '75%',
+    overflow: 'scroll',
+    position: 'absolute',
   },
 })
 
@@ -129,11 +143,60 @@ function renderNavDrawer(drawerState, setMobileDrawerState) {
   )
 }
 
-export default function MobileRecipeList({ mobileDrawerState, updateMobileDrawerState }) {
+function renderRecipes({
+  selectedRecipes,
+  pagedRecipeCount,
+  ratings,
+  priorities,
+  updateRecipeTag,
+  handleCommentModal,
+  showMoreRecipes,
+  visibleRecipeCount,
+}) {
+  const classes = useStyles()
+  return (
+    <div className={classes.content}>
+      <RecipeListColumn
+        selectedRecipes={selectedRecipes}
+        pagedRecipeCount={pagedRecipeCount}
+        ratings={ratings}
+        priorities={priorities}
+        updateRecipeTag={updateRecipeTag}
+        handleCommentModal={handleCommentModal}
+        showMoreRecipes={showMoreRecipes}
+        visibleRecipeCount={visibleRecipeCount}
+      />
+    </div>
+  )
+}
+
+export default function MobileRecipeList(
+  {
+    mobileDrawerState,
+    updateMobileDrawerState,
+    selectedRecipes,
+    pagedRecipeCount,
+    ratings,
+    priorities,
+    updateRecipeTag,
+    handleCommentModal,
+    showMoreRecipes,
+    visibleRecipeCount,
+  },
+) {
   return (
     <div>
       {renderHeader()}
-      {renderRecipes()}
+      {renderRecipes({
+        selectedRecipes,
+        pagedRecipeCount,
+        ratings,
+        priorities,
+        updateRecipeTag,
+        handleCommentModal,
+        showMoreRecipes,
+        visibleRecipeCount,
+      })}
       {renderNavDrawer(mobileDrawerState, updateMobileDrawerState)}
     </div>
   )
@@ -146,6 +209,25 @@ MobileRecipeList.propTypes = {
     similar: PropTypes.bool,
   }),
   updateMobileDrawerState: PropTypes.func.isRequired,
+  handleCommentModal: PropTypes.func.isRequired,
+  updateRecipeTag: PropTypes.func.isRequired,
+  selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
+  visibleRecipeCount: PropTypes.number,
+  pagedRecipeCount: PropTypes.number,
+  showMoreRecipes: PropTypes.func.isRequired,
+  priorities: PropTypes.shape({}).isRequired,
+  ratings: PropTypes.shape({}).isRequired,
+}
+
+renderRecipes.propTypes = {
+  handleCommentModal: PropTypes.func.isRequired,
+  updateRecipeTag: PropTypes.func.isRequired,
+  selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
+  visibleRecipeCount: PropTypes.number,
+  pagedRecipeCount: PropTypes.number,
+  showMoreRecipes: PropTypes.func.isRequired,
+  priorities: PropTypes.shape({}).isRequired,
+  ratings: PropTypes.shape({}).isRequired,
 }
 
 MobileRecipeList.defaultProps = {
@@ -154,4 +236,13 @@ MobileRecipeList.defaultProps = {
     search: false,
     similar: false,
   },
+  selectedRecipes: [],
+  visibleRecipeCount: 0,
+  pagedRecipeCount: 10,
+}
+
+renderRecipes.defaultProps = {
+  selectedRecipes: [],
+  visibleRecipeCount: 0,
+  pagedRecipeCount: 10,
 }
