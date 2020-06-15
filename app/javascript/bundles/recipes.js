@@ -83,6 +83,7 @@ export default function recipesReducer(state = initialState, action = {}) {
         ...state,
         selectedRecipes: [],
         loading: true,
+        mobileDrawerState: { filters: false, search: false, similar: false },
       }
     case LOAD_TAG_INFO:
       return {

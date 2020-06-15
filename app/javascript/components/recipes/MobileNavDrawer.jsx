@@ -12,13 +12,6 @@ import RelatedTags from 'components/recipes/RelatedTags'
 import RecipeHeader from 'containers/RecipeHeaderContainer'
 
 const useStyles = makeStyles({
-  mobileRecipeFooter: {
-    gridColumnStart: 1,
-    gridColumnEnd: 2,
-    gridRowStart: 3,
-    gridRowEnd: 4,
-    alignSelf: 'center',
-  },
   bottom: {
     width: '100%',
     position: 'fixed',
@@ -53,63 +46,50 @@ const useStyles = makeStyles({
   },
 })
 
-function updateDrawerState(newValue) {
-  switch (newValue) {
-    case 0:
-      return {
-        filters: true,
-        search: false,
-        similar: false,
-      }
-    case 1:
-      return {
-        filters: false,
-        search: true,
-        similar: false,
-      }
-    case 2:
-      return {
-        filters: false,
-        search: false,
-        similar: true,
-      }
-    default:
-      return {
-        filters: false,
-        search: false,
-        similar: false,
-      }
-  }
-}
-
 class MobileNavDrawer extends React.Component {
+  static updateDrawerState(newValue) {
+    switch (newValue) {
+      case 0:
+        return {
+          filters: true,
+          search: false,
+          similar: false,
+        }
+      case 1:
+        return {
+          filters: false,
+          search: true,
+          similar: false,
+        }
+      case 2:
+        return {
+          filters: false,
+          search: false,
+          similar: true,
+        }
+      default:
+        return {
+          filters: false,
+          search: false,
+          similar: false,
+        }
+    }
+  }
+
   constructor(props) {
     super(props)
     this.state = {
       drawerState: -1,
     }
     this.setDrawerState = this.setDrawerState.bind(this)
-    // this.handleDrawerState = this.handleDrawerState.bind(this)
   }
 
   setDrawerState(value) {
     this.setState({ drawerState: value })
   }
 
-  // function renderNavDrawer(drawerState, setMobileDrawerState, {
-  //   visibleFilterTags,
-  //   allTags,
-  //   tagGroups,
-  //   selectedFilters,
-  //   handleFilter,
-  //   allTagTypes,
-  //   tagsByType,
-  //   selectedTag,
-  // }) {
   render() {
     const classes = {} // useStyles()
-    // TODO: update this to class component
-    // const [value, setValue] = React.useState(-1)
 
     const noop = () => {
     }
@@ -133,8 +113,7 @@ class MobileNavDrawer extends React.Component {
         return
       }
       this.setDrawerState(drawerValue)
-      // setValue(drawerValue)
-      updateMobileDrawerState(updateDrawerState(drawerValue))
+      updateMobileDrawerState(MobileNavDrawer.updateDrawerState(drawerValue))
     }
 
 
@@ -234,7 +213,6 @@ MobileNavDrawer.propTypes = {
   tagsByType: PropTypes.shape({}).isRequired,
   visibleFilterTags: PropTypes.shape({}),
   selectedFilters: PropTypes.arrayOf(PropTypes.number),
-  // noRecipes: PropTypes.bool,
   selectedTag: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
