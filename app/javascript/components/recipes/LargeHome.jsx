@@ -9,7 +9,6 @@ import {
 } from 'react-router-dom'
 
 import styled from 'styled-components'
-import { makeStyles } from '@material-ui/core/styles'
 
 import CommentModal from 'containers/CommentModalContainer'
 import TagFormModal from 'containers/TagFormContainer'
@@ -22,21 +21,20 @@ const StyledContent = styled.div`
   margin-top: 70px;
 `
 
-const useStyles = makeStyles({
-  headerWrapper: {
-    width: '100%',
-    position: 'fixed',
-    top: '0px',
-    backgroundColor: 'white',
-    zIndex: 1,
-  },
-})
+const HeaderWrapper = styled.div`
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    background-color: white;
+    z-index: 1;
+`
 
 const LargeHome = () => {
-  const styles = useStyles()
   return (
     <Router>
-      <RecipeHeader styles={styles} />
+      <HeaderWrapper>
+        <RecipeHeader />
+      </HeaderWrapper>
       <CommentModal />
       <TagFormModal />
 

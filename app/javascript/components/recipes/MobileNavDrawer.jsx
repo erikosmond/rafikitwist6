@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FilterByIngredients from 'components/filters/FilterByIngredients'
-import { makeStyles } from '@material-ui/core/styles'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
@@ -10,41 +9,11 @@ import SearchIcon from '@material-ui/icons/Search'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import RelatedTags from 'components/recipes/RelatedTags'
 import RecipeHeader from 'containers/RecipeHeaderContainer'
+import styled from 'styled-components'
 
-const useStyles = makeStyles({
-  bottom: {
-    width: '100%',
-    position: 'fixed',
-    bottom: 10,
-  },
-  header: {
-    top: 5,
-    position: 'fixed',
-    zIndex: '1',
-  },
-  content: {
-    marginTop: '30px',
-    maxHeight: '650px',
-    height: '75%',
-    overflow: 'scroll',
-    position: 'absolute',
-  },
-  headerWrapper: {
-    display: 'contents',
-    backgroundColor: 'white',
-    zIndex: 1,
-  },
-  searchMargin: {
-    width: '90%',
-    marginBottom: '50%',
-  },
-  searchWidth: {
-    width: '90%',
-  },
-  relatedWrapper: {
-    minHeight: '500px',
-  },
-})
+const RelatedWrapper = styled.div`
+  min-height: 500px;
+`
 
 class MobileNavDrawer extends React.Component {
   static updateDrawerState(newValue) {
@@ -89,8 +58,6 @@ class MobileNavDrawer extends React.Component {
   }
 
   render() {
-    const classes = {} // useStyles()
-
     const noop = () => {
     }
 
@@ -125,17 +92,15 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <div className={classes.filters}>
-            <FilterByIngredients
-              visibleTags={visibleFilterTags}
-              allTags={allTags}
-              tagGroups={tagGroups}
-              selectedFilters={selectedFilters}
-              handleFilter={handleFilter}
-              allTagTypes={allTagTypes}
-              tagsByType={tagsByType}
-            />
-          </div>
+          <FilterByIngredients
+            visibleTags={visibleFilterTags}
+            allTags={allTags}
+            tagGroups={tagGroups}
+            selectedFilters={selectedFilters}
+            handleFilter={handleFilter}
+            allTagTypes={allTagTypes}
+            tagsByType={tagsByType}
+          />
         </SwipeableDrawer>
 
         <SwipeableDrawer
@@ -144,7 +109,7 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <RecipeHeader styles={classes} />
+          <RecipeHeader mobile />
         </SwipeableDrawer>
 
         <SwipeableDrawer
@@ -153,7 +118,7 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <div className={classes.relatedWrapper}>
+          <RelatedWrapper>
             <RelatedTags tags={selectedTag.grandparentTags} />
             <RelatedTags tags={selectedTag.parentTags} />
             <RelatedTags tags={selectedTag.childTags} />
@@ -161,7 +126,7 @@ class MobileNavDrawer extends React.Component {
             <RelatedTags tags={selectedTag.sisterTags} />
             <RelatedTags tags={selectedTag.modificationTags} />
             <RelatedTags tags={selectedTag.modifiedTags} />
-          </div>
+          </RelatedWrapper>
         </SwipeableDrawer>
 
         <BottomNavigation
@@ -170,7 +135,6 @@ class MobileNavDrawer extends React.Component {
             this.setDrawerState(newValue)
           }}
           showLabels
-          className={classes.bottom}
         >
           <BottomNavigationAction
             onClick={handleDrawerState(0)}

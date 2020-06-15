@@ -1,7 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
 import AccountMenu from './AccountMenu'
 import HeaderDropdown from './HeaderDropdown'
+
+const useStyles = makeStyles({
+  searchMargin: {
+    width: '90%',
+    marginBottom: '50%',
+  },
+  searchWidth: {
+    width: '90%',
+  },
+})
 
 const RecipeHeader = (props) => {
   const {
@@ -12,8 +23,10 @@ const RecipeHeader = (props) => {
     categoryOptions,
     history,
     firstName,
-    styles,
+    mobile,
   } = props
+
+  const classes = useStyles()
 
   const updateTags = (selectedOption) => {
     history.push(`/tags/${selectedOption}/recipes`)
@@ -24,27 +37,27 @@ const RecipeHeader = (props) => {
   }
 
   return (
-    <div className={styles.headerWrapper}>
+    <div>
       <HeaderDropdown
         dropdownOptions={recipeOptions}
         loadOptions={loadRecipeOptions}
         placeholder="Recipes"
         updateHistory={updateRecipes}
-        className={styles.searchWidth}
+        className={mobile ? classes.searchWidth : ''}
       />
       <HeaderDropdown
         dropdownOptions={ingredientOptions}
         loadOptions={loadIngredientOptions}
         placeholder="Ingredients"
         updateHistory={updateTags}
-        className={styles.searchWidth}
+        className={mobile ? classes.searchWidth : ''}
       />
       <HeaderDropdown
         dropdownOptions={categoryOptions}
         loadOptions={loadIngredientOptions}
         placeholder="More"
         updateHistory={updateTags}
-        className={styles.searchMargin}
+        className={mobile ? classes.searchMargin : ''}
       />
       <AccountMenu
         firstName={firstName}
@@ -71,11 +84,7 @@ RecipeHeader.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  styles: PropTypes.shape({
-    headerWrapper: PropTypes.string,
-    searchMargin: PropTypes.string,
-    searchWidth: PropTypes.string,
-  }).isRequired,
+  mobile: PropTypes.bool,
 }
 
 RecipeHeader.defaultProps = {
@@ -83,4 +92,5 @@ RecipeHeader.defaultProps = {
   ingredientOptions: [],
   categoryOptions: [],
   firstName: '',
+  mobile: false,
 }
