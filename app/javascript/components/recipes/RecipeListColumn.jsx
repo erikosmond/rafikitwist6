@@ -52,15 +52,16 @@ class RecipeListColumn extends React.Component {
     return (
       <div>
         {this.renderHeaderWithCount()}
-        {selectedRecipes.filter(RecipeListColumn.displayShown).splice(0, pagedRecipeCount).map((r) => (
-          <RecipeListItem
-            key={r.id}
-            recipe={r}
-            ratings={ratings}
-            priorities={priorities}
-            updateRecipeTag={updateRecipeTag}
-            handleCommentModal={handleCommentModal}
-          />
+        {selectedRecipes.filter(
+          RecipeListColumn.displayShown).splice(0, pagedRecipeCount).map((r) => (
+            <RecipeListItem
+              key={r.id}
+              recipe={r}
+              ratings={ratings}
+              priorities={priorities}
+              updateRecipeTag={updateRecipeTag}
+              handleCommentModal={handleCommentModal}
+            />
         ))}
         {this.renderShowMoreRecipes()}
       </div>

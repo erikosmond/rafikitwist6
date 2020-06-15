@@ -25,7 +25,7 @@ class HeaderDropdown extends React.Component {
 
   render() {
     const { selectedOption } = this.state
-    const { dropdownOptions, placeholder } = this.props
+    const { dropdownOptions, placeholder, className } = this.props
     const options = dropdownOptions || []
     return (
       <StyledSelect
@@ -35,6 +35,7 @@ class HeaderDropdown extends React.Component {
         placeholder={placeholder}
         isSearchable
         isClearable
+        className={className}
       />
     )
   }
@@ -49,4 +50,9 @@ HeaderDropdown.propTypes = {
     { name: PropTypes.string, id: PropTypes.number },
   )).isRequired,
   placeholder: PropTypes.string.isRequired,
+  className: PropTypes.string,
+}
+
+HeaderDropdown.defaultProps = {
+  className: '',
 }

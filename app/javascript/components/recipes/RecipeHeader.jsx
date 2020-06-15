@@ -1,17 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import AccountMenu from './AccountMenu'
 import HeaderDropdown from './HeaderDropdown'
-
-const StyledHeader = styled.div`
-  width: 100%;
-  position: fixed;
-  top: 0px;
-  background-color: white;
-  z-index: 1;
-`
-
 
 const RecipeHeader = (props) => {
   const {
@@ -22,6 +12,7 @@ const RecipeHeader = (props) => {
     categoryOptions,
     history,
     firstName,
+    styles,
   } = props
 
   const updateTags = (selectedOption) => {
@@ -33,29 +24,32 @@ const RecipeHeader = (props) => {
   }
 
   return (
-    <StyledHeader>
+    <div className={styles.headerWrapper}>
       <HeaderDropdown
         dropdownOptions={recipeOptions}
         loadOptions={loadRecipeOptions}
         placeholder="Recipes"
         updateHistory={updateRecipes}
+        className={styles.searchWidth}
       />
       <HeaderDropdown
         dropdownOptions={ingredientOptions}
         loadOptions={loadIngredientOptions}
         placeholder="Ingredients"
         updateHistory={updateTags}
+        className={styles.searchWidth}
       />
       <HeaderDropdown
         dropdownOptions={categoryOptions}
         loadOptions={loadIngredientOptions}
         placeholder="More"
         updateHistory={updateTags}
+        className={styles.searchMargin}
       />
       <AccountMenu
         firstName={firstName}
       />
-    </StyledHeader>
+    </div>
   )
 }
 
@@ -76,6 +70,11 @@ RecipeHeader.propTypes = {
   )),
   history: PropTypes.shape({
     push: PropTypes.func,
+  }).isRequired,
+  styles: PropTypes.shape({
+    headerWrapper: PropTypes.string,
+    searchMargin: PropTypes.string,
+    searchWidth: PropTypes.string,
   }).isRequired,
 }
 

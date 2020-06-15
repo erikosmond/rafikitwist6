@@ -1,13 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import MobileNavDrawer from 'components/recipes/MobileNavDrawer'
 import { makeStyles } from '@material-ui/core/styles'
-import BottomNavigation from '@material-ui/core/BottomNavigation'
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import CheckBoxIcon from '@material-ui/icons/CheckBox'
-import GroupIcon from '@material-ui/icons/Group'
-import SearchIcon from '@material-ui/icons/Search'
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import RecipeListColumn from 'components/recipes/RecipeListColumn'
+import FilterChips from 'components/filters/FilterChips'
 
 const useStyles = makeStyles({
   mobileRecipeFooter: {
@@ -24,156 +20,76 @@ const useStyles = makeStyles({
   },
   header: {
     top: 5,
+    position: 'fixed',
+    zIndex: '1',
   },
   content: {
+    marginTop: '30px',
     maxHeight: '650px',
     height: '75%',
     overflow: 'scroll',
     position: 'absolute',
   },
+  headerWrapper: {
+    display: 'contents',
+    backgroundColor: 'white',
+    zIndex: 1,
+  },
+  searchMargin: {
+    width: '90%',
+    marginBottom: '50%',
+  },
+  searchWidth: {
+    width: '90%',
+  },
+  relatedWrapper: {
+    minHeight: '500px',
+  },
 })
 
-function renderHeader() {
-  const classes = useStyles()
-  return (
-    <h2 className={classes.header}>
-      RafikiTwist
-    </h2>
-  )
-}
-
-function updateDrawerState(newValue) {
-  switch (newValue) {
-    case 0:
-      return {
-        filters: true,
-        search: false,
-        similar: false,
+class MobileRecipeList extends React.Component {
+  componentDidUpdate(lastProps) {
+    const {
+      loadRecipes, loadTagInfo, location, match,
+    } = this.props
+    if (lastProps.location !== location) {
+      lastProps.clearFilters()
+      lastProps.resetPagedCount()
+      const { tagId } = match.params
+      if (tagId) {
+        loadRecipes(tagId)
+        loadTagInfo(tagId)
       }
-    case 1:
-      return {
-        filters: false,
-        search: true,
-        similar: false,
-      }
-    case 2:
-      return {
-        filters: false,
-        search: false,
-        similar: true,
-      }
-    default:
-      return {
-        filters: false,
-        search: false,
-        similar: false,
-      }
-  }
-}
-
-function renderNavDrawer(drawerState, setMobileDrawerState) {
-  const classes = useStyles()
-  const [value, setValue] = React.useState(-1)
-
-  const handleDrawerState = (drawerValue) => (event) => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return
     }
-    setValue(drawerValue)
-    setMobileDrawerState(updateDrawerState(drawerValue))
   }
 
-  const noop = () => {
+  componentWillUnmount() {
+    const { clearFilters, resetPagedCount } = this.props
+    clearFilters()
+    resetPagedCount()
   }
 
-  return (
-    <>
-      <SwipeableDrawer
-        anchor="bottom"
-        open={drawerState.filters}
-        onClose={handleDrawerState(-1)}
-        onOpen={noop}
-      >
-        <div className={classes.filters}> Filters! </div>
-      </SwipeableDrawer>
-
-      <SwipeableDrawer
-        anchor="bottom"
-        open={drawerState.search}
-        onClose={handleDrawerState(-1)}
-        onOpen={noop}
-      >
-        <div> Search! </div>
-      </SwipeableDrawer>
-
-      <SwipeableDrawer
-        anchor="bottom"
-        open={drawerState.similar}
-        onClose={handleDrawerState(-1)}
-        onOpen={noop}
-      >
-        <div> Similar! </div>
-      </SwipeableDrawer>
-
-      <BottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue)
-        }}
-        showLabels
-        className={classes.bottom}
-      >
-        <BottomNavigationAction
-          onClick={handleDrawerState(0)}
-          label="Filters"
-          icon={<CheckBoxIcon />}
+  static renderHeader({
+    allTags,
+    selectedFilters,
+    handleFilter,
+    selectedTag,
+  }) {
+    // TODO: useStyles seems to be breaking everything? see if i can use it in a class?
+    const classes = {} // useStyles()
+    return (
+      <div className={classes.header}>
+        <FilterChips
+          allTags={allTags}
+          selectedFilters={selectedFilters}
+          handleFilter={handleFilter}
+          selectedTag={selectedTag}
         />
-        <BottomNavigationAction
-          onClick={handleDrawerState(1)}
-          label="Search"
-          icon={<SearchIcon />}
-        />
-        <BottomNavigationAction
-          onClick={handleDrawerState(2)}
-          label="Similar"
-          icon={<GroupIcon />}
-        />
-      </BottomNavigation>
-    </>
-  )
-}
+      </div>
+    )
+  }
 
-function renderRecipes({
-  selectedRecipes,
-  pagedRecipeCount,
-  ratings,
-  priorities,
-  updateRecipeTag,
-  handleCommentModal,
-  showMoreRecipes,
-  visibleRecipeCount,
-}) {
-  const classes = useStyles()
-  return (
-    <div className={classes.content}>
-      <RecipeListColumn
-        selectedRecipes={selectedRecipes}
-        pagedRecipeCount={pagedRecipeCount}
-        ratings={ratings}
-        priorities={priorities}
-        updateRecipeTag={updateRecipeTag}
-        handleCommentModal={handleCommentModal}
-        showMoreRecipes={showMoreRecipes}
-        visibleRecipeCount={visibleRecipeCount}
-      />
-    </div>
-  )
-}
-
-export default function MobileRecipeList(
-  {
-    mobileDrawerState,
-    updateMobileDrawerState,
+  static renderRecipes({
     selectedRecipes,
     pagedRecipeCount,
     ratings,
@@ -182,24 +98,79 @@ export default function MobileRecipeList(
     handleCommentModal,
     showMoreRecipes,
     visibleRecipeCount,
-  },
-) {
-  return (
-    <div>
-      {renderHeader()}
-      {renderRecipes({
-        selectedRecipes,
-        pagedRecipeCount,
-        ratings,
-        priorities,
-        updateRecipeTag,
-        handleCommentModal,
-        showMoreRecipes,
-        visibleRecipeCount,
-      })}
-      {renderNavDrawer(mobileDrawerState, updateMobileDrawerState)}
-    </div>
-  )
+  }) {
+    const classes = {} // useStyles()
+    return (
+      <div className={classes.content}>
+        <RecipeListColumn
+          selectedRecipes={selectedRecipes}
+          pagedRecipeCount={pagedRecipeCount}
+          ratings={ratings}
+          priorities={priorities}
+          updateRecipeTag={updateRecipeTag}
+          handleCommentModal={handleCommentModal}
+          showMoreRecipes={showMoreRecipes}
+          visibleRecipeCount={visibleRecipeCount}
+        />
+      </div>
+    )
+  }
+
+  // export default function MobileRecipeList(
+  render() {
+    const {
+      mobileDrawerState,
+      updateMobileDrawerState,
+      selectedRecipes,
+      pagedRecipeCount,
+      ratings,
+      priorities,
+      updateRecipeTag,
+      handleCommentModal,
+      showMoreRecipes,
+      visibleRecipeCount,
+      visibleFilterTags,
+      allTags,
+      tagGroups,
+      selectedFilters,
+      handleFilter,
+      allTagTypes,
+      tagsByType,
+      selectedTag,
+    } = this.props
+    return (
+      <div>
+        <MobileNavDrawer
+          mobileDrawerState={mobileDrawerState}
+          updateMobileDrawerState={updateMobileDrawerState}
+          visibleFilterTags={visibleFilterTags}
+          allTags={allTags}
+          tagGroups={tagGroups}
+          selectedFilters={selectedFilters}
+          handleFilter={handleFilter}
+          allTagTypes={allTagTypes}
+          tagsByType={tagsByType}
+          selectedTag={selectedTag}
+        />
+        {MobileRecipeList.renderHeader({
+          allTags,
+          selectedFilters,
+          handleFilter,
+          selectedTag,
+        })}
+        {MobileRecipeList.renderRecipes({
+          selectedRecipes,
+          pagedRecipeCount,
+          ratings,
+          priorities,
+          updateRecipeTag,
+          handleCommentModal,
+          showMoreRecipes,
+          visibleRecipeCount,
+        })}
+      </div>
+    )
+  }
 }
 
 MobileRecipeList.propTypes = {
@@ -209,26 +180,104 @@ MobileRecipeList.propTypes = {
     similar: PropTypes.bool,
   }),
   updateMobileDrawerState: PropTypes.func.isRequired,
+  // handleCommentModal: PropTypes.func.isRequired,
+  // updateRecipeTag: PropTypes.func.isRequired,
+  // selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
+  // visibleRecipeCount: PropTypes.number,
+  // pagedRecipeCount: PropTypes.number,
+  // showMoreRecipes: PropTypes.func.isRequired,
+  // priorities: PropTypes.shape({}).isRequired,
+  // ratings: PropTypes.shape({}).isRequired,
+  // visibleFilterTags: PropTypes.shape({}),
+  // allTags: PropTypes.shape({
+  //   id: PropTypes.number,
+  // }).isRequired,
+  // allTagTypes: PropTypes.shape({
+  //   id: PropTypes.number,
+  // }).isRequired,
+  // tagGroups: PropTypes.shape({}).isRequired,
+  // selectedFilters: PropTypes.arrayOf(PropTypes.number),
+  // handleFilter: PropTypes.func.isRequired,
+  // tagsByType: PropTypes.shape({}).isRequired,
+  // selectedTag: PropTypes.shape({
+  //   name: PropTypes.string,
+  //   description: PropTypes.string,
+  //   grandparentTags: PropTypes.shape({}),
+  //   parentTags: PropTypes.shape({}),
+  //   childTags: PropTypes.shape({}),
+  //   grandchildTags: PropTypes.shape({}),
+  //   sisterTags: PropTypes.shape({}),
+  //   modificationTags: PropTypes.shape({}),
+  //   modifiedTags: PropTypes.shape({}),
+  // }).isRequired,
+  loadRecipes: PropTypes.func.isRequired,
+  loadTagInfo: PropTypes.func.isRequired,
   handleCommentModal: PropTypes.func.isRequired,
+  handleFilter: PropTypes.func.isRequired,
+  clearFilters: PropTypes.func.isRequired,
+  resetPagedCount: PropTypes.func.isRequired,
   updateRecipeTag: PropTypes.func.isRequired,
   selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
+  // recipesLoaded: PropTypes.bool,
+  // loading: PropTypes.bool,
+  tagGroups: PropTypes.shape({}).isRequired,
+  allTags: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
+  allTagTypes: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
+  tagsByType: PropTypes.shape({}).isRequired,
+  visibleFilterTags: PropTypes.shape({}),
+  selectedFilters: PropTypes.arrayOf(PropTypes.number),
   visibleRecipeCount: PropTypes.number,
   pagedRecipeCount: PropTypes.number,
   showMoreRecipes: PropTypes.func.isRequired,
+  // noRecipes: PropTypes.bool,
   priorities: PropTypes.shape({}).isRequired,
   ratings: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      tagId: PropTypes.string,
+    }),
+  }).isRequired,
+  selectedTag: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    grandparentTags: PropTypes.shape({}),
+    parentTags: PropTypes.shape({}),
+    childTags: PropTypes.shape({}),
+    grandchildTags: PropTypes.shape({}),
+    sisterTags: PropTypes.shape({}),
+    modificationTags: PropTypes.shape({}),
+    modifiedTags: PropTypes.shape({}),
+  }).isRequired,
 }
 
-renderRecipes.propTypes = {
-  handleCommentModal: PropTypes.func.isRequired,
-  updateRecipeTag: PropTypes.func.isRequired,
-  selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
-  visibleRecipeCount: PropTypes.number,
-  pagedRecipeCount: PropTypes.number,
-  showMoreRecipes: PropTypes.func.isRequired,
-  priorities: PropTypes.shape({}).isRequired,
-  ratings: PropTypes.shape({}).isRequired,
-}
+// renderRecipes.propTypes = {
+//   handleCommentModal: PropTypes.func.isRequired,
+//   updateRecipeTag: PropTypes.func.isRequired,
+//   selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
+//   visibleRecipeCount: PropTypes.number,
+//   pagedRecipeCount: PropTypes.number,
+//   showMoreRecipes: PropTypes.func.isRequired,
+//   priorities: PropTypes.shape({}).isRequired,
+//   ratings: PropTypes.shape({}).isRequired,
+// }
+
+// renderHeader.propTypes = {
+//   allTags: PropTypes.shape({
+//     id: PropTypes.number,
+//   }).isRequired,
+//   selectedFilters: PropTypes.arrayOf(PropTypes.number),
+//   handleFilter: PropTypes.func.isRequired,
+//   selectedTag: PropTypes.shape({
+//     name: PropTypes.string,
+//   }).isRequired,
+// }
 
 MobileRecipeList.defaultProps = {
   mobileDrawerState: {
@@ -239,10 +288,18 @@ MobileRecipeList.defaultProps = {
   selectedRecipes: [],
   visibleRecipeCount: 0,
   pagedRecipeCount: 10,
+  selectedFilters: [],
+  visibleFilterTags: {},
 }
 
-renderRecipes.defaultProps = {
-  selectedRecipes: [],
-  visibleRecipeCount: 0,
-  pagedRecipeCount: 10,
-}
+// renderRecipes.defaultProps = {
+//   selectedRecipes: [],
+//   visibleRecipeCount: 0,
+//   pagedRecipeCount: 10,
+// }
+
+// renderHeader.defaultProps = {
+//   selectedFilters: [],
+// }
+
+export default MobileRecipeList
