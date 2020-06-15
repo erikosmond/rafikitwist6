@@ -50,6 +50,7 @@ const UPDATE_RECIPE_COMMENT_SUCCESS = 'recipes/updateRecipeCommentSuccess'
 const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
 const CLEAR_RECIPE = 'recipes/clearRecipe'
 const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
+const UPDATE_MOBILE_DRAWER_STATE = 'recipes/updateMobileDrawerState'
 const DEFAULT_PAGED_RECIPE_COUNT = 10
 
 // Reducer
@@ -71,15 +72,18 @@ const initialState = {
   openModal: false,
   openTagFormModal: false,
   recipeFormData: {},
+  mobileDrawerState: { filters: false, search: false, similar: false },
 }
 
 export default function recipesReducer(state = initialState, action = {}) {
+  // TODO: merge state into initialState as state initially gets set from index.jsx
   switch (action.type) {
     case LOAD_RECIPES:
       return {
         ...state,
         selectedRecipes: [],
         loading: true,
+        mobileDrawerState: { filters: false, search: false, similar: false },
       }
     case LOAD_TAG_INFO:
       return {
@@ -193,6 +197,11 @@ export default function recipesReducer(state = initialState, action = {}) {
       return {
         ...state,
         selectedRecipes: state.selectedRecipes.map((r) => commentReducer(r, { ...action })),
+      }
+    case UPDATE_MOBILE_DRAWER_STATE:
+      return {
+        ...state,
+        mobileDrawerState: action.payload.mobileDrawerState,
       }
     case SET_VISIBLE_RECIPE_COUNT:
       return {
@@ -510,6 +519,13 @@ export function updateRecipeTag(recipeId, tagId, tagType, tagSelectionId) {
       taggableId: recipeId,
       taggableType: 'Recipe',
     },
+  }
+}
+
+export function updateMobileDrawerState(mobileDrawerState) {
+  return {
+    type: UPDATE_MOBILE_DRAWER_STATE,
+    payload: { mobileDrawerState },
   }
 }
 

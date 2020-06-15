@@ -2,20 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import FilterByIngredients from 'components/filters/FilterByIngredients'
 import FilterChips from 'components/filters/FilterChips'
-import RecipeListItem from 'components/recipes/RecipeListItem'
+import RecipeListColumn from 'components/recipes/RecipeListColumn'
 import RelatedTags from 'components/recipes/RelatedTags'
 import PaperContent from '../styled/PaperContent'
 import PaperSidebar from '../styled/PaperSidebar'
 
 class RecipeList extends React.Component {
-  static displayShown(recipe) {
-    return recipe.hidden !== true
-  }
-
   constructor(props) {
     super(props)
     this.noRecipes = false
-    this.handleShowMoreRecipes = this.handleShowMoreRecipes.bind(this)
   }
 
   componentDidUpdate(lastProps) {
@@ -39,11 +34,6 @@ class RecipeList extends React.Component {
     resetPagedCount()
   }
 
-  handleShowMoreRecipes() {
-    const { pagedRecipeCount, showMoreRecipes } = this.props
-    showMoreRecipes(pagedRecipeCount)
-  }
-
   renderHeaderWithCount() {
     const { selectedRecipes, visibleRecipeCount } = this.props
     const selectedRecipeCount = selectedRecipes.length
@@ -57,16 +47,6 @@ class RecipeList extends React.Component {
     )
   }
 
-  renderShowMoreRecipes() {
-    const { pagedRecipeCount, visibleRecipeCount } = this.props
-    if (visibleRecipeCount && visibleRecipeCount > pagedRecipeCount) {
-      return (
-        <button type="button" onClick={this.handleShowMoreRecipes}>Show more</button>
-      )
-    }
-    return ''
-  }
-
   render() {
     const {
       recipesLoaded,
@@ -75,6 +55,7 @@ class RecipeList extends React.Component {
       noRecipes,
       loading,
       visibleFilterTags,
+      visibleRecipeCount,
       allTags,
       tagGroups,
       handleCommentModal,
@@ -86,6 +67,7 @@ class RecipeList extends React.Component {
       priorities,
       updateRecipeTag,
       selectedFilters,
+      showMoreRecipes,
     } = this.props
     if (loading) {
       return (
@@ -131,18 +113,16 @@ class RecipeList extends React.Component {
         />
 
         <PaperContent>
-          {this.renderHeaderWithCount()}
-          {selectedRecipes.filter(RecipeList.displayShown).splice(0, pagedRecipeCount).map((r) => (
-            <RecipeListItem
-              key={r.id}
-              recipe={r}
-              ratings={ratings}
-              priorities={priorities}
-              updateRecipeTag={updateRecipeTag}
-              handleCommentModal={handleCommentModal}
-            />
-          ))}
-          {this.renderShowMoreRecipes()}
+          <RecipeListColumn
+            selectedRecipes={selectedRecipes}
+            pagedRecipeCount={pagedRecipeCount}
+            ratings={ratings}
+            priorities={priorities}
+            updateRecipeTag={updateRecipeTag}
+            handleCommentModal={handleCommentModal}
+            showMoreRecipes={showMoreRecipes}
+            visibleRecipeCount={visibleRecipeCount}
+          />
         </PaperContent>
 
         <PaperSidebar>
