@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import MobileNavDrawer from 'components/recipes/MobileNavDrawer'
-// import { makeStyles } from '@material-ui/core/styles'
 import RecipeListColumn from 'components/recipes/RecipeListColumn'
 import FilterChips from 'components/filters/FilterChips'
 import styled from 'styled-components'
@@ -23,19 +22,6 @@ const Body = styled.div`
   margin-bottom: 65px;
   overflow: scroll; 
 `
-
-// const useStyles = makeStyles({
-//   searchMargin: {
-//     width: '90%',
-//     marginBottom: '50%',
-//   },
-//   searchWidth: {
-//     width: '90%',
-//   },
-//   relatedWrapper: {
-//     minHeight: '500px',
-//   },
-// })
 
 class MobileRecipeList extends React.Component {
   componentDidUpdate(lastProps) {
