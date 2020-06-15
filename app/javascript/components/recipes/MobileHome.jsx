@@ -46,7 +46,7 @@ const SmallHome = () => (
         />
         <Route
           path="/"
-          component={RecipeList}
+          component={MobileRecipeList}
         />
       </Switch>
     </StyledContent>
