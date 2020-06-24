@@ -15,6 +15,10 @@ const RelatedWrapper = styled.div`
   min-height: 500px;
 `
 
+const FilterWrapper = styled.div`
+  max-height: 500px;
+`
+
 class MobileNavDrawer extends React.Component {
   static updateDrawerState(newValue) {
     switch (newValue) {
@@ -92,15 +96,17 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <FilterByIngredients
-            visibleTags={visibleFilterTags}
-            allTags={allTags}
-            tagGroups={tagGroups}
-            selectedFilters={selectedFilters}
-            handleFilter={handleFilter}
-            allTagTypes={allTagTypes}
-            tagsByType={tagsByType}
-          />
+          <FilterWrapper>
+            <FilterByIngredients
+              visibleTags={visibleFilterTags}
+              allTags={allTags}
+              tagGroups={tagGroups}
+              selectedFilters={selectedFilters}
+              handleFilter={handleFilter}
+              allTagTypes={allTagTypes}
+              tagsByType={tagsByType}
+            />
+          </FilterWrapper>
         </SwipeableDrawer>
 
         <SwipeableDrawer
