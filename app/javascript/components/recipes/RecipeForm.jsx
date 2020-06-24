@@ -78,7 +78,6 @@ let RecipeForm = (props) => {
     ingredientOptions,
     tagOptions,
   } = props
-
   const openTagForm = () => {
     handleTagFormModal({ tagFormModalOpen: true })
   }
