@@ -101,17 +101,17 @@ class RecipeList extends React.Component {
           handleFilter={handleFilter}
           selectedTag={selectedTag}
         />
-
-        <FilterByIngredients
-          visibleTags={visibleFilterTags}
-          allTags={allTags}
-          tagGroups={tagGroups}
-          selectedFilters={selectedFilters}
-          handleFilter={handleFilter}
-          allTagTypes={allTagTypes}
-          tagsByType={tagsByType}
-        />
-
+        <PaperSidebar>
+          <FilterByIngredients
+            visibleTags={visibleFilterTags}
+            allTags={allTags}
+            tagGroups={tagGroups}
+            selectedFilters={selectedFilters}
+            handleFilter={handleFilter}
+            allTagTypes={allTagTypes}
+            tagsByType={tagsByType}
+          />
+        </PaperSidebar>
         <PaperContent>
           <RecipeListColumn
             selectedRecipes={selectedRecipes}

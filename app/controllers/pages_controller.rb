@@ -4,7 +4,7 @@
 class PagesController < ApplicationController
   PRIORITY_TAG_NAME = 'Priority'
   RATING_TAG_NAME = 'Rating'
-  HOME_TAG_NAME = 'Erik Osmond'
+  HOME_TAG_NAME = 'Featured Cocktails'
 
   def home
     priority_tags = TagType.find_by_name(PRIORITY_TAG_NAME).tags

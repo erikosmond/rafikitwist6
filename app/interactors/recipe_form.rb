@@ -79,15 +79,6 @@ class RecipeForm < GeneralForm
       context.tag_types ||= TagType.all.reject do |tt| 
         TagType::INGREDIENT_TYPES.include? tt.name
       end.map(&:name).map(&:downcase).map(&:pluralize)
-      # %w[
-      #   sources
-      #   vessels
-      #   recipetypes
-      #   menus
-      #   preparations
-      #   flavors
-      #   components
-      # ]
     end
 
     def tag_ids_by_type(tags)

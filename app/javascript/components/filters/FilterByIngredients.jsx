@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FormGroup from '@material-ui/core/FormGroup'
-import PaperSidebar from 'components/styled/PaperSidebar'
 import IngredientFamilyFilter from 'components/filters/IngredientFamilyFilter'
 import IngredientTypeFilter from 'components/filters/IngredientTypeFilter'
 
@@ -18,7 +17,7 @@ const FilterByIngredients = ({
     return allTags[id]
   }
   return (
-    <PaperSidebar>
+    <div>
       <h2> Filters </h2>
       <FormGroup>
         {tagGroups && Object.keys(tagGroups).map((t) => (
@@ -46,7 +45,7 @@ const FilterByIngredients = ({
           />
         ))}
       </FormGroup>
-    </PaperSidebar>
+    </div>
   )
 }
 export default FilterByIngredients

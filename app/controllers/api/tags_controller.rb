@@ -32,7 +32,7 @@ module Api
         params: tag_params,
         user: current_user
       )
-      render json: result.recipe
+      render json: result.tag
     end
 
     private

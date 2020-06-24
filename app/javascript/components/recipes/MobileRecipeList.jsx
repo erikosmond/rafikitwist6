@@ -72,20 +72,30 @@ class MobileRecipeList extends React.Component {
     handleCommentModal,
     showMoreRecipes,
     visibleRecipeCount,
+    selectedTag,
   }) {
     return (
-      <Body>
-        <RecipeListColumn
-          selectedRecipes={selectedRecipes}
-          pagedRecipeCount={pagedRecipeCount}
-          ratings={ratings}
-          priorities={priorities}
-          updateRecipeTag={updateRecipeTag}
-          handleCommentModal={handleCommentModal}
-          showMoreRecipes={showMoreRecipes}
-          visibleRecipeCount={visibleRecipeCount}
-        />
-      </Body>
+      <div>
+        {selectedTag.description && selectedTag.description.length > 0 && (
+          <div>
+            {selectedTag.description}
+            <br />
+            <br />
+          </div>
+        )}
+        <Body>
+          <RecipeListColumn
+            selectedRecipes={selectedRecipes}
+            pagedRecipeCount={pagedRecipeCount}
+            ratings={ratings}
+            priorities={priorities}
+            updateRecipeTag={updateRecipeTag}
+            handleCommentModal={handleCommentModal}
+            showMoreRecipes={showMoreRecipes}
+            visibleRecipeCount={visibleRecipeCount}
+          />
+        </Body>
+      </div>
     )
   }
 
@@ -127,6 +137,7 @@ class MobileRecipeList extends React.Component {
           handleCommentModal,
           showMoreRecipes,
           visibleRecipeCount,
+          selectedTag,
         })}
         <Footer>
           <MobileNavDrawer
