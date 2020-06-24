@@ -26,6 +26,7 @@ class RecipeFormSkeleton extends React.Component {
   }
 
   render() {
+    // TODO: confirmed that modifications update here but do not appear on the form
     const {
       edit,
       handleTagFormModal,

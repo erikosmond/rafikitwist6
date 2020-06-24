@@ -16,6 +16,7 @@ class TagForm < GeneralForm
       tag = create_tag!(params)
       create_parent_tags(params, tag)
       create_access(tag)
+      context.tag = tag_with_type(tag)
     end
 
     def create_tag!(params)
@@ -34,5 +35,11 @@ class TagForm < GeneralForm
         ts = TagSelection.create!(tag_id: id, taggable: tag)
         create_access(ts)
       end
+    end
+
+    def tag_with_type(tag)
+      result = tag.as_json
+      result['tag_type'] = tag.tag_type.name.camelize(:lower)
+      result
     end
 end

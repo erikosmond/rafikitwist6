@@ -51,6 +51,9 @@ const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
 const CLEAR_RECIPE = 'recipes/clearRecipe'
 const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
 const UPDATE_MOBILE_DRAWER_STATE = 'recipes/updateMobileDrawerState'
+const TAG_SUBMIT_SUCCESS = 'tags/tagSubmitSuccess'
+const INGREDIENT_MODIFICATION = 'ingredientModification'
+const INGREDIENT_TYPES = ['ingredient', 'ingredientCategory', 'ingredientFamily', 'ingredientType']
 const DEFAULT_PAGED_RECIPE_COUNT = 10
 
 // Reducer
@@ -236,6 +239,15 @@ export default function recipesReducer(state = initialState, action = {}) {
         ...state,
         recipeFormData: action.payload.recipeFormData,
       }
+    case TAG_SUBMIT_SUCCESS:
+      return {
+        ...state,
+        tagFormModalOpen: false,
+        tagOptions: tagOptionsUpdater(state.tagOptions, action.payload),
+        ingredientOptions: ingredientOptionsUpdater(state.ingredientOptions, action.payload),
+        ingredientModificationOptions:
+          ingredientModOptionsUpdater(state.ingredientModificationOptions, action.payload),
+      }
     default:
       return state
   }
@@ -277,6 +289,36 @@ function commentReducer(recipe, action) {
     }
   }
   return recipe
+}
+
+function tagOptionsUpdater(tagOptions, newTag) {
+  return {
+    ...tagOptions,
+    [newTag.tagType]: [
+      ...tagOptions[newTag.tagType],
+      { id: newTag.id, name: newTag.name },
+    ],
+  }
+}
+
+function ingredientOptionsUpdater(ingredientOptions, newTag) {
+  if (INGREDIENT_TYPES.includes(newTag.tagType)) {
+    return [
+      ...ingredientOptions,
+      { value: newTag.id, label: newTag.name },
+    ]
+  }
+  return ingredientOptions
+}
+
+function ingredientModOptionsUpdater(ingredientModOptions, newTag) {
+  if (INGREDIENT_MODIFICATION === newTag.tagType) {
+    return [
+      ...ingredientModOptions,
+      { value: newTag.id, label: newTag.name },
+    ]
+  }
+  return ingredientModOptions
 }
 
 export function loadRecipes(tagId) {
@@ -598,6 +640,13 @@ export function submitTagForm(payload) {
   }
 }
 
+export function tagSumbitSuccess(payload) {
+  return {
+    payload,
+    type: TAG_SUBMIT_SUCCESS,
+  }
+}
+
 function countVisibleRecipes(visibleRecipes) {
   // use reduce instead of forEach
   let count = 0
@@ -706,11 +755,9 @@ export function* handleTagSubmitTask({ payload }) {
   const url = '/api/tags'
   const params = { data: payload, method: 'POST' }
   const result = yield call(callApi, url, params)
-  // if (result.success) {
-  //   yield put(recipeSumbitSuccess(
-  //     TODO: update recipe dropdown
-  //   ))
-  // }
+  if (result.success) {
+    yield put(tagSumbitSuccess(result.data))
+  }
   console.log(result)
 }
 

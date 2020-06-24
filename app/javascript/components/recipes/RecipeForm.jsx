@@ -82,7 +82,6 @@ let RecipeForm = (props) => {
   const openTagForm = () => {
     handleTagFormModal({ tagFormModalOpen: true })
   }
-
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
