@@ -20,7 +20,7 @@ class RecipeSkeleton extends React.Component {
   }
 
   render() {
-    const { recipe, noRecipe, clearRecipe } = this.props
+    const { recipe, noRecipe, clearRecipe, mobile } = this.props
     if (!recipe || !recipe.name) {
       return null
     }
@@ -29,6 +29,7 @@ class RecipeSkeleton extends React.Component {
         recipe={recipe}
         noRecipe={noRecipe}
         clearRecipe={clearRecipe}
+        mobile={mobile}
       />
     )
   }
@@ -41,6 +42,7 @@ RecipeSkeleton.propTypes = {
     name: PropTypes.string,
     ingredients: PropTypes.shape({}),
   }),
+  mobile: PropTypes.bool,
   noRecipe: PropTypes.bool,
   clearRecipe: PropTypes.func.isRequired,
   location: PropTypes.shape().isRequired,
@@ -54,6 +56,7 @@ RecipeSkeleton.propTypes = {
 RecipeSkeleton.defaultProps = {
   recipe: {},
   noRecipe: false,
+  mobile: false
 }
 
 export default RecipeSkeleton
