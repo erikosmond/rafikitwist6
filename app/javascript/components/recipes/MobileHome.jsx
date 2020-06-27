@@ -15,7 +15,6 @@ import MobileRecipeList from 'containers/MobileRecipeListContainer'
 import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormContainer'
-import RecipeList from 'containers/RecipeListContainer'
 
 const StyledContent = styled.div`
   margin-top: 1px;
@@ -42,7 +41,7 @@ const SmallHome = () => (
         />
         <Route
           path="/recipes/:recipeId"
-          component={RecipeSkeleton}
+          render={(props) => <RecipeSkeleton {...props} mobile />}
         />
         <Route
           path="/"
