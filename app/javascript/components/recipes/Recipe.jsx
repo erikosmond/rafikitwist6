@@ -47,8 +47,18 @@ class Recipe extends React.Component {
     this.setState({ drawerState: value })
   }
 
-  renderFooter() {
-    const { mobile } = this.props
+  static renderHeader(mobile, recipe) {
+    if (mobile) {
+      return (
+        <Header><h2>{recipe.name}</h2></Header>
+      )
+    }
+    return (
+      <h2>{recipe.name}</h2>
+    )
+  }
+
+  renderFooter(mobile) {
     if (!mobile) {
       return null
     }
@@ -89,7 +99,7 @@ class Recipe extends React.Component {
   }
 
   render() {
-    const { recipe, noRecipe } = this.props
+    const { recipe, noRecipe, mobile } = this.props
     if (noRecipe) {
       return (
         <div>
@@ -99,7 +109,7 @@ class Recipe extends React.Component {
     }
     return (
       <div>
-        <Header><h2>{recipe.name}</h2></Header>
+        {Recipe.renderHeader(mobile, recipe)}
         <Body>
           <RecipeProperties title="Ingredients" tags={allIngredients(recipe)} />
           <RecipeInstructions recipe={recipe} />
@@ -114,7 +124,7 @@ class Recipe extends React.Component {
           <RecipeProperties title="Recipe Types" tags={recipe.recipetypes} />
           <RecipeProperties title="Components" tags={recipe.components} />
         </Body>
-        {this.renderFooter()}
+        {this.renderFooter(mobile)}
       </div>
     )
   }
