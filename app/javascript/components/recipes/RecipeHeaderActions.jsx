@@ -21,6 +21,7 @@ const commentIcon = `M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9
 
 const RecipeHeaderActions = (props) => {
   const {
+    authenticated,
     classes,
     ratings,
     priorities,
@@ -31,6 +32,9 @@ const RecipeHeaderActions = (props) => {
     updateRecipeTag,
     handleCommentModal,
   } = props
+  if (!authenticated) {
+    return null
+  }
   return (
     <div className={classes.actions}>
       <RecipeHeaderComment
@@ -64,6 +68,7 @@ const RecipeHeaderActions = (props) => {
 }
 
 RecipeHeaderActions.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
   classes: PropTypes.shape({
     actions: PropTypes.string.isRequired,
   }).isRequired,

@@ -42,6 +42,7 @@ class RecipeListColumn extends React.Component {
 
   render() {
     const {
+      authenticated,
       selectedRecipes,
       pagedRecipeCount,
       ratings,
@@ -56,6 +57,7 @@ class RecipeListColumn extends React.Component {
           RecipeListColumn.displayShown).splice(0, pagedRecipeCount).map((r) => (
             <RecipeListItem
               key={r.id}
+              authenticated={authenticated}
               recipe={r}
               ratings={ratings}
               priorities={priorities}
@@ -70,6 +72,7 @@ class RecipeListColumn extends React.Component {
 }
 
 RecipeListColumn.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
   handleCommentModal: PropTypes.func.isRequired,
   updateRecipeTag: PropTypes.func.isRequired,
   selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),

@@ -9,5 +9,6 @@
   data-all-tag-types="<%= @all_tag_types.to_json %>"
   data-ratings="<%= @ratings.to_json %>"
   data-priorities="<%= @priorities.to_json %>"
+  data-authenticated="<%= @signed_in %>"
 />
 <%= javascript_pack_tag 'Home' %>

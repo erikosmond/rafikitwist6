@@ -48,6 +48,7 @@ class RecipeListSkeleton extends React.Component {
 }
 
 RecipeListSkeleton.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
   handleFilter: PropTypes.func.isRequired,

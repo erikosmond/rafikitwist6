@@ -35,6 +35,7 @@ export default withRouter(connect(
     selectedFilters: state.recipesReducer.selectedFilters,
     pagedRecipeCount: state.recipesReducer.pagedRecipeCount,
     mobileDrawerState: state.recipesReducer.mobileDrawerState,
+    authenticated: state.recipesReducer.authenticated,
   }),
   {
     loadRecipes,
