@@ -7,6 +7,7 @@ import { loadRecipeOptions, loadIngredientOptions } from 'bundles/recipes'
 
 export default withRouter(connect(
   (state) => ({
+    authenticated: state.recipesReducer.authenticated,
     recipeOptions: state.recipesReducer.recipeOptions,
     ingredientOptions: state.recipesReducer.ingredientOptions,
     categoryOptions: state.recipesReducer.categoryOptions,
