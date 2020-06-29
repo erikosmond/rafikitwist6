@@ -19,7 +19,7 @@ class TagsByType
       result = Tag.joins(tag_selections: :access).
                where(tag_type_id: type_ids).
                where("accesses.status = 'PUBLIC' OR accesses.user_id =
-          #{context.current_user.id}")
+          #{context.current_user&.id.to_i}")
       result.each_with_object({}) { |ts, obj| obj[ts.id] = ts.name }.
         each_with_object([]) { |(k, v), arr| arr << { 'id' => k, 'name' => v } }
     end

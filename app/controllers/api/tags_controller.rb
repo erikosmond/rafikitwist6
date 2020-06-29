@@ -47,7 +47,7 @@ module Api
           TagsByType.call(tag_type: tag_type, current_user: current_user)
         else
           tag_json = Tag.joins(:access).where(
-            "accesses.user_id = #{current_user.id} or accesses.status = 'PUBLIC'"
+            "accesses.user_id = #{current_user&.id.to_i} or accesses.status = 'PUBLIC'"
           ).as_json(only: %i[id name])
           tag_json.map { |r| { 'Label' => r['name'], 'Value' => r['id'] } }
         end
@@ -57,6 +57,7 @@ module Api
         # This just makes it clearer what is being passed into GroupTags.call
         {
           tag: hierarchy_result.tag,
+          # TODO: try removing current_user and run tests
           current_user: hierarchy_result.current_user,
           tags_with_hierarchy: hierarchy_result.tags_with_hierarchy,
           sister_tags: hierarchy_result.sister_tags

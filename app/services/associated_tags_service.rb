@@ -10,7 +10,7 @@ module AssociatedTagsService
     ).left_outer_joins(
       tag_hierarchy_join
     ).where(
-      "accesses.user_id = #{current_user&.id} OR accesses.status = 'PUBLIC'"
+      "accesses.user_id = #{current_user&.id.to_i} OR accesses.status = 'PUBLIC'"
     ).order('tags.id, child_tags.id, child_tags_tags.id')
     return hierarchy if all_tags
 

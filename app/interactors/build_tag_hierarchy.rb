@@ -86,7 +86,7 @@ class BuildTagHierarchy
       if ingredient_tag?
         ''
       else
-        "accesses.user_id = #{context.current_user&.id} OR accesses.status = 'PUBLIC'"
+        "accesses.user_id = #{context.current_user&.id.to_i} OR accesses.status = 'PUBLIC'"
       end
     end
 

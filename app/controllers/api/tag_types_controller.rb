@@ -6,7 +6,7 @@ module Api
     def index
       grouped = params.permit(:grouped)[:grouped]
       if grouped.present?
-        render json: TagType.tags_by_type(current_user.id)
+        render json: TagType.tags_by_type(current_user&.id.to_i)
       else
         render json: TagType.all
       end

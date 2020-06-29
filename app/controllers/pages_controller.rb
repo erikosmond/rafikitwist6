@@ -15,7 +15,7 @@ class PagesController < ApplicationController
   private
 
     def set_home_vars(rating_tags, priority_tags)
-      @first_name = current_user.first_name
+      @first_name = current_user&.first_name
       @home_tag_id = (Tag.find_by_name(HOME_TAG_NAME) || Tag.first).id
       @priorities = priority_tags.each_with_object({}) { |t, obj| obj[t.name] = t.id }
       @ratings = rating_tags.each_with_object({}) { |t, obj| obj[t.name] = t.id }

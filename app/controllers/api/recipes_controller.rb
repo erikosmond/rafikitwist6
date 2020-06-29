@@ -37,7 +37,7 @@ module Api
 
     def edit
       recipe = Recipe.find params.permit(:id)['id']
-      if Permissions.new(current_user).can_edit?(recipe)
+      if current_user.present? && Permissions.new(current_user).can_edit?(recipe)
         render json: RecipeForm.call(action: :edit, params: { recipe: recipe }).result
       else
         render json: {}, status: :unauthorized
@@ -46,7 +46,7 @@ module Api
 
     def update
       recipe = Recipe.find update_recipe_params['id']
-      if Permissions.new(current_user).can_edit?(recipe)
+      if current_user.present? && Permissions.new(current_user).can_edit?(recipe)
         render json: RecipeForm.call(
           action: :update,
           params: { recipe: recipe, form_fields: update_recipe_params },
@@ -109,7 +109,7 @@ module Api
                       where(
                         [
                           "accesses.user_id = ? OR accesses.status = 'PUBLIC'",
-                          current_user&.id
+                          current_user&.id.to_i
                         ]
                       ).
                       sort_by(&:name).as_json(only: %i[id name])
