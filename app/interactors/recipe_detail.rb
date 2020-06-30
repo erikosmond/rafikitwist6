@@ -13,7 +13,7 @@ class RecipeDetail
       left_outer_joins(detail_joins).
       where(
         "accesses.user_id =
-        #{context.current_user&.id} OR accesses.status = 'PUBLIC'"
+        #{context.current_user&.id.to_i} OR accesses.status = 'PUBLIC'"
       )
   end
 

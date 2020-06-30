@@ -16,6 +16,7 @@ const useStyles = makeStyles({
 
 const RecipeHeader = (props) => {
   const {
+    authenticated,
     loadRecipeOptions,
     recipeOptions,
     loadIngredientOptions,
@@ -60,6 +61,7 @@ const RecipeHeader = (props) => {
         className={mobile ? classes.searchMargin : ''}
       />
       <AccountMenu
+        authenticated={authenticated}
         firstName={firstName}
       />
     </div>
@@ -69,6 +71,7 @@ const RecipeHeader = (props) => {
 export default RecipeHeader
 
 RecipeHeader.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
   loadRecipeOptions: PropTypes.func.isRequired,
   firstName: PropTypes.string,
   recipeOptions: PropTypes.arrayOf(PropTypes.shape(

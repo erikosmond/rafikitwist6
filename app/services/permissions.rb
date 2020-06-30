@@ -4,6 +4,8 @@
 class Permissions
   def initialize(user)
     @user = user
+
+    raise StandardError, 'Not signed in' unless @user.present?
   end
 
   def can_edit?(record)

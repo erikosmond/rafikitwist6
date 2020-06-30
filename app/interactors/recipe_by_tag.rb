@@ -47,7 +47,7 @@ class RecipeByTag
         left_outer_joins(recipes_with_parent_detail_joins).
         where(
           "accesses.user_id =
-          #{context.current_user&.id} OR accesses.status = 'PUBLIC'"
+          #{context.current_user&.id.to_i} OR accesses.status = 'PUBLIC'"
         )
     end
 
@@ -76,13 +76,13 @@ class RecipeByTag
       tag_selections.where('accesses_selected_recipes.id IS NOT NULL').
         where('accesses.id IS NOT NULL').
         where('accesses_tag_selections.id IS NOT NULL').
-        where("accesses_selected_recipes.user_id = #{context.current_user&.id} OR
+        where("accesses_selected_recipes.user_id = #{context.current_user&.id.to_i} OR
                accesses_selected_recipes.status = 'PUBLIC'").
         where(
           "accesses.user_id =
-          #{context.current_user&.id} OR accesses.status = 'PUBLIC'"
+          #{context.current_user&.id.to_i} OR accesses.status = 'PUBLIC'"
         ).
-        where("accesses_tag_selections.user_id =  #{context.current_user&.id} OR
+        where("accesses_tag_selections.user_id =  #{context.current_user&.id.to_i} OR
           accesses_tag_selections.status = 'PUBLIC'")
     end
 

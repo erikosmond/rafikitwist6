@@ -3,6 +3,8 @@
 # class for handling params from recipes form
 class RecipeForm < GeneralForm
   def call
+    raise StandardError, 'Not signed in' unless context.user.present?
+      
     context.result = case context.action
                      when :create
                        create(context.params)

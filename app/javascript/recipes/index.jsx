@@ -27,6 +27,7 @@ const myStore = {
     tagsByType: JSON.parse(home.dataset.tagsByType),
     ratings: JSON.parse(home.dataset.ratings),
     priorities: JSON.parse(home.dataset.priorities),
+    authenticated: home.dataset.authenticated === 'true',
   },
 }
 

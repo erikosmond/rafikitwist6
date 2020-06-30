@@ -64,6 +64,7 @@ class MobileRecipeList extends React.Component {
   }
 
   static renderRecipes({
+    authenticated,
     selectedRecipes,
     pagedRecipeCount,
     ratings,
@@ -93,6 +94,7 @@ class MobileRecipeList extends React.Component {
             handleCommentModal={handleCommentModal}
             showMoreRecipes={showMoreRecipes}
             visibleRecipeCount={visibleRecipeCount}
+            authenticated={authenticated}
           />
         </Body>
       </div>
@@ -101,6 +103,7 @@ class MobileRecipeList extends React.Component {
 
   render() {
     const {
+      authenticated,
       mobileDrawerState,
       updateMobileDrawerState,
       selectedRecipes,
@@ -129,6 +132,7 @@ class MobileRecipeList extends React.Component {
           selectedTag,
         })}
         {MobileRecipeList.renderRecipes({
+          authenticated,
           selectedRecipes,
           pagedRecipeCount,
           ratings,
@@ -159,6 +163,7 @@ class MobileRecipeList extends React.Component {
 }
 
 MobileRecipeList.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
   mobileDrawerState: PropTypes.shape({
     filters: PropTypes.bool,
     search: PropTypes.bool,

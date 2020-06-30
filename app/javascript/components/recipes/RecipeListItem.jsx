@@ -34,6 +34,7 @@ class RecipeListItem extends React.Component {
 
   render() {
     const {
+      authenticated,
       recipe,
       classes,
       ratings,
@@ -55,6 +56,7 @@ class RecipeListItem extends React.Component {
           subheader={ingredientNames.join(', ')}
           action={(
             <RecipeHeaderActions
+              authenticated={authenticated}
               ratings={ratings}
               priorities={priorities}
               rating={recipe.newRating || (recipe.ratings && recipe.ratings[0])}
@@ -91,6 +93,7 @@ class RecipeListItem extends React.Component {
 }
 
 RecipeListItem.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
   recipe: PropTypes.shape({
     hidden: PropTypes.bool,
     id: PropTypes.number.isRequired,

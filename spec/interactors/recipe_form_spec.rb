@@ -103,7 +103,7 @@ RSpec.describe RecipeForm, type: :interactor do
     describe 'edit' do
       include_context 'recipe_form'
       let(:params) { { recipe: recipe } }
-      let(:form) { RecipeForm.call(params: params, action: :edit) }
+      let(:form) { RecipeForm.call(params: params, action: :edit, user: user) }
 
       it 'expects all recipe data ready for redux form' do
         expected_sources = [

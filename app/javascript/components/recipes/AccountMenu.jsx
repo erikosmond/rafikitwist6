@@ -33,6 +33,27 @@ class AccountMenu extends React.Component {
     this.setState({ anchorEl: null })
   }
 
+  renderLoginLogout() {
+    const { authenticated } = this.props
+    if (authenticated) {
+      return (
+        <MenuItem>
+          <a href="/users/sign_out"> Sign Out </a>
+        </MenuItem>
+      )
+    }
+    return (
+      <div>
+        <MenuItem>
+          <a href="/users/sign_up"> Create Account </a>
+        </MenuItem>
+        <MenuItem>
+          <a href="/users/sign_in"> Sign In </a>
+        </MenuItem>
+      </div>
+    )
+  }
+
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
@@ -65,9 +86,7 @@ class AccountMenu extends React.Component {
           <MenuItem>
             {`Welcome ${firstName}`}
           </MenuItem>
-          <MenuItem>
-            <a href="/users/sign_out"> Sign Out </a>
-          </MenuItem>
+          {this.renderLoginLogout()}
         </Menu>
       </StyledIcon>
     )
@@ -76,6 +95,7 @@ class AccountMenu extends React.Component {
 
 AccountMenu.propTypes = {
   firstName: PropTypes.string,
+  authenticated: PropTypes.bool.isRequired,
 }
 
 AccountMenu.defaultProps = {

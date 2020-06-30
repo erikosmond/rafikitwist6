@@ -49,6 +49,7 @@ class RecipeList extends React.Component {
 
   render() {
     const {
+      authenticated,
       recipesLoaded,
       selectedRecipes,
       selectedTag,
@@ -122,6 +123,7 @@ class RecipeList extends React.Component {
             handleCommentModal={handleCommentModal}
             showMoreRecipes={showMoreRecipes}
             visibleRecipeCount={visibleRecipeCount}
+            authenticated={authenticated}
           />
         </PaperContent>
 
@@ -141,6 +143,7 @@ class RecipeList extends React.Component {
 }
 
 RecipeList.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
   handleCommentModal: PropTypes.func.isRequired,
