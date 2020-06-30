@@ -38,7 +38,9 @@ module Api
     def edit
       recipe = Recipe.find params.permit(:id)['id']
       if current_user.present? && Permissions.new(current_user).can_edit?(recipe)
-        render json: RecipeForm.call(action: :edit, params: { recipe: recipe }).result
+        render json: RecipeForm.call(
+          action: :edit, params: { recipe: recipe }, user: current_user
+        ).result
       else
         render json: {}, status: :unauthorized
       end

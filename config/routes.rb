@@ -7,7 +7,6 @@ Rails.application.routes.draw do
     get '/users/sign_out' => 'devise/sessions#destroy'
   end
   devise_for :users
-  # authenticate :user do
   root to: 'pages#home'
   namespace :api, defaults: { format: :json } do
     resources :recipes, only: %i[create edit index show update]
@@ -20,5 +19,4 @@ Rails.application.routes.draw do
     resources :tag_types, only: %i[index]
   end
   match '/*page' => 'pages#home', via: :get
-  # end
 end
