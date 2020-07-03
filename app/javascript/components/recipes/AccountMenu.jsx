@@ -54,11 +54,39 @@ class AccountMenu extends React.Component {
     )
   }
 
+  renderMenu(anchorEl, open, firstName) {
+    return (
+      <Menu
+        id="long-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={this.handleClose}
+        PaperProps={{
+          style: {
+            maxHeight: ITEM_HEIGHT * 4.5,
+            width: 200,
+          },
+        }}
+      >
+        <MenuItem>
+          {`Welcome ${firstName}`}
+        </MenuItem>
+        {this.renderLoginLogout()}
+      </Menu>
+    )
+  }
+
+
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
-    const { firstName } = this.props
+    const { firstName, mobile } = this.props
 
+    if (mobile) {
+      return (
+        this.renderLoginLogout()
+      )
+    }
     return (
       <StyledIcon>
         <IconButton
@@ -71,35 +99,21 @@ class AccountMenu extends React.Component {
             <path d={accountIcon} />
           </SvgIcon>
         </IconButton>
-        <Menu
-          id="long-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={this.handleClose}
-          PaperProps={{
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
-              width: 200,
-            },
-          }}
-        >
-          <MenuItem>
-            {`Welcome ${firstName}`}
-          </MenuItem>
-          {this.renderLoginLogout()}
-        </Menu>
+        {this.renderMenu(anchorEl, open, firstName)}
       </StyledIcon>
     )
   }
 }
 
 AccountMenu.propTypes = {
+  mobile: PropTypes.bool,
   firstName: PropTypes.string,
   authenticated: PropTypes.bool.isRequired,
 }
 
 AccountMenu.defaultProps = {
   firstName: '',
+  mobile: false,
 }
 
 export default AccountMenu

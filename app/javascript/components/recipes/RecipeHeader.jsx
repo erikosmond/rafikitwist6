@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
-import AccountMenu from './AccountMenu'
+import AccountMenu from 'containers/AccountMenuContainer'
 import HeaderDropdown from './HeaderDropdown'
 
 const useStyles = makeStyles({
@@ -16,14 +16,12 @@ const useStyles = makeStyles({
 
 const RecipeHeader = (props) => {
   const {
-    authenticated,
     loadRecipeOptions,
     recipeOptions,
     loadIngredientOptions,
     ingredientOptions,
     categoryOptions,
     history,
-    firstName,
     mobile,
   } = props
 
@@ -60,10 +58,7 @@ const RecipeHeader = (props) => {
         updateHistory={updateTags}
         className={mobile ? classes.searchMargin : ''}
       />
-      <AccountMenu
-        authenticated={authenticated}
-        firstName={firstName}
-      />
+      <AccountMenu />
     </div>
   )
 }
@@ -71,9 +66,7 @@ const RecipeHeader = (props) => {
 export default RecipeHeader
 
 RecipeHeader.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
   loadRecipeOptions: PropTypes.func.isRequired,
-  firstName: PropTypes.string,
   recipeOptions: PropTypes.arrayOf(PropTypes.shape(
     { name: PropTypes.string, id: PropTypes.number },
   )),
@@ -94,6 +87,5 @@ RecipeHeader.defaultProps = {
   recipeOptions: [],
   ingredientOptions: [],
   categoryOptions: [],
-  firstName: '',
   mobile: false,
 }

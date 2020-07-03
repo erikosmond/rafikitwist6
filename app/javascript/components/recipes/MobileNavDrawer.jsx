@@ -3,17 +3,15 @@ import PropTypes from 'prop-types'
 import FilterByIngredients from 'components/filters/FilterByIngredients'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
-import GroupIcon from '@material-ui/icons/Group'
 import SearchIcon from '@material-ui/icons/Search'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-import RelatedTags from 'components/recipes/RelatedTags'
+// import RelatedTags from 'components/recipes/RelatedTags'
+import AccountMenu from 'containers/AccountMenuContainer'
 import RecipeHeader from 'containers/RecipeHeaderContainer'
 import styled from 'styled-components'
 
-const RelatedWrapper = styled.div`
-  min-height: 500px;
-`
 
 const FilterWrapper = styled.div`
   max-height: 500px;
@@ -75,7 +73,7 @@ class MobileNavDrawer extends React.Component {
       handleFilter,
       allTagTypes,
       tagsByType,
-      selectedTag,
+      // selectedTag,
     } = this.props
     const { drawerState } = this.state
 
@@ -124,7 +122,8 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <RelatedWrapper>
+          <AccountMenu mobile drawerOpen={mobileDrawerState.similar} />
+          {/* <RelatedWrapper>
             <RelatedTags tags={selectedTag.grandparentTags} />
             <RelatedTags tags={selectedTag.parentTags} />
             <RelatedTags tags={selectedTag.childTags} />
@@ -132,7 +131,7 @@ class MobileNavDrawer extends React.Component {
             <RelatedTags tags={selectedTag.sisterTags} />
             <RelatedTags tags={selectedTag.modificationTags} />
             <RelatedTags tags={selectedTag.modifiedTags} />
-          </RelatedWrapper>
+          </RelatedWrapper> */}
         </SwipeableDrawer>
 
         <BottomNavigation
@@ -154,8 +153,8 @@ class MobileNavDrawer extends React.Component {
           />
           <BottomNavigationAction
             onClick={handleDrawerState(2)}
-            label="Similar"
-            icon={<GroupIcon />}
+            label="Account"
+            icon={<AccountCircleIcon />}
           />
         </BottomNavigation>
       </>
