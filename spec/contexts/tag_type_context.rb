@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop: disable Metrics/BlockLength
 RSpec.shared_context 'tag_types', shared_context: :metadata do
   let(:type_ingredient) { create :tag_type, name: 'Ingredient' }
   let(:type_source) { create :tag_type, name: 'Source' }
@@ -32,3 +33,4 @@ RSpec.shared_context 'tag_types', shared_context: :metadata do
     create :tag, name: 'Juice of', tag_type: type_ingredient_modification
   end
 end
+# rubocop: enable Metrics/BlockLength

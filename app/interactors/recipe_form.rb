@@ -4,7 +4,7 @@
 class RecipeForm < GeneralForm
   def call
     raise StandardError, 'Not signed in' unless context.user.present?
-      
+
     context.result = case context.action
                      when :create
                        create(context.params)
@@ -23,11 +23,11 @@ class RecipeForm < GeneralForm
       create_access(recipe)
       create_ingredients(params, recipe)
       create_tags(params, recipe)
-      recipe
+      recipe.tap(&:save!).reload
     end
 
     def create_recipe!(params)
-      Recipe.create!(
+      Recipe.build(
         {
           name: params['recipe_name'],
           instructions: params['instructions'],
@@ -43,10 +43,10 @@ class RecipeForm < GeneralForm
     end
 
     def create_ingredient_tag_selection(recipe, ing)
-      ts = TagSelection.create!(
+      ts = TagSelection.build(
         taggable: recipe, tag_id: ing['ingredient']['value'], body: ing['ingredient_prep']
       )
-      TagAttribute.create!(
+      TagAttribute.build(
         tag_attributable: ts, property: 'amount', value: ing['ingredient_amount']
       )
       create_access(ts)
@@ -57,7 +57,7 @@ class RecipeForm < GeneralForm
       return unless ingredient['ingredient_modification'] &&
                     ingredient['ingredient_modification']['value']
 
-      ts = TagSelection.create!(
+      ts = TagSelection.build(
         taggable: tag_selection, tag_id: ingredient['ingredient_modification']['value']
       )
       create_access(ts)
@@ -66,7 +66,7 @@ class RecipeForm < GeneralForm
     def create_tags(params, recipe)
       tag_ids = form_tag_ids(params)
       tag_ids.each do |id|
-        ts = TagSelection.create!(tag_id: id, taggable: recipe)
+        ts = TagSelection.build(tag_id: id, taggable: recipe)
         create_access(ts)
       end
     end
@@ -78,7 +78,7 @@ class RecipeForm < GeneralForm
     end
 
     def tag_types
-      context.tag_types ||= TagType.all.reject do |tt| 
+      context.tag_types ||= TagType.all.reject do |tt|
         TagType::INGREDIENT_TYPES.include? tt.name
       end.map(&:name).map(&:downcase).map(&:pluralize)
     end
@@ -99,9 +99,9 @@ class RecipeForm < GeneralForm
         ingredients: recipe.ingredient_tag_selections.map(&:recipe_form_ingredient)
       }.merge(property_tags(recipe))
     end
-    
+
     def property_tags(recipe)
-      recipe_dropdown = -> t { { id: t.id, name: t.name } }
+      recipe_dropdown = ->(t) { { id: t.id, name: t.name } }
       {
         sources: recipe.sources.map(&recipe_dropdown),
         vessels: recipe.vessels.map(&recipe_dropdown),
@@ -134,11 +134,7 @@ class RecipeForm < GeneralForm
     end
 
     def removed_tag_selection(ingredient_tag_selections, tag_index)
-      if tag_index
-        ingredient_tag_selections.delete_at(tag_index)
-      else
-        nil
-      end
+      ingredient_tag_selections.delete_at(tag_index) if tag_index
     end
 
     def create_or_update_ingredient_tag(tag_selection, form_ingredient, record)
@@ -164,7 +160,7 @@ class RecipeForm < GeneralForm
       if existing_modification.present?
         existing_modification.update(tag_id: form_mod['value'])
       else
-        ts = TagSelection.create(taggable: ingredient_tag, tag_id: form_mod['value'])
+        ts = TagSelection.build(taggable: ingredient_tag, tag_id: form_mod['value'])
         create_access(ts)
       end
     end
@@ -173,7 +169,7 @@ class RecipeForm < GeneralForm
       if existing_amount.present?
         existing_amount&.update(value: form_ingredient['ingredient_amount'])
       else
-        TagAttribute.create(
+        TagAttribute.build(
           tag_attributable: ingredient_tag,
           property: 'amount',
           value: form_ingredient['ingredient_amount']
@@ -181,9 +177,9 @@ class RecipeForm < GeneralForm
       end
     end
 
-    def delete_ingredients(ingredient_tag_selections, recipe, recipe_form)
-      recipe_form_tag_ids = recipe_form['ingredients'].map do
-        |ftag| ftag['ingredient']['value']
+    def delete_ingredients(ingredient_tag_selections, _recipe, recipe_form)
+      recipe_form_tag_ids = recipe_form['ingredients'].map do |ftag|
+        ftag['ingredient']['value']
       end
       delete_ids = ingredient_tag_selections.select do |itag|
         recipe_form_tag_ids.exclude? itag.tag_id
@@ -192,11 +188,13 @@ class RecipeForm < GeneralForm
     end
 
     def update_recipe_attrs(record, form)
-      record.update({
-        name: form['recipe_name'],
-        description: form['description'],
-        instructions: form['instructions']
-      })
+      record.update(
+        {
+          name: form['recipe_name'],
+          description: form['description'],
+          instructions: form['instructions']
+        }
+      )
     end
 
     def update_recipe_tags(record, form)
@@ -227,19 +225,20 @@ class RecipeForm < GeneralForm
 
     def create_new_tags(tag_ids, record)
       tag_ids.each do |tag_id|
-        ts = TagSelection.create(tag_id: tag_id, taggable: record)
+        ts = TagSelection.build(tag_id: tag_id, taggable: record)
         create_access(ts, record.access.status)
       end
     end
 
     def delete_tag_selections(record, tag_ids)
       TagSelection.where(taggable: record, tag_id: tag_ids).destroy_all
-    end 
+    end
 
     def get_form_tag_ids(form)
-      tag_types.compact.flat_map do |tt| 
+      tag_types.compact.flat_map do |tt|
         tags = form[tt]
         next unless tags
+
         tags.map { |t| t['id'] }
       end
     end

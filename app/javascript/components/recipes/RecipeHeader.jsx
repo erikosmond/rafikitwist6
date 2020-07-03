@@ -8,7 +8,6 @@ import HeaderDropdown from './HeaderDropdown'
 const useStyles = makeStyles({
   searchMargin: {
     width: '90%',
-    // marginBottom: '50%',
   },
   searchWidth: {
     width: '90%',
