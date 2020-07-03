@@ -1,16 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
-import AccountMenu from 'containers/AccountMenuContainer'
+import RelatedTags from 'components/recipes/RelatedTags'
+
 import HeaderDropdown from './HeaderDropdown'
 
 const useStyles = makeStyles({
   searchMargin: {
     width: '90%',
-    marginBottom: '50%',
+    // marginBottom: '50%',
   },
   searchWidth: {
     width: '90%',
+  },
+  searchWrapper: {
+    maxHeight: '500px',
   },
 })
 
@@ -23,6 +27,7 @@ const RecipeHeader = (props) => {
     categoryOptions,
     history,
     mobile,
+    selectedTag,
   } = props
 
   const classes = useStyles()
@@ -35,8 +40,26 @@ const RecipeHeader = (props) => {
     history.push(`/recipes/${selectedOption}`)
   }
 
+  const renderRelatedTags = () => {
+    if (mobile) {
+      return (
+        <div>
+          <h3>Related</h3>
+          <RelatedTags tags={selectedTag.grandparentTags} />
+          <RelatedTags tags={selectedTag.parentTags} />
+          <RelatedTags tags={selectedTag.childTags} />
+          <RelatedTags tags={selectedTag.grandchildTags} />
+          <RelatedTags tags={selectedTag.sisterTags} />
+          <RelatedTags tags={selectedTag.modificationTags} />
+          <RelatedTags tags={selectedTag.modifiedTags} />
+        </div>
+      )
+    }
+    return null
+  }
+
   return (
-    <div>
+    <div className={classes.searchWrapper}>
       <HeaderDropdown
         dropdownOptions={recipeOptions}
         loadOptions={loadRecipeOptions}
@@ -58,7 +81,7 @@ const RecipeHeader = (props) => {
         updateHistory={updateTags}
         className={mobile ? classes.searchMargin : ''}
       />
-      <AccountMenu />
+      {renderRelatedTags()}
     </div>
   )
 }
@@ -81,6 +104,17 @@ RecipeHeader.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   mobile: PropTypes.bool,
+  selectedTag: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    grandparentTags: PropTypes.shape({}),
+    parentTags: PropTypes.shape({}),
+    childTags: PropTypes.shape({}),
+    grandchildTags: PropTypes.shape({}),
+    sisterTags: PropTypes.shape({}),
+    modificationTags: PropTypes.shape({}),
+    modifiedTags: PropTypes.shape({}),
+  }).isRequired,
 }
 
 RecipeHeader.defaultProps = {

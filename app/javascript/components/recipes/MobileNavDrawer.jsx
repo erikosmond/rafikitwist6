@@ -7,7 +7,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import SearchIcon from '@material-ui/icons/Search'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-// import RelatedTags from 'components/recipes/RelatedTags'
 import AccountMenu from 'containers/AccountMenuContainer'
 import RecipeHeader from 'containers/RecipeHeaderContainer'
 import styled from 'styled-components'
@@ -122,16 +121,7 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <AccountMenu mobile drawerOpen={mobileDrawerState.similar} />
-          {/* <RelatedWrapper>
-            <RelatedTags tags={selectedTag.grandparentTags} />
-            <RelatedTags tags={selectedTag.parentTags} />
-            <RelatedTags tags={selectedTag.childTags} />
-            <RelatedTags tags={selectedTag.grandchildTags} />
-            <RelatedTags tags={selectedTag.sisterTags} />
-            <RelatedTags tags={selectedTag.modificationTags} />
-            <RelatedTags tags={selectedTag.modifiedTags} />
-          </RelatedWrapper> */}
+          <AccountMenu mobile />
         </SwipeableDrawer>
 
         <BottomNavigation
