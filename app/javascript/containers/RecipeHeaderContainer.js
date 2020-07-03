@@ -12,6 +12,7 @@ export default withRouter(connect(
     ingredientOptions: state.recipesReducer.ingredientOptions,
     categoryOptions: state.recipesReducer.categoryOptions,
     firstName: state.recipesReducer.firstName,
+    selectedTag: state.recipesReducer.selectedTag,
   }),
   {
     loadRecipeOptions,
