@@ -107,32 +107,7 @@ class UpdateRecipeForm < RecipeForm
       tags.map(&:id) - tag_ids
     end
 
-    def recipe_non_ingredient_tags(recipe)
-      recipe.tags.joins(:tag_type).where(tag_types: { name: tag_types })
-    end
-
-    def recipe_ingredient_tag_selections(recipe)
-      recipe.tag_selections.joins(tag: :tag_type).
-        where.not(tag_types: { name: tag_types })
-    end
-
-    def create_new_tags(tag_ids, record)
-      tag_ids.each do |tag_id|
-        ts = TagSelection.create!(tag_id: tag_id, taggable: record)
-        create_access(ts, record.access.status)
-      end
-    end
-
     def delete_tag_selections(record, tag_ids)
       TagSelection.where(taggable: record, tag_id: tag_ids).destroy_all
-    end
-
-    def get_form_tag_ids(form)
-      tag_types.compact.flat_map do |tt|
-        tags = form[tt]
-        next unless tags
-
-        tags.map { |t| t['id'] }
-      end
     end
 end

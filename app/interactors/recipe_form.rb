@@ -14,13 +14,13 @@ class RecipeForm < GeneralForm
     raise StandardError, 'Not signed in' unless context.user.present?
 
     context.result = case context.action
-                       when :create
-                         CreateRecipeForm.new(context).create
-                       when :edit
-                         RecipeForm.new(context).edit
-                       when :update
-                         UpdateRecipeForm.new(context).update
-                       end
+                     when :create
+                       CreateRecipeForm.new(context).create
+                     when :edit
+                       RecipeForm.new(context).edit
+                     when :update
+                       UpdateRecipeForm.new(context).update
+                     end
   end
 
   def edit
@@ -88,159 +88,28 @@ class RecipeForm < GeneralForm
       tags.map { |t| t['id'] }
     end
 
-    # def edit(params)
-    #   recipe = params[:recipe]
-    #   {
-    #     id: recipe.id,
-    #     description: recipe.description,
-    #     instructions: recipe.instructions,
-    #     recipe_name: recipe.name,
-    #     ingredients: recipe.ingredient_tag_selections.map(&:recipe_form_ingredient)
-    #   }.merge(property_tags(recipe))
-    # end
+    def create_new_tags(tag_ids, record)
+      tag_ids.each do |tag_id|
+        ts = TagSelection.create!(tag_id: tag_id, taggable: record)
+        create_access(ts, record.access.status)
+      end
+    end
 
-    # def property_tags(recipe)
-    #   recipe_dropdown = ->(t) { { id: t.id, name: t.name } }
-    #   {
-    #     sources: recipe.sources.map(&recipe_dropdown),
-    #     vessels: recipe.vessels.map(&recipe_dropdown),
-    #     recipe_types: recipe.recipe_types.map(&recipe_dropdown),
-    #     menus: recipe.menus.map(&recipe_dropdown),
-    #     preparations: recipe.preparations.map(&recipe_dropdown),
-    #     flavors: recipe.flavors.map(&recipe_dropdown),
-    #     components: recipe.components.map(&recipe_dropdown)
-    #   }
-    # end
+    def get_form_tag_ids(form)
+      tag_types.compact.flat_map do |tt|
+        tags = form[tt]
+        next unless tags
 
-    # def update(params)
-    #   ActiveRecord::Base.transaction do
-    #     existing_recipe = params[:recipe]
-    #     recipe_form = params[:form_fields]
-    #     update_ingredients(existing_recipe, recipe_form)
-    #     update_recipe_attrs(existing_recipe, recipe_form)
-    #     update_recipe_tags(existing_recipe, recipe_form)
-    #   end
-    # end
+        tags.map { |t| t['id'] }
+      end
+    end
 
-    # def update_ingredients(record, recipe_form)
-    #   ingredient_tag_selections = recipe_ingredient_tag_selections(record).to_a
-    #   delete_ingredients(ingredient_tag_selections, record, recipe_form)
-    #   recipe_form['ingredients'].each do |form_ingredient|
-    #     tag_index = ingredient_tag_selections.index do |itag|
-    #       itag.tag_id == form_ingredient['ingredient']['value']
-    #     end
-    #     tag_selection = removed_tag_selection(ingredient_tag_selections, tag_index)
-    #     create_or_update_ingredient_tag(tag_selection, form_ingredient, record)
-    #   end
-    # end
+    def recipe_non_ingredient_tags(recipe)
+      recipe.tags.joins(:tag_type).where(tag_types: { name: tag_types })
+    end
 
-    # def removed_tag_selection(ingredient_tag_selections, tag_index)
-    #   ingredient_tag_selections.delete_at(tag_index) if tag_index
-    # end
-
-    # def create_or_update_ingredient_tag(tag_selection, form_ingredient, record)
-    #   if tag_selection
-    #     update_ingredient_tag(tag_selection, form_ingredient)
-    #   else
-    #     create_ingredient_tag_selection(record, form_ingredient)
-    #   end
-    # end
-
-    # def update_ingredient_tag(tag_selection, form_ingredient)
-    #   existing_amt = tag_selection.tag_attributes.find { |ta| ta.property == 'amount' }
-    #   update_amount(tag_selection, form_ingredient, existing_amt)
-    #   tag_selection.update(body: form_ingredient['ingredient_prep'])
-    #   existing_modification = tag_selection.modification_selections.first
-    #   form_mod = form_ingredient['ingredient_modification']
-    #   update_modification(tag_selection, existing_modification, form_mod)
-    # end
-
-    # def update_modification(ingredient_tag, existing_modification, form_mod)
-    #   return unless form_mod.present?
-
-    #   if existing_modification.present?
-    #     existing_modification.update(tag_id: form_mod['value'])
-    #   else
-    #     ts = TagSelection.create!(taggable: ingredient_tag, tag_id: form_mod['value'])
-    #     create_access(ts)
-    #   end
-    # end
-
-    # def update_amount(ingredient_tag, form_ingredient, existing_amount)
-    #   if existing_amount.present?
-    #     existing_amount&.update(value: form_ingredient['ingredient_amount'])
-    #   else
-    #     TagAttribute.create!(
-    #       tag_attributable: ingredient_tag,
-    #       property: 'amount',
-    #       value: form_ingredient['ingredient_amount']
-    #     )
-    #   end
-    # end
-
-    # def delete_ingredients(ingredient_tag_selections, _recipe, recipe_form)
-    #   recipe_form_tag_ids = recipe_form['ingredients'].map do |ftag|
-    #     ftag['ingredient']['value']
-    #   end
-    #   delete_ids = ingredient_tag_selections.select do |itag|
-    #     recipe_form_tag_ids.exclude? itag.tag_id
-    #   end.map(&:id)
-    #   TagSelection.where(id: delete_ids).destroy_all
-    # end
-
-    # def update_recipe_attrs(record, form)
-    #   record.update(
-    #     {
-    #       name: form['recipe_name'],
-    #       description: form['description'],
-    #       instructions: form['instructions']
-    #     }
-    #   )
-    # end
-
-    # def update_recipe_tags(record, form)
-    #   non_ingredient_form_ids = get_form_tag_ids(form)
-    #   non_ingredient_tags = recipe_non_ingredient_tags(record)
-    #   tag_ids_to_create = new_tags(non_ingredient_tags, non_ingredient_form_ids).compact
-    #   tag_ids_to_delete = old_tags(non_ingredient_tags, non_ingredient_form_ids).compact
-    #   create_new_tags(tag_ids_to_create, record)
-    #   delete_tag_selections(record, tag_ids_to_delete)
-    # end
-
-    # def new_tags(tags, tag_ids)
-    #   tag_ids - tags.map(&:id)
-    # end
-
-    # def old_tags(tags, tag_ids)
-    #   tags.map(&:id) - tag_ids
-    # end
-
-    # def recipe_non_ingredient_tags(recipe)
-    #   recipe.tags.joins(:tag_type).where(tag_types: { name: tag_types })
-    # end
-
-    # def recipe_ingredient_tag_selections(recipe)
-    #   recipe.tag_selections.joins(tag: :tag_type).
-    #     where.not(tag_types: { name: tag_types })
-    # end
-
-    # def create_new_tags(tag_ids, record)
-    #   tag_ids.each do |tag_id|
-    #     ts = TagSelection.create!(tag_id: tag_id, taggable: record)
-    #     create_access(ts, record.access.status)
-    #   end
-    # end
-
-    # def delete_tag_selections(record, tag_ids)
-    #   TagSelection.where(taggable: record, tag_id: tag_ids).destroy_all
-    # end
-
-    # def get_form_tag_ids(form)
-    #   tag_types.compact.flat_map do |tt|
-    #     tags = form[tt]
-    #     next unless tags
-
-    #     tags.map { |t| t['id'] }
-    #   end
-  # end
+    def recipe_ingredient_tag_selections(recipe)
+      recipe.tag_selections.joins(tag: :tag_type).
+        where.not(tag_types: { name: tag_types })
+    end
 end
