@@ -72,7 +72,6 @@ class MobileNavDrawer extends React.Component {
       handleFilter,
       allTagTypes,
       tagsByType,
-      // selectedTag,
     } = this.props
     const { drawerState } = this.state
 

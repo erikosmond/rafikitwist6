@@ -59,8 +59,7 @@ RSpec.describe RecipeForm, type: :interactor do
         RecipeForm.call(user: user, action: :update, params:
           {
             recipe: recipe, form_fields: params
-          }
-        )
+          })
       end
 
       it 'saves the recipe name' do

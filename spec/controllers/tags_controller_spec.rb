@@ -54,7 +54,7 @@ describe Api::TagsController, type: :controller do
       it 'responds with tags user has access to' do
         body = JSON.parse(response.body)
         expect(body['tags'].size).to eq 3
-        expect(body['tags'].map{ |t| t["Value"] } - [almond.id, vodka.id, toasted.id]).
+        expect(body['tags'].map { |t| t['Value'] } - [almond.id, vodka.id, toasted.id]).
           to eq([])
       end
     end

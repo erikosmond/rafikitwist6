@@ -210,7 +210,6 @@ describe Tag, type: :model do
       end
       let!(:result) { RecipeByTag.call(tag: tag_subject, current_user: user).result }
       let(:recipe_result) { GroupRecipeDetail.call(recipe_details: result).result }
-      # TODO: make sure i always grab the same element out of the set of two
       let(:recipe_result2) { recipe_result.find { |r| r['name'] == recipe2_name } }
       it 'returns only one valid row' do
         expect(recipe_result.size).to eq(2)

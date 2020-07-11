@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-# ensure all fields (name, desc, tag_type_id) and parent tags (taggings for parent tag) access on the tag and accesses on the taggings
+# ensure all fields (name, desc, tag_type_id) and parent tags (taggings for parent tag)
+# access on the tag and accesses on the taggings
 
 require 'rails_helper'
 require_relative '../contexts/tag_type_context.rb'
 
+# rubocop: disable Metrics/BlockLength
 RSpec.describe TagsByType, type: :interactor do
   describe '.call' do
     include_context 'tag_types'
@@ -51,3 +53,4 @@ RSpec.describe TagsByType, type: :interactor do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

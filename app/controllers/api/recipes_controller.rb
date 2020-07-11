@@ -2,6 +2,7 @@
 
 module Api
   # Controller for recipes and recipes by tag
+  # TODO: clean up this controller
   class RecipesController < ApplicationController
     def index
       tag_id = params.permit(:tag_id)[:tag_id]
@@ -29,7 +30,7 @@ module Api
     def create
       recipe = RecipeForm.call(
         action: :create,
-        params: create_recipe_params,
+        params: params.permit(shared_columns),
         user: current_user
       )
       render json: recipe.result
@@ -63,10 +64,6 @@ module Api
 
       def update_recipe_params
         params.permit shared_columns << :id
-      end
-
-      def create_recipe_params
-        params.permit shared_columns
       end
 
       def shared_columns

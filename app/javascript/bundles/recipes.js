@@ -78,8 +78,8 @@ const initialState = {
   mobileDrawerState: { filters: false, search: false, similar: false },
 }
 
-export default function recipesReducer(state = initialState, action = {}) {
-  // TODO: merge state into initialState as state initially gets set from index.jsx
+export default function recipesReducer(store, action = {}) {
+  const state = { ...initialState, ...store }
   switch (action.type) {
     case LOAD_RECIPES:
       return {

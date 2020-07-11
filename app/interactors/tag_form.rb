@@ -12,11 +12,12 @@ class TagForm < GeneralForm
   private
 
     def create(params)
-      # TODO: initialize tag and build all associations, then save
-      tag = create_tag!(params)
-      create_parent_tags(params, tag)
-      create_access(tag)
-      context.tag = tag_with_type(tag)
+      ActiveRecord::Base.transaction do
+        tag = create_tag!(params)
+        create_parent_tags(params, tag)
+        create_access(tag)
+        context.tag = tag_with_type(tag)
+      end
     end
 
     def create_tag!(params)
