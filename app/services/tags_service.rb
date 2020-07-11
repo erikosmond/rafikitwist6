@@ -49,10 +49,9 @@ module TagsService
   end
 
   def tags_by_type
-    # TODO: either remove COMMENT_TAG_NAME from the list or update the name of the var
-    ingredient_types = TagType::INGREDIENT_TYPES +
-                       ['IngredientCategory', COMMENT_TAG_NAME]
-    type_ids = TagType.where.not(name: ingredient_types).pluck(:id)
+    ingredient_and_comment_types = TagType::INGREDIENT_TYPES +
+                                   ['IngredientCategory', COMMENT_TAG_NAME]
+    type_ids = TagType.where.not(name: ingredient_and_comment_types).pluck(:id)
     grouped_tags = Tag.select(%i[id tag_type_id]).where(tag_type_id: type_ids).
                    map(&:as_json).group_by { |t| t['tag_type_id'] }
     grouped_tags.each_with_object({}) do |(k, v), obj|

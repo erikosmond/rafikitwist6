@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # class for handling params from recipes form
+# TODO: create different classes for create and update
 class RecipeForm < GeneralForm
   def call
     raise StandardError, 'Not signed in' unless context.user.present?
@@ -18,16 +19,17 @@ class RecipeForm < GeneralForm
   private
 
     def create(params)
-      # TODO: initialize recipe and build all associations, then save
-      recipe = create_recipe!(params)
-      create_access(recipe)
-      create_ingredients(params, recipe)
-      create_tags(params, recipe)
-      recipe.tap(&:save!).reload
+      ActiveRecord::Base.transaction do
+        recipe = create_recipe!(params)
+        create_access(recipe)
+        create_ingredients(params, recipe)
+        create_tags(params, recipe)
+        recipe.tap(&:save!).reload
+      end
     end
 
     def create_recipe!(params)
-      Recipe.build(
+      Recipe.create!(
         {
           name: params['recipe_name'],
           instructions: params['instructions'],
@@ -43,10 +45,10 @@ class RecipeForm < GeneralForm
     end
 
     def create_ingredient_tag_selection(recipe, ing)
-      ts = TagSelection.build(
+      ts = TagSelection.create!(
         taggable: recipe, tag_id: ing['ingredient']['value'], body: ing['ingredient_prep']
       )
-      TagAttribute.build(
+      TagAttribute.create!(
         tag_attributable: ts, property: 'amount', value: ing['ingredient_amount']
       )
       create_access(ts)
@@ -57,7 +59,7 @@ class RecipeForm < GeneralForm
       return unless ingredient['ingredient_modification'] &&
                     ingredient['ingredient_modification']['value']
 
-      ts = TagSelection.build(
+      ts = TagSelection.create!(
         taggable: tag_selection, tag_id: ingredient['ingredient_modification']['value']
       )
       create_access(ts)
@@ -66,7 +68,7 @@ class RecipeForm < GeneralForm
     def create_tags(params, recipe)
       tag_ids = form_tag_ids(params)
       tag_ids.each do |id|
-        ts = TagSelection.build(tag_id: id, taggable: recipe)
+        ts = TagSelection.create!(tag_id: id, taggable: recipe)
         create_access(ts)
       end
     end
@@ -114,11 +116,13 @@ class RecipeForm < GeneralForm
     end
 
     def update(params)
-      existing_recipe = params[:recipe]
-      recipe_form = params[:form_fields]
-      update_ingredients(existing_recipe, recipe_form)
-      update_recipe_attrs(existing_recipe, recipe_form)
-      update_recipe_tags(existing_recipe, recipe_form)
+      ActiveRecord::Base.transaction do
+        existing_recipe = params[:recipe]
+        recipe_form = params[:form_fields]
+        update_ingredients(existing_recipe, recipe_form)
+        update_recipe_attrs(existing_recipe, recipe_form)
+        update_recipe_tags(existing_recipe, recipe_form)
+      end
     end
 
     def update_ingredients(record, recipe_form)
@@ -160,7 +164,7 @@ class RecipeForm < GeneralForm
       if existing_modification.present?
         existing_modification.update(tag_id: form_mod['value'])
       else
-        ts = TagSelection.build(taggable: ingredient_tag, tag_id: form_mod['value'])
+        ts = TagSelection.create!(taggable: ingredient_tag, tag_id: form_mod['value'])
         create_access(ts)
       end
     end
@@ -169,7 +173,7 @@ class RecipeForm < GeneralForm
       if existing_amount.present?
         existing_amount&.update(value: form_ingredient['ingredient_amount'])
       else
-        TagAttribute.build(
+        TagAttribute.create!(
           tag_attributable: ingredient_tag,
           property: 'amount',
           value: form_ingredient['ingredient_amount']
@@ -225,7 +229,7 @@ class RecipeForm < GeneralForm
 
     def create_new_tags(tag_ids, record)
       tag_ids.each do |tag_id|
-        ts = TagSelection.build(tag_id: tag_id, taggable: record)
+        ts = TagSelection.create!(tag_id: tag_id, taggable: record)
         create_access(ts, record.access.status)
       end
     end

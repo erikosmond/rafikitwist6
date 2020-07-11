@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
+import AccountMenu from 'containers/AccountMenuContainer'
 import RelatedTags from 'components/recipes/RelatedTags'
 
 import HeaderDropdown from './HeaderDropdown'
@@ -39,6 +40,14 @@ const RecipeHeader = (props) => {
     history.push(`/recipes/${selectedOption}`)
   }
 
+  const renderAccount = () => {
+    if (mobile) {
+      return null
+    }
+    return (
+      <AccountMenu />
+    )
+  }
   const renderRelatedTags = () => {
     if (mobile) {
       return (
@@ -81,6 +90,7 @@ const RecipeHeader = (props) => {
         className={mobile ? classes.searchMargin : ''}
       />
       {renderRelatedTags()}
+      {renderAccount()}
     </div>
   )
 }

@@ -57,8 +57,6 @@ module Api
         # This just makes it clearer what is being passed into GroupTags.call
         {
           tag: hierarchy_result.tag,
-          # TODO: try removing current_user and run tests
-          # current_user: hierarchy_result.current_user,
           tags_with_hierarchy: hierarchy_result.tags_with_hierarchy,
           sister_tags: hierarchy_result.sister_tags
         }
