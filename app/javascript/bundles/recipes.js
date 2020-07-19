@@ -1,7 +1,6 @@
 import {
   put, call, select, takeLatest, takeEvery,
 } from 'redux-saga/effects'
-// import { startSubmit, stopSubmit, getFormValues } from 'redux-form'
 import { callApi } from 'services/rest'
 import {
   selectedFilterService,
@@ -10,62 +9,61 @@ import {
 } from 'services/recipeFilters'
 
 // Actions
-// const LOGOUT = 'accounts/logout'
 const LOAD_RECIPES = 'recipes/loadRecipes'
 const LOAD_RECIPES_SUCCESS = 'recipes/loadRecipesSuccess'
-const LOAD_ALL_TAGS = 'recipes/loadAllTags'
-const LOAD_ALL_TAGS_SUCCESS = 'recipes/loadAllTagsSuccess'
-const LOAD_TAG_INFO = 'recipes/loadTagInfo'
-const LOAD_TAG_INFO_SUCCESS = 'recipes/loadTagInfoSuccess'
+// const LOAD_ALL_TAGS = 'recipes/loadAllTags'
+// const LOAD_ALL_TAGS_SUCCESS = 'recipes/loadAllTagsSuccess'
+// const LOAD_TAG_INFO = 'recipes/loadTagInfo'
+// const LOAD_TAG_INFO_SUCCESS = 'recipes/loadTagInfoSuccess'
 const NO_RECIPES_FOUND = 'recipes/noRecipesFound'
 const LOAD_RECIPE = 'recipes/loadRecipe'
 const LOAD_RECIPE_SUCCESS = 'recipes/loadRecipeSuccess'
 const LOAD_RECIPE_OPTIONS = 'recipes/loadRecipeOptions'
 const LOAD_RECIPE_OPTIONS_SUCCESS = 'recipes/loadRecipeOptionsSuccess'
-const LOAD_CATEGORY_OPTIONS_SUCCESS = 'recipes/loadCategoriesOptionsSuccess'
-const LOAD_INGREDIENT_OPTIONS = 'recipes/loadIngredientOptions'
-const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'recipes/loadIngredientOptionsSuccess'
-const LOAD_TAG_OPTIONS = 'recipes/loadTagOptions'
-const LOAD_TAG_OPTIONS_SUCCESS = 'recipes/loadTagOptionsSuccess'
-const LOAD_TAG_TYPES = 'tags/loadTagTypes'
-const LOAD_TAG_TYPES_SUCCESS = 'tags/loadTagTypesSuccess'
+// const LOAD_CATEGORY_OPTIONS_SUCCESS = 'recipes/loadCategoriesOptionsSuccess'
+// const LOAD_INGREDIENT_OPTIONS = 'recipes/loadIngredientOptions'
+// const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'recipes/loadIngredientOptionsSuccess'
+// const LOAD_TAG_OPTIONS = 'tags/loadTagOptions'
+// const LOAD_TAG_OPTIONS_SUCCESS = 'recipes/loadTagOptionsSuccess'
+// const LOAD_TAG_TYPES = 'tags/loadTagTypes'
+// const LOAD_TAG_TYPES_SUCCESS = 'tags/loadTagTypesSuccess'
 const NO_RECIPE_FOUND = 'recipes/noRecipeFound'
 const NOT_LOADING = 'recipes/notLoading'
+const LOADING = 'recipes/loading'
 const HANDLE_FILTER = 'recipes/handleFilter'
 const HANDLE_FILTER_SUCCESS = 'recipes/handleFilterSuccess'
 const HANDLE_RECIPE_SUBMIT = 'recipes/handleRecipeSubmit'
-const NO_TAGS = 'recipes/noTags'
+// const NO_TAGS = 'recipes/noTags'
 const CLEAR_FILTERS = 'recipes/clearFilters'
 const RESET_PAGED_COUNT = 'recipes/resetPagedCount'
 const UPDATE_RECIPE_TAG = 'recipes/updateRecipeTag'
-const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
+// const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
 const LOAD_RECIPE_FORM_DATA = 'recipes/loadRecipeFormData'
 const LOAD_EDIT_FORM = 'recipes/loadEditForm'
 const LOAD_EDIT_FORM_SUCCESS = 'recipes/loadEditFormSuccess'
 const HANDLE_COMMENT_MODAL = 'recipes/handleCommentModal'
-const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
-const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
+// const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
+// const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
 const SUBMIT_RECIPE_COMMENT = 'recipes/submitRecipeComment'
 const UPDATE_RECIPE_COMMENT_SUCCESS = 'recipes/updateRecipeCommentSuccess'
 const SHOW_MORE_RECIPES = 'recipes/showMoreRecipes'
 const CLEAR_RECIPE = 'recipes/clearRecipe'
 const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
 const UPDATE_MOBILE_DRAWER_STATE = 'recipes/updateMobileDrawerState'
-const TAG_SUBMIT_SUCCESS = 'tags/tagSubmitSuccess'
-const INGREDIENT_MODIFICATION = 'ingredientModification'
-const INGREDIENT_TYPES = ['ingredient', 'ingredientCategory', 'ingredientFamily', 'ingredientType']
+// const TAG_SUBMIT_SUCCESS = 'tags/tagSubmitSuccess'
+// const INGREDIENT_MODIFICATION = 'ingredientModification'
+// const INGREDIENT_TYPES = ['ingredient', 'ingredientCategory', 'ingredientFamily', 'ingredientType']
 const DEFAULT_PAGED_RECIPE_COUNT = 10
 
 // Reducer
 const initialState = {
   selectedRecipes: [],
   selectedFilters: [],
-  selectedTag: {},
   recipeOptions: [],
   visibleFilterTags: {},
   allTags: {},
   tagGroups: {},
-  tagTypes: [],
+  // tagTypes: [],
   recipesLoaded: false,
   noRecipes: false,
   noTags: false,
@@ -88,12 +86,12 @@ export default function recipesReducer(store, action = {}) {
         loading: true,
         mobileDrawerState: { filters: false, search: false, similar: false },
       }
-    case LOAD_TAG_INFO:
-      return {
-        ...state,
-        selectedTag: {},
-        loading: true,
-      }
+    // case LOAD_TAG_INFO:
+    //   return {
+    //     ...state,
+    //     selectedTag: {},
+    //     loading: true,
+    //   }
     case LOAD_RECIPES_SUCCESS:
       return {
         ...state,
@@ -102,18 +100,18 @@ export default function recipesReducer(store, action = {}) {
         loading: false,
         noRecipes: false,
       }
-    case LOAD_TAG_INFO_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        selectedTag: action.payload.tag,
-      }
-    case LOAD_ALL_TAGS_SUCCESS:
-      return {
-        ...state,
-        allTags: action.payload.tags,
-        tagGroups: action.payload.tagGroups,
-      }
+    // case LOAD_TAG_INFO_SUCCESS:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     selectedTag: action.payload.tag,
+    //   }
+    // case LOAD_ALL_TAGS_SUCCESS:
+    //   return {
+    //     ...state,
+    //     allTags: action.payload.tags,
+    //     tagGroups: action.payload.tagGroups,
+    //   }
     case NO_RECIPES_FOUND:
       return {
         ...state,
@@ -134,31 +132,36 @@ export default function recipesReducer(store, action = {}) {
         ...state,
         recipeOptions: action.payload.recipeOptions.recipes,
       }
-    case LOAD_INGREDIENT_OPTIONS_SUCCESS:
-      return {
-        ...state,
-        ingredientOptions: action.payload.ingredientOptions,
-        ingredientModificationOptions: action.payload.ingredientModificationOptions,
-      }
-    case LOAD_CATEGORY_OPTIONS_SUCCESS:
-      return {
-        ...state,
-        categoryOptions: action.payload.ingredientOptions,
-      }
-    case LOAD_TAG_OPTIONS_SUCCESS:
-      return {
-        ...state,
-        tagOptions: action.payload,
-      }
-    case LOAD_TAG_TYPES_SUCCESS:
-      return {
-        ...state,
-        tagTypes: action.payload,
-      }
+    // case LOAD_INGREDIENT_OPTIONS_SUCCESS:
+    //   return {
+    //     ...state,
+    //     ingredientOptions: action.payload.ingredientOptions,
+    //     ingredientModificationOptions: action.payload.ingredientModificationOptions,
+    //   }
+    // case LOAD_CATEGORY_OPTIONS_SUCCESS:
+    //   return {
+    //     ...state,
+    //     categoryOptions: action.payload.ingredientOptions,
+    //   }
+    // case LOAD_TAG_OPTIONS_SUCCESS:
+    //   return {
+    //     ...state,
+    //     tagOptions: action.payload,
+    //   }
+    // case LOAD_TAG_TYPES_SUCCESS:
+    //   return {
+    //     ...state,
+    //     tagTypes: action.payload,
+    //   }
     case NO_RECIPE_FOUND:
       return {
         ...state,
         noRecipe: true,
+      }
+    case LOADING:
+      return {
+        ...state,
+        loading: true,
       }
     case NOT_LOADING:
       return {
@@ -219,11 +222,11 @@ export default function recipesReducer(store, action = {}) {
         commentTagSelectionId: action.payload.commentTagSelectionId,
         commentBody: action.payload.commentBody,
       }
-    case HANDLE_TAG_FORM_MODAL:
-      return {
-        ...state,
-        tagFormModalOpen: action.payload.tagFormModalOpen,
-      }
+    // case HANDLE_TAG_FORM_MODAL:
+    //   return {
+    //     ...state,
+    //     tagFormModalOpen: action.payload.tagFormModalOpen,
+    //   }
     case SHOW_MORE_RECIPES:
       return {
         ...state,
@@ -239,21 +242,21 @@ export default function recipesReducer(store, action = {}) {
         ...state,
         recipeFormData: action.payload.recipeFormData,
       }
-    case TAG_SUBMIT_SUCCESS:
-      return {
-        ...state,
-        tagFormModalOpen: false,
-        tagOptions: tagOptionsUpdater(state.tagOptions, action.payload),
-        ingredientOptions: ingredientOptionsUpdater(state.ingredientOptions, action.payload),
-        ingredientModificationOptions:
-          ingredientModOptionsUpdater(state.ingredientModificationOptions, action.payload),
-      }
+    // case TAG_SUBMIT_SUCCESS:
+    //   return {
+    //     ...state,
+    //     tagFormModalOpen: false,
+    //     tagOptions: tagOptionsUpdater(state.tagOptions, action.payload),
+    //     ingredientOptions: ingredientOptionsUpdater(state.ingredientOptions, action.payload),
+    //     ingredientModificationOptions:
+    //       ingredientModOptionsUpdater(state.ingredientModificationOptions, action.payload),
+    //   }
     default:
       return state
   }
 }
 
-// Action Creators
+// Helpers
 
 function tagSelectionReducer(recipe, action) {
   const {
@@ -291,35 +294,37 @@ function commentReducer(recipe, action) {
   return recipe
 }
 
-function tagOptionsUpdater(tagOptions, newTag) {
-  return {
-    ...tagOptions,
-    [newTag.tagType]: [
-      ...tagOptions[newTag.tagType],
-      { id: newTag.id, name: newTag.name },
-    ],
-  }
-}
+// function tagOptionsUpdater(tagOptions, newTag) {
+//   return {
+//     ...tagOptions,
+//     [newTag.tagType]: [
+//       ...tagOptions[newTag.tagType],
+//       { id: newTag.id, name: newTag.name },
+//     ],
+//   }
+// }
 
-function ingredientOptionsUpdater(ingredientOptions, newTag) {
-  if (INGREDIENT_TYPES.includes(newTag.tagType)) {
-    return [
-      ...ingredientOptions,
-      { value: newTag.id, label: newTag.name },
-    ]
-  }
-  return ingredientOptions
-}
+// function ingredientOptionsUpdater(ingredientOptions, newTag) {
+//   if (INGREDIENT_TYPES.includes(newTag.tagType)) {
+//     return [
+//       ...ingredientOptions,
+//       { value: newTag.id, label: newTag.name },
+//     ]
+//   }
+//   return ingredientOptions
+// }
 
-function ingredientModOptionsUpdater(ingredientModOptions, newTag) {
-  if (INGREDIENT_MODIFICATION === newTag.tagType) {
-    return [
-      ...ingredientModOptions,
-      { value: newTag.id, label: newTag.name },
-    ]
-  }
-  return ingredientModOptions
-}
+// function ingredientModOptionsUpdater(ingredientModOptions, newTag) {
+//   if (INGREDIENT_MODIFICATION === newTag.tagType) {
+//     return [
+//       ...ingredientModOptions,
+//       { value: newTag.id, label: newTag.name },
+//     ]
+//   }
+//   return ingredientModOptions
+// }
+
+// Action Creators
 
 export function loadRecipes(tagId) {
   return {
@@ -335,12 +340,12 @@ export function showMoreRecipes(pagedRecipeCount) {
   }
 }
 
-export function loadTagInfo(tagId) {
-  return {
-    type: LOAD_TAG_INFO,
-    payload: tagId,
-  }
-}
+// export function loadTagInfo(tagId) {
+//   return {
+//     type: LOAD_TAG_INFO,
+//     payload: tagId,
+//   }
+// }
 
 export function loadRecipesSuccess({ recipes }) {
   return {
@@ -351,30 +356,30 @@ export function loadRecipesSuccess({ recipes }) {
   }
 }
 
-export function loadTagInfoSuccess({ tag }) {
-  return {
-    type: LOAD_TAG_INFO_SUCCESS,
-    payload: {
-      tag,
-    },
-  }
-}
+// export function loadTagInfoSuccess({ tag }) {
+//   return {
+//     type: LOAD_TAG_INFO_SUCCESS,
+//     payload: {
+//       tag,
+//     },
+//   }
+// }
 
-export function loadAllTags() {
-  return {
-    type: LOAD_ALL_TAGS,
-  }
-}
+// export function loadAllTags() {
+//   return {
+//     type: LOAD_ALL_TAGS,
+//   }
+// }
 
-export function loadAllTagsSuccess({ tags, tagGroups }) {
-  return {
-    type: LOAD_ALL_TAGS_SUCCESS,
-    payload: {
-      tags,
-      tagGroups,
-    },
-  }
-}
+// export function loadAllTagsSuccess({ tags, tagGroups }) {
+//   return {
+//     type: LOAD_ALL_TAGS_SUCCESS,
+//     payload: {
+//       tags,
+//       tagGroups,
+//     },
+//   }
+// }
 
 export function noRecipesFound() {
   return {
@@ -413,60 +418,60 @@ export function loadRecipeOptionsSuccess({ recipeOptions }) {
   }
 }
 
-export function loadIngredientOptions(payload) {
-  return {
-    type: LOAD_INGREDIENT_OPTIONS,
-    payload: {
-      ingredientType: payload,
-    },
-  }
-}
+// export function loadIngredientOptions(payload) {
+//   return {
+//     type: LOAD_INGREDIENT_OPTIONS,
+//     payload: {
+//       ingredientType: payload,
+//     },
+//   }
+// }
 
-export function loadIngredientOptionsSuccess(payload) {
-  const { ingredientOptions, ingredientModificationOptions } = payload
-  return {
-    type: LOAD_INGREDIENT_OPTIONS_SUCCESS,
-    payload: {
-      ingredientModificationOptions,
-      ingredientOptions,
-    },
-  }
-}
+// export function loadIngredientOptionsSuccess(payload) {
+//   const { ingredientOptions, ingredientModificationOptions } = payload
+//   return {
+//     type: LOAD_INGREDIENT_OPTIONS_SUCCESS,
+//     payload: {
+//       ingredientModificationOptions,
+//       ingredientOptions,
+//     },
+//   }
+// }
 
-export function loadTagOptions() {
-  return {
-    type: LOAD_TAG_OPTIONS,
-  }
-}
+// export function loadTagOptions() {
+//   return {
+//     type: LOAD_TAG_OPTIONS,
+//   }
+// }
 
-export function loadTagOptionsSuccess({ tagOptions }) {
-  return {
-    type: LOAD_TAG_OPTIONS_SUCCESS,
-    payload: tagOptions,
-  }
-}
+// export function loadTagOptionsSuccess({ tagOptions }) {
+//   return {
+//     type: LOAD_TAG_OPTIONS_SUCCESS,
+//     payload: tagOptions,
+//   }
+// }
 
-export function loadTagTypes() {
-  return {
-    type: LOAD_TAG_TYPES,
-  }
-}
+// export function loadTagTypes() {
+//   return {
+//     type: LOAD_TAG_TYPES,
+//   }
+// }
 
-export function loadTagTypesSuccess({ tagTypes }) {
-  return {
-    type: LOAD_TAG_TYPES_SUCCESS,
-    payload: tagTypes,
-  }
-}
+// export function loadTagTypesSuccess({ tagTypes }) {
+//   return {
+//     type: LOAD_TAG_TYPES_SUCCESS,
+//     payload: tagTypes,
+//   }
+// }
 
-export function loadCategoryOptionsSuccess({ ingredientOptions }) {
-  return {
-    type: LOAD_CATEGORY_OPTIONS_SUCCESS,
-    payload: {
-      ingredientOptions,
-    },
-  }
-}
+// export function loadCategoryOptionsSuccess({ ingredientOptions }) {
+//   return {
+//     type: LOAD_CATEGORY_OPTIONS_SUCCESS,
+//     payload: {
+//       ingredientOptions,
+//     },
+//   }
+// }
 
 export function noRecipeFound() {
   return {
@@ -480,11 +485,17 @@ export function notLoading() {
   }
 }
 
-export function noTagsFound() {
+export function loading() {
   return {
-    type: NO_TAGS,
+    type: LOADING,
   }
 }
+
+// export function noTagsFound() {
+//   return {
+//     type: NO_TAGS,
+//   }
+// }
 
 export function clearFilters() {
   return {
@@ -571,18 +582,18 @@ export function updateMobileDrawerState(mobileDrawerState) {
   }
 }
 
-export function updateTagSelectionSuccess(taggableType, taggableId, tagType, tagId, id) {
-  return {
-    type: UPDATE_RECIPE_TAG_SUCCESS,
-    payload: {
-      taggableType,
-      taggableId,
-      tagType,
-      tagId,
-      id,
-    },
-  }
-}
+// export function updateTagSelectionSuccess(taggableType, taggableId, tagType, tagId, id) {
+//   return {
+//     type: UPDATE_RECIPE_TAG_SUCCESS,
+//     payload: {
+//       taggableType,
+//       taggableId,
+//       tagType,
+//       tagId,
+//       id,
+//     },
+//   }
+// }
 
 export function updateRecipeCommentSuccess(taggableType, taggableId, tagType, tagId, body, id) {
   return {
@@ -619,12 +630,12 @@ export function handleCommentModal(payload) {
   }
 }
 
-export function handleTagFormModal(payload) {
-  return {
-    payload,
-    type: HANDLE_TAG_FORM_MODAL,
-  }
-}
+// export function handleTagFormModal(payload) {
+//   return {
+//     payload,
+//     type: HANDLE_TAG_FORM_MODAL,
+//   }
+// }
 
 export function handleRecipeSubmit(payload) {
   return {
@@ -633,19 +644,19 @@ export function handleRecipeSubmit(payload) {
   }
 }
 
-export function submitTagForm(payload) {
-  return {
-    payload,
-    type: HANDLE_TAG_SUBMIT,
-  }
-}
+// export function submitTagForm(payload) {
+//   return {
+//     payload,
+//     type: HANDLE_TAG_SUBMIT,
+//   }
+// }
 
-export function tagSumbitSuccess(payload) {
-  return {
-    payload,
-    type: TAG_SUBMIT_SUCCESS,
-  }
-}
+// export function tagSumbitSuccess(payload) {
+//   return {
+//     payload,
+//     type: TAG_SUBMIT_SUCCESS,
+//   }
+// }
 
 function countVisibleRecipes(visibleRecipes) {
   // use reduce instead of forEach
@@ -659,6 +670,7 @@ function countVisibleRecipes(visibleRecipes) {
 }
 
 // Saga
+// TODO: do not export tasks
 
 export function* handleFilterTask({ payload: { id, checked } }) {
   const selectRecipes = (store) => store.recipesReducer
@@ -687,35 +699,35 @@ export function* loadRecipesTask({ payload }) {
   }
 }
 
-export function* loadTagInfoTask({ payload }) {
-  const url = `/api/tags/${payload}`
-  const result = yield call(callApi, url)
-  if (result.success) {
-    yield put(loadTagInfoSuccess({ tag: result.data }))
-  } else {
-    yield put(noRecipesFound())
-  }
-}
+// export function* loadTagInfoTask({ payload }) {
+//   const url = `/api/tags/${payload}`
+//   const result = yield call(callApi, url)
+//   if (result.success) {
+//     yield put(loadTagInfoSuccess({ tag: result.data }))
+//   } else {
+//     yield put(noRecipesFound())
+//   }
+// }
 
-export function* loadAllTagsTask() {
-  const selectRecipes = (store) => store.recipesReducer
-  const recipesState = yield select(selectRecipes)
-  const { allTags } = recipesState
-  if (!allTags || allTags.length === 0) {
-    const url = '/api/tags'
-    const result = yield call(callApi, url)
-    if (result.success) {
-      const tagObj = {}
-      result.data.tags.forEach((t) => {
-        tagObj[t.value] = t.label
-      })
-      const { tagGroups } = result.data
-      yield put(loadAllTagsSuccess({ tags: tagObj, tagGroups }))
-    } else {
-      yield put(noTagsFound())
-    }
-  }
-}
+// export function* loadAllTagsTask() {
+//   const selectRecipes = (store) => store.recipesReducer
+//   const recipesState = yield select(selectRecipes)
+//   const { allTags } = recipesState
+//   if (!allTags || allTags.length === 0) {
+//     const url = '/api/tags'
+//     const result = yield call(callApi, url)
+//     if (result.success) {
+//       const tagObj = {}
+//       result.data.tags.forEach((t) => {
+//         tagObj[t.value] = t.label
+//       })
+//       const { tagGroups } = result.data
+//       yield put(loadAllTagsSuccess({ tags: tagObj, tagGroups }))
+//     } else {
+//       yield put(noTagsFound())
+//     }
+//   }
+// }
 
 export function* loadRecipeTask({ payload }) {
   const url = `/api/recipes/${payload}`
@@ -751,54 +763,54 @@ export function* handleRecipeSubmitTask({ payload }) {
   }
 }
 
-export function* handleTagSubmitTask({ payload }) {
-  const url = '/api/tags'
-  const params = { data: payload, method: 'POST' }
-  const result = yield call(callApi, url, params)
-  if (result.success) {
-    yield put(tagSumbitSuccess(result.data))
-  }
-  console.log(result)
-}
+// export function* handleTagSubmitTask({ payload }) {
+//   const url = '/api/tags'
+//   const params = { data: payload, method: 'POST' }
+//   const result = yield call(callApi, url, params)
+//   if (result.success) {
+//     yield put(tagSumbitSuccess(result.data))
+//   }
+//   console.log(result)
+// }
 
-export function* loadIngredientOptionsTask({ payload }) {
-  const url = `/api/tags?type=${payload.ingredientType}`
-  const result = yield call(callApi, url)
-  if (result.success) {
-    if (payload.ingredientType === 'Ingredients') {
-      const modUrl = '/api/tags?type=ingredient_modifications'
-      const modResult = yield call(callApi, modUrl)
-      yield put(loadIngredientOptionsSuccess({
-        ingredientOptions: result.data.tags,
-        ingredientModificationOptions: modResult.data.tags,
-      }))
-    } else {
-      yield put(loadCategoryOptionsSuccess({ ingredientOptions: result.data.tags }))
-    }
-  } else {
-    yield put(notLoading())
-  }
-}
+// export function* loadIngredientOptionsTask({ payload }) {
+//   const url = `/api/tags?type=${payload.ingredientType}`
+//   const result = yield call(callApi, url)
+//   if (result.success) {
+//     if (payload.ingredientType === 'Ingredients') {
+//       const modUrl = '/api/tags?type=ingredient_modifications'
+//       const modResult = yield call(callApi, modUrl)
+//       yield put(loadIngredientOptionsSuccess({
+//         ingredientOptions: result.data.tags,
+//         ingredientModificationOptions: modResult.data.tags,
+//       }))
+//     } else {
+//       yield put(loadCategoryOptionsSuccess({ ingredientOptions: result.data.tags }))
+//     }
+//   } else {
+//     yield put(notLoading())
+//   }
+// }
 
-export function* loadTagOptionsTask() {
-  const url = '/api/tag_types?grouped=true'
-  const result = yield call(callApi, url)
-  if (result.success) {
-    yield put(loadTagOptionsSuccess({ tagOptions: result.data }))
-  } else {
-    yield put(notLoading())
-  }
-}
+// export function* loadTagOptionsTask() {
+//   const url = '/api/tag_types?grouped=true'
+//   const result = yield call(callApi, url)
+//   if (result.success) {
+//     yield put(loadTagOptionsSuccess({ tagOptions: result.data }))
+//   } else {
+//     yield put(notLoading())
+//   }
+// }
 
-export function* loadTagTypesTask() {
-  const url = '/api/tag_types'
-  const result = yield call(callApi, url)
-  if (result.success) {
-    yield put(loadTagTypesSuccess({ tagTypes: result.data }))
-  } else {
-    yield put(notLoading())
-  }
-}
+// export function* loadTagTypesTask() {
+//   const url = '/api/tag_types'
+//   const result = yield call(callApi, url)
+//   if (result.success) {
+//     yield put(loadTagTypesSuccess({ tagTypes: result.data }))
+//   } else {
+//     yield put(notLoading())
+//   }
+// }
 
 export function* loadEditFormTask({ payload }) {
   const url = `/api/recipes/${payload}/edit`
@@ -887,17 +899,17 @@ export function* submitRecipeCommentTask({
 
 export function* recipesSaga() {
   yield takeLatest(LOAD_RECIPES, loadRecipesTask)
-  yield takeLatest(LOAD_TAG_INFO, loadTagInfoTask)
+  // yield takeLatest(LOAD_TAG_INFO, loadTagInfoTask)
   yield takeLatest(LOAD_RECIPE, loadRecipeTask)
   yield takeLatest(LOAD_RECIPE_OPTIONS, loadRecipeOptionsTask)
   yield takeLatest(HANDLE_FILTER, handleFilterTask)
-  yield takeLatest(LOAD_ALL_TAGS, loadAllTagsTask)
-  yield takeEvery(LOAD_INGREDIENT_OPTIONS, loadIngredientOptionsTask)
-  yield takeEvery(LOAD_TAG_OPTIONS, loadTagOptionsTask)
-  yield takeEvery(LOAD_TAG_TYPES, loadTagTypesTask)
+  // yield takeLatest(LOAD_ALL_TAGS, loadAllTagsTask)
+  // yield takeEvery(LOAD_INGREDIENT_OPTIONS, loadIngredientOptionsTask)
+  // yield takeEvery(LOAD_TAG_OPTIONS, loadTagOptionsTask)
+  // yield takeEvery(LOAD_TAG_TYPES, loadTagTypesTask)
   yield takeLatest(UPDATE_RECIPE_TAG, updateTagSelectionTask)
   yield takeLatest(SUBMIT_RECIPE_COMMENT, submitRecipeCommentTask)
-  yield takeLatest(HANDLE_TAG_SUBMIT, handleTagSubmitTask)
+  // yield takeLatest(HANDLE_TAG_SUBMIT, handleTagSubmitTask)
   yield takeLatest(HANDLE_RECIPE_SUBMIT, handleRecipeSubmitTask)
   yield takeLatest(LOAD_EDIT_FORM, loadEditFormTask)
 }

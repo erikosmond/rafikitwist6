@@ -5,20 +5,23 @@ import RecipeFormSkeleton from 'components/recipes/RecipeFormSkeleton'
 
 import {
   handleRecipeSubmit,
-  handleTagFormModal,
   loadEditForm,
-  loadIngredientOptions,
   loadRecipeFormData,
-  loadTagOptions,
 } from 'bundles/recipes'
+
+import {
+  handleTagFormModal,
+  loadIngredientOptions,
+  loadTagOptions,
+} from 'bundles/tags'
 
 export default withRouter(connect(
   (state) => ({
     formData: state.recipesReducer.formData,
-    ingredientModificationOptions: state.recipesReducer.ingredientModificationOptions,
-    ingredientOptions: state.recipesReducer.ingredientOptions,
+    ingredientModificationOptions: state.tagsReducer.ingredientModificationOptions,
+    ingredientOptions: state.tagsReducer.ingredientOptions,
     recipe: state.recipesReducer.recipe,
-    tagOptions: state.recipesReducer.tagOptions,
+    tagOptions: state.tagsReducer.tagOptions,
     recipeFormData: state.recipesReducer.recipeFormData,
   }),
   {

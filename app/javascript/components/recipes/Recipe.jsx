@@ -103,7 +103,7 @@ class Recipe extends React.Component {
     if (noRecipe) {
       return (
         <div>
-          `We do not have a recipe like that`
+          We do not have a recipe like that
         </div>
       )
     }

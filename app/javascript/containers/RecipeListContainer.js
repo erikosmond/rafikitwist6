@@ -5,29 +5,32 @@ import RecipeListSkeleton from 'components/recipes/RecipeListSkeleton'
 
 import {
   loadRecipes,
-  loadTagInfo,
   handleCommentModal,
   handleFilter,
-  loadAllTags,
   clearFilters,
   resetPagedCount,
   updateRecipeTag,
   showMoreRecipes,
 } from 'bundles/recipes'
 
+import {
+  loadTagInfo,
+  loadAllTags,
+} from 'bundles/tags'
+
 export default withRouter(connect(
   (state) => ({
     selectedRecipes: state.recipesReducer.selectedRecipes,
     recipesLoaded: state.recipesReducer.recipesLoaded,
-    selectedTag: state.recipesReducer.selectedTag,
+    selectedTag: state.tagsReducer.selectedTag,
     noRecipes: state.recipesReducer.noRecipes,
     startingTagId: state.recipesReducer.startingTagId,
     loading: state.recipesReducer.loading,
     visibleFilterTags: state.recipesReducer.visibleFilterTags,
     visibleRecipeCount: state.recipesReducer.visibleRecipeCount,
-    allTags: state.recipesReducer.allTags,
-    tagGroups: state.recipesReducer.tagGroups,
-    allTagTypes: state.recipesReducer.allTagTypes,
+    allTags: state.tagsReducer.allTags,
+    tagGroups: state.tagsReducer.tagGroups,
+    allTagTypes: state.tagsReducer.allTagTypes,
     tagsByType: state.recipesReducer.tagsByType,
     priorities: state.recipesReducer.priorities,
     ratings: state.recipesReducer.ratings,
