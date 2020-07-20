@@ -9,8 +9,8 @@ import {
   handleFilter,
   clearFilters,
   resetPagedCount,
-  updateRecipeTag,
   showMoreRecipes,
+  updateRecipeTag,
 } from 'bundles/recipes'
 
 import {

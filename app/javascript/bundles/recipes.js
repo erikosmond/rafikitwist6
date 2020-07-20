@@ -1,5 +1,5 @@
 import {
-  put, call, select, takeLatest, takeEvery,
+  put, call, select, takeLatest,
 } from 'redux-saga/effects'
 import { callApi } from 'services/rest'
 import {
@@ -7,6 +7,7 @@ import {
   selectedRecipeService,
   visibleFilterService,
 } from 'services/recipeFilters'
+import { loadIngredientOptionsTask } from 'bundles/tags'
 
 // Actions
 const LOAD_RECIPES = 'recipes/loadRecipes'
@@ -37,7 +38,7 @@ const HANDLE_RECIPE_SUBMIT = 'recipes/handleRecipeSubmit'
 const CLEAR_FILTERS = 'recipes/clearFilters'
 const RESET_PAGED_COUNT = 'recipes/resetPagedCount'
 const UPDATE_RECIPE_TAG = 'recipes/updateRecipeTag'
-// const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
+const UPDATE_RECIPE_TAG_SUCCESS = 'recipes/updateRecipeTagSuccess'
 const LOAD_RECIPE_FORM_DATA = 'recipes/loadRecipeFormData'
 const LOAD_EDIT_FORM = 'recipes/loadEditForm'
 const LOAD_EDIT_FORM_SUCCESS = 'recipes/loadEditFormSuccess'
@@ -189,11 +190,11 @@ export default function recipesReducer(store, action = {}) {
         recipe: null,
         noRecipe: false,
       }
-    // case UPDATE_RECIPE_TAG_SUCCESS:
-    //   return {
-    //     ...state,
-    //     selectedRecipes: state.selectedRecipes.map((r) => tagSelectionReducer(r, { ...action })),
-    //   }
+    case UPDATE_RECIPE_TAG_SUCCESS:
+      return {
+        ...state,
+        selectedRecipes: state.selectedRecipes.map((r) => tagSelectionReducer(r, { ...action })),
+      }
     case UPDATE_RECIPE_COMMENT_SUCCESS:
       return {
         ...state,
@@ -253,23 +254,23 @@ export default function recipesReducer(store, action = {}) {
 
 // Helpers
 
-// function tagSelectionReducer(recipe, action) {
-//   const {
-//     payload: {
-//       taggableType,
-//       taggableId,
-//       tagType,
-//       tagId,
-//       id,
-//     },
-//   } = action
-//   if (taggableType === 'Recipe') {
-//     if (recipe.id === taggableId) {
-//       return { ...recipe, [tagType]: { tagId, id } }
-//     }
-//   }
-//   return recipe
-// }
+function tagSelectionReducer(recipe, action) {
+  const {
+    payload: {
+      taggableType,
+      taggableId,
+      tagType,
+      tagId,
+      id,
+    },
+  } = action
+  if (taggableType === 'Recipe') {
+    if (recipe.id === taggableId) {
+      return { ...recipe, [tagType]: { tagId, id } }
+    }
+  }
+  return recipe
+}
 
 function commentReducer(recipe, action) {
   const {
@@ -577,18 +578,18 @@ export function updateMobileDrawerState(mobileDrawerState) {
   }
 }
 
-// export function updateTagSelectionSuccess(taggableType, taggableId, tagType, tagId, id) {
-//   return {
-//     type: UPDATE_RECIPE_TAG_SUCCESS,
-//     payload: {
-//       taggableType,
-//       taggableId,
-//       tagType,
-//       tagId,
-//       id,
-//     },
-//   }
-// }
+export function updateTagSelectionSuccess(taggableType, taggableId, tagType, tagId, id) {
+  return {
+    type: UPDATE_RECIPE_TAG_SUCCESS,
+    payload: {
+      taggableType,
+      taggableId,
+      tagType,
+      tagId,
+      id,
+    },
+  }
+}
 
 export function updateRecipeCommentSuccess(taggableType, taggableId, tagType, tagId, body, id) {
   return {
