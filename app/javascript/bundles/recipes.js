@@ -175,11 +175,6 @@ export default function recipesReducer(store, action = {}) {
         selectedFilters: action.payload.selectedFilters,
         visibleFilterTags: action.payload.visibleFilters,
       }
-    case NO_TAGS:
-      return {
-        ...state,
-        noTags: true,
-      }
     case CLEAR_FILTERS:
       return {
         ...state,
@@ -194,11 +189,11 @@ export default function recipesReducer(store, action = {}) {
         recipe: null,
         noRecipe: false,
       }
-    case UPDATE_RECIPE_TAG_SUCCESS:
-      return {
-        ...state,
-        selectedRecipes: state.selectedRecipes.map((r) => tagSelectionReducer(r, { ...action })),
-      }
+    // case UPDATE_RECIPE_TAG_SUCCESS:
+    //   return {
+    //     ...state,
+    //     selectedRecipes: state.selectedRecipes.map((r) => tagSelectionReducer(r, { ...action })),
+    //   }
     case UPDATE_RECIPE_COMMENT_SUCCESS:
       return {
         ...state,
@@ -258,23 +253,23 @@ export default function recipesReducer(store, action = {}) {
 
 // Helpers
 
-function tagSelectionReducer(recipe, action) {
-  const {
-    payload: {
-      taggableType,
-      taggableId,
-      tagType,
-      tagId,
-      id,
-    },
-  } = action
-  if (taggableType === 'Recipe') {
-    if (recipe.id === taggableId) {
-      return { ...recipe, [tagType]: { tagId, id } }
-    }
-  }
-  return recipe
-}
+// function tagSelectionReducer(recipe, action) {
+//   const {
+//     payload: {
+//       taggableType,
+//       taggableId,
+//       tagType,
+//       tagId,
+//       id,
+//     },
+//   } = action
+//   if (taggableType === 'Recipe') {
+//     if (recipe.id === taggableId) {
+//       return { ...recipe, [tagType]: { tagId, id } }
+//     }
+//   }
+//   return recipe
+// }
 
 function commentReducer(recipe, action) {
   const {

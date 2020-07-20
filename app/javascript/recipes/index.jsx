@@ -21,13 +21,19 @@ const myStore = {
     startingTagId: home.dataset.startingTagId,
     commentTagId: home.dataset.commentTagId,
     firstName: home.dataset.firstName,
+    // allTags: JSON.parse(home.dataset.allTags),
+    // allTagTypes: JSON.parse(home.dataset.allTagTypes),
+    // tagGroups: JSON.parse(home.dataset.tagGroups),
+    // tagsByType: JSON.parse(home.dataset.tagsByType),
+    ratings: JSON.parse(home.dataset.ratings),
+    priorities: JSON.parse(home.dataset.priorities),
+    authenticated: home.dataset.authenticated === 'true',
+  },
+  tagsReducer: {
     allTags: JSON.parse(home.dataset.allTags),
     allTagTypes: JSON.parse(home.dataset.allTagTypes),
     tagGroups: JSON.parse(home.dataset.tagGroups),
     tagsByType: JSON.parse(home.dataset.tagsByType),
-    ratings: JSON.parse(home.dataset.ratings),
-    priorities: JSON.parse(home.dataset.priorities),
-    authenticated: home.dataset.authenticated === 'true',
   },
 }
 

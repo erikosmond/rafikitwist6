@@ -31,7 +31,7 @@ export default withRouter(connect(
     allTags: state.tagsReducer.allTags,
     tagGroups: state.tagsReducer.tagGroups,
     allTagTypes: state.tagsReducer.allTagTypes,
-    tagsByType: state.recipesReducer.tagsByType,
+    tagsByType: state.tagsReducer.tagsByType,
     priorities: state.recipesReducer.priorities,
     ratings: state.recipesReducer.ratings,
     selectedFilters: state.recipesReducer.selectedFilters,

@@ -85,6 +85,16 @@ export default function tagsReducer(store, action = {}) {
         ...state,
         categoryOptions: action.payload.ingredientOptions,
       }
+    case NO_TAGS:
+      return {
+        ...state,
+        noTags: true,
+      }
+    case UPDATE_RECIPE_TAG_SUCCESS:
+      return {
+        ...state,
+        selectedRecipes: state.selectedRecipes.map((r) => tagSelectionReducer(r, { ...action })),
+      }
     default:
       return state
   }
@@ -101,6 +111,24 @@ function ingredientOptionsUpdater(ingredientOptions, newTag) {
 }
 
 // Helpers
+
+function tagSelectionReducer(recipe, action) {
+  const {
+    payload: {
+      taggableType,
+      taggableId,
+      tagType,
+      tagId,
+      id,
+    },
+  } = action
+  if (taggableType === 'Recipe') {
+    if (recipe.id === taggableId) {
+      return { ...recipe, [tagType]: { tagId, id } }
+    }
+  }
+  return recipe
+}
 
 function tagOptionsUpdater(tagOptions, newTag) {
   return {
