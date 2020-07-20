@@ -670,6 +670,8 @@ function countVisibleRecipes(visibleRecipes) {
 export function* handleFilterTask({ payload: { id, checked } }) {
   const selectRecipes = (store) => store.recipesReducer
   const recipesState = yield select(selectRecipes)
+  const selectTags = (store) => store.tagsReducer
+  const tagsState = yield select(selectTags)
   const selectedFilters = yield call(selectedFilterService, id, checked, recipesState)
   const selectedRecipes = yield call(
     selectedRecipeService,
@@ -679,7 +681,8 @@ export function* handleFilterTask({ payload: { id, checked } }) {
   const visibleRecipeCount = yield call(countVisibleRecipes, selectedRecipes)
   yield put(setVisibleRecipeCount(visibleRecipeCount))
   // take selectedRecipes and count which ones are visible - set that in visibleRecipeCount
-  const visibleFilters = yield call(visibleFilterService, selectedRecipes, recipesState.allTags)
+  // TODO: update to tagsState.allTags
+  const visibleFilters = yield call(visibleFilterService, selectedRecipes, tagsState.allTags)
   yield put(handleFilterSuccess(selectedRecipes, selectedFilters, visibleFilters))
 }
 
