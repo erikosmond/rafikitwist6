@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 const Footer = styled.div`
   width: 100%;
-  position: fixed;
+  position: sticky;
   bottom: 0px;
   z-index: 1;
 `

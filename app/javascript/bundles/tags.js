@@ -19,8 +19,6 @@ const TAG_SUBMIT_SUCCESS = 'tags/tagSubmitSuccess'
 const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'tags/loadIngredientOptionsSuccess'
 const LOAD_CATEGORY_OPTIONS_SUCCESS = 'tags/loadCategoriesOptionsSuccess'
 const LOAD_INGREDIENT_OPTIONS = 'tags/loadIngredientOptions'
-// const UPDATE_RECIPE_TAG = 'tags/updateRecipeTag'
-// const UPDATE_RECIPE_TAG_SUCCESS = 'tags/updateRecipeTagSuccess'
 const INGREDIENT_MODIFICATION = 'ingredientModification'
 const INGREDIENT_TYPES = ['ingredient', 'ingredientCategory', 'ingredientFamily', 'ingredientType']
 
@@ -91,11 +89,6 @@ export default function tagsReducer(store, action = {}) {
         ...state,
         noTags: true,
       }
-    // case UPDATE_RECIPE_TAG_SUCCESS:
-    //   return {
-    //     ...state,
-    //     selectedRecipes: state.selectedRecipes.map((r) => tagSelectionReducer(r, { ...action })),
-    //   }
     default:
       return state
   }
@@ -112,24 +105,6 @@ function ingredientOptionsUpdater(ingredientOptions, newTag) {
 }
 
 // Helpers
-
-// function tagSelectionReducer(recipe, action) {
-//   const {
-//     payload: {
-//       taggableType,
-//       taggableId,
-//       tagType,
-//       tagId,
-//       id,
-//     },
-//   } = action
-//   if (taggableType === 'Recipe') {
-//     if (recipe.id === taggableId) {
-//       return { ...recipe, [tagType]: { tagId, id } }
-//     }
-//   }
-//   return recipe
-// }
 
 function tagOptionsUpdater(tagOptions, newTag) {
   return {
@@ -267,19 +242,6 @@ export function loadIngredientOptions(payload) {
   }
 }
 
-// export function updateRecipeTag(recipeId, tagId, tagType, tagSelectionId) {
-//   return {
-//     type: UPDATE_RECIPE_TAG,
-//     payload: {
-//       tagSelectionId,
-//       tagId,
-//       tagType,
-//       taggableId: recipeId,
-//       taggableType: 'Recipe',
-//     },
-//   }
-// }
-
 // Sagas
 
 function* loadTagOptionsTask() {
@@ -363,57 +325,6 @@ export function* loadIngredientOptionsTask({ payload }) {
   }
 }
 
-// export function* updateTagSelectionTask({
-//   payload: {
-//     tagId,
-//     taggableId,
-//     taggableType,
-//     tagSelectionId,
-//     tagType,
-//   },
-// }) {
-//   const method = tagSelectionId ? 'PUT' : 'POST'
-//   const id = tagSelectionId ? `/${tagSelectionId}` : ''
-//   const url = `/api/tag_selections${id}`
-//   const mapping = {
-//     Rating: 'newRating',
-//     Priority: 'newPriority',
-//   }
-//   const params = {
-//     method,
-//     data: {
-//       tagSelection: {
-//         tagId,
-//         taggableId,
-//         taggableType,
-//       },
-//       id: tagSelectionId,
-//     },
-//   }
-//   const result = yield call(callApi, url, params)
-//   if (result.success) {
-//     yield put(updateTagSelectionSuccess(
-//       taggableType, taggableId, mapping[tagType], tagId, result.data.id,
-//     ))
-//     yield call(loadIngredientOptionsTask, { payload: { ingredientType: 'More' } })
-//   } else {
-//     console.log('Unable to update recipe')
-//   }
-// }
-
-// export function updateTagSelectionSuccess(taggableType, taggableId, tagType, tagId, id) {
-//   return {
-//     type: UPDATE_RECIPE_TAG_SUCCESS,
-//     payload: {
-//       taggableType,
-//       taggableId,
-//       tagType,
-//       tagId,
-//       id,
-//     },
-//   }
-// }
-
 export function* tagsSaga() {
   yield takeLatest(LOAD_ALL_TAGS, loadAllTagsTask)
   yield takeLatest(LOAD_TAG_INFO, loadTagInfoTask)
@@ -421,6 +332,4 @@ export function* tagsSaga() {
   yield takeEvery(LOAD_TAG_TYPES, loadTagTypesTask)
   yield takeEvery(LOAD_INGREDIENT_OPTIONS, loadIngredientOptionsTask)
   yield takeLatest(HANDLE_TAG_SUBMIT, handleTagSubmitTask)
-  // yield takeLatest(UPDATE_RECIPE_TAG, updateTagSelectionTask)
-
 }
