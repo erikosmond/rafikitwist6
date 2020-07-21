@@ -4,7 +4,7 @@ import { Field, FieldArray, reduxForm } from 'redux-form'
 import RecipeFormStyles from 'components/styled/RecipeFormStyles'
 import RecipeFormIngredient from 'components/recipes/RecipeFormIngredient'
 import RecipeFormTagSelectors from 'components/recipes/RecipeFormTagSelectors'
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = () => (RecipeFormStyles)
 

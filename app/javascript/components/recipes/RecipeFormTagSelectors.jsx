@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import FormControl from '@material-ui/core/FormControl'
 import RecipeFormStyles from 'components/styled/RecipeFormStyles'
+import { sortByName } from 'services/formService'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -54,7 +55,6 @@ let RecipeFormTagSelectors = (props) => {
     setTags(event.target.value)
     onChange(event.target.value)
   }
-
   return (
     <FormControl className={classes.formControl}>
       <InputLabel id="demo-mutiple-checkbox-label">{title}</InputLabel>
@@ -68,7 +68,7 @@ let RecipeFormTagSelectors = (props) => {
         renderValue={(selected) => selected.map((tag) => tag.name).join(', ')}
         MenuProps={MenuProps}
       >
-        {tagOptions.map((tag) => (
+        {sortByName(tagOptions).map((tag) => (
           <MenuItem key={title + tag.id} value={tag}>
             <Checkbox checked={tags.map((t) => t.id).indexOf(tag.id) > -1} />
             <ListItemText primary={tag.name} />
