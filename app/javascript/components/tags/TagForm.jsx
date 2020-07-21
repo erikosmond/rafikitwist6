@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { Field, reduxForm } from 'redux-form'
 import TagFormStyles from 'components/styled/TagFormStyles'
 import RecipeFormTagSelectors from 'components/recipes/RecipeFormTagSelectors'
-import { sortByName } from 'services/formService'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = () => (TagFormStyles)
@@ -33,7 +32,7 @@ let TagForm = (props) => {
             name="parentTags"
             component={RecipeFormTagSelectors}
             props={{
-              tagOptions: sortByName(buildParentTagDropdown),
+              tagOptions: buildParentTagDropdown,
               title: 'Parent Tags',
             }}
           />

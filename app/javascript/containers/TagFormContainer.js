@@ -7,13 +7,13 @@ import {
   handleTagFormModal,
   loadTagTypes,
   submitTagForm,
-} from 'bundles/recipes'
+} from 'bundles/tags'
 
 export default withRouter(connect(
   (state) => ({
-    tagFormModalOpen: state.recipesReducer.tagFormModalOpen,
-    tagTypes: state.recipesReducer.tagTypes,
-    tagOptions: state.recipesReducer.tagOptions,
+    tagFormModalOpen: state.tagsReducer.tagFormModalOpen,
+    tagTypes: state.tagsReducer.tagTypes,
+    tagOptions: state.tagsReducer.tagOptions,
   }),
   {
     handleTagFormModal,

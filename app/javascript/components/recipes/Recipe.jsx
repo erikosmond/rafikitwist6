@@ -21,7 +21,7 @@ const Header = styled.div`
 `
 const Footer = styled.div`
   width: 100%;
-  position: fixed;
+  position: sticky;
   bottom: 0px;
   z-index: 1;
 `
@@ -103,7 +103,7 @@ class Recipe extends React.Component {
     if (noRecipe) {
       return (
         <div>
-          `We do not have a recipe like that`
+          We do not have a recipe like that
         </div>
       )
     }
