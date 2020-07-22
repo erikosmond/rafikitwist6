@@ -2,7 +2,6 @@
 
 module Api
   # Controller for recipes and recipes by tag
-  # TODO: clean up this controller
   class RecipesController < ApplicationController
     def index
       tag_id = params.permit(:tag_id)[:tag_id]
