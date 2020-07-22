@@ -15,10 +15,15 @@ class RecipeByTag
               when TagType.modification_id
                 modification_recipes_detail.to_a
               end || []
-    context.result = recipes + recipes_with_detail.to_a
+    set_result(recipes, recipes_with_detail.to_a)
   end
 
   private
+
+    def set_result(recipes, recipes_with_detail)
+      context.result = recipes + recipes_with_detail
+      context.filter_tags = filter_tags(context.result)
+    end
 
     def child_recipes_with_detail
       tag_selections = context.tag.child_recipe_tag_selections
@@ -93,5 +98,18 @@ class RecipeByTag
           tag_selections: recipes_with_parent_detail_joins
         }
       ]
+    end
+
+    def filter_tags(recipes)
+      # Return tags associated with the recipe but also those tags' parents
+      # to allow for less specific filtering, i.e. allowing a recipe containing
+      # 'apples' to be returned when filtering by 'fruit'.
+      result = recipes.each_with_object({}) do |r, tags|
+        tags[r.tag_id] = r.tag_name
+        tags[r.parent_tag_id] = r.parent_tag
+        tags[r.grandparent_tag_id] = r.grandparent_tag
+        tags[r.modification_id] = r.modification_name
+      end
+      result.reject { |k, v| k.blank? || v.blank? }.to_a
     end
 end

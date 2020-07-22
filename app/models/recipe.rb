@@ -55,8 +55,8 @@ class Recipe < ApplicationRecord
   end
 
   def ingredient_tag_selections
-    types = TagType::INGREDIENT_TYPES.map { |tt| "'" + tt + "'" }
-    tag_selections.joins(tag: :tag_type).where("tag_types.name IN (#{types.join(', ')})")
+    types = ActiveRecord::Base.sanitize_sql(TagType::INGREDIENT_TYPES.join("', '"))
+    tag_selections.joins(tag: :tag_type).where("tag_types.name IN ('#{types}')")
   end
 
   private

@@ -2,7 +2,6 @@
 
 module Api
   # Controller for recipes and recipes by tag
-  # TODO: clean up this controller
   class RecipesController < ApplicationController
     def index
       tag_id = params.permit(:tag_id)[:tag_id]
@@ -98,7 +97,7 @@ module Api
         {
           tag: tag,
           recipes: GroupRecipeDetail.call(recipe_details: recipes.result).result,
-          filter_tags: filter_tags(recipes.result)
+          filter_tags: recipes.filter_tags
         }
       end
 
@@ -113,19 +112,6 @@ module Api
                       ).
                       sort_by(&:name).as_json(only: %i[id name])
         recipe_json.map { |r| { 'Label' => r['name'], 'Value' => r['id'] } }
-      end
-
-      def filter_tags(recipes)
-        # Return tags associated with the recipe but also those tags' parents
-        # to allow for less specific filtering, i.e. allowing a recipe containing
-        # 'apples' to be returned when filtering by 'fruit'.
-        result = recipes.each_with_object({}) do |r, tags|
-          tags[r.tag_id] = r.tag_name
-          tags[r.parent_tag_id] = r.parent_tag
-          tags[r.grandparent_tag_id] = r.grandparent_tag
-          tags[r.modification_id] = r.modification_name
-        end
-        result.reject { |k, v| k.blank? || v.blank? }.to_a
       end
   end
 end
