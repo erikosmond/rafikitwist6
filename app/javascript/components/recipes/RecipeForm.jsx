@@ -116,7 +116,6 @@ let RecipeForm = (props) => {
         ingredientOptions={ingredientOptions}
       />
       <div htmlFor="isIngredient">Is used as an ingredient</div>
-      {/* <label htmlFor="isIngredient">Is used as an ingredient</label> */}
       <Field name="isIngredient" id="isIngredient" component="input" type="checkbox" />
       <br />
       <Field
