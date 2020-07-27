@@ -28,3 +28,6 @@ Style/HashTransformKeys:
 
 Style/HashTransformValues:
   Enabled: false
+
+Style/SingleLineMethods:
+  Enabled: false

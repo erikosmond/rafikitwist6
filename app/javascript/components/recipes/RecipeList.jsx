@@ -4,6 +4,7 @@ import FilterByIngredients from 'components/filters/FilterByIngredients'
 import FilterChips from 'components/filters/FilterChips'
 import RecipeListColumn from 'components/recipes/RecipeListColumn'
 import RelatedTags from 'components/recipes/RelatedTags'
+import { Link } from 'react-router-dom'
 import PaperContent from '../styled/PaperContent'
 import PaperSidebar from '../styled/PaperSidebar'
 
@@ -92,10 +93,19 @@ class RecipeList extends React.Component {
           <div>
             {selectedTag.description}
             <br />
+          </div>
+        )}
+        {selectedTag.recipeId && selectedTag.recipeId.length > 0 && (
+          <div>
+            <Link to={`/recipes/${selectedTag.recipeId}`}>
+              See recipe...
+            </Link>
             <br />
           </div>
         )}
-
+        {(selectedTag.recipeId || selectedTag.description) && (
+          <br />
+        )}
         <FilterChips
           allTags={allTags}
           selectedFilters={selectedFilters}
@@ -188,6 +198,7 @@ RecipeList.propTypes = {
     sisterTags: PropTypes.shape({}),
     modificationTags: PropTypes.shape({}),
     modifiedTags: PropTypes.shape({}),
+    recipeId: PropTypes.number,
   }).isRequired,
 }
 
