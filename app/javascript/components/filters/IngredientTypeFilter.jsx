@@ -3,9 +3,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import IngredientFilter from 'components/filters/IngredientFilter'
 
@@ -54,8 +52,8 @@ class IngredientTypeFilter extends React.Component {
       } = this.props
       const { expansionPanelOpen } = this.state
       return (
-        <ExpansionPanel expanded={expansionPanelOpen}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion expanded={expansionPanelOpen}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             {selectable && (
             <FormControlLabel
               control={(
@@ -69,8 +67,8 @@ class IngredientTypeFilter extends React.Component {
             />
             )}
             { !selectable && label }
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails className={classes.details}>
+          </AccordionSummary>
+          <AccordionDetails className={classes.details}>
             {childTags.map((t) => (
               visibleTags[parseInt(t, 10)] && (
                 <IngredientFilter
@@ -83,8 +81,8 @@ class IngredientTypeFilter extends React.Component {
                 />
               )
             ))}
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>
       )
     }
     return null
