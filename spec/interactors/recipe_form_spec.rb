@@ -99,6 +99,32 @@ RSpec.describe RecipeForm, type: :interactor do
         expect(r.ingredients.first.tag_selections.first.tag_attributes.first.value).
           to eq '2'
       end
+      it 'does not create an ingredient tag for the recipe' do
+        expect(Tag.where.not(recipe_id: nil)).to eq []
+      end
+    end
+    describe do
+      let(:recipe_name) { 'rname_ingredient' }
+      let(:ingredient_params) do
+        {
+          'recipe_name' => recipe_name,
+          'description' => 'rdesc_ing',
+          'instructions' => 'rinst_ing',
+          'ingredients' => [
+            {
+              'ingredient_amount' => '4',
+              'ingredient' => { 'label' => 'Soda Water', 'value' => club_soda.id }
+            }
+          ],
+          'isIngredient' => '1'
+        }
+      end
+      before do
+        RecipeForm.call(user: user, params: ingredient_params, action: :create)
+      end
+      it 'saves the recipe as ingredient tag' do
+        expect(Tag.where.not(recipe_id: nil).first.name).to eq recipe_name
+      end
     end
     describe 'edit' do
       include_context 'recipe_form'

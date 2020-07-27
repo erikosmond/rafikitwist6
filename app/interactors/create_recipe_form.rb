@@ -4,43 +4,45 @@
 class CreateRecipeForm < RecipeForm
   def create
     ActiveRecord::Base.transaction do
-      recipe = create_recipe!(@params)
+      recipe = create_recipe!
       create_access(recipe)
-      create_ingredients(@params, recipe)
-      create_tags(@params, recipe)
-      recipe.tap(&:save!).reload
+      create_ingredients(recipe)
+      create_tags(recipe)
+      recipe = recipe.tap(&:save!).reload
+      RecipesService.recipe_as_ingredient(recipe) if @params['isIngredient'].present?
+      recipe.reload
     end
   end
 
   private
 
-    def create_recipe!(params)
+    def create_recipe!
       Recipe.create!(
         {
-          name: params['recipe_name'],
-          instructions: params['instructions'],
-          description: params['description']
+          name: @params['recipe_name'],
+          instructions: @params['instructions'],
+          description: @params['description']
         }
       )
     end
 
-    def create_ingredients(params, recipe)
-      params['ingredients'].each do |i|
+    def create_ingredients(recipe)
+      @params['ingredients'].each do |i|
         create_ingredient_tag_selection(recipe, i)
       end
     end
 
-    def create_tags(params, recipe)
-      tag_ids = form_tag_ids(params)
+    def create_tags(recipe)
+      tag_ids = form_tag_ids
       tag_ids.each do |id|
         ts = TagSelection.create!(tag_id: id, taggable: recipe)
         create_access(ts)
       end
     end
 
-    def form_tag_ids(params)
+    def form_tag_ids
       tag_types.flat_map do |type|
-        tag_ids_by_type(params[type])
+        tag_ids_by_type(@params[type])
       end.compact.uniq
     end
 

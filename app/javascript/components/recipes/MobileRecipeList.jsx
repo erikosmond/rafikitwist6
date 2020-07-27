@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import MobileNavDrawer from 'components/recipes/MobileNavDrawer'
 import RecipeListColumn from 'components/recipes/RecipeListColumn'
 import FilterChips from 'components/filters/FilterChips'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Footer = styled.div`
@@ -81,6 +82,14 @@ class MobileRecipeList extends React.Component {
           <div>
             {selectedTag.description}
             <br />
+            <br />
+          </div>
+        )}
+        {selectedTag.recipeId && selectedTag.recipeId > 0 && (
+          <div>
+            <Link to={`/recipes/${selectedTag.recipeId}`}>
+              See recipe
+            </Link>
             <br />
           </div>
         )}
