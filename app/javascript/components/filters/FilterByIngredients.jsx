@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import FormGroup from '@material-ui/core/FormGroup'
 import IngredientFamilyFilter from 'components/filters/IngredientFamilyFilter'
 import IngredientTypeFilter from 'components/filters/IngredientTypeFilter'
+import { sortByTagName } from 'services/sortService'
 
 const FilterByIngredients = ({
   visibleTags,
@@ -20,7 +21,7 @@ const FilterByIngredients = ({
     <div>
       <h2> Filters </h2>
       <FormGroup>
-        {tagGroups && Object.keys(tagGroups).map((t) => (
+        {tagGroups && sortByTagName(Object.keys(tagGroups), allTags).map((t) => (
           <IngredientFamilyFilter
             key={t}
             id={t}
@@ -30,9 +31,10 @@ const FilterByIngredients = ({
             visibleTags={visibleTags}
             tagNameById={tagNameById}
             childTags={tagGroups[t]}
+            allTags={allTags}
           />
         ))}
-        {tagsByType && Object.keys(tagsByType).map((t) => (
+        {tagsByType && sortByTagName(Object.keys(tagsByType), allTagTypes).map((t) => (
           <IngredientTypeFilter
             key={t}
             id={t}
@@ -42,6 +44,7 @@ const FilterByIngredients = ({
             visibleTags={visibleTags}
             tagNameById={tagNameById}
             childTags={tagsByType[t]}
+            allTags={allTags}
           />
         ))}
       </FormGroup>
@@ -54,7 +57,9 @@ FilterByIngredients.propTypes = {
   handleFilter: PropTypes.func.isRequired,
   selectedFilters: PropTypes.arrayOf(PropTypes.number),
   visibleTags: PropTypes.shape({}).isRequired,
-  allTags: PropTypes.shape({}).isRequired,
+  allTags: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
   allTagTypes: PropTypes.shape({}).isRequired,
   tagGroups: PropTypes.shape({}).isRequired,
   tagsByType: PropTypes.shape({}).isRequired,

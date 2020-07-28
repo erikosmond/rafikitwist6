@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import IngredientTypeFilter from 'components/filters/IngredientTypeFilter'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import IngredientTypeFilter from 'components/filters/IngredientTypeFilter'
+import { sortByTagName } from 'services/sortService'
 
 const styles = () => ({
   details: {
@@ -54,6 +55,7 @@ class IngredientFamilyFilter extends React.Component {
         selectedFilters,
         id,
         classes,
+        allTags,
       } = this.props
       return (
         <Accordion>
@@ -70,12 +72,13 @@ class IngredientFamilyFilter extends React.Component {
             />
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            {childTags && Object.keys(childTags).map((t) => (
+            {childTags && sortByTagName(Object.keys(childTags), allTags).map((t) => (
               <IngredientTypeFilter
                 key={`${id}--${t}`}
                 id={t}
                 label={tagNameById(parseInt(t, 10))}
                 childTags={childTags[parseInt(t, 10)]}
+                allTags={allTags}
                 tagNameById={tagNameById}
                 visibleTags={visibleTags}
                 handleFilter={handleFilter}
@@ -99,6 +102,9 @@ IngredientFamilyFilter.propTypes = {
   selectedFilters: PropTypes.arrayOf(PropTypes.number),
   visibleTags: PropTypes.shape({}).isRequired,
   tagNameById: PropTypes.func.isRequired,
+  allTags: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
 }
 
 IngredientFamilyFilter.defaultProps = {

@@ -6,6 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import IngredientFilter from 'components/filters/IngredientFilter'
+import { sortByTagName } from 'services/sortService'
 
 const styles = () => ({
   details: {
@@ -49,6 +50,7 @@ class IngredientTypeFilter extends React.Component {
         classes,
         selectable,
         label,
+        allTags,
       } = this.props
       const { expansionPanelOpen } = this.state
       return (
@@ -69,7 +71,7 @@ class IngredientTypeFilter extends React.Component {
             { !selectable && label }
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            {childTags.map((t) => (
+            {sortByTagName(childTags, allTags).map((t) => (
               visibleTags[parseInt(t, 10)] && (
                 <IngredientFilter
                   key={`${id}--${t}`}
@@ -99,6 +101,9 @@ IngredientTypeFilter.propTypes = {
   tagNameById: PropTypes.func.isRequired,
   selectable: PropTypes.bool,
   label: PropTypes.string,
+  allTags: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
 }
 
 IngredientTypeFilter.defaultProps = {

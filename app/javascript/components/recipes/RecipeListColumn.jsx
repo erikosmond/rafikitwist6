@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import RecipeListItem from 'components/recipes/RecipeListItem'
+import { sortRecipes } from 'services/sortService'
 
 class RecipeListColumn extends React.Component {
   static displayShown(recipe) {
@@ -53,17 +54,18 @@ class RecipeListColumn extends React.Component {
     return (
       <div>
         {this.renderHeaderWithCount()}
-        {selectedRecipes.filter(
-          RecipeListColumn.displayShown).splice(0, pagedRecipeCount).map((r) => (
-            <RecipeListItem
-              key={r.id}
-              authenticated={authenticated}
-              recipe={r}
-              ratings={ratings}
-              priorities={priorities}
-              updateRecipeTag={updateRecipeTag}
-              handleCommentModal={handleCommentModal}
-            />
+        {sortRecipes(selectedRecipes.filter(
+          RecipeListColumn.displayShown,
+        ).splice(0, pagedRecipeCount)).map((r) => (
+          <RecipeListItem
+            key={r.id}
+            authenticated={authenticated}
+            recipe={r}
+            ratings={ratings}
+            priorities={priorities}
+            updateRecipeTag={updateRecipeTag}
+            handleCommentModal={handleCommentModal}
+          />
         ))}
         {this.renderShowMoreRecipes()}
       </div>
