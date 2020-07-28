@@ -13,8 +13,12 @@ export function sortRecipes(array) {
 }
 
 function compareRatingThenName(a, b) {
-  if (a.rating > b.rating) return 1
-  if (a.rating < b.rating) return -1
+  if (a.ratings && !b.ratings) return -1
+  if (!a.ratings && b.ratings) return 1
+  if (a.ratings && b.ratings) {
+    if (a.ratings[0].tagName > b.ratings[0].tagName) return -1
+    if (a.ratings[0].tagName < b.ratings[0].tagName) return 1
+  }
 
   if (a.name > b.name) return 1
   if (a.name < b.name) return -1
