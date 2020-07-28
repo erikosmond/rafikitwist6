@@ -187,8 +187,6 @@ MobileRecipeList.propTypes = {
   resetPagedCount: PropTypes.func.isRequired,
   updateRecipeTag: PropTypes.func.isRequired,
   selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
-  // recipesLoaded: PropTypes.bool,
-  // loading: PropTypes.bool,
   tagGroups: PropTypes.shape({}).isRequired,
   allTags: PropTypes.shape({
     id: PropTypes.number,
@@ -202,7 +200,6 @@ MobileRecipeList.propTypes = {
   visibleRecipeCount: PropTypes.number,
   pagedRecipeCount: PropTypes.number,
   showMoreRecipes: PropTypes.func.isRequired,
-  // noRecipes: PropTypes.bool,
   priorities: PropTypes.shape({}).isRequired,
   ratings: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({

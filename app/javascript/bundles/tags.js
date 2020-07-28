@@ -28,6 +28,7 @@ const initialState = {
   selectedTag: {},
   tagFormModalOpen: false,
   tagTypes: [],
+  allTags: {},
 }
 
 export default function tagsReducer(store, action = {}) {
