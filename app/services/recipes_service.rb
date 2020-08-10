@@ -8,6 +8,7 @@ class RecipesService
       recipe_id: recipe.id,
       tag_type_id: TagType.ingredient_id
     )
+    # TODO: create parent tags (and accesses)
     AccessService.create_access!(recipe.access.user_id, tag)
   end
 end

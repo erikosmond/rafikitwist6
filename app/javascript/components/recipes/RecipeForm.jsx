@@ -74,12 +74,16 @@ let RecipeForm = (props) => {
     classes,
     handleSubmit,
     handleTagFormModal,
+    handleRecipeIsIngredient
     ingredientModificationOptions,
     ingredientOptions,
     tagOptions,
   } = props
   const openTagForm = () => {
     handleTagFormModal({ tagFormModalOpen: true })
+  }
+  const recipeIsIngredient = (event) => {
+    handleRecipeIsIngredient({ recipeIsIngredient: true })
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -116,8 +120,15 @@ let RecipeForm = (props) => {
         ingredientOptions={ingredientOptions}
       />
       <div htmlFor="isIngredient">Is used as an ingredient</div>
-      <Field name="isIngredient" id="isIngredient" component="input" type="checkbox" />
+      <Field
+        name="isIngredient"
+        id="isIngredient"
+        component="input"
+        type="checkbox"
+        onClick={handleRecipeIsIngredient}
+      />
       <br />
+      // TODO: add parent tags dropdown
       <Field
         name="sources"
         component={RecipeFormTagSelectors}
@@ -218,6 +229,7 @@ RecipeForm.propTypes = {
   // eslint-disable-next-line react/require-default-props
   handleSubmit: PropTypes.func,
   handleTagFormModal: PropTypes.func.isRequired,
+  handleRecipeIsIngredient: PropTypes.func.isRequired,
 }
 
 RecipeForm.defaultProps = {
