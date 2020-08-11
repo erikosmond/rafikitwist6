@@ -74,13 +74,24 @@ let RecipeForm = (props) => {
     classes,
     handleSubmit,
     handleTagFormModal,
+    handleRecipeIsIngredient,
     ingredientModificationOptions,
     ingredientOptions,
     tagOptions,
+    recipeIsIngredient,
   } = props
   const openTagForm = () => {
     handleTagFormModal({ tagFormModalOpen: true })
   }
+  const recipeIsIngredientClick = (event) => {
+    handleRecipeIsIngredient({
+      recipeIsIngredient: event.target.value === '' || event.target.value !== 'true'
+    })
+  }
+  const buildParentTagDropdown =
+    tagOptions.ingredientCategory
+      .concat(tagOptions.ingredientFamily)
+      .concat(tagOptions.ingredientType)
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
@@ -116,7 +127,26 @@ let RecipeForm = (props) => {
         ingredientOptions={ingredientOptions}
       />
       <div htmlFor="isIngredient">Is used as an ingredient</div>
-      <Field name="isIngredient" id="isIngredient" component="input" type="checkbox" />
+      <Field
+        name="isIngredient"
+        id="isIngredient"
+        component="input"
+        type="checkbox"
+        onClick={recipeIsIngredientClick}
+      />
+      {recipeIsIngredient && (
+        <div>
+          <br />
+          <Field
+            name="parentTags"
+            component={RecipeFormTagSelectors}
+            props={{
+              tagOptions: buildParentTagDropdown,
+              title: 'Parent Tags',
+            }}
+          />
+        </div>
+      )}
       <br />
       <Field
         name="sources"
@@ -218,6 +248,8 @@ RecipeForm.propTypes = {
   // eslint-disable-next-line react/require-default-props
   handleSubmit: PropTypes.func,
   handleTagFormModal: PropTypes.func.isRequired,
+  handleRecipeIsIngredient: PropTypes.func.isRequired,
+  recipeIsIngredient: PropTypes.bool,
 }
 
 RecipeForm.defaultProps = {
@@ -225,6 +257,7 @@ RecipeForm.defaultProps = {
   ingredientOptions: [],
   tagOptions: {},
   classes: {},
+  recipeIsIngredient: false,
 }
 
 export default withStyles(styles)(RecipeForm)

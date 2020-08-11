@@ -17,10 +17,12 @@ export function sortByTagName(array, allTags) {
 }
 
 export function sortRecipes(array) {
-  return array.sort(compareRatingThenName)
+  return array.sort(compareRecipeTagsAndName)
 }
 
-function compareRatingThenName(a, b) {
+function compareRecipeTagsAndName(a, b) {
+  if (a.priorities && a.priorities[0].tagName === 'On Deck') return 1
+  if (b.priorities && b.priorities[0].tagName === 'On Deck') return -1
   if (a.ratings && !b.ratings) return -1
   if (!a.ratings && b.ratings) return 1
   if (a.ratings && b.ratings) {
@@ -34,10 +36,7 @@ function compareRatingThenName(a, b) {
     if (priotiesRanks[a.priorities[0].tagName] > priotiesRanks[b.priorities[0].tagName]) return -1
     if (priotiesRanks[a.priorities[0].tagName] < priotiesRanks[b.priorities[0].tagName]) return 1
   }
-
-  if (a.name > b.name) return 1
-  if (a.name < b.name) return -1
-  return 0
+  return compareName(a, b)
 }
 
 function compareName(a, b) {
