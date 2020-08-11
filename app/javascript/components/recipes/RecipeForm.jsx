@@ -74,17 +74,24 @@ let RecipeForm = (props) => {
     classes,
     handleSubmit,
     handleTagFormModal,
-    handleRecipeIsIngredient
+    handleRecipeIsIngredient,
     ingredientModificationOptions,
     ingredientOptions,
     tagOptions,
+    recipeIsIngredient,
   } = props
   const openTagForm = () => {
     handleTagFormModal({ tagFormModalOpen: true })
   }
-  const recipeIsIngredient = (event) => {
-    handleRecipeIsIngredient({ recipeIsIngredient: true })
+  const recipeIsIngredientClick = (event) => {
+    handleRecipeIsIngredient({
+      recipeIsIngredient: event.target.value === '' || event.target.value !== 'true'
+    })
   }
+  const buildParentTagDropdown =
+    tagOptions.ingredientCategory
+      .concat(tagOptions.ingredientFamily)
+      .concat(tagOptions.ingredientType)
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
@@ -125,10 +132,22 @@ let RecipeForm = (props) => {
         id="isIngredient"
         component="input"
         type="checkbox"
-        onClick={handleRecipeIsIngredient}
+        onClick={recipeIsIngredientClick}
       />
+      {recipeIsIngredient && (
+        <div>
+          <br />
+          <Field
+            name="parentTags"
+            component={RecipeFormTagSelectors}
+            props={{
+              tagOptions: buildParentTagDropdown,
+              title: 'Parent Tags',
+            }}
+          />
+        </div>
+      )}
       <br />
-      // TODO: add parent tags dropdown
       <Field
         name="sources"
         component={RecipeFormTagSelectors}
@@ -230,6 +249,7 @@ RecipeForm.propTypes = {
   handleSubmit: PropTypes.func,
   handleTagFormModal: PropTypes.func.isRequired,
   handleRecipeIsIngredient: PropTypes.func.isRequired,
+  recipeIsIngredient: PropTypes.bool,
 }
 
 RecipeForm.defaultProps = {
@@ -237,6 +257,7 @@ RecipeForm.defaultProps = {
   ingredientOptions: [],
   tagOptions: {},
   classes: {},
+  recipeIsIngredient: false,
 }
 
 export default withStyles(styles)(RecipeForm)
