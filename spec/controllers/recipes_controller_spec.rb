@@ -83,7 +83,9 @@ describe Api::RecipesController, type: :controller do
         [ingredient1.id, 'salt'],
         [ingredient1_type.id, 'spices'],
         [ingredient1_family.id, 'seasoning'],
-        [modification.id, 'chili infused']
+        [modification.id, 'chili infused'],
+        [source1.id, 'Erik'],
+        [source2.id, 'Osmond']
       ]
     end
 
@@ -127,7 +129,9 @@ describe Api::RecipesController, type: :controller do
         [ingredient1_type.id, 'spices'],
         [ingredient1_family.id, 'seasoning'],
         [modification.id, 'chili infused'],
-        [lemon_verbena.id, 'Lemon Verbena']
+        [lemon_verbena.id, 'Lemon Verbena'],
+        [source1.id, 'Erik'],
+        [source2.id, 'Osmond']
       ]
     end
 
@@ -183,7 +187,7 @@ describe Api::RecipesController, type: :controller do
     end
     it 'returns filter tags' do
       body = JSON.parse(response.body)
-      expect(body['filter_tags'].size).to eq(6)
+      expect(body['filter_tags'].size).to eq(8)
     end
   end
 
@@ -202,7 +206,7 @@ describe Api::RecipesController, type: :controller do
     end
     it 'returns filter tags' do
       body = JSON.parse(response.body)
-      expect(body['filter_tags'].size).to eq(6)
+      expect(body['filter_tags'].size).to eq(8)
     end
   end
 
