@@ -95,7 +95,7 @@ class RecipeList extends React.Component {
             <br />
           </div>
         )}
-        {selectedTag.recipeId && selectedTag.recipeId.length > 0 && (
+        {selectedTag.recipeId && selectedTag.recipeId > 0 && (
           <div>
             <Link to={`/recipes/${selectedTag.recipeId}`}>
               See recipe...

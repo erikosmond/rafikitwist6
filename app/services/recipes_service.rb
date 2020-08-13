@@ -7,6 +7,8 @@ class RecipesService
   end
 
   def recipe_as_ingredient(params)
+    return unless params['is_ingredient'].present?
+
     tag = Tag.create!(
       name: @recipe.name,
       recipe_id: @recipe.id,
