@@ -18,6 +18,7 @@ class RecipesService
   end
 
   private
+
     def add_parent_tags(tag)
       @recipe.parent_tags&.each do |parent_tag|
         ts = TagSelection.create!(tag_id: parent_tag.id, taggable: tag)
@@ -26,6 +27,7 @@ class RecipesService
     end
 
     def recipe_type_ingredient
+      # TODO: add tests for this
       return if recipe.recipe_types.find { |t| t.id == Tag.ingredient_recipe_id }
 
       ts = TagSelection.create!(tag_id: Tag.ingreident_recipe_id, taggable: recipe)

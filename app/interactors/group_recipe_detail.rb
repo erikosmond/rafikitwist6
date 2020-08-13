@@ -41,10 +41,6 @@ class GroupRecipeDetail
     end
 
     def group_by_recipe_tag_type(ungrouped_recipes)
-      # TODO
-      # RAILS_ENV=test bundle exec rspec spec/controllers/recipes_controller_spec.rb 
-      # the recipes json object that gets returned looks correct... why is this not working in production?
-      binding.pry
       ungrouped_recipes.each_with_object({}) do |(k, v), recipes|
         recipes[k] = v.group_by { |g| g['tag_type'].to_s.downcase.pluralize }
       end
