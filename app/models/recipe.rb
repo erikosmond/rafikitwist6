@@ -3,6 +3,7 @@
 # model for recipes table
 class Recipe < ApplicationRecord
   include AssociatedRecipesService
+  include RecipeTagsService
 
   has_many :tag_selections,
            -> { where(taggable_type: 'Recipe') },
@@ -18,45 +19,13 @@ class Recipe < ApplicationRecord
   validates :name, presence: true
   validates :instructions, presence: true
 
-  def ingredients
-    props('Ingredient')
+  def ingredient_tag_selections
+    types = ActiveRecord::Base.sanitize_sql(TagType::INGREDIENT_TYPES.join("', '"))
+    tag_selections.joins(tag: :tag_type).where("tag_types.name IN ('#{types}')")
   end
 
   def ingredients_with_detail
     props_with_detail('Ingredient')
-  end
-
-  def sources
-    props('Source')
-  end
-
-  def vessels
-    props('Vessel')
-  end
-
-  def menus
-    props('Menu')
-  end
-
-  def preparations
-    props('Preparation')
-  end
-
-  def flavors
-    props('Flavor')
-  end
-
-  def recipe_types
-    props('RecipeType')
-  end
-
-  def components
-    props('Component')
-  end
-
-  def ingredient_tag_selections
-    types = ActiveRecord::Base.sanitize_sql(TagType::INGREDIENT_TYPES.join("', '"))
-    tag_selections.joins(tag: :tag_type).where("tag_types.name IN ('#{types}')")
   end
 
   private
@@ -67,10 +36,6 @@ class Recipe < ApplicationRecord
         select(props_with_detail_select).
         where('tag_types.name = ?', name).
         group_by(&:tag_id)
-    end
-
-    def props(name)
-      tags.joins(:tag_type).where('tag_types.name = ?', name)
     end
 
     def props_with_detail_select
