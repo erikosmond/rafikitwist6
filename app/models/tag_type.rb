@@ -10,4 +10,8 @@ class TagType < ApplicationRecord
   has_many :tags, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
+
+  def self.recipe_type
+    singleton_class::RECIPE_TYPE
+  end
 end

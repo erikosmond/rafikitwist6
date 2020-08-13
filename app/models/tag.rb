@@ -111,4 +111,8 @@ class Tag < ApplicationRecord
   validates_uniqueness_of :name, scope: :tag_type
 
   delegate :name, to: :tag_type, prefix: true
+
+  def self.ingredient
+    singleton_class::INGREDIENT
+  end
 end

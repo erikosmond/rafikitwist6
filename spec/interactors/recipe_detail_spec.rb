@@ -29,7 +29,7 @@ RSpec.describe RecipeDetail, type: :interactor do
     end
 
     it "returns correct number of recipe's details" do
-      expect(result.size).to eq 3
+      expect(result.size).to eq 5
     end
     it 'returns correct first tag name' do
       expect(result.first.tag_name).to eq 'Marinara'

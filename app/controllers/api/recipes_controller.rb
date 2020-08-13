@@ -67,11 +67,11 @@ module Api
 
       def shared_columns
         [
-          :recipe_name, :description, :instructions,
+          :recipe_name, :description, :instructions, :is_ingredient,
           ingredients: ingredient_fields,
           sources: %i[id name], vessels: %i[id name], recipe_types: %i[id name],
           menus: %i[id name], preparations: %i[id name], flavors: %i[id name],
-          components: %i[id name]
+          components: %i[id name], parent_tags: %i[id name]
         ]
       end
 

@@ -23,6 +23,7 @@ const LOADING = 'recipes/loading'
 const HANDLE_FILTER = 'recipes/handleFilter'
 const HANDLE_FILTER_SUCCESS = 'recipes/handleFilterSuccess'
 const HANDLE_RECIPE_SUBMIT = 'recipes/handleRecipeSubmit'
+const HANDLE_RECIPE_IS_INGREDIENT = 'recipes/handleRecipeIsIngredient'
 const CLEAR_FILTERS = 'recipes/clearFilters'
 const RESET_PAGED_COUNT = 'recipes/resetPagedCount'
 const UPDATE_RECIPE_TAG = 'recipes/updateRecipeTag'
@@ -54,6 +55,7 @@ const initialState = {
   pagedRecipeCount: 10,
   openModal: false,
   openTagFormModal: false,
+  recipeIsIngredient: false,
   recipeFormData: {},
   mobileDrawerState: { filters: false, search: false, similar: false },
 }
@@ -174,6 +176,11 @@ export default function recipesReducer(store, action = {}) {
       return {
         ...state,
         recipeFormData: action.payload.recipeFormData,
+      }
+    case HANDLE_RECIPE_IS_INGREDIENT:
+      return {
+        ...state,
+        recipeIsIngredient: action.payload.recipeIsIngredient,
       }
     default:
       return state
@@ -428,6 +435,13 @@ export function handleCommentModal(payload) {
   return {
     payload,
     type: HANDLE_COMMENT_MODAL,
+  }
+}
+
+export function handleRecipeIsIngredient(payload) {
+  return {
+    payload,
+    type: HANDLE_RECIPE_IS_INGREDIENT,
   }
 }
 

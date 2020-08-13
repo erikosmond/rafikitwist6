@@ -9,6 +9,7 @@ module TagTypeCaching
   INGREDIENT_MODIFICATION = 'IngredientModification'
   INGREDIENT = 'Ingredient'
   RATING = 'Rating'
+  RECIPE_TYPE = 'RecipeType'
 
   def ingredient_category_id
     Rails.cache.fetch("#{TAG_TYPES}/category_id", expires_in: 1.year) do
@@ -43,6 +44,12 @@ module TagTypeCaching
   def rating_id
     Rails.cache.fetch("#{TAG_TYPES}/rating_id", expires_in: 1.year) do
       TagType.find_by_name(RATING).id
+    end
+  end
+
+  def recipe_type_id
+    Rails.cache.fetch("#{TAG_TYPES}/recipe_type_id", expires_in: 1.year) do
+      TagType.find_by_name(RECIPE_TYPE).id
     end
   end
 

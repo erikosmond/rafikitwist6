@@ -9,7 +9,7 @@ class CreateRecipeForm < RecipeForm
       create_ingredients(recipe)
       create_tags(recipe)
       recipe = recipe.tap(&:save!).reload
-      RecipesService.recipe_as_ingredient(recipe) if @params['isIngredient'].present?
+      RecipesService.new(recipe).recipe_as_ingredient(@params)
       recipe.reload
     end
   end

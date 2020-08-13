@@ -7,6 +7,7 @@ import {
   handleRecipeSubmit,
   loadEditForm,
   loadRecipeFormData,
+  handleRecipeIsIngredient,
 } from 'bundles/recipes'
 
 import {
@@ -23,10 +24,12 @@ export default withRouter(connect(
     recipe: state.recipesReducer.recipe,
     tagOptions: state.tagsReducer.tagOptions,
     recipeFormData: state.recipesReducer.recipeFormData,
+    recipeIsIngredient: state.recipesReducer.recipeIsIngredient,
   }),
   {
     handleRecipeSubmit,
     handleTagFormModal,
+    handleRecipeIsIngredient,
     loadEditForm,
     loadIngredientOptions,
     loadRecipeFormData,

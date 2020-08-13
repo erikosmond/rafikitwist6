@@ -3,6 +3,8 @@
 # methods mostly used to build tag heirarchy to populate filtering component.
 module TagsService
   COMMENT_TAG_NAME = 'Comment'
+  TAGS = 'Tags'
+  INGREDIENT = 'Ingredient'
 
   def comment_tag
     tag = Tag.find_or_initialize_by(name: COMMENT_TAG_NAME)
@@ -91,5 +93,11 @@ module TagsService
       id: result.grandchild_tag_id,
       tag_type_id: TagType.ingredient_id
     )
+  end
+
+  def ingreident_recipe_tag_id
+    Rails.cache.fetch("#{TAGS}/ingredient_recipe_tag_id", expires_in: 1.year) do
+      Tag.where(name: INGREDIENT, tag_type_id: TagType.recipe_type_id).first.id
+    end
   end
 end
