@@ -34,6 +34,18 @@ module RecipeTagsService
     props('Component')
   end
 
+  def ratings
+    props('Rating')
+  end
+
+  def priorities
+    props('Priority')
+  end
+
+  def comments
+    props('Comment')
+  end
+
   def props(name)
     tags.joins(:tag_type).where('tag_types.name = ?', name)
   end
