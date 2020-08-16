@@ -46,6 +46,7 @@ let RecipeFormTagSelectors = (props) => {
   const {
     tagOptions,
     title,
+    id,
     input: { onChange, value },
   } = props
   const classes = useStyles()
@@ -55,12 +56,13 @@ let RecipeFormTagSelectors = (props) => {
     setTags(event.target.value)
     onChange(event.target.value)
   }
+  // initial values are not getting set in the component
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel id="demo-mutiple-checkbox-label">{title}</InputLabel>
+      <InputLabel id={`${id}-label`}>{title}</InputLabel>
       <Select
-        labelId="demo-mutiple-checkbox-label"
-        id="demo-mutiple-checkbox"
+        labelId={`${id}-label`}
+        id={id}
         multiple
         value={value || []}
         onChange={handleChange}

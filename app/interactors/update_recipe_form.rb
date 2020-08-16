@@ -104,7 +104,7 @@ class UpdateRecipeForm < RecipeForm
     end
 
     def old_tags(tags, tag_ids)
-      tags.map(&:id) - tag_ids
+      tags.map(&:id) - tag_ids - Tag.subjective_tags.map(&:id)
     end
 
     def delete_tag_selections(record, tag_ids)

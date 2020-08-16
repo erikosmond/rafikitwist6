@@ -5,6 +5,7 @@ module TagsService
   COMMENT_TAG_NAME = 'Comment'
   TAGS = 'Tags'
   INGREDIENT = 'Ingredient'
+  SUBJECTIVE_TAG_TYPES = %w[Priority Rating Comment]
 
   def comment_tag
     tag = Tag.find_or_initialize_by(name: COMMENT_TAG_NAME)
@@ -99,5 +100,9 @@ module TagsService
     Rails.cache.fetch("#{TAGS}/ingredient_recipe_tag_id", expires_in: 1.year) do
       Tag.where(name: INGREDIENT, tag_type_id: TagType.recipe_type_id).first.id
     end
+  end
+
+  def subjective_tags
+    TagType.where(name: SUBJECTIVE_TAG_TYPES).flat_map(&:tags)
   end
 end

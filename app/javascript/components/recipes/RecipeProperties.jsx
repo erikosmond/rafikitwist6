@@ -14,7 +14,7 @@ const RecipeProperties = (props) => {
           </Typography>
           <ul>
             {Object.values(tags).map((ingredient) => (
-              <IngredientListItem key={ingredient.tagId} ingredient={ingredient} />
+              <IngredientListItem key={ingredient.id} ingredient={ingredient} />
             ))}
           </ul>
         </div>

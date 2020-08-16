@@ -143,6 +143,7 @@ let RecipeForm = (props) => {
             props={{
               tagOptions: buildParentTagDropdown,
               title: 'Parent Tags',
+              id: 'parenttags',
             }}
           />
         </div>
@@ -154,6 +155,7 @@ let RecipeForm = (props) => {
         props={{
           tagOptions: tagOptions.source,
           title: 'Sources',
+          id: 'sources',
         }}
       />
       <br />
@@ -163,6 +165,7 @@ let RecipeForm = (props) => {
         props={{
           tagOptions: tagOptions.vessel,
           title: 'Vessels',
+          id: 'vessels',
         }}
       />
       <br />
@@ -173,6 +176,7 @@ let RecipeForm = (props) => {
         props={{
           tagOptions: tagOptions.recipeType,
           title: 'Recipe Types',
+          id: 'recipetypes',
         }}
       />
       <br />
@@ -183,6 +187,7 @@ let RecipeForm = (props) => {
         props={{
           tagOptions: tagOptions.menu,
           title: 'Menus',
+          id: 'menues',
         }}
       />
       <br />
@@ -193,6 +198,7 @@ let RecipeForm = (props) => {
         props={{
           tagOptions: tagOptions.preparation,
           title: 'Preparations',
+          id: 'preparations',
         }}
       />
       <br />
@@ -203,6 +209,7 @@ let RecipeForm = (props) => {
         props={{
           tagOptions: tagOptions.flavor,
           title: 'Flavors',
+          id: 'flavors',
         }}
       />
       <br />
@@ -213,6 +220,7 @@ let RecipeForm = (props) => {
         props={{
           tagOptions: tagOptions.component,
           title: 'Component',
+          id: 'component',
         }}
       />
       <button type="submit">Save</button>

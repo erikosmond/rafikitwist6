@@ -10,6 +10,27 @@ RSpec.describe RecipeForm, type: :interactor do
     include_context 'tag_types'
     include_context 'recipe_form'
     let(:user) { create(:user) }
+    let(:rating_type) { create(:tag_type, name: 'Rating') }
+    let(:five_stars) { create(:tag, name: '5 Stars', tag_type: rating_type) }
+    let(:five_star_rating) { create(:tag_selection, tag: five_stars, taggable: recipe) }
+    let!(:five_star_access) do
+      create(:access, accessible: five_star_rating, user_id: user.id, status: 'PRIVATE')
+    end
+
+    let(:priority_type) { create(:tag_type, name: 'Priority') }
+    let(:on_deck) { create(:tag, name: 'On Deck', tag_type: priority_type) }
+    let(:on_deck_priority) { create(:tag_selection, tag: on_deck, taggable: recipe) }
+    let!(:on_deck_access) do
+      create(:access, accessible: on_deck_priority, user_id: user.id, status: 'PRIVATE')
+    end
+
+    let(:comment_type) { create(:tag_type, name: 'Comment') }
+    let(:comment) { create(:tag, name: 'Comment', tag_type: comment_type) }
+    let(:comment_selection) { create(:tag_selection, tag: comment, taggable: recipe) }
+    let!(:comment_access) do
+      create(:access, accessible: comment_selection, user_id: user.id, status: 'PRIVATE')
+    end
+
     describe 'update' do
       let(:r) { Recipe.find_by_name 'rname' }
       let(:params) do
@@ -62,13 +83,18 @@ RSpec.describe RecipeForm, type: :interactor do
           })
       end
 
-      it 'saves the recipe name' do
+      it "doesn't modify subjective tags from various users when recipe form is used" do
+        expect(r.ratings.first).to eq five_stars
+        expect(r.priorities.first).to eq on_deck
+        expect(r.comments.first).to eq comment
+      end
+      it 'saves the recipe name, desc, and instructions' do
         expect(r.name).to eq 'newname'
         expect(r.description).to eq 'newdesc'
         expect(r.instructions).to eq 'newinst'
       end
       it 'saves/deletes the correct number of tags associated with the recipe' do
-        expect(r.tag_selections.count).to eq 7
+        expect(r.tag_selections.count).to eq 10
       end
       it 'saves the non modified ingredient' do
         cs = r.tag_selections.where(tag_id: club_soda.id).first

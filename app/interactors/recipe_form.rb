@@ -72,14 +72,14 @@ class RecipeForm < GeneralForm
 
     def form_tag_ids(params)
       tag_types.flat_map do |type|
-        tag_ids_by_type(params[type])
+        tag_ids_by_type(params[type.downcase.pluralize])
       end.compact.uniq
     end
 
     def tag_types
       context.tag_types ||= TagType.all.reject do |tt|
         TagType::INGREDIENT_TYPES.include? tt.name
-      end.map(&:name).map(&:downcase).map(&:pluralize)
+      end.map(&:name)
     end
 
     def tag_ids_by_type(tags)
@@ -97,7 +97,7 @@ class RecipeForm < GeneralForm
 
     def get_form_tag_ids(form)
       tag_types.compact.flat_map do |tt|
-        tags = form[tt]
+        tags = form[tt.downcase.pluralize]
         next unless tags
 
         tags.map { |t| t['id'] }
