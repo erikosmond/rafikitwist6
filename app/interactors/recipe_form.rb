@@ -79,7 +79,7 @@ class RecipeForm < GeneralForm
     def tag_types
       context.tag_types ||= TagType.all.reject do |tt|
         TagType::INGREDIENT_TYPES.include? tt.name
-      end.map(&:name) # .map(&:downcase).map(&:pluralize)
+      end.map(&:name)
     end
 
     def tag_ids_by_type(tags)
