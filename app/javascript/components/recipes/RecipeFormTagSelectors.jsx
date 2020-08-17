@@ -50,13 +50,20 @@ let RecipeFormTagSelectors = (props) => {
     input: { onChange, value },
   } = props
   const classes = useStyles()
-  const [tags, setTags] = React.useState([])
+  const [tags, setTags] = React.useState(value || [])
 
   const handleChange = (event) => {
-    setTags(event.target.value)
-    onChange(event.target.value)
+    let updatedTags = []
+    if (tags.map((x) => x.name).indexOf(event.currentTarget.innerText) > -1) {
+      // hack for updating multi select when editing recipe
+      updatedTags = event.target.value.filter((x) => x.name !== event.currentTarget.innerText)
+    } else {
+      updatedTags = event.target.value
+    }
+
+    setTags(updatedTags)
+    onChange(updatedTags)
   }
-  // initial values are not getting set in the component
   return (
     <FormControl className={classes.formControl}>
       <InputLabel id={`${id}-label`}>{title}</InputLabel>
@@ -64,7 +71,7 @@ let RecipeFormTagSelectors = (props) => {
         labelId={`${id}-label`}
         id={id}
         multiple
-        value={value || []}
+        value={tags}
         onChange={handleChange}
         input={<Input />}
         renderValue={(selected) => selected.map((tag) => tag.name).join(', ')}
@@ -83,7 +90,8 @@ let RecipeFormTagSelectors = (props) => {
 
 RecipeFormTagSelectors.propTypes = {
   tagOptions: PropTypes.arrayOf(PropTypes.shape()),
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   input: PropTypes.shape({
     value: '',
     onChange: PropTypes.func,
@@ -92,7 +100,6 @@ RecipeFormTagSelectors.propTypes = {
 
 RecipeFormTagSelectors.defaultProps = {
   tagOptions: [],
-  title: PropTypes.string,
 }
 
 export default withStyles(styles)(RecipeFormTagSelectors)
