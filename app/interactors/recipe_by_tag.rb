@@ -101,6 +101,7 @@ class RecipeByTag
     end
 
     def filter_tags(recipes)
+      # TODO: add ingredients from tag.recipe_id recipes
       # Return tags associated with the recipe but also those tags' parents
       # to allow for less specific filtering, i.e. allowing a recipe containing
       # 'apples' to be returned when filtering by 'fruit'.
