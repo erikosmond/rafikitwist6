@@ -33,7 +33,7 @@ class CreateRecipeForm < RecipeForm
     end
 
     def create_tags(recipe)
-      tag_ids = get_form_tag_ids(@params)
+      tag_ids = form_tag_ids(@params)
       tag_ids.each do |id|
         ts = TagSelection.create!(tag_id: id, taggable: recipe)
         create_access(ts)

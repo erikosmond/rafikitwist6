@@ -71,8 +71,9 @@ class RecipeForm < GeneralForm
     end
 
     def form_tag_ids(params)
+      # TODO: update to use underscore
       tag_types.flat_map do |type|
-        tag_ids_by_type(params[type.downcase.pluralize])
+        tag_ids_by_type(params[type.underscore.pluralize])
       end.compact.uniq
     end
 
@@ -95,14 +96,14 @@ class RecipeForm < GeneralForm
       end
     end
 
-    def get_form_tag_ids(form)
-      tag_types.compact.flat_map do |tt|
-        tags = form[tt.underscore.pluralize]
-        next unless tags
+    # def get_form_tag_ids(form)
+    #   tag_types.compact.flat_map do |tt|
+    #     tags = form[tt.underscore.pluralize]
+    #     next unless tags
 
-        tags.map { |t| t['id'] }
-      end.compact.uniq
-    end
+    #     tags.map { |t| t['id'] }
+    #   end.compact.uniq
+    # end
 
     def recipe_non_ingredient_tags(recipe)
       recipe.tags.joins(:tag_type).where(tag_types: { name: tag_types })

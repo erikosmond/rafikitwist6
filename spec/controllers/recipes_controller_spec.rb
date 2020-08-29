@@ -59,7 +59,7 @@ describe Api::RecipesController, type: :controller do
       body = JSON.parse(response.body)
       expect(body['ingredients'][ingredient.id.to_s]['id']).to eq(tag_selection_ing.id)
       expect(body['ratings']).to be_nil
-      expect(body['recipetypes'].first['tag_id']).to eq cocktail.id
+      expect(body['recipe_types'].first['tag_id']).to eq cocktail.id
     end
   end
 
@@ -114,7 +114,7 @@ describe Api::RecipesController, type: :controller do
       body = JSON.parse(response.body)
       pizza = body['recipes'].find { |r| r['name'] == 'Pizza' }
       expect(pizza['ingredients'][lemon_verbena.id.to_s]['tag_type']).to eq 'Ingredient'
-      expect(pizza['ingredienttypes'].first['tag_name']).to eq('Rice')
+      expect(pizza['ingredient_types'].first['tag_name']).to eq('Rice')
     end
     it 'returns the filter tags' do
       body = JSON.parse(response.body)

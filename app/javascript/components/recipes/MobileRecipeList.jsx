@@ -134,6 +134,7 @@ class MobileRecipeList extends React.Component {
     } = this.props
     return (
       <div>
+        <meta property="og:title" content={selectedTag.name} />
         {MobileRecipeList.renderHeader({
           allTags,
           selectedFilters,

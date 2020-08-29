@@ -4,16 +4,18 @@ import { Link } from 'react-router-dom'
 
 const IngredientListItem = ({ ingredient }) => {
   const {
-    value,
+    body,
     modificationName,
     tagName,
     tagId,
+    value,
   } = ingredient
   const amount = value || ''
   const presentModificationName = (modificationName === null) ? '' : modificationName
+  const instruction = body || ''
   const ingredientDetails = (modificationName === 'Juice of') ?
     `${amount} ${tagName} Juice` :
-    `${amount} ${presentModificationName} ${tagName}`
+    `${amount} ${presentModificationName} ${tagName} ${instruction}`
   return (
     <li>
       <Link to={`/tags/${tagId}/recipes`}>
@@ -25,6 +27,7 @@ const IngredientListItem = ({ ingredient }) => {
 
 IngredientListItem.propTypes = {
   ingredient: PropTypes.shape({
+    body: PropTypes.string,
     value: PropTypes.string,
     modificationName: PropTypes.string,
     tagName: PropTypes.string.isRequired,

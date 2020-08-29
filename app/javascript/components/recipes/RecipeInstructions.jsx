@@ -19,10 +19,7 @@ const RecipeInstructions = (props) => {
 
 RecipeInstructions.propTypes = {
   recipe: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string.isRequired,
     instructions: PropTypes.string.isRequired,
-    ingredients: PropTypes.shape({}).isRequired,
   }).isRequired,
 }
 
