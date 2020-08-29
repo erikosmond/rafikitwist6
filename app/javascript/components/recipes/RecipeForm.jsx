@@ -80,6 +80,11 @@ let RecipeForm = (props) => {
     tagOptions,
     recipeIsIngredient,
   } = props
+  if (
+    tagOptions === {} || ingredientModificationOptions === [] || ingredientOptions === []
+  ) {
+    return null
+  }
   const openTagForm = () => {
     handleTagFormModal({ tagFormModalOpen: true })
   }

@@ -45,6 +45,7 @@ class RecipeListColumn extends React.Component {
     const {
       authenticated,
       selectedRecipes,
+      selectedTag,
       pagedRecipeCount,
       ratings,
       priorities,
@@ -53,6 +54,7 @@ class RecipeListColumn extends React.Component {
     } = this.props
     return (
       <div>
+        <meta property="og:title" content={selectedTag.name} />
         {this.renderHeaderWithCount()}
         {sortRecipes(selectedRecipes.filter(
           RecipeListColumn.displayShown,
@@ -83,6 +85,9 @@ RecipeListColumn.propTypes = {
   showMoreRecipes: PropTypes.func.isRequired,
   priorities: PropTypes.shape({}).isRequired,
   ratings: PropTypes.shape({}).isRequired,
+  selectedTag: PropTypes.shape({
+    name: PropTypes.string,
+  }).isRequired,
 }
 
 RecipeListColumn.defaultProps = {

@@ -97,11 +97,11 @@ class RecipeForm < GeneralForm
 
     def get_form_tag_ids(form)
       tag_types.compact.flat_map do |tt|
-        tags = form[tt.downcase.pluralize]
+        tags = form[tt.underscore.pluralize]
         next unless tags
 
         tags.map { |t| t['id'] }
-      end
+      end.compact.uniq
     end
 
     def recipe_non_ingredient_tags(recipe)

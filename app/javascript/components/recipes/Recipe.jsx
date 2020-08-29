@@ -109,6 +109,7 @@ class Recipe extends React.Component {
     }
     return (
       <div>
+        <meta property="og:title" content={recipe.name} />
         {Recipe.renderHeader(mobile, recipe)}
         <Body>
           <RecipeProperties title="Ingredients" tags={allIngredients(recipe)} />

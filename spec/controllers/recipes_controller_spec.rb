@@ -13,16 +13,24 @@ describe Api::RecipesController, type: :controller do
   let!(:no_data_user) { create(:user) }
   let!(:recipe) { create(:recipe) }
   let!(:rating_type) { create(:tag_type, name: 'Rating') }
+  let!(:recipe_type) { create(:tag_type, name: 'RecipeType') }
   let!(:menu_type) { create(:tag_type, name: 'Been Made') }
   let!(:ingredient) { create(:tag, tag_type: tag_type_ingredient) }
   let!(:rating) { create(:tag, name: 'rating', tag_type: rating_type) }
+  let!(:cocktail) { create(:tag, name: 'Cocktail', tag_type: recipe_type) }
   let!(:menu_tag) { create(:tag, name: 'menu', tag_type: menu_type) }
   let!(:tag_selection_ing) { create(:tag_selection, tag: ingredient, taggable: recipe) }
   let!(:tag_selection_rating) { create(:tag_selection, tag: rating, taggable: recipe) }
+  let!(:tag_selection_cocktail) do
+    create(:tag_selection, tag: cocktail, taggable: recipe)
+  end
   let!(:tag_selection_menu) { create(:tag_selection, tag: menu_tag, taggable: recipe) }
   # let!(:access_ing) { create(:access, accessible: tag_selection_ing, user: user) }
   let!(:access_ing) do
     create(:access, accessible: tag_selection_ing, user: user, status: 'PUBLIC')
+  end
+  let!(:access_cocktail) do
+    create(:access, accessible: tag_selection_cocktail, user: user, status: 'PUBLIC')
   end
   let!(:access_rating) do
     create(
@@ -51,6 +59,7 @@ describe Api::RecipesController, type: :controller do
       body = JSON.parse(response.body)
       expect(body['ingredients'][ingredient.id.to_s]['id']).to eq(tag_selection_ing.id)
       expect(body['ratings']).to be_nil
+      expect(body['recipetypes'].first['tag_id']).to eq cocktail.id
     end
   end
 

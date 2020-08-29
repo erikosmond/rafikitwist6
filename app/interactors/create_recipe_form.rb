@@ -33,23 +33,11 @@ class CreateRecipeForm < RecipeForm
     end
 
     def create_tags(recipe)
-      tag_ids = form_tag_ids
+      tag_ids = get_form_tag_ids(@params)
       tag_ids.each do |id|
         ts = TagSelection.create!(tag_id: id, taggable: recipe)
         create_access(ts)
       end
-    end
-
-    def form_tag_ids
-      tag_types.flat_map do |type|
-        tag_ids_by_type(@params[type.downcase.pluralize])
-      end.compact.uniq
-    end
-
-    def tag_ids_by_type(tags)
-      return unless tags&.first
-
-      tags.map { |t| t['id'] }
     end
 
     def create_new_tags(tag_ids, record)
@@ -61,14 +49,5 @@ class CreateRecipeForm < RecipeForm
 
     def delete_tag_selections(record, tag_ids)
       TagSelection.where(taggable: record, tag_id: tag_ids).destroy_all
-    end
-
-    def get_form_tag_ids(form)
-      tag_types.compact.flat_map do |tt|
-        tags = form[tt.downcase.pluralize]
-        next unless tags
-
-        tags.map { |t| t['id'] }
-      end
     end
 end
