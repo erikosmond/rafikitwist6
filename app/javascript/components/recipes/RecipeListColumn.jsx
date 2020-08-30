@@ -51,12 +51,15 @@ class RecipeListColumn extends React.Component {
       updateRecipeTag,
       handleCommentModal,
     } = this.props
+    const taggedRecipes = selectedRecipes.filter(
+      RecipeListColumn.displayShown,
+    )
+    const sortedRecipes = sortRecipes(taggedRecipes)
+    const viewableRecipes = sortedRecipes.splice(0, pagedRecipeCount)
     return (
       <div>
         {this.renderHeaderWithCount()}
-        {sortRecipes(selectedRecipes.filter(
-          RecipeListColumn.displayShown,
-        ).splice(0, pagedRecipeCount)).map((r) => (
+        {viewableRecipes.map((r) => (
           <RecipeListItem
             key={r.id}
             authenticated={authenticated}
