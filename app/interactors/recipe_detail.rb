@@ -9,7 +9,7 @@ class RecipeDetail
   def call
     context.result =
       context.recipe.tag_selections.
-      select(recipes_select_tags + tag_details_select + ['tag_selections.id', 'tag_selections.body']).
+      select(recipes_select_tags + tag_details_select + tag_selections_attrs).
       left_outer_joins(detail_joins).
       where(
         "accesses.user_id =
@@ -26,5 +26,9 @@ class RecipeDetail
         :modifications,
         :access
       ]
+    end
+
+    def tag_selections_attrs
+      ['tag_selections.id', 'tag_selections.body']
     end
 end
