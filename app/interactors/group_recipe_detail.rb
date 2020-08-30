@@ -42,7 +42,6 @@ class GroupRecipeDetail
     end
 
     def group_by_recipe_tag_type(ungrouped_recipes)
-      # TODO: update to use .underscore - not downcase
       ungrouped_recipes.each_with_object({}) do |(k, v), recipes|
         recipes[k] = v.group_by { |g| g['tag_type'].to_s.underscore.pluralize }
       end
