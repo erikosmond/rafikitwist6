@@ -109,6 +109,7 @@ class Recipe extends React.Component {
     }
     return (
       <div>
+        <meta property="og:title" content={recipe.name} />
         {Recipe.renderHeader(mobile, recipe)}
         <Body>
           <RecipeProperties title="Ingredients" tags={allIngredients(recipe)} />
@@ -121,7 +122,7 @@ class Recipe extends React.Component {
           <RecipeProperties title="Ratings" tags={recipe.ratings} />
           <RecipeProperties title="Vessels" tags={recipe.vessels} />
           <RecipeProperties title="Flavors" tags={recipe.flavors} />
-          <RecipeProperties title="Recipe Types" tags={recipe.recipetypes} />
+          <RecipeProperties title="Recipe Types" tags={recipe.recipeTypes} />
           <RecipeProperties title="Components" tags={recipe.components} />
         </Body>
         {this.renderFooter(mobile)}
@@ -134,7 +135,7 @@ Recipe.propTypes = {
   recipe: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string.isRequired,
-    ingredients: PropTypes.shape({}).isRequired,
+    ingredients: PropTypes.shape({}),
     ratings: PropTypes.arrayOf(PropTypes.shape({})),
     sources: PropTypes.arrayOf(PropTypes.shape({})),
     menus: PropTypes.arrayOf(PropTypes.shape({})),
@@ -142,7 +143,7 @@ Recipe.propTypes = {
     priorities: PropTypes.arrayOf(PropTypes.shape({})),
     vessels: PropTypes.arrayOf(PropTypes.shape({})),
     flavors: PropTypes.arrayOf(PropTypes.shape({})),
-    recipetypes: PropTypes.arrayOf(PropTypes.shape({})),
+    recipeTypes: PropTypes.arrayOf(PropTypes.shape({})),
     components: PropTypes.arrayOf(PropTypes.shape({})),
   }),
   mobile: PropTypes.bool,
@@ -154,12 +155,13 @@ Recipe.defaultProps = {
   recipe: {
     ratings: [],
     priorities: [],
+    ingredients: [],
     sources: [],
     menus: [],
     preparations: [],
     vessels: [],
     flavors: [],
-    recipetypes: [],
+    recipeTypes: [],
     components: [],
   },
   noRecipe: false,

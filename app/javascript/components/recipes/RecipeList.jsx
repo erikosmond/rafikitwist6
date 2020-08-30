@@ -71,7 +71,7 @@ class RecipeList extends React.Component {
       selectedFilters,
       showMoreRecipes,
     } = this.props
-    if (loading) {
+    if (loading || !selectedTag) {
       return (
         <div>
           Loading...
@@ -88,6 +88,7 @@ class RecipeList extends React.Component {
     }
     return (
       <div>
+        <meta property="og:title" content={selectedTag.name} />
         <h4>{selectedTag.name}</h4>
         {selectedTag.description && selectedTag.description.length > 0 && (
           <div>

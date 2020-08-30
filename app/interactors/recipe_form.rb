@@ -72,7 +72,7 @@ class RecipeForm < GeneralForm
 
     def form_tag_ids(params)
       tag_types.flat_map do |type|
-        tag_ids_by_type(params[type.downcase.pluralize])
+        tag_ids_by_type(params[type.underscore.pluralize])
       end.compact.uniq
     end
 
@@ -92,15 +92,6 @@ class RecipeForm < GeneralForm
       tag_ids.each do |tag_id|
         ts = TagSelection.create!(tag_id: tag_id, taggable: record)
         create_access(ts, record.access.status)
-      end
-    end
-
-    def get_form_tag_ids(form)
-      tag_types.compact.flat_map do |tt|
-        tags = form[tt.downcase.pluralize]
-        next unless tags
-
-        tags.map { |t| t['id'] }
       end
     end
 

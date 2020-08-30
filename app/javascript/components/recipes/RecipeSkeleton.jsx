@@ -20,7 +20,12 @@ class RecipeSkeleton extends React.Component {
   }
 
   render() {
-    const { recipe, noRecipe, clearRecipe, mobile } = this.props
+    const {
+      recipe,
+      noRecipe,
+      clearRecipe,
+      mobile,
+    } = this.props
     if (!recipe || !recipe.name) {
       return null
     }

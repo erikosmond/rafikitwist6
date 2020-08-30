@@ -1,6 +1,6 @@
 export function allIngredients(recipe) {
   const ingredients = getList(recipe.ingredients)
-  const ingredientTypes = getList(recipe.ingredienttypes)
+  const ingredientTypes = getList(recipe.ingredientTypes)
   const ingredientFamilies = getList(recipe.ingredientfamilies)
   return (ingredients.concat(ingredientTypes)).concat(ingredientFamilies)
 }

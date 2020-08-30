@@ -34,7 +34,7 @@ RSpec.describe RecipeForm, type: :interactor do
             { 'id' => recipe_website.id, 'name' => 'Hannah Infographic' }
           ],
           'vessels' => [{ 'id' => coupe.id, 'name' => 'Snifter' }],
-          'recipetypes' => [{ 'id' => mocktails.id, 'name' => 'Mocktails' }],
+          'recipe_types' => [{ 'id' => mocktails.id, 'name' => 'Mocktails' }],
           'menus' => [{ 'id' => home_bar.id, 'name' => 'Been Made' }],
           'preparations' => [{ 'id' => shaken.id, 'name' => 'Shaken' }],
           'flavors' => [{ 'id' => sweet.id, 'name' => 'Spicy' }],
