@@ -10,7 +10,7 @@ class GroupRecipeDetail
     collect_tags_by_recipe!(recipes)
     recipes = group_by_recipe_tag_type(recipes) # Ingredients, vs Menus, etc.
     recipes = merge_recipe_data(recipes)
-    hash_ingredients_by_tag_id!(recipes)
+    hash_ingredients_by_tag_selection_id!(recipes)
     context.result = recipes
   end
 
@@ -51,11 +51,11 @@ class GroupRecipeDetail
       recipes.map { |k, v| k.merge(v) }
     end
 
-    def hash_ingredients_by_tag_id!(recipes)
+    def hash_ingredients_by_tag_selection_id!(recipes)
       # mutates recipes object
       recipes.each do |r|
         r['ingredients'] = r['ingredients']&.each_with_object({}) do |i, hash|
-          hash[i.tag_id] = i
+          hash[i.id] = i
         end
       end
     end
