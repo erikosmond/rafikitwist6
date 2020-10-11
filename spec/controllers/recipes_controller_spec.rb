@@ -57,7 +57,7 @@ describe Api::RecipesController, type: :controller do
     end
     it 'returns a 200' do
       body = JSON.parse(response.body)
-      expect(body['ingredients'][tag_selection_ing.id.to_s]['id']).to eq(tag_selection_ing.id)
+      expect(body['ingredients']["#{ingredient.id}mod"]['id']).to eq(tag_selection_ing.id)
       expect(body['ratings']).to be_nil
       expect(body['recipe_types'].first['tag_id']).to eq cocktail.id
     end
@@ -68,10 +68,12 @@ describe Api::RecipesController, type: :controller do
     let!(:pineapple) { create(:tag, name: 'Pineapple', tag_type: tag_type_ingredient) }
     let!(:pineapple_selection2) { create(:tag_selection, taggable: recipe_multi, tag: pineapple, body: 'diced') }
     let!(:pineapple_selection1) { create(:tag_selection, taggable: recipe_multi, tag: pineapple) }
+    let!(:modification_selection) { create(:tag_selection, taggable: pineapple_selection1, tag: modification) }
     let!(:pineapple_access1) { create(:access, accessible: recipe_multi) }
     let!(:access2) { create(:access, accessible: pineapple) }
     let!(:access3) { create(:access, accessible: pineapple_selection1) }
     let!(:access4) { create(:access, accessible: pineapple_selection2) }
+    let!(:access5) { create(:access, accessible: modification_selection) }
     it 'returns multiple ingredients if they are of the same tag' do
       sign_in user
       get :show, params: { id: recipe_multi.id }, format: 'json'
@@ -131,7 +133,7 @@ describe Api::RecipesController, type: :controller do
     it 'returns the ingredients' do
       body = JSON.parse(response.body)
       pizza = body['recipes'].find { |r| r['name'] == 'Pizza' }
-      expect(pizza['ingredients'][tag_selection1a.id.to_s]['tag_type']).to eq 'Ingredient'
+      expect(pizza['ingredients']["#{lemon_verbena.id}mod"]['tag_type']).to eq 'Ingredient'
       expect(pizza['ingredient_types'].first['tag_name']).to eq('Rice')
     end
     it 'returns the filter tags' do
@@ -209,7 +211,6 @@ describe Api::RecipesController, type: :controller do
 
     it 'returns recipe details' do
       body = JSON.parse(response.body)
-      binding.pry
       expect(body['recipes'].size).to eq(1)
       expect(body['recipes'].first['ingredients'].keys.size).to eq(2)
     end

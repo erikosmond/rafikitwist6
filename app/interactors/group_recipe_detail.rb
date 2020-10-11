@@ -55,7 +55,7 @@ class GroupRecipeDetail
       # mutates recipes object
       recipes.each do |r|
         r['ingredients'] = r['ingredients']&.each_with_object({}) do |i, hash|
-          hash[i.id] = i
+          hash["#{i.tag_id}mod#{i.modification_id}"] = i
         end
       end
     end
