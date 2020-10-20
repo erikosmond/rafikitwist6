@@ -5,8 +5,10 @@ import FilterByIngredients from 'components/filters/FilterByIngredients'
 
 export default withRouter(connect(
   (state) => ({
-    allTags: state.recipesReducer.allTags,
-    tagGroups: state.recipesReducer.tagGroups,
+    visibleTags: state.recipesReducer.visibleFilterTags,
+    allTags: state.tagsReducer.allTags,
+    allTagTypes: state.tagsReducer.allTagTypes,
+    tagGroups: state.tagsReducer.tagGroups,
     tagsByType: state.tagsReducer.tagsByType,
   }),
   {},

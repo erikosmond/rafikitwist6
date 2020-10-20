@@ -44,6 +44,7 @@ class RecipeListSkeleton extends React.Component {
         // selectedRecipes
           // showMoreRecipes
           // eslint-disable-next-line react/jsx-props-no-spreading
+          // TODO: update all children have recipe list to have containers and remove this {...this.props}
           {...this.props}
         />
       )

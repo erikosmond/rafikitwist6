@@ -1,18 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FormGroup from '@material-ui/core/FormGroup'
-import IngredientFamilyFilter from 'components/filters/IngredientFamilyFilter'
-import IngredientTypeFilter from 'components/filters/IngredientTypeFilter'
+import IngredientFamilyFilter from 'containers/IngredientFamilyFilterContainer'
+import IngredientTypeFilter from 'containers/IngredientTypeFilterContainer'
 import { sortByTagName } from 'services/sortService'
 
-// TODO:
+// TODO (should be done):
 // create container (in progress), this component needs tagsByType, allTags, and tagGroups
 // do not pass in props from MobileNavDrawer and RecipeList
 
 const FilterByIngredients = ({
-  visibleTags,
-  handleFilter,
-  selectedFilters,
   allTags,
   tagGroups,
   tagsByType,
@@ -30,12 +27,8 @@ const FilterByIngredients = ({
             key={t}
             id={t}
             label={allTags[t]}
-            handleFilter={handleFilter}
-            selectedFilters={selectedFilters}
-            visibleTags={visibleTags}
             tagNameById={tagNameById}
             childTags={tagGroups[t]}
-            allTags={allTags}
           />
         ))}
         {tagsByType && sortByTagName(Object.keys(tagsByType), allTagTypes).map((t) => (
@@ -43,12 +36,8 @@ const FilterByIngredients = ({
             key={t}
             id={t}
             label={allTagTypes[t]}
-            handleFilter={handleFilter}
-            selectedFilters={selectedFilters}
-            visibleTags={visibleTags}
             tagNameById={tagNameById}
             childTags={tagsByType[t]}
-            allTags={allTags}
           />
         ))}
       </FormGroup>
@@ -58,8 +47,6 @@ const FilterByIngredients = ({
 export default FilterByIngredients
 
 FilterByIngredients.propTypes = {
-  handleFilter: PropTypes.func.isRequired,
-  selectedFilters: PropTypes.arrayOf(PropTypes.number),
   visibleTags: PropTypes.shape({}).isRequired,
   allTags: PropTypes.shape({
     id: PropTypes.number,
@@ -69,6 +56,3 @@ FilterByIngredients.propTypes = {
   tagsByType: PropTypes.shape({}).isRequired,
 }
 
-FilterByIngredients.defaultProps = {
-  selectedFilters: [],
-}

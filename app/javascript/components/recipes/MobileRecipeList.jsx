@@ -126,13 +126,9 @@ class MobileRecipeList extends React.Component {
       handleCommentModal,
       showMoreRecipes,
       visibleRecipeCount,
-      visibleFilterTags,
       allTags,
-      tagGroups,
       selectedFilters,
       handleFilter,
-      allTagTypes,
-      tagsByType,
       selectedTag,
     } = this.props
     return (
@@ -159,14 +155,14 @@ class MobileRecipeList extends React.Component {
           <MobileNavDrawer
             mobileDrawerState={mobileDrawerState}
             updateMobileDrawerState={updateMobileDrawerState}
-            visibleFilterTags={visibleFilterTags}
-            allTags={allTags}
-            tagGroups={tagGroups}
-            selectedFilters={selectedFilters}
-            handleFilter={handleFilter}
-            allTagTypes={allTagTypes}
-            tagsByType={tagsByType}
-            selectedTag={selectedTag}
+            // visibleFilterTags={visibleFilterTags}
+            // allTags={allTags}
+            // tagGroups={tagGroups}
+            // selectedFilters={selectedFilters}
+            // handleFilter={handleFilter}
+            // allTagTypes={allTagTypes}
+            // tagsByType={tagsByType}
+            // selectedTag={selectedTag}
           />
         </Footer>
       </div>

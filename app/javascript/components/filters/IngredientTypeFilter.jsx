@@ -15,7 +15,7 @@ const styles = () => ({
 })
 
 // TODO:
-// good as is, no updates required.
+// Add container for selectedFilters, visibleTags, allTags, handleFilter
 class IngredientTypeFilter extends React.Component {
   constructor(props) {
     super(props)

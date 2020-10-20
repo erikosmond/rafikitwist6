@@ -46,7 +46,7 @@ const initialState = {
   selectedFilters: [],
   recipeOptions: [],
   visibleFilterTags: {},
-  tagGroups: {},
+  // tagGroups: {},
   recipesLoaded: false,
   noRecipes: false,
   noTags: false,

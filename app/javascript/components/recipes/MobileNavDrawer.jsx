@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import FilterByIngredients from 'components/filters/FilterByIngredients'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -66,13 +65,6 @@ class MobileNavDrawer extends React.Component {
     const {
       mobileDrawerState,
       updateMobileDrawerState,
-      visibleFilterTags,
-      allTags,
-      tagGroups,
-      selectedFilters,
-      handleFilter,
-      allTagTypes,
-      tagsByType,
     } = this.props
     const { drawerState } = this.state
 
@@ -84,7 +76,7 @@ class MobileNavDrawer extends React.Component {
       updateMobileDrawerState(MobileNavDrawer.updateDrawerState(drawerValue))
     }
 
-
+    // TODO: I don't think I need to pass in any of these props - don't get them from parent
     return (
       <>
         <SwipeableDrawer
@@ -94,16 +86,7 @@ class MobileNavDrawer extends React.Component {
           onOpen={noop}
         >
           <FilterWrapper>
-            <FilterByIngredients
-            // TODO: I don't think I need to pass in any of these props - don't get them from parent
-              visibleTags={visibleFilterTags}
-              allTags={allTags}
-              tagGroups={tagGroups}
-              selectedFilters={selectedFilters}
-              handleFilter={handleFilter}
-              allTagTypes={allTagTypes}
-              tagsByType={tagsByType}
-            />
+            <FilterByIngredients />
           </FilterWrapper>
         </SwipeableDrawer>
 

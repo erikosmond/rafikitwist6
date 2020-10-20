@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FilterByIngredients from 'components/filters/FilterByIngredients'
 import FilterChips from 'components/filters/FilterChips'
 import RecipeListColumn from 'components/recipes/RecipeListColumn'
 import RelatedTags from 'components/recipes/RelatedTags'
+import FilterByIngredients from 'containers/FilterByIngredientsContainer'
 import { Link } from 'react-router-dom'
 import PaperContent from '../styled/PaperContent'
 import PaperSidebar from '../styled/PaperSidebar'
@@ -117,13 +117,13 @@ class RecipeList extends React.Component {
           <FilterByIngredients
           // TODO: tagsByType come from recipes/index.jsx which should put these values in the store.
           // I don't think I need to pass in any of these props - don't get them from parent
-            visibleTags={visibleFilterTags}
-            allTags={allTags}
-            tagGroups={tagGroups}
-            selectedFilters={selectedFilters}
-            handleFilter={handleFilter}
-            allTagTypes={allTagTypes}
-            tagsByType={tagsByType}
+            // visibleTags={visibleFilterTags}
+            // allTags={allTags}
+            // tagGroups={tagGroups}
+            // selectedFilters={selectedFilters}
+            // handleFilter={handleFilter}
+            // allTagTypes={allTagTypes}
+            // tagsByType={tagsByType}
           />
         </PaperSidebar>
         <PaperContent>
