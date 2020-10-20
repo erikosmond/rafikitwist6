@@ -14,6 +14,8 @@ const styles = () => ({
   },
 })
 
+// TODO:
+// I think this is good as is. no updates needed
 class IngredientFamilyFilter extends React.Component {
   hasVisibleChildren = () => {
     const { childTags, visibleTags } = this.props

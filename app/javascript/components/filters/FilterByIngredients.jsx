@@ -5,6 +5,10 @@ import IngredientFamilyFilter from 'components/filters/IngredientFamilyFilter'
 import IngredientTypeFilter from 'components/filters/IngredientTypeFilter'
 import { sortByTagName } from 'services/sortService'
 
+// TODO:
+// create container (in progress), this component needs tagsByType, allTags, and tagGroups
+// do not pass in props from MobileNavDrawer and RecipeList
+
 const FilterByIngredients = ({
   visibleTags,
   handleFilter,

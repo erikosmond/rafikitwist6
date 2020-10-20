@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
 import IngredientListItem from 'components/recipes/IngredientListItem'
 
+// TODO: no update required
 const RecipeProperties = (props) => {
   const { title, tags } = props
   return (

@@ -22,6 +22,15 @@ const styles = () => ({
   },
 })
 
+// TODO: create a container for RecipeListItem
+// authenticated,
+// selectedRecipes,
+// pagedRecipeCount,
+// ratings,
+// priorities,
+// updateRecipeTag,
+// handleCommentModal,
+
 class RecipeListItem extends React.Component {
   constructor(props) {
     super(props)

@@ -16,6 +16,9 @@ function getModalStyle() {
   }
 }
 
+// TODO:
+// This already has a container, no changes required.
+// Could possibly add comment modal form container, but probably not necessary
 export default function CommentModal(props) {
   const {
     commentModalOpen,

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import StyledSelect from '../styled/StyledSelect'
 
+// TODO: good as is, no updates required
 class HeaderDropdown extends React.Component {
   constructor(props) {
     super(props)

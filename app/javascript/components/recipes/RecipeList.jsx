@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import PaperContent from '../styled/PaperContent'
 import PaperSidebar from '../styled/PaperSidebar'
 
+// TODO: add og meta tags to this page
 class RecipeList extends React.Component {
   constructor(props) {
     super(props)
@@ -88,7 +89,6 @@ class RecipeList extends React.Component {
     }
     return (
       <div>
-        <meta property="og:title" content={selectedTag.name} />
         <h4>{selectedTag.name}</h4>
         {selectedTag.description && selectedTag.description.length > 0 && (
           <div>
@@ -115,6 +115,8 @@ class RecipeList extends React.Component {
         />
         <PaperSidebar>
           <FilterByIngredients
+          // TODO: tagsByType come from recipes/index.jsx which should put these values in the store.
+          // I don't think I need to pass in any of these props - don't get them from parent
             visibleTags={visibleFilterTags}
             allTags={allTags}
             tagGroups={tagGroups}

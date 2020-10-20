@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FilterByIngredients from 'components/filters/FilterByIngredients'
+// import FilterByIngredients from 'components/filters/FilterByIngredients'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -9,6 +9,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import AccountMenu from 'containers/AccountMenuContainer'
 import RecipeHeader from 'containers/RecipeHeaderContainer'
+import FilterByIngredients from 'containers/FilterByIngredientsContainer'
 import styled from 'styled-components'
 
 
@@ -94,6 +95,7 @@ class MobileNavDrawer extends React.Component {
         >
           <FilterWrapper>
             <FilterByIngredients
+            // TODO: I don't think I need to pass in any of these props - don't get them from parent
               visibleTags={visibleFilterTags}
               allTags={allTags}
               tagGroups={tagGroups}

@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import MobileRecipeList from 'components/recipes/MobileRecipeList'
 
+// TODO: I should probably keep the container for this as it needs so many props
+// but there are a lot of props I can remove
+// and MobileRecipeList should have it's own container and i should not pass any props to it.
 class MobileRecipeListSkeleton extends React.Component {
   static recipesReady(props) {
     return props.loading !== undefined && !props.loading &&

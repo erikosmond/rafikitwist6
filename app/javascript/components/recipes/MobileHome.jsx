@@ -19,7 +19,7 @@ import RecipeFormSkeleton from 'containers/RecipeFormContainer'
 const StyledContent = styled.div`
   margin-top: 1px;
 `
-
+// TODO: what props are being passed into RecipeFormSkeleton. Try removing it.
 const SmallHome = () => (
   <Router>
     <CommentModal />

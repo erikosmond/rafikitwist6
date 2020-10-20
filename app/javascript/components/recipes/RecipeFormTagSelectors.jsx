@@ -42,6 +42,7 @@ const MenuProps = {
   },
 }
 
+// TODO: no update needed
 let RecipeFormTagSelectors = (props) => {
   const {
     tagOptions,

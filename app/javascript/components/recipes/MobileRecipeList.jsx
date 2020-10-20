@@ -24,6 +24,9 @@ const Body = styled.div`
   overflow: scroll; 
 `
 
+// TODO:
+// This already has a container for skeleton, so I should just adjust existing container and skeleton
+
 class MobileRecipeList extends React.Component {
   componentDidUpdate(lastProps) {
     const {
@@ -134,7 +137,6 @@ class MobileRecipeList extends React.Component {
     } = this.props
     return (
       <div>
-        <meta property="og:title" content={selectedTag.name} />
         {MobileRecipeList.renderHeader({
           allTags,
           selectedFilters,

@@ -14,6 +14,8 @@ const styles = () => ({
   },
 })
 
+// TODO:
+// good as is, no updates required.
 class IngredientTypeFilter extends React.Component {
   constructor(props) {
     super(props)

@@ -38,6 +38,11 @@ class RecipeListSkeleton extends React.Component {
     if (RecipeListSkeleton.recipesReady(this.props)) {
       return (
         <RecipeList
+        // These should be the only props passed in
+        // pagedRecipeCount,
+        // visibleRecipeCount
+        // selectedRecipes
+          // showMoreRecipes
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...this.props}
         />

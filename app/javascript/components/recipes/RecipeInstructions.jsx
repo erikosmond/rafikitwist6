@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
 
+// TODO: no update required
 const RecipeInstructions = (props) => {
   const { recipe } = props
 

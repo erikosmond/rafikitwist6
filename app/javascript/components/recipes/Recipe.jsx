@@ -29,6 +29,9 @@ const Body = styled.div`
   margin-bottom: 70px;
 `
 
+// TODO:
+// This already has a container
+// Add og:title meta tags to this page
 class Recipe extends React.Component {
   constructor(props) {
     super(props)
@@ -109,7 +112,6 @@ class Recipe extends React.Component {
     }
     return (
       <div>
-        <meta property="og:title" content={recipe.name} />
         {Recipe.renderHeader(mobile, recipe)}
         <Body>
           <RecipeProperties title="Ingredients" tags={allIngredients(recipe)} />

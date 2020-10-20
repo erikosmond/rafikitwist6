@@ -69,6 +69,7 @@ const renderIngredients = (args) => {
   )
 }
 
+// TODO this component should have its own container
 let RecipeForm = (props) => {
   const {
     classes,

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import RecipeForm from './RecipeForm'
 
+// Remove the props from the container that are simply being passed through to RecipeForm component.
 class RecipeFormSkeleton extends React.Component {
   componentDidMount() {
     const {

@@ -29,41 +29,40 @@ const HeaderWrapper = styled.div`
     z-index: 1;
 `
 
-const LargeHome = () => {
-  return (
-    <Router>
-      <HeaderWrapper>
-        <RecipeHeader />
-      </HeaderWrapper>
-      <CommentModal />
-      <TagFormModal />
+// TODO: what props are being passed into RecipeFormSkeleton. Try removing it.
+const LargeHome = () => (
+  <Router>
+    <HeaderWrapper>
+      <RecipeHeader />
+    </HeaderWrapper>
+    <CommentModal />
+    <TagFormModal />
 
-      <StyledContent>
-        <Switch>
-          <Route
-            path="/tags/:tagId/recipes"
-            component={RecipeList}
-          />
-          <Route
-            path="/recipes/new"
-            component={RecipeFormSkeleton}
-          />
-          <Route
-            path="/recipes/:recipeId/edit"
-            render={(props) => <RecipeFormSkeleton {...props} edit />}
-          />
-          <Route
-            path="/recipes/:recipeId"
-            component={RecipeSkeleton}
-          />
-          <Route
-            path="/"
-            component={RecipeList}
-          />
-        </Switch>
-      </StyledContent>
-    </Router>
-  )
-}
+    <StyledContent>
+      <Switch>
+        <Route
+          path="/tags/:tagId/recipes"
+          component={RecipeList}
+        />
+        <Route
+          path="/recipes/new"
+          component={RecipeFormSkeleton}
+        />
+        <Route
+          path="/recipes/:recipeId/edit"
+          render={(props) => <RecipeFormSkeleton {...props} edit />}
+        />
+        <Route
+          path="/recipes/:recipeId"
+          component={RecipeSkeleton}
+        />
+        <Route
+          path="/"
+          component={RecipeList}
+        />
+      </Switch>
+    </StyledContent>
+  </Router>
+)
 
 export default LargeHome

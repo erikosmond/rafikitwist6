@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 import RecipeListItem from 'components/recipes/RecipeListItem'
 import { sortRecipes } from 'services/sortService'
 
+// TODO: These are the only values I need for this component in the container (remove all others)
+// pagedRecipeCount,
+// visibleRecipeCount
+// selectedRecipes
+// showMoreRecipes
+// CALL the new RecipeListItem container
 class RecipeListColumn extends React.Component {
   static displayShown(recipe) {
     return recipe.hidden !== true

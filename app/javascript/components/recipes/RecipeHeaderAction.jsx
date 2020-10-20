@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 
 const ITEM_HEIGHT = 48
 
+// TODO: no update needed
 class RecipeHeaderAction extends React.Component {
   constructor(props) {
     super(props)

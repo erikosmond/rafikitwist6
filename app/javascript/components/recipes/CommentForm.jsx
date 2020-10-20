@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// TODO:
+// no updates required
 class CommentForm extends React.Component {
   constructor(props) {
     super(props)
