@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import IngredientTypeFilter from 'components/filters/IngredientTypeFilter'
+import IngredientTypeFilter from 'containers/IngredientTypeFilterContainer'
 import { sortByTagName } from 'services/sortService'
 
 const styles = () => ({
@@ -14,8 +14,6 @@ const styles = () => ({
   },
 })
 
-// TODO:
-// Add container for selectedFilters, visibleTags, allTags, handleFilter
 class IngredientFamilyFilter extends React.Component {
   hasVisibleChildren = () => {
     const { childTags, visibleTags } = this.props
@@ -50,10 +48,8 @@ class IngredientFamilyFilter extends React.Component {
   render() {
     if (this.hasVisibleChildren()) {
       const {
-        visibleTags,
         tagNameById,
         childTags,
-        handleFilter,
         selectedFilters,
         id,
         classes,
@@ -80,11 +76,7 @@ class IngredientFamilyFilter extends React.Component {
                 id={t}
                 label={tagNameById(parseInt(t, 10))}
                 childTags={childTags[parseInt(t, 10)]}
-                allTags={allTags}
                 tagNameById={tagNameById}
-                visibleTags={visibleTags}
-                handleFilter={handleFilter}
-                selectedFilters={selectedFilters}
                 selectable
               />
             ))}

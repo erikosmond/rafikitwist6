@@ -14,7 +14,7 @@ import CommentModal from 'containers/CommentModalContainer'
 import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormContainer'
-import RecipeList from 'containers/RecipeListContainer'
+import RecipeListSkeleton from 'containers/RecipeListSkeletonContainer'
 import RecipeHeader from 'containers/RecipeHeaderContainer'
 
 const StyledContent = styled.div`
@@ -29,7 +29,6 @@ const HeaderWrapper = styled.div`
     z-index: 1;
 `
 
-// TODO: what props are being passed into RecipeFormSkeleton. Try removing it.
 const LargeHome = () => (
   <Router>
     <HeaderWrapper>
@@ -42,7 +41,7 @@ const LargeHome = () => (
       <Switch>
         <Route
           path="/tags/:tagId/recipes"
-          component={RecipeList}
+          component={RecipeListSkeleton}
         />
         <Route
           path="/recipes/new"
@@ -50,7 +49,7 @@ const LargeHome = () => (
         />
         <Route
           path="/recipes/:recipeId/edit"
-          render={(props) => <RecipeFormSkeleton {...props} edit />}
+          render={() => <RecipeFormSkeleton edit />}
         />
         <Route
           path="/recipes/:recipeId"
@@ -58,7 +57,7 @@ const LargeHome = () => (
         />
         <Route
           path="/"
-          component={RecipeList}
+          component={RecipeListSkeleton}
         />
       </Switch>
     </StyledContent>

@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import MobileNavDrawer from 'components/recipes/MobileNavDrawer'
-import RecipeListColumn from 'components/recipes/RecipeListColumn'
-import FilterChips from 'components/filters/FilterChips'
+import FilterChips from 'containers/FilterChipsContainer'
+import RecipeListColumn from 'containers/RecipeListColumnContainer'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -49,34 +49,7 @@ class MobileRecipeList extends React.Component {
     resetPagedCount()
   }
 
-  static renderHeader({
-    allTags,
-    selectedFilters,
-    handleFilter,
-    selectedTag,
-  }) {
-    return (
-      <Header>
-        <FilterChips
-          allTags={allTags}
-          selectedFilters={selectedFilters}
-          handleFilter={handleFilter}
-          selectedTag={selectedTag}
-        />
-      </Header>
-    )
-  }
-
   static renderRecipes({
-    authenticated,
-    selectedRecipes,
-    pagedRecipeCount,
-    ratings,
-    priorities,
-    updateRecipeTag,
-    handleCommentModal,
-    showMoreRecipes,
-    visibleRecipeCount,
     selectedTag,
   }) {
     return (
@@ -97,17 +70,7 @@ class MobileRecipeList extends React.Component {
           </div>
         )}
         <Body>
-          <RecipeListColumn
-            selectedRecipes={selectedRecipes}
-            pagedRecipeCount={pagedRecipeCount}
-            ratings={ratings}
-            priorities={priorities}
-            updateRecipeTag={updateRecipeTag}
-            handleCommentModal={handleCommentModal}
-            showMoreRecipes={showMoreRecipes}
-            visibleRecipeCount={visibleRecipeCount}
-            authenticated={authenticated}
-          />
+          <RecipeListColumn />
         </Body>
       </div>
     )
@@ -126,19 +89,13 @@ class MobileRecipeList extends React.Component {
       handleCommentModal,
       showMoreRecipes,
       visibleRecipeCount,
-      allTags,
-      selectedFilters,
-      handleFilter,
       selectedTag,
     } = this.props
     return (
       <div>
-        {MobileRecipeList.renderHeader({
-          allTags,
-          selectedFilters,
-          handleFilter,
-          selectedTag,
-        })}
+        <Header>
+          <FilterChips />
+        </Header>
         {MobileRecipeList.renderRecipes({
           authenticated,
           selectedRecipes,

@@ -20,7 +20,7 @@ const commentIcon = `M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9
                      2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z`
 
 // TODO:
-// This needs a container. It's what the recipe SHOW page needs to include.
+// This is what the recipe SHOW page needs to include.
 // This should also be renamed to something like RecipeTitleActions
 const RecipeHeaderActions = (props) => {
   const {

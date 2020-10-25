@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-// TODO: no update required
 const IngredientListItem = ({ ingredient }) => {
   const {
     body,

@@ -13,7 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import RecipeProperties from 'components/recipes/RecipeProperties'
 import RecipeInstructions from 'components/recipes/RecipeInstructions'
 import RecipeDescription from 'components/recipes/RecipeDescription'
-import RecipeHeaderActions from 'components/recipes/RecipeHeaderActions'
+import RecipeHeaderActions from 'containers/RecipeHeaderActionsContainer'
 import { allIngredients } from 'services/recipes'
 
 const styles = () => ({
@@ -21,15 +21,6 @@ const styles = () => ({
     maxWidth: 400,
   },
 })
-
-// TODO: create a container for RecipeListItem
-// authenticated,
-// selectedRecipes,
-// pagedRecipeCount,
-// ratings,
-// priorities,
-// updateRecipeTag,
-// handleCommentModal,
 
 class RecipeListItem extends React.Component {
   constructor(props) {
@@ -65,15 +56,10 @@ class RecipeListItem extends React.Component {
           subheader={ingredientNames.join(', ')}
           action={(
             <RecipeHeaderActions
-              authenticated={authenticated}
-              ratings={ratings}
-              priorities={priorities}
               rating={recipe.newRating || (recipe.ratings && recipe.ratings[0])}
               priority={recipe.newPriority || (recipe.priorities && recipe.priorities[0])}
               recipeId={recipe.id}
               recipeComment={recipe.newComment || (recipe.comments && recipe.comments[0]) || {}}
-              updateRecipeTag={updateRecipeTag}
-              handleCommentModal={handleCommentModal}
             />
           )}
         />

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 
-// TODO:
-// good as is, no updates required
 class IngredientFilter extends React.Component {
   constructor(props) {
     super(props)

@@ -6,8 +6,7 @@ import IngredientTypeFilter from 'containers/IngredientTypeFilterContainer'
 import { sortByTagName } from 'services/sortService'
 
 // TODO (should be done):
-// create container (in progress), this component needs tagsByType, allTags, and tagGroups
-// do not pass in props from MobileNavDrawer and RecipeList
+// do not pass in props from MobileNavDrawer and RecipeListSkeleton
 
 const FilterByIngredients = ({
   allTags,
@@ -55,4 +54,3 @@ FilterByIngredients.propTypes = {
   tagGroups: PropTypes.shape({}).isRequired,
   tagsByType: PropTypes.shape({}).isRequired,
 }
-

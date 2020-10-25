@@ -145,28 +145,7 @@ MobileNavDrawer.propTypes = {
     similar: PropTypes.bool,
   }),
   updateMobileDrawerState: PropTypes.func.isRequired,
-  handleFilter: PropTypes.func.isRequired,
-  tagGroups: PropTypes.shape({}).isRequired,
-  allTags: PropTypes.shape({
-    id: PropTypes.number,
-  }).isRequired,
-  allTagTypes: PropTypes.shape({
-    id: PropTypes.number,
-  }).isRequired,
-  tagsByType: PropTypes.shape({}).isRequired,
   visibleFilterTags: PropTypes.shape({}),
-  selectedFilters: PropTypes.arrayOf(PropTypes.number),
-  selectedTag: PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-    grandparentTags: PropTypes.shape({}),
-    parentTags: PropTypes.shape({}),
-    childTags: PropTypes.shape({}),
-    grandchildTags: PropTypes.shape({}),
-    sisterTags: PropTypes.shape({}),
-    modificationTags: PropTypes.shape({}),
-    modifiedTags: PropTypes.shape({}),
-  }).isRequired,
 }
 
 MobileNavDrawer.defaultProps = {
@@ -175,6 +154,5 @@ MobileNavDrawer.defaultProps = {
     search: false,
     similar: false,
   },
-  selectedFilters: [],
   visibleFilterTags: {},
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import RecipeList from 'components/recipes/RecipeList'
+import RecipeList from 'containers/RecipeListContainer'
 
 class RecipeListSkeleton extends React.Component {
   static recipesReady(props) {
@@ -37,16 +37,15 @@ class RecipeListSkeleton extends React.Component {
   render() {
     if (RecipeListSkeleton.recipesReady(this.props)) {
       return (
-        <RecipeList
+        <RecipeList />
         // These should be the only props passed in
         // pagedRecipeCount,
         // visibleRecipeCount
         // selectedRecipes
-          // showMoreRecipes
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          // TODO: update all children have recipe list to have containers and remove this {...this.props}
-          {...this.props}
-        />
+        // showMoreRecipes
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        // TODO: update all children have recipe list to have containers and remove this {...this.props}
+        // {...this.props}
       )
     }
     return (<div> Loading... </div>)

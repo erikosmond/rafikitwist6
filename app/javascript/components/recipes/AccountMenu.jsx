@@ -16,8 +16,7 @@ M12,19.2 C9.5,19.2 7.29,17.92 6,15.98 C6.03,13.99 10,12.9 12,12.9 C13.99,12.9
 const StyledIcon = styled.div`
   display: inline-block;
 `
-// TODO:
-// This already has a container. No updates required
+
 class AccountMenu extends React.Component {
   constructor(props) {
     super(props)

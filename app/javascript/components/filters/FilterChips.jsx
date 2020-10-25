@@ -4,9 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Chip from '@material-ui/core/Chip'
 import Paper from '@material-ui/core/Paper'
 
-// TODO: 
-// create container, this component needs allTags, selectedFilters, selectedTag
-// function from recipes: handleFilter
+// TODO:
 // do not pass in props from MobileRecipeList and RecipeList
 
 const styles = (theme) => ({

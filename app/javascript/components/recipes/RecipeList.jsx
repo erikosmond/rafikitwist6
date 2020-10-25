@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FilterChips from 'components/filters/FilterChips'
-import RecipeListColumn from 'components/recipes/RecipeListColumn'
+import RecipeListColumn from 'containers/RecipeListColumnContainer'
 import RelatedTags from 'components/recipes/RelatedTags'
 import FilterByIngredients from 'containers/FilterByIngredientsContainer'
+import FilterChips from 'containers/FilterChipsContainer'
 import { Link } from 'react-router-dom'
 import PaperContent from '../styled/PaperContent'
 import PaperSidebar from '../styled/PaperSidebar'
@@ -57,15 +57,11 @@ class RecipeList extends React.Component {
       selectedTag,
       noRecipes,
       loading,
-      visibleFilterTags,
       visibleRecipeCount,
       allTags,
-      tagGroups,
       handleCommentModal,
       pagedRecipeCount,
       handleFilter,
-      allTagTypes,
-      tagsByType,
       ratings,
       priorities,
       updateRecipeTag,
@@ -107,12 +103,7 @@ class RecipeList extends React.Component {
         {(selectedTag.recipeId || selectedTag.description) && (
           <br />
         )}
-        <FilterChips
-          allTags={allTags}
-          selectedFilters={selectedFilters}
-          handleFilter={handleFilter}
-          selectedTag={selectedTag}
-        />
+        <FilterChips />
         <PaperSidebar>
           <FilterByIngredients
           // TODO: tagsByType come from recipes/index.jsx which should put these values in the store.
@@ -127,17 +118,7 @@ class RecipeList extends React.Component {
           />
         </PaperSidebar>
         <PaperContent>
-          <RecipeListColumn
-            selectedRecipes={selectedRecipes}
-            pagedRecipeCount={pagedRecipeCount}
-            ratings={ratings}
-            priorities={priorities}
-            updateRecipeTag={updateRecipeTag}
-            handleCommentModal={handleCommentModal}
-            showMoreRecipes={showMoreRecipes}
-            visibleRecipeCount={visibleRecipeCount}
-            authenticated={authenticated}
-          />
+          <RecipeListColumn />
         </PaperContent>
 
         <PaperSidebar>
