@@ -5,9 +5,6 @@ import IngredientFamilyFilter from 'containers/IngredientFamilyFilterContainer'
 import IngredientTypeFilter from 'containers/IngredientTypeFilterContainer'
 import { sortByTagName } from 'services/sortService'
 
-// TODO (should be done):
-// do not pass in props from MobileNavDrawer and RecipeListSkeleton
-
 const FilterByIngredients = ({
   allTags,
   tagGroups,

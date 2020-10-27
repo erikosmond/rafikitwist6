@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import RecipeHeaderActions from 'containers/RecipeHeaderActionsContainer'
 import RecipeProperties from 'components/recipes/RecipeProperties'
 import RecipeInstructions from 'components/recipes/RecipeInstructions'
 import RecipeDescription from 'components/recipes/RecipeDescription'
@@ -59,6 +60,17 @@ class Recipe extends React.Component {
     )
   }
 
+  static renderActions(recipe) {
+    return (
+      <RecipeHeaderActions
+        rating={recipe.newRating || (recipe.ratings && recipe.ratings[0])}
+        priority={recipe.newPriority || (recipe.priorities && recipe.priorities[0])}
+        recipeId={recipe.id}
+        recipeComment={recipe.newComment || (recipe.comments && recipe.comments[0]) || {}}
+      />
+    )
+  }
+
   renderFooter(mobile) {
     if (!mobile) {
       return null
@@ -111,6 +123,7 @@ class Recipe extends React.Component {
     return (
       <div>
         {Recipe.renderHeader(mobile, recipe)}
+        {Recipe.renderActions(recipe)}
         <Body>
           <RecipeProperties title="Ingredients" tags={allIngredients(recipe)} />
           <RecipeInstructions recipe={recipe} />
