@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import RecipeProperties from 'components/recipes/RecipeProperties'
 import RecipeInstructions from 'components/recipes/RecipeInstructions'
 import RecipeDescription from 'components/recipes/RecipeDescription'
-import RecipeHeader from 'containers/RecipeHeaderContainer'
+import NavMenus from 'containers/NavMenusContainer'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import SearchIcon from '@material-ui/icons/Search'
@@ -80,7 +80,7 @@ class Recipe extends React.Component {
           onClose={handleDrawerState(false)}
           onOpen={noop}
         >
-          <RecipeHeader mobile />
+          <NavMenus mobile />
         </SwipeableDrawer>
         <BottomNavigation
           value={drawerState}

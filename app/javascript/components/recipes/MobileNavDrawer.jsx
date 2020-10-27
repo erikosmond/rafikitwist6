@@ -7,7 +7,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import SearchIcon from '@material-ui/icons/Search'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import AccountMenu from 'containers/AccountMenuContainer'
-import RecipeHeader from 'containers/RecipeHeaderContainer'
+import NavMenus from 'containers/NavMenusContainer'
 import FilterByIngredients from 'containers/FilterByIngredientsContainer'
 import styled from 'styled-components'
 
@@ -95,7 +95,7 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <RecipeHeader mobile />
+          <NavMenus mobile />
         </SwipeableDrawer>
 
         <SwipeableDrawer

@@ -18,9 +18,7 @@ const useStyles = makeStyles({
   },
 })
 
-// TODO: Should probably be renamed to something like NavMenus
-
-const RecipeHeader = (props) => {
+const NavMenus = (props) => {
   const {
     loadRecipeOptions,
     recipeOptions,
@@ -97,9 +95,9 @@ const RecipeHeader = (props) => {
   )
 }
 
-export default RecipeHeader
+export default NavMenus
 
-RecipeHeader.propTypes = {
+NavMenus.propTypes = {
   loadRecipeOptions: PropTypes.func.isRequired,
   recipeOptions: PropTypes.arrayOf(PropTypes.shape(
     { name: PropTypes.string, id: PropTypes.number },
@@ -128,7 +126,7 @@ RecipeHeader.propTypes = {
   }).isRequired,
 }
 
-RecipeHeader.defaultProps = {
+NavMenus.defaultProps = {
   recipeOptions: [],
   ingredientOptions: [],
   categoryOptions: [],

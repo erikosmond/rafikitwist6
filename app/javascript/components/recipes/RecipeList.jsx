@@ -153,7 +153,6 @@ RecipeList.defaultProps = {
   loading: true,
   noRecipes: true,
   selectedRecipes: [],
-  visibleFilterTags: {},
   visibleRecipeCount: 0,
 }
 

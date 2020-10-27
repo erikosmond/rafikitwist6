@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import RecipeHeader from 'components/recipes/RecipeHeader'
+import NavMenus from 'components/recipes/NavMenus'
 
 import { loadRecipeOptions } from 'bundles/recipes'
 
@@ -20,4 +20,4 @@ export default withRouter(connect(
     loadRecipeOptions,
     loadIngredientOptions,
   },
-)(RecipeHeader))
+)(NavMenus))

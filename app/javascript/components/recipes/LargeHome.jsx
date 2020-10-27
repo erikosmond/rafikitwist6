@@ -15,7 +15,7 @@ import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormContainer'
 import RecipeListSkeleton from 'containers/RecipeListSkeletonContainer'
-import RecipeHeader from 'containers/RecipeHeaderContainer'
+import NavMenus from 'containers/NavMenusContainer'
 
 const StyledContent = styled.div`
   margin-top: 70px;
@@ -32,7 +32,7 @@ const HeaderWrapper = styled.div`
 const LargeHome = () => (
   <Router>
     <HeaderWrapper>
-      <RecipeHeader />
+      <NavMenus />
     </HeaderWrapper>
     <CommentModal />
     <TagFormModal />
