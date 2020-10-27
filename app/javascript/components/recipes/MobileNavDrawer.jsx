@@ -76,7 +76,6 @@ class MobileNavDrawer extends React.Component {
       updateMobileDrawerState(MobileNavDrawer.updateDrawerState(drawerValue))
     }
 
-    // TODO: I don't think I need to pass in any of these props - don't get them from parent
     return (
       <>
         <SwipeableDrawer

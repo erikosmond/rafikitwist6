@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Recipe from './Recipe'
 
-// TODO: can stay this way for now, low priority for cleanup
 class RecipeSkeleton extends React.Component {
   componentDidMount() {
     const { loadRecipe, match } = this.props
@@ -62,7 +61,7 @@ RecipeSkeleton.propTypes = {
 RecipeSkeleton.defaultProps = {
   recipe: {},
   noRecipe: false,
-  mobile: false
+  mobile: false,
 }
 
 export default RecipeSkeleton

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import StyledSelect from '../styled/StyledSelect'
 
-// TODO: no change required
 class RecipeFormIngredient extends Component {
   handleChange = (selectedOption) => {
     const { input: { onChange } } = this.props

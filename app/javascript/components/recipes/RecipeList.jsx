@@ -51,22 +51,10 @@ class RecipeList extends React.Component {
 
   render() {
     const {
-      authenticated,
       recipesLoaded,
-      selectedRecipes,
       selectedTag,
       noRecipes,
       loading,
-      visibleRecipeCount,
-      allTags,
-      handleCommentModal,
-      pagedRecipeCount,
-      handleFilter,
-      ratings,
-      priorities,
-      updateRecipeTag,
-      selectedFilters,
-      showMoreRecipes,
     } = this.props
     if (loading || !selectedTag) {
       return (
@@ -105,17 +93,7 @@ class RecipeList extends React.Component {
         )}
         <FilterChips />
         <PaperSidebar>
-          <FilterByIngredients
-          // TODO: tagsByType come from recipes/index.jsx which should put these values in the store.
-          // I don't think I need to pass in any of these props - don't get them from parent
-            // visibleTags={visibleFilterTags}
-            // allTags={allTags}
-            // tagGroups={tagGroups}
-            // selectedFilters={selectedFilters}
-            // handleFilter={handleFilter}
-            // allTagTypes={allTagTypes}
-            // tagsByType={tagsByType}
-          />
+          <FilterByIngredients />
         </PaperSidebar>
         <PaperContent>
           <RecipeListColumn />
@@ -137,30 +115,14 @@ class RecipeList extends React.Component {
 }
 
 RecipeList.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
-  handleCommentModal: PropTypes.func.isRequired,
-  handleFilter: PropTypes.func.isRequired,
   clearFilters: PropTypes.func.isRequired,
   resetPagedCount: PropTypes.func.isRequired,
-  updateRecipeTag: PropTypes.func.isRequired,
   selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
   recipesLoaded: PropTypes.bool,
   loading: PropTypes.bool,
-  tagGroups: PropTypes.shape({}).isRequired,
-  allTags: PropTypes.shape({
-    id: PropTypes.number,
-  }).isRequired,
-  allTagTypes: PropTypes.shape({
-    id: PropTypes.number,
-  }).isRequired,
-  tagsByType: PropTypes.shape({}).isRequired,
-  visibleFilterTags: PropTypes.shape({}),
-  selectedFilters: PropTypes.arrayOf(PropTypes.number),
   visibleRecipeCount: PropTypes.number,
-  pagedRecipeCount: PropTypes.number,
-  showMoreRecipes: PropTypes.func.isRequired,
   noRecipes: PropTypes.bool,
   priorities: PropTypes.shape({}).isRequired,
   ratings: PropTypes.shape({}).isRequired,
@@ -190,11 +152,9 @@ RecipeList.defaultProps = {
   recipesLoaded: false,
   loading: true,
   noRecipes: true,
-  selectedFilters: [],
   selectedRecipes: [],
   visibleFilterTags: {},
   visibleRecipeCount: 0,
-  pagedRecipeCount: 10,
 }
 
 export default RecipeList

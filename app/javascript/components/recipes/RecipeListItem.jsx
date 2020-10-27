@@ -34,13 +34,8 @@ class RecipeListItem extends React.Component {
 
   render() {
     const {
-      authenticated,
       recipe,
       classes,
-      ratings,
-      priorities,
-      updateRecipeTag,
-      handleCommentModal,
     } = this.props
     const ingredientNames = Object.values(allIngredients(recipe)).map((ingredient) => (
       ingredient.tagName
@@ -88,7 +83,6 @@ class RecipeListItem extends React.Component {
 }
 
 RecipeListItem.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
   recipe: PropTypes.shape({
     hidden: PropTypes.bool,
     id: PropTypes.number.isRequired,
@@ -106,10 +100,6 @@ RecipeListItem.propTypes = {
     expand: PropTypes.string,
     expandOpen: PropTypes.string,
   }).isRequired,
-  ratings: PropTypes.shape({}).isRequired,
-  priorities: PropTypes.shape({}).isRequired,
-  updateRecipeTag: PropTypes.func.isRequired,
-  handleCommentModal: PropTypes.func.isRequired,
 }
 
 RecipeListItem.defaultProps = {

@@ -29,9 +29,7 @@ const Body = styled.div`
   margin-bottom: 70px;
 `
 
-// TODO:
-// This already has a container
-// Add og:title meta tags to this page
+// TODO: Add og:title meta tags to this page
 class Recipe extends React.Component {
   constructor(props) {
     super(props)

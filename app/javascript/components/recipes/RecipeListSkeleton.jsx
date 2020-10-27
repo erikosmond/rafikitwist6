@@ -38,14 +38,6 @@ class RecipeListSkeleton extends React.Component {
     if (RecipeListSkeleton.recipesReady(this.props)) {
       return (
         <RecipeList />
-        // These should be the only props passed in
-        // pagedRecipeCount,
-        // visibleRecipeCount
-        // selectedRecipes
-        // showMoreRecipes
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        // TODO: update all children have recipe list to have containers and remove this {...this.props}
-        // {...this.props}
       )
     }
     return (<div> Loading... </div>)
@@ -53,16 +45,8 @@ class RecipeListSkeleton extends React.Component {
 }
 
 RecipeListSkeleton.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
-  handleFilter: PropTypes.func.isRequired,
-  clearFilters: PropTypes.func.isRequired,
-  resetPagedCount: PropTypes.func.isRequired,
-  updateRecipeTag: PropTypes.func.isRequired,
-  selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
-  recipesLoaded: PropTypes.bool,
-  loading: PropTypes.bool,
   tagGroups: PropTypes.shape({}).isRequired,
   allTags: PropTypes.shape({
     id: PropTypes.number,
@@ -72,11 +56,7 @@ RecipeListSkeleton.propTypes = {
   }),
   tagsByType: PropTypes.shape({}),
   visibleFilterTags: PropTypes.shape({}),
-  selectedFilters: PropTypes.arrayOf(PropTypes.number),
-  visibleRecipeCount: PropTypes.number,
-  noRecipes: PropTypes.bool,
   startingTagId: PropTypes.string.isRequired,
-  showMoreRecipes: PropTypes.func.isRequired,
   selectedTag: PropTypes.shape({}),
   priorities: PropTypes.shape({}),
   ratings: PropTypes.shape({}),
@@ -91,16 +71,10 @@ RecipeListSkeleton.propTypes = {
 }
 
 RecipeListSkeleton.defaultProps = {
-  selectedRecipes: [],
-  recipesLoaded: false,
-  loading: false,
   allTags: {},
   allTagTypes: {},
   tagsByType: {},
   visibleFilterTags: {},
-  selectedFilters: [],
-  visibleRecipeCount: 0,
-  noRecipes: false,
   selectedTag: {},
   priorities: {},
   ratings: {},

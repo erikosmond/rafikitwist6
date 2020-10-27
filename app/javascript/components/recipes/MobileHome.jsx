@@ -11,7 +11,7 @@ import {
 import styled from 'styled-components'
 
 import CommentModal from 'containers/CommentModalContainer'
-import MobileRecipeList from 'containers/MobileRecipeListContainer'
+import MobileRecipeListSkeleton from 'containers/MobileRecipeListSkeletonContainer'
 import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormContainer'
@@ -28,7 +28,7 @@ const SmallHome = () => (
       <Switch>
         <Route
           path="/tags/:tagId/recipes"
-          component={MobileRecipeList}
+          component={MobileRecipeListSkeleton}
         />
         <Route
           path="/recipes/new"
@@ -44,7 +44,7 @@ const SmallHome = () => (
         />
         <Route
           path="/"
-          component={MobileRecipeList}
+          component={MobileRecipeListSkeleton}
         />
       </Switch>
     </StyledContent>

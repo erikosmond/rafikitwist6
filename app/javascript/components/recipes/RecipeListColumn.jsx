@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import RecipeListItem from 'containers/RecipeListItemContainer'
+import RecipeListItem from 'components/recipes/RecipeListItem'
 import { sortRecipes } from 'services/sortService'
 
-// TODO: Should be updated now.
 class RecipeListColumn extends React.Component {
   static displayShown(recipe) {
     return recipe.hidden !== true

@@ -1,10 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import MobileRecipeList from 'components/recipes/MobileRecipeList'
+import MobileRecipeList from 'containers/MobileRecipeListContainer'
 
-// TODO: I should probably keep the container for this as it needs so many props
-// but there are a lot of props I can remove
-// and MobileRecipeList should have it's own container and i should not pass any props to it.
 class MobileRecipeListSkeleton extends React.Component {
   static recipesReady(props) {
     return props.loading !== undefined && !props.loading &&
@@ -40,10 +37,7 @@ class MobileRecipeListSkeleton extends React.Component {
   render() {
     if (MobileRecipeListSkeleton.recipesReady(this.props)) {
       return (
-        <MobileRecipeList
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...this.props}
-        />
+        <MobileRecipeList />
       )
     }
     return (<div> Loading... </div>)
@@ -53,14 +47,6 @@ class MobileRecipeListSkeleton extends React.Component {
 MobileRecipeListSkeleton.propTypes = {
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
-  handleFilter: PropTypes.func.isRequired,
-  clearFilters: PropTypes.func.isRequired,
-  resetPagedCount: PropTypes.func.isRequired,
-  updateRecipeTag: PropTypes.func.isRequired,
-  selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
-  recipesLoaded: PropTypes.bool,
-  loading: PropTypes.bool,
-  tagGroups: PropTypes.shape({}).isRequired,
   allTags: PropTypes.shape({
     id: PropTypes.number,
   }),
@@ -68,12 +54,7 @@ MobileRecipeListSkeleton.propTypes = {
     id: PropTypes.number,
   }),
   tagsByType: PropTypes.shape({}),
-  visibleFilterTags: PropTypes.shape({}),
-  selectedFilters: PropTypes.arrayOf(PropTypes.number),
-  visibleRecipeCount: PropTypes.number,
-  noRecipes: PropTypes.bool,
   startingTagId: PropTypes.string.isRequired,
-  showMoreRecipes: PropTypes.func.isRequired,
   selectedTag: PropTypes.shape({}),
   priorities: PropTypes.shape({}),
   ratings: PropTypes.shape({}),
@@ -88,16 +69,9 @@ MobileRecipeListSkeleton.propTypes = {
 }
 
 MobileRecipeListSkeleton.defaultProps = {
-  selectedRecipes: [],
-  recipesLoaded: false,
-  loading: false,
   allTags: {},
   allTagTypes: {},
   tagsByType: {},
-  visibleFilterTags: {},
-  selectedFilters: [],
-  visibleRecipeCount: 0,
-  noRecipes: false,
   selectedTag: {},
   priorities: {},
   ratings: {},

@@ -24,8 +24,7 @@ const Body = styled.div`
   overflow: scroll; 
 `
 
-// TODO:
-// This already has a container for skeleton, so I should just adjust existing container and skeleton
+// TODO: add og meta tags to this page
 
 class MobileRecipeList extends React.Component {
   componentDidUpdate(lastProps) {
@@ -78,17 +77,8 @@ class MobileRecipeList extends React.Component {
 
   render() {
     const {
-      authenticated,
       mobileDrawerState,
       updateMobileDrawerState,
-      selectedRecipes,
-      pagedRecipeCount,
-      ratings,
-      priorities,
-      updateRecipeTag,
-      handleCommentModal,
-      showMoreRecipes,
-      visibleRecipeCount,
       selectedTag,
     } = this.props
     return (
@@ -96,30 +86,11 @@ class MobileRecipeList extends React.Component {
         <Header>
           <FilterChips />
         </Header>
-        {MobileRecipeList.renderRecipes({
-          authenticated,
-          selectedRecipes,
-          pagedRecipeCount,
-          ratings,
-          priorities,
-          updateRecipeTag,
-          handleCommentModal,
-          showMoreRecipes,
-          visibleRecipeCount,
-          selectedTag,
-        })}
+        {MobileRecipeList.renderRecipes({ selectedTag })}
         <Footer>
           <MobileNavDrawer
             mobileDrawerState={mobileDrawerState}
             updateMobileDrawerState={updateMobileDrawerState}
-            // visibleFilterTags={visibleFilterTags}
-            // allTags={allTags}
-            // tagGroups={tagGroups}
-            // selectedFilters={selectedFilters}
-            // handleFilter={handleFilter}
-            // allTagTypes={allTagTypes}
-            // tagsByType={tagsByType}
-            // selectedTag={selectedTag}
           />
         </Footer>
       </div>
@@ -128,7 +99,6 @@ class MobileRecipeList extends React.Component {
 }
 
 MobileRecipeList.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
   mobileDrawerState: PropTypes.shape({
     filters: PropTypes.bool,
     search: PropTypes.bool,
@@ -137,27 +107,19 @@ MobileRecipeList.propTypes = {
   updateMobileDrawerState: PropTypes.func.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
-  handleCommentModal: PropTypes.func.isRequired,
-  handleFilter: PropTypes.func.isRequired,
   clearFilters: PropTypes.func.isRequired,
   resetPagedCount: PropTypes.func.isRequired,
-  updateRecipeTag: PropTypes.func.isRequired,
-  selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
-  tagGroups: PropTypes.shape({}).isRequired,
-  allTags: PropTypes.shape({
-    id: PropTypes.number,
-  }).isRequired,
-  allTagTypes: PropTypes.shape({
-    id: PropTypes.number,
-  }).isRequired,
-  tagsByType: PropTypes.shape({}).isRequired,
-  visibleFilterTags: PropTypes.shape({}),
-  selectedFilters: PropTypes.arrayOf(PropTypes.number),
-  visibleRecipeCount: PropTypes.number,
-  pagedRecipeCount: PropTypes.number,
-  showMoreRecipes: PropTypes.func.isRequired,
-  priorities: PropTypes.shape({}).isRequired,
-  ratings: PropTypes.shape({}).isRequired,
+  // tagGroups: PropTypes.shape({}).isRequired,
+  // allTags: PropTypes.shape({
+  //   id: PropTypes.number,
+  // }).isRequired,
+  // allTagTypes: PropTypes.shape({
+  //   id: PropTypes.number,
+  // }).isRequired,
+  // tagsByType: PropTypes.shape({}).isRequired,
+  // visibleFilterTags: PropTypes.shape({}),
+  // priorities: PropTypes.shape({}).isRequired,
+  // ratings: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
   }).isRequired,
@@ -185,11 +147,6 @@ MobileRecipeList.defaultProps = {
     search: false,
     similar: false,
   },
-  selectedRecipes: [],
-  visibleRecipeCount: 0,
-  pagedRecipeCount: 10,
-  selectedFilters: [],
-  visibleFilterTags: {},
 }
 
 export default MobileRecipeList

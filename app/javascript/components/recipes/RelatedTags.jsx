@@ -9,7 +9,6 @@ const useStyles = makeStyles({
   },
 })
 
-// TODO: no cleanup necessary
 const RelatedTags = ({ tags }) => {
   if (tags) {
     const classes = useStyles()

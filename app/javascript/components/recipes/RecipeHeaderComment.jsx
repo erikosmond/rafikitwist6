@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton'
 import SvgIcon from '@material-ui/core/SvgIcon'
 
-// TODO: no update required
 class RecipeHeaderComment extends React.Component {
   constructor(props) {
     super(props)
