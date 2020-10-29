@@ -138,11 +138,17 @@ export default function recipesReducer(store, action = {}) {
       return {
         ...state,
         selectedRecipes: state.selectedRecipes.map((r) => tagSelectionReducer(r, { ...action })),
+        recipe: updateRecipeTagSelection(
+          state.recipe, action.payload.tagType, action.payload.tagId, action.payload.id,
+        ),
       }
     case UPDATE_RECIPE_COMMENT_SUCCESS:
       return {
         ...state,
         selectedRecipes: state.selectedRecipes.map((r) => commentReducer(r, { ...action })),
+        recipe: updateComment(
+          state.recipe, action.payload.tagType, action.payload.body, action.payload.id,
+        ),
       }
     case UPDATE_MOBILE_DRAWER_STATE:
       return {
@@ -189,6 +195,14 @@ export default function recipesReducer(store, action = {}) {
 
 // Helpers
 
+function updateRecipeTagSelection(recipe, tagType, tagId, id) {
+  return { ...recipe, [tagType]: { tagId, id } }
+}
+
+function updateComment(recipe, tagType, body, id) {
+  return { ...recipe, [tagType]: { body, id } }
+}
+
 function tagSelectionReducer(recipe, action) {
   const {
     payload: {
@@ -201,7 +215,7 @@ function tagSelectionReducer(recipe, action) {
   } = action
   if (taggableType === 'Recipe') {
     if (recipe.id === taggableId) {
-      return { ...recipe, [tagType]: { tagId, id } }
+      return updateRecipeTagSelection(recipe, tagType, tagId, id)
     }
   }
   return recipe
@@ -219,7 +233,7 @@ function commentReducer(recipe, action) {
   } = action
   if (taggableType === 'Recipe') {
     if (recipe.id === taggableId) {
-      return { ...recipe, [tagType]: { body, id } }
+      return updateComment(recipe, tagType, body, id)
     }
   }
   return recipe

@@ -6,7 +6,7 @@ import RecipeHeaderComment from 'components/recipes/RecipeHeaderComment'
 
 const styles = () => ({
   actions: {
-    // display: 'inline-flex', // uncomment this for horizontal alignment of icons
+    display: 'inline-flex',
   },
 })
 
@@ -19,12 +19,26 @@ const playlistAddIcon = `M14 10H2v2h12v-2zm0-4H2v2h12V6zm4
 const commentIcon = `M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9
                      2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z`
 
-// TODO:
-// This is what the recipe SHOW page needs to include.
-const RecipeHeaderActions = (props) => {
+const renderStyles = (props) => {
+  const { classes, fullRecipe } = props
+  const cName = fullRecipe ? classes.actions : ''
+  return renderBody(props, cName)
+  // if (fullRecipe) {
+  //   return (
+  //     <div className={classes.actions}>
+  //       {renderBody(props, classes.actions)}
+  //     </div>
+  //   )
+  // }
+  // return (
+  //   <div>
+  //     {renderBody(props)}
+  //   </div>
+  // )
+}
+
+const renderBody = (props, cName) => {
   const {
-    authenticated,
-    classes,
     ratings,
     priorities,
     rating,
@@ -34,11 +48,8 @@ const RecipeHeaderActions = (props) => {
     updateRecipeTag,
     handleCommentModal,
   } = props
-  if (!authenticated) {
-    return null
-  }
   return (
-    <div className={classes.actions}>
+    <div className={cName}>
       <RecipeHeaderComment
         label="Comment"
         iconSvgPath={commentIcon}
@@ -69,8 +80,19 @@ const RecipeHeaderActions = (props) => {
   )
 }
 
+const RecipeHeaderActions = (props) => {
+  const { authenticated } = props
+  if (!authenticated) {
+    return null
+  }
+  return (
+    renderStyles(props)
+  )
+}
+
 RecipeHeaderActions.propTypes = {
   authenticated: PropTypes.bool.isRequired,
+  fullRecipe: PropTypes.bool,
   classes: PropTypes.shape({
     actions: PropTypes.string.isRequired,
   }).isRequired,
@@ -92,5 +114,6 @@ RecipeHeaderActions.defaultProps = {
   rating: undefined,
   priority: undefined,
   recipeComment: {},
+  fullRecipe: false,
 }
 export default withStyles(styles)(RecipeHeaderActions)
