@@ -46,7 +46,6 @@ const initialState = {
   selectedFilters: [],
   recipeOptions: [],
   visibleFilterTags: {},
-  // tagGroups: {},
   recipesLoaded: false,
   noRecipes: false,
   noTags: false,
@@ -86,6 +85,7 @@ export default function recipesReducer(store, action = {}) {
     case LOAD_RECIPE:
       return {
         ...state,
+        // TODO: I think this should be updated to recipe: {},
         selectedRecipe: {},
       }
     case LOAD_RECIPE_SUCCESS:

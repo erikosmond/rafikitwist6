@@ -109,17 +109,6 @@ MobileRecipeList.propTypes = {
   loadTagInfo: PropTypes.func.isRequired,
   clearFilters: PropTypes.func.isRequired,
   resetPagedCount: PropTypes.func.isRequired,
-  // tagGroups: PropTypes.shape({}).isRequired,
-  // allTags: PropTypes.shape({
-  //   id: PropTypes.number,
-  // }).isRequired,
-  // allTagTypes: PropTypes.shape({
-  //   id: PropTypes.number,
-  // }).isRequired,
-  // tagsByType: PropTypes.shape({}).isRequired,
-  // visibleFilterTags: PropTypes.shape({}),
-  // priorities: PropTypes.shape({}).isRequired,
-  // ratings: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
   }).isRequired,

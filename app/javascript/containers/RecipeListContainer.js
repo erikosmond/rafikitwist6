@@ -32,11 +32,8 @@ export default withRouter(connect(
     tagGroups: state.tagsReducer.tagGroups,
     allTagTypes: state.tagsReducer.allTagTypes,
     tagsByType: state.tagsReducer.tagsByType,
-    // priorities: state.recipesReducer.priorities,
-    // ratings: state.recipesReducer.ratings,
     selectedFilters: state.recipesReducer.selectedFilters,
     pagedRecipeCount: state.recipesReducer.pagedRecipeCount,
-    // authenticated: state.recipesReducer.authenticated,
   }),
   {
     loadRecipes,

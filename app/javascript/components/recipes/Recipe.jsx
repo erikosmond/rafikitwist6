@@ -63,7 +63,6 @@ class Recipe extends React.Component {
   static renderActions(recipe) {
     return (
       <RecipeHeaderActions
-        // pass a prop in to make them layout horizontally
         rating={recipe.newRating || (recipe.ratings && recipe.ratings[0])}
         priority={recipe.newPriority || (recipe.priorities && recipe.priorities[0])}
         recipeId={recipe.id}
