@@ -23,18 +23,6 @@ const renderStyles = (props) => {
   const { classes, fullRecipe } = props
   const cName = fullRecipe ? classes.actions : ''
   return renderBody(props, cName)
-  // if (fullRecipe) {
-  //   return (
-  //     <div className={classes.actions}>
-  //       {renderBody(props, classes.actions)}
-  //     </div>
-  //   )
-  // }
-  // return (
-  //   <div>
-  //     {renderBody(props)}
-  //   </div>
-  // )
 }
 
 const renderBody = (props, cName) => {
@@ -92,7 +80,9 @@ const RecipeHeaderActions = (props) => {
 
 RecipeHeaderActions.propTypes = {
   authenticated: PropTypes.bool.isRequired,
-  fullRecipe: PropTypes.bool,
+}
+
+renderBody.propTypes = {
   classes: PropTypes.shape({
     actions: PropTypes.string.isRequired,
   }).isRequired,
@@ -110,10 +100,21 @@ RecipeHeaderActions.propTypes = {
   handleCommentModal: PropTypes.func.isRequired,
 }
 
-RecipeHeaderActions.defaultProps = {
+renderBody.defaultProps = {
   rating: undefined,
   priority: undefined,
   recipeComment: {},
+}
+
+renderStyles.propTypes = {
+  fullRecipe: PropTypes.bool,
+  classes: PropTypes.shape({
+    actions: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
+renderStyles.defaultProps = {
   fullRecipe: false,
 }
+
 export default withStyles(styles)(RecipeHeaderActions)
