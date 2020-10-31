@@ -66,9 +66,15 @@ describe Api::RecipesController, type: :controller do
   describe 'GET - show' do
     let!(:recipe_multi) { create(:recipe, name: 'Recipe Multi') }
     let!(:pineapple) { create(:tag, name: 'Pineapple', tag_type: tag_type_ingredient) }
-    let!(:pineapple_selection2) { create(:tag_selection, taggable: recipe_multi, tag: pineapple, body: 'diced') }
-    let!(:pineapple_selection1) { create(:tag_selection, taggable: recipe_multi, tag: pineapple) }
-    let!(:modification_selection) { create(:tag_selection, taggable: pineapple_selection1, tag: modification) }
+    let!(:pineapple_selection2) do
+      create(:tag_selection, taggable: recipe_multi, tag: pineapple, body: 'diced')
+    end
+    let!(:pineapple_selection1) do
+      create(:tag_selection, taggable: recipe_multi, tag: pineapple)
+    end
+    let!(:modification_selection) do
+      create(:tag_selection, taggable: pineapple_selection1, tag: modification)
+    end
     let!(:pineapple_access1) { create(:access, accessible: recipe_multi) }
     let!(:access2) { create(:access, accessible: pineapple) }
     let!(:access3) { create(:access, accessible: pineapple_selection1) }
@@ -133,7 +139,8 @@ describe Api::RecipesController, type: :controller do
     it 'returns the ingredients' do
       body = JSON.parse(response.body)
       pizza = body['recipes'].find { |r| r['name'] == 'Pizza' }
-      expect(pizza['ingredients']["#{lemon_verbena.id}mod"]['tag_type']).to eq 'Ingredient'
+      expect(pizza['ingredients']["#{lemon_verbena.id}mod"]['tag_type']).
+        to eq 'Ingredient'
       expect(pizza['ingredient_types'].first['tag_name']).to eq('Rice')
     end
     it 'returns the filter tags' do
