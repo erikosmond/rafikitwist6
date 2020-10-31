@@ -43,10 +43,10 @@ class RecipeForm < GeneralForm
         preparations: recipe.preparations.map(&recipe_dropdown),
         flavors: recipe.flavors.map(&recipe_dropdown),
         components: recipe.components.map(&recipe_dropdown)
-      }.merge(recipe_dropdown)
+      }.merge(recipe_attrs(recipe, recipe_dropdown))
     end
 
-    def recipe_attrs(recipe_dropdown)
+    def recipe_attrs(recipe, recipe_dropdown)
       {
         sources: recipe.sources.map(&recipe_dropdown),
         vessels: recipe.vessels.map(&recipe_dropdown),
