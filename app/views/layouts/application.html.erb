@@ -4,7 +4,7 @@
     <title>RafikiTwist</title>
     <%= csrf_meta_tags %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta property="og:title" content='<%= "#{@recipe&.name || @tag&.name}" %>' />
+    <meta property="og:title" content='<%= "#{@recipe&.name || @tag&.name}".presence || "A twist on recipes" %>' />
     <meta property="og:description" content="The best recipe for a perfect night" />
     <meta property="og:type" content="website" />
 
