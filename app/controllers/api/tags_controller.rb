@@ -14,10 +14,10 @@ module Api
     end
 
     def show
-      @tag = Tag.find_by_id(params.permit(:id)[:id])
-      if @tag
+      tag = Tag.find_by_id(params.permit(:id)[:id])
+      if tag
         hierarchy_result = BuildTagHierarchy.call(
-          tag: @tag,
+          tag: tag,
           current_user: current_user
         )
         result = GroupTags.call(hierarchy_context_params(hierarchy_result))
