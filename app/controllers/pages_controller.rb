@@ -7,6 +7,7 @@ class PagesController < ApplicationController
   HOME_TAG_NAME = 'Featured Cocktails'
 
   def home
+    assign_meta_tag_name
     priority_tags = TagType.find_by_name(PRIORITY_TAG_NAME).tags
     rating_tags = TagType.find_by_name(RATING_TAG_NAME).tags
     set_home_vars(rating_tags, priority_tags)
@@ -29,5 +30,14 @@ class PagesController < ApplicationController
       @comment_tag_id = Tag.comment_tag.id
       @tag_groups = Tag.ingredient_group_hierarchy_filters(current_user)
       @tags_by_type = Tag.tags_by_type
+    end
+
+    def assign_meta_tag_name
+      arr = request.env['REQUEST_PATH']&.split('/') || []
+      if arr.size == 4 && arr[1] == 'tags'
+        @tag = Tag.find_by_id arr[2]
+      elsif arr.size == 3 && arr[1] == 'recipes'
+        @recipe = Recipe.find_by_id arr[2]
+      end
     end
 end
