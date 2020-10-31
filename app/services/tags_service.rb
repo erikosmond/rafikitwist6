@@ -5,7 +5,7 @@ module TagsService
   COMMENT_TAG_NAME = 'Comment'
   TAGS = 'Tags'
   INGREDIENT = 'Ingredient'
-  SUBJECTIVE_TAG_TYPES = %w[Priority Rating Comment]
+  SUBJECTIVE_TAG_TYPES = %w[Priority Rating Comment].freeze
 
   def comment_tag
     tag = Tag.find_or_initialize_by(name: COMMENT_TAG_NAME)

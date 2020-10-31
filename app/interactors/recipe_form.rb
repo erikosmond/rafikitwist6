@@ -38,14 +38,20 @@ class RecipeForm < GeneralForm
 
     def property_tags(recipe)
       recipe_dropdown = ->(t) { { id: t.id, name: t.name } }
+
+      {
+        preparations: recipe.preparations.map(&recipe_dropdown),
+        flavors: recipe.flavors.map(&recipe_dropdown),
+        components: recipe.components.map(&recipe_dropdown)
+      }.merge(recipe_attrs(recipe, recipe_dropdown))
+    end
+
+    def recipe_attrs(recipe, recipe_dropdown)
       {
         sources: recipe.sources.map(&recipe_dropdown),
         vessels: recipe.vessels.map(&recipe_dropdown),
         recipe_types: recipe.recipe_types.map(&recipe_dropdown),
-        menus: recipe.menus.map(&recipe_dropdown),
-        preparations: recipe.preparations.map(&recipe_dropdown),
-        flavors: recipe.flavors.map(&recipe_dropdown),
-        components: recipe.components.map(&recipe_dropdown)
+        menus: recipe.menus.map(&recipe_dropdown)
       }
     end
 

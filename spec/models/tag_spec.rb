@@ -228,27 +228,34 @@ describe Tag, type: :model do
         expect(recipe_result2['instructions']).to eq(recipe2_instructions)
       end
       it 'returns modification name' do
-        expect(recipe_result2['ingredients']["#{tag_selection2b.tag_id}mod#{modification.id}"].modification_name).
-          to eq(modification_name)
+        expect(recipe_result2['ingredients'][
+          "#{tag_selection2b.tag_id}mod#{modification.id}"
+        ].modification_name).to eq(modification_name)
       end
       it 'returns tag name' do
-        expect(recipe_result2['ingredients']["#{tag_selection2b.tag_id}mod#{modification.id}"].tag_name).
-          to eq(ingredient1_name)
+        expect(recipe_result2['ingredients'][
+          "#{tag_selection2b.tag_id}mod#{modification.id}"
+        ].tag_name).to eq(ingredient1_name)
       end
       it 'returns value attribute' do
-        expect(recipe_result2['ingredients']["#{tag_selection2b.tag_id}mod#{modification.id}"].value).to eq(value)
+        expect(recipe_result2['ingredients'][
+          "#{tag_selection2b.tag_id}mod#{modification.id}"
+        ].value).to eq(value)
       end
       it 'returns property attribute' do
-        expect(recipe_result2['ingredients']["#{tag_selection2b.tag_id}mod#{modification.id}"].property).
-          to eq(property)
+        expect(recipe_result2['ingredients'][
+          "#{tag_selection2b.tag_id}mod#{modification.id}"
+        ].property).to eq(property)
       end
       it 'returns ingredient type' do
-        expect(recipe_result2['ingredients']["#{tag_selection2b.tag_id}mod#{modification.id}"].parent_tag).
-          to eq(ingredient1_type_name)
+        expect(recipe_result2['ingredients'][
+          "#{tag_selection2b.tag_id}mod#{modification.id}"
+        ].parent_tag).to eq(ingredient1_type_name)
       end
       it 'returns ingredient family' do
-        expect(recipe_result2['ingredients']["#{tag_selection2b.tag_id}mod#{modification.id}"].grandparent_tag).
-          to eq(ingredient1_family_name)
+        expect(recipe_result2['ingredients'][
+          "#{tag_selection2b.tag_id}mod#{modification.id}"
+        ].grandparent_tag).to eq(ingredient1_family_name)
       end
     end
   end

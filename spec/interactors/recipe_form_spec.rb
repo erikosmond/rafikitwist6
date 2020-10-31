@@ -107,7 +107,10 @@ RSpec.describe RecipeForm, type: :interactor do
       let(:recipe_name) { 'rname_ingredient' }
       let(:parent_tag1) { create(:tag, name: 'syrup') }
       let(:parent_tag2) { create(:tag, name: 'spicy') }
-      let(:tt) { TagType.find_by_name(TagType.recipe_type) || create(:tag_type, name: TagType.recipe_type) }
+      let(:tt) do
+        TagType.find_by_name(TagType.recipe_type) ||
+          create(:tag_type, name: TagType.recipe_type)
+      end
       let!(:t) { create(:tag, name: Tag.ingredient, tag_type: tt) }
       # Tag.where(name: INGREDIENT, tag_type_id: TagType.recipe_type_id).first.id
       let(:ingredient_params) do
@@ -123,8 +126,8 @@ RSpec.describe RecipeForm, type: :interactor do
           ],
           'is_ingredient' => '1',
           'parent_tags' => [
-            {'id' => parent_tag1.id, 'name' => parent_tag1.name},
-            {'id' => parent_tag2.id, 'name' => parent_tag2.name}
+            { 'id' => parent_tag1.id, 'name' => parent_tag1.name },
+            { 'id' => parent_tag2.id, 'name' => parent_tag2.name }
           ]
         }
       end
@@ -135,7 +138,8 @@ RSpec.describe RecipeForm, type: :interactor do
         expect(Tag.where.not(recipe_id: nil).first.name).to eq recipe_name
       end
       it 'saves parent tags' do
-        expect([parent_tag1, parent_tag2] - Tag.where.not(recipe_id: nil).first.parent_tags).to eq []
+        expect([parent_tag1, parent_tag2] - Tag.where.not(recipe_id: nil).
+          first.parent_tags).to eq []
       end
     end
     describe 'edit' do
