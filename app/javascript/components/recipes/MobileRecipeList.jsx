@@ -49,8 +49,26 @@ class MobileRecipeList extends React.Component {
   }
 
   static renderRecipes({
+    loading,
+    noRecipes,
+    recipesLoaded,
     selectedTag,
   }) {
+    if (this.noRecipes || noRecipes) {
+      return (
+        <div>
+          We do not have any recipes like that.
+        </div>
+      )
+    } if (loading || !selectedTag) {
+      return (
+        <div>
+          Loading...
+        </div>
+      )
+    } if (!recipesLoaded) {
+      return null
+    }
     return (
       <div>
         {selectedTag.description && selectedTag.description.length > 0 && (
@@ -77,8 +95,11 @@ class MobileRecipeList extends React.Component {
 
   render() {
     const {
+      loading,
       mobileDrawerState,
+      noRecipes,
       updateMobileDrawerState,
+      recipesLoaded,
       selectedTag,
     } = this.props
     return (
@@ -86,7 +107,12 @@ class MobileRecipeList extends React.Component {
         <Header>
           <FilterChips />
         </Header>
-        {MobileRecipeList.renderRecipes({ selectedTag })}
+        {MobileRecipeList.renderRecipes({
+          selectedTag,
+          loading,
+          noRecipes,
+          recipesLoaded,
+        })}
         <Footer>
           <MobileNavDrawer
             mobileDrawerState={mobileDrawerState}
@@ -104,6 +130,9 @@ MobileRecipeList.propTypes = {
     search: PropTypes.bool,
     similar: PropTypes.bool,
   }),
+  recipesLoaded: PropTypes.bool,
+  loading: PropTypes.bool,
+  noRecipes: PropTypes.bool,
   updateMobileDrawerState: PropTypes.func.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
@@ -136,6 +165,9 @@ MobileRecipeList.defaultProps = {
     search: false,
     similar: false,
   },
+  recipesLoaded: false,
+  loading: true,
+  noRecipes: true,
 }
 
 export default MobileRecipeList

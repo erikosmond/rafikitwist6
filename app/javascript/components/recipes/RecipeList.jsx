@@ -56,16 +56,16 @@ class RecipeList extends React.Component {
       noRecipes,
       loading,
     } = this.props
-    if (loading || !selectedTag) {
-      return (
-        <div>
-          Loading...
-        </div>
-      )
-    } if (this.noRecipes || noRecipes) {
+    if (this.noRecipes || noRecipes) {
       return (
         <div>
           We do not have any recipes like that.
+        </div>
+      )
+    } if (loading || !selectedTag) {
+      return (
+        <div>
+          Loading...
         </div>
       )
     } if (!recipesLoaded) {
