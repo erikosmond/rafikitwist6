@@ -26,6 +26,17 @@ class TagSelectionFactory
       invoke_side_effects
     end
 
+    def find_or_create(params)
+      string_params = {
+        'tag_id' => params[:tag].id,
+        'taggable_type' => params[:taggable].class.name,
+        'taggable_id' => params[:taggable].id
+      }
+      create(string_params) unless TagSelection.joins(:access).where(
+        tag: params[:tag], taggable: params[:taggable]
+      ).where(accesses: { user_id: context.user&.id.to_i }).first
+    end
+
     def update(params)
       context.tag_selection.tap { |ts| ts.update(params) }
     end
@@ -39,6 +50,6 @@ class TagSelectionFactory
       return if tag.tag_type_id != TagType.rating_id
 
       rated_tag = Tag.find_by_name(RATED_TAG)
-      create(taggable: context.tag_selection.taggable, tag: rated_tag)
+      find_or_create(taggable: context.tag_selection.taggable, tag: rated_tag)
     end
 end

@@ -16,6 +16,9 @@ import {
 
 export default withRouter(connect(
   (state) => ({
+    loading: state.recipesReducer.loading,
+    noRecipes: state.recipesReducer.noRecipes,
+    recipesLoaded: state.recipesReducer.recipesLoaded,
     selectedTag: state.tagsReducer.selectedTag,
     startingTagId: state.recipesReducer.startingTagId,
     visibleFilterTags: state.recipesReducer.visibleFilterTags,

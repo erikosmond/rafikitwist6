@@ -67,6 +67,8 @@ export default function recipesReducer(store, action = {}) {
         ...state,
         selectedRecipes: [],
         loading: true,
+        noRecipes: false,
+        recipesLoaded: false,
         mobileDrawerState: { filters: false, search: false, similar: false },
       }
     case LOAD_RECIPES_SUCCESS:
@@ -81,6 +83,7 @@ export default function recipesReducer(store, action = {}) {
       return {
         ...state,
         noRecipes: true,
+        loading: false,
       }
     case LOAD_RECIPE:
       return {

@@ -22,6 +22,9 @@ class RecipeListColumn extends React.Component {
     const { selectedRecipes, visibleRecipeCount } = this.props
     const selectedRecipeCount = selectedRecipes.length
     const prefix = selectedRecipeCount === visibleRecipeCount ? '' : `${visibleRecipeCount} of `
+    if (selectedRecipeCount === 0) {
+      return <div> Loading... </div>
+    }
     return (
       <h2>
         Recipes (
