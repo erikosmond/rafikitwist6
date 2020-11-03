@@ -5,7 +5,6 @@ import FilterChips from 'containers/FilterChipsContainer'
 import RecipeListColumn from 'containers/RecipeListColumnContainer'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { clearSubmitErrors } from 'redux-form'
 
 const Footer = styled.div`
   width: 100%;
