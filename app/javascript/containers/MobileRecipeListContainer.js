@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import MobileRecipeList from 'components/recipes/MobileRecipeList'
 
 import {
+  clearErrors,
   loadRecipes,
   clearFilters,
   resetPagedCount,
@@ -26,6 +27,7 @@ export default withRouter(connect(
     mobileDrawerState: state.recipesReducer.mobileDrawerState,
   }),
   {
+    clearErrors,
     loadRecipes,
     loadTagInfo,
     clearFilters,

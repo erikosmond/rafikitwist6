@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import RecipeList from 'components/recipes/RecipeList'
 
 import {
+  clearErrors,
   loadRecipes,
   handleCommentModal,
   handleFilter,
@@ -36,6 +37,7 @@ export default withRouter(connect(
     pagedRecipeCount: state.recipesReducer.pagedRecipeCount,
   }),
   {
+    clearErrors,
     loadRecipes,
     loadAllTags,
     loadTagInfo,
