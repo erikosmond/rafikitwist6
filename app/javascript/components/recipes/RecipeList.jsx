@@ -31,9 +31,10 @@ class RecipeList extends React.Component {
   }
 
   componentWillUnmount() {
-    const { clearFilters, resetPagedCount } = this.props
+    const { clearErrors, clearFilters, resetPagedCount } = this.props
     clearFilters()
     resetPagedCount()
+    clearErrors()
   }
 
   renderHeaderWithCount() {
@@ -62,14 +63,12 @@ class RecipeList extends React.Component {
           We do not have any recipes like that.
         </div>
       )
-    } if (loading || !selectedTag) {
+    } if (loading || !selectedTag || !recipesLoaded) {
       return (
         <div>
           Loading...
         </div>
       )
-    } if (!recipesLoaded) {
-      return null
     }
     return (
       <div>
@@ -115,6 +114,7 @@ class RecipeList extends React.Component {
 }
 
 RecipeList.propTypes = {
+  clearErrors: PropTypes.func.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
   clearFilters: PropTypes.func.isRequired,
@@ -124,8 +124,6 @@ RecipeList.propTypes = {
   loading: PropTypes.bool,
   visibleRecipeCount: PropTypes.number,
   noRecipes: PropTypes.bool,
-  priorities: PropTypes.shape({}).isRequired,
-  ratings: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
   }).isRequired,

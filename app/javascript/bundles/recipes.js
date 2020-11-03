@@ -39,6 +39,7 @@ const CLEAR_RECIPE = 'recipes/clearRecipe'
 const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
 const UPDATE_MOBILE_DRAWER_STATE = 'recipes/updateMobileDrawerState'
 const DEFAULT_PAGED_RECIPE_COUNT = 10
+const CLEAR_ERRORS = 'recipes/clearErrors'
 
 // Reducer
 const initialState = {
@@ -136,6 +137,14 @@ export default function recipesReducer(store, action = {}) {
         ...state,
         recipe: null,
         noRecipe: false,
+      }
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        noRecipes: false,
+        loading: false,
+        selectedTag: {},
+        recipesLoaded: false,
       }
     case UPDATE_RECIPE_TAG_SUCCESS:
       return {
@@ -469,6 +478,13 @@ export function handleRecipeSubmit(payload) {
   }
 }
 
+export function clearErrors(payload) {
+  return {
+    payload,
+    type: CLEAR_ERRORS,
+  }
+}
+
 function countVisibleRecipes(visibleRecipes) {
   return visibleRecipes.filter((r) => !r.hidden).length
 }
@@ -534,6 +550,7 @@ function* handleRecipeSubmitTask({ payload }) {
   }
   const result = yield call(callApi, url, params)
   if (result.success) {
+    // TODO: pass back id and redirect
     console.log(result)
   }
 }

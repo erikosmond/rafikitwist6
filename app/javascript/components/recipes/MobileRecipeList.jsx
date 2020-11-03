@@ -43,9 +43,10 @@ class MobileRecipeList extends React.Component {
   }
 
   componentWillUnmount() {
-    const { clearFilters, resetPagedCount } = this.props
+    const { clearErrors, clearFilters, resetPagedCount } = this.props
     clearFilters()
     resetPagedCount()
+    clearErrors()
   }
 
   static renderRecipes({
@@ -60,14 +61,12 @@ class MobileRecipeList extends React.Component {
           We do not have any recipes like that.
         </div>
       )
-    } if (loading || !selectedTag) {
+    } if (loading || !selectedTag || !recipesLoaded) {
       return (
         <div>
           Loading...
         </div>
       )
-    } if (!recipesLoaded) {
-      return null
     }
     return (
       <div>
@@ -134,6 +133,7 @@ MobileRecipeList.propTypes = {
   loading: PropTypes.bool,
   noRecipes: PropTypes.bool,
   updateMobileDrawerState: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
   clearFilters: PropTypes.func.isRequired,
