@@ -24,8 +24,6 @@ const Body = styled.div`
   overflow: scroll; 
 `
 
-// TODO: add og meta tags to this page
-
 class MobileRecipeList extends React.Component {
   componentDidUpdate(lastProps) {
     const {

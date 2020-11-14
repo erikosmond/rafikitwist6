@@ -40,6 +40,7 @@ const SET_VISIBLE_RECIPE_COUNT = 'recipes/setVisibleRecipeCount'
 const UPDATE_MOBILE_DRAWER_STATE = 'recipes/updateMobileDrawerState'
 const DEFAULT_PAGED_RECIPE_COUNT = 10
 const CLEAR_ERRORS = 'recipes/clearErrors'
+const RECIPE_SUBMIT_SUCCESS = 'recipes/recipeSubmitSuccess'
 
 // Reducer
 const initialState = {
@@ -89,8 +90,7 @@ export default function recipesReducer(store, action = {}) {
     case LOAD_RECIPE:
       return {
         ...state,
-        // TODO: I think this should be updated to recipe: {},
-        selectedRecipe: {},
+        recipe: {},
       }
     case LOAD_RECIPE_SUCCESS:
       return {
@@ -200,6 +200,11 @@ export default function recipesReducer(store, action = {}) {
         ...state,
         recipeIsIngredient: action.payload.recipeIsIngredient,
       }
+    case RECIPE_SUBMIT_SUCCESS:
+      return {
+        ...state,
+        savedRecipeId: action.payload.id,
+      }
     default:
       return state
   }
@@ -249,6 +254,13 @@ function commentReducer(recipe, action) {
     }
   }
   return recipe
+}
+
+function recipeSubmitSuccess(payload) {
+  return {
+    type: RECIPE_SUBMIT_SUCCESS,
+    payload,
+  }
 }
 
 // Action Creators
@@ -550,8 +562,7 @@ function* handleRecipeSubmitTask({ payload }) {
   }
   const result = yield call(callApi, url, params)
   if (result.success) {
-    // TODO: pass back id and redirect
-    console.log(result)
+    yield put(recipeSubmitSuccess(result.data))
   }
 }
 

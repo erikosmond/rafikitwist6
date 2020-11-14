@@ -25,6 +25,7 @@ export default withRouter(connect(
     tagOptions: state.tagsReducer.tagOptions,
     recipeFormData: state.recipesReducer.recipeFormData,
     recipeIsIngredient: state.recipesReducer.recipeIsIngredient,
+    savedRecipeId: state.recipesReducer.savedRecipeId,
   }),
   {
     handleRecipeSubmit,

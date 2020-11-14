@@ -20,6 +20,13 @@ class RecipeFormSkeleton extends React.Component {
     }
   }
 
+  componentDidUpdate(lastProps) {
+    const { history, savedRecipeId } = this.props
+    if (lastProps.savedRecipeId !== savedRecipeId) {
+      history.push(`/recipes/${savedRecipeId}`)
+    }
+  }
+
   submit = (values) => {
     // send the values to the store
     const { handleRecipeSubmit } = this.props
@@ -61,6 +68,9 @@ class RecipeFormSkeleton extends React.Component {
 RecipeFormSkeleton.propTypes = {
   edit: PropTypes.bool,
   handleRecipeSubmit: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   ingredientOptions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
@@ -74,6 +84,7 @@ RecipeFormSkeleton.propTypes = {
   loadTagOptions: PropTypes.func.isRequired,
   tagOptions: PropTypes.shape(),
   recipeFormData: PropTypes.shape(),
+  savedRecipeId: PropTypes.number,
   handleTagFormModal: PropTypes.func.isRequired,
   handleRecipeIsIngredient: PropTypes.func.isRequired,
   recipeIsIngredient: PropTypes.bool,
@@ -90,6 +101,7 @@ RecipeFormSkeleton.defaultProps = {
   ingredientModificationOptions: [],
   recipeIsIngredient: false,
   recipeFormData: {},
+  savedRecipeId: undefined,
   tagOptions: {},
   match: { params: { recipeId: null } },
 }
