@@ -36,16 +36,6 @@ export function visibleFilterService(selectedRecipes = [], allTags = []) {
   return visibleFilters // filterList is old implementation
 }
 
-export function selectedRecipeService(
-  selectedFilters,
-  state,
-) {
-  return state.selectedRecipes.map((r) => recipeReducer(
-    r,
-    selectedFilters,
-  ))
-}
-
 function recipeReducer(recipe, filters) {
   let visible = true
   filters.forEach((f) => {
@@ -55,4 +45,14 @@ function recipeReducer(recipe, filters) {
     ...recipe,
     hidden: !visible,
   }
+}
+
+export function selectedRecipeService(
+  selectedFilters,
+  state,
+) {
+  return state.selectedRecipes.map((r) => recipeReducer(
+    r,
+    selectedFilters,
+  ))
 }

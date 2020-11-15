@@ -25,6 +25,10 @@ const Body = styled.div`
 `
 
 class MobileRecipeList extends React.Component {
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
+
   componentDidUpdate(lastProps) {
     const {
       loadRecipes, loadTagInfo, location, match,

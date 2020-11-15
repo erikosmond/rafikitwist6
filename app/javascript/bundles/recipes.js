@@ -61,6 +61,52 @@ const initialState = {
   mobileDrawerState: { filters: false, search: false, similar: false },
 }
 
+// Helpers
+
+function updateRecipeTagSelection(recipe, tagType, tagId, id) {
+  return { ...recipe, [tagType]: { tagId, id } }
+}
+
+function updateComment(recipe, tagType, body, id) {
+  return { ...recipe, [tagType]: { body, id } }
+}
+
+function tagSelectionReducer(recipe, action) {
+  const {
+    payload: {
+      taggableType,
+      taggableId,
+      tagType,
+      tagId,
+      id,
+    },
+  } = action
+  if (taggableType === 'Recipe') {
+    if (recipe.id === taggableId) {
+      return updateRecipeTagSelection(recipe, tagType, tagId, id)
+    }
+  }
+  return recipe
+}
+
+function commentReducer(recipe, action) {
+  const {
+    payload: {
+      taggableType,
+      taggableId,
+      tagType,
+      body,
+      id,
+    },
+  } = action
+  if (taggableType === 'Recipe') {
+    if (recipe.id === taggableId) {
+      return updateComment(recipe, tagType, body, id)
+    }
+  }
+  return recipe
+}
+
 export default function recipesReducer(store, action = {}) {
   const state = { ...initialState, ...store }
   switch (action.type) {
@@ -208,52 +254,6 @@ export default function recipesReducer(store, action = {}) {
     default:
       return state
   }
-}
-
-// Helpers
-
-function updateRecipeTagSelection(recipe, tagType, tagId, id) {
-  return { ...recipe, [tagType]: { tagId, id } }
-}
-
-function updateComment(recipe, tagType, body, id) {
-  return { ...recipe, [tagType]: { body, id } }
-}
-
-function tagSelectionReducer(recipe, action) {
-  const {
-    payload: {
-      taggableType,
-      taggableId,
-      tagType,
-      tagId,
-      id,
-    },
-  } = action
-  if (taggableType === 'Recipe') {
-    if (recipe.id === taggableId) {
-      return updateRecipeTagSelection(recipe, tagType, tagId, id)
-    }
-  }
-  return recipe
-}
-
-function commentReducer(recipe, action) {
-  const {
-    payload: {
-      taggableType,
-      taggableId,
-      tagType,
-      body,
-      id,
-    },
-  } = action
-  if (taggableType === 'Recipe') {
-    if (recipe.id === taggableId) {
-      return updateComment(recipe, tagType, body, id)
-    }
-  }
-  return recipe
 }
 
 function recipeSubmitSuccess(payload) {

@@ -1,10 +1,3 @@
-export function allIngredients(recipe) {
-  const ingredients = getList(recipe.ingredients)
-  const ingredientTypes = getList(recipe.ingredientTypes)
-  const ingredientFamilies = getList(recipe.ingredientfamilies)
-  return (ingredients.concat(ingredientTypes)).concat(ingredientFamilies)
-}
-
 function getList(ingredients) {
   if (ingredients instanceof Object) {
     return Object.values(ingredients)
@@ -12,4 +5,11 @@ function getList(ingredients) {
     return ingredients
   }
   return []
+}
+
+export function allIngredients(recipe) {
+  const ingredients = getList(recipe.ingredients)
+  const ingredientTypes = getList(recipe.ingredientTypes)
+  const ingredientFamilies = getList(recipe.ingredientfamilies)
+  return (ingredients.concat(ingredientTypes)).concat(ingredientFamilies)
 }

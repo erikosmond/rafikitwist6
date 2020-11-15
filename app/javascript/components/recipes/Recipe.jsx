@@ -39,6 +39,10 @@ class Recipe extends React.Component {
     this.setDrawerState = this.setDrawerState.bind(this)
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
+
   componentWillUnmount() {
     const { clearRecipe } = this.props
     clearRecipe()
