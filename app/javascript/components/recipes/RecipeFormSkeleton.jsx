@@ -39,11 +39,16 @@ class RecipeFormSkeleton extends React.Component {
       ingredientOptions,
       ingredientModificationOptions,
       recipeFormData,
+      tagOptions,
     } = this.props
     if (edit && !recipeFormData.id) {
       return null
     }
-    if (ingredientOptions.length > 0 && ingredientModificationOptions.length > 0) {
+    if (
+      ingredientOptions.length > 0 &&
+      ingredientModificationOptions.length > 0 &&
+      Object.keys(tagOptions).length > 0
+    ) {
       return (
         <RecipeForm
           onSubmit={this.submit}
@@ -73,6 +78,7 @@ RecipeFormSkeleton.propTypes = {
   loadTagOptions: PropTypes.func.isRequired,
   recipeFormData: PropTypes.shape(),
   savedRecipeId: PropTypes.number,
+  tagOptions: PropTypes.shape(),
   match: PropTypes.shape({
     params: PropTypes.shape({
       recipeId: PropTypes.string,
@@ -86,6 +92,7 @@ RecipeFormSkeleton.defaultProps = {
   ingredientModificationOptions: [],
   recipeFormData: {},
   savedRecipeId: undefined,
+  tagOptions: {},
   match: { params: { recipeId: null } },
 }
 

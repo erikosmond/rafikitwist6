@@ -12,7 +12,7 @@ import CommentModal from 'containers/CommentModalContainer'
 import MobileRecipeListSkeleton from 'containers/MobileRecipeListSkeletonContainer'
 import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
-import RecipeFormSkeleton from 'containers/RecipeFormContainer'
+import RecipeFormSkeleton from 'containers/RecipeFormSkeletonContainer'
 
 const StyledContent = styled.div`
   margin-top: 1px;
