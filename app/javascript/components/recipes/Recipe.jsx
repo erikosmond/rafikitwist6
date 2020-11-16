@@ -37,6 +37,7 @@ class Recipe extends React.Component {
       drawerState: false,
     }
     this.setDrawerState = this.setDrawerState.bind(this)
+    this.changeDrawerState = this.changeDrawerState.bind(this)
   }
 
   componentDidMount() {
@@ -50,6 +51,10 @@ class Recipe extends React.Component {
 
   setDrawerState(value) {
     this.setState({ drawerState: value })
+  }
+
+  changeDrawerState = () => (event, newValue) => {
+    this.setDrawerState(newValue)
   }
 
   static renderHeader(mobile, recipe) {
@@ -100,9 +105,7 @@ class Recipe extends React.Component {
         </SwipeableDrawer>
         <BottomNavigation
           value={drawerState}
-          onChange={(event, newValue) => {
-            this.setDrawerState(newValue)
-          }}
+          onChange={this.changeDrawerState()}
           showLabels
         >
           <BottomNavigationAction

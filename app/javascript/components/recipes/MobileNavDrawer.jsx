@@ -52,15 +52,19 @@ class MobileNavDrawer extends React.Component {
       drawerState: -1,
     }
     this.setDrawerState = this.setDrawerState.bind(this)
+    this.changeDrawerState = this.changeDrawerState.bind(this)
   }
 
   setDrawerState(value) {
     this.setState({ drawerState: value })
   }
 
+  changeDrawerState = () => (event, newValue) => {
+    this.setDrawerState(newValue)
+  }
+
   render() {
-    const noop = () => {
-    }
+    const noop = () => { }
 
     const {
       mobileDrawerState,
@@ -109,9 +113,10 @@ class MobileNavDrawer extends React.Component {
 
         <BottomNavigation
           value={drawerState}
-          onChange={(event, newValue) => {
-            this.setDrawerState(newValue)
-          }}
+          onChange={this.changeDrawerState()}
+          // onChange={(event, newValue) => {
+          //   this.setDrawerState(newValue)
+          // }}
           showLabels
         >
           <BottomNavigationAction
