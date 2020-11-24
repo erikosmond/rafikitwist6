@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-
 import React from 'react'
 
 import {
@@ -13,7 +11,7 @@ import styled from 'styled-components'
 import CommentModal from 'containers/CommentModalContainer'
 import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
-import RecipeFormSkeleton from 'containers/RecipeFormContainer'
+import RecipeFormSkeleton from 'containers/RecipeFormSkeletonContainer'
 import RecipeListSkeleton from 'containers/RecipeListSkeletonContainer'
 import NavMenus from 'containers/NavMenusContainer'
 

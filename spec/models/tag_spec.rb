@@ -171,7 +171,6 @@ describe Tag, type: :model do
           tag_selection2a.id,
           tag_selection2b.id,
           tag_selection2c.id,
-          # TODO: why would these sources be in private section
           tag_selection1s.id,
           tag_selection2s.id
         ]

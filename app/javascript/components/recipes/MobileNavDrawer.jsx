@@ -18,6 +18,7 @@ const FilterWrapper = styled.div`
 
 class MobileNavDrawer extends React.Component {
   static updateDrawerState(newValue) {
+    // TODO: rewrite this to be a single object with values as the function call
     switch (newValue) {
       case 0:
         return {
@@ -52,15 +53,26 @@ class MobileNavDrawer extends React.Component {
       drawerState: -1,
     }
     this.setDrawerState = this.setDrawerState.bind(this)
+    this.changeDrawerState = this.changeDrawerState.bind(this)
+  }
+
+  componentDidUpdate() {
+    const { drawerState } = this.state
+    if (this.props.drawerValueFromStore !== drawerState) {
+      this.setDrawerState(this.props.drawerValueFromStore)
+    }
   }
 
   setDrawerState(value) {
     this.setState({ drawerState: value })
   }
 
+  changeDrawerState = () => (event, newValue) => {
+    this.setDrawerState(newValue)
+  }
+
   render() {
-    const noop = () => {
-    }
+    const noop = () => { }
 
     const {
       mobileDrawerState,
@@ -109,9 +121,10 @@ class MobileNavDrawer extends React.Component {
 
         <BottomNavigation
           value={drawerState}
-          onChange={(event, newValue) => {
-            this.setDrawerState(newValue)
-          }}
+          onChange={this.changeDrawerState()}
+          // onChange={(event, newValue) => {
+          //   this.setDrawerState(newValue)
+          // }}
           showLabels
         >
           <BottomNavigationAction
@@ -145,6 +158,7 @@ MobileNavDrawer.propTypes = {
   }),
   updateMobileDrawerState: PropTypes.func.isRequired,
   visibleFilterTags: PropTypes.shape({}),
+  drawerValueFromStore: PropTypes.number,
 }
 
 MobileNavDrawer.defaultProps = {
@@ -154,4 +168,5 @@ MobileNavDrawer.defaultProps = {
     similar: false,
   },
   visibleFilterTags: {},
+  drawerValueFromStore: -1,
 }

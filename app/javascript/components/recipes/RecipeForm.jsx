@@ -8,6 +8,13 @@ import { withStyles } from '@material-ui/core/styles'
 
 const styles = () => (RecipeFormStyles)
 
+const formatValue = () => (value) => {
+  if (value === '') {
+    return {}
+  }
+  return value
+}
+
 const renderIngredients = (args) => {
   const {
     fields,
@@ -36,14 +43,14 @@ const renderIngredients = (args) => {
               placeholder: 'Ingredient Modification',
             }}
             defaultValue={{}}
-            format={(value) => value === '' ? {} : value}
+            format={formatValue()}
           />
           <Field
             name={`${member}.ingredient`}
             component={RecipeFormIngredient}
             props={{ ingredientOptions, placeholder: 'Ingredient' }}
             defaultValue={{}}
-            format={(value) => value === '' ? {} : value}
+            format={formatValue()}
           />
           <Field
             name={`${member}.ingredientPrep`}
@@ -69,7 +76,6 @@ const renderIngredients = (args) => {
   )
 }
 
-// TODO this component should have its own container
 let RecipeForm = (props) => {
   const {
     classes,

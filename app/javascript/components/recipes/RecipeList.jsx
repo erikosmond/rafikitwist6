@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom'
 import PaperContent from '../styled/PaperContent'
 import PaperSidebar from '../styled/PaperSidebar'
 
-// TODO: add og meta tags to this page
 class RecipeList extends React.Component {
   constructor(props) {
     super(props)

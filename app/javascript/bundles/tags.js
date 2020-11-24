@@ -31,6 +31,38 @@ const initialState = {
   allTags: {},
 }
 
+function ingredientOptionsUpdater(ingredientOptions, newTag) {
+  if (INGREDIENT_TYPES.includes(newTag.tagType)) {
+    return [
+      ...ingredientOptions,
+      { value: newTag.id, label: newTag.name },
+    ]
+  }
+  return ingredientOptions
+}
+
+// Helpers
+
+function tagOptionsUpdater(tagOptions, newTag) {
+  return {
+    ...tagOptions,
+    [newTag.tagType]: [
+      ...tagOptions[newTag.tagType],
+      { id: newTag.id, name: newTag.name },
+    ],
+  }
+}
+
+function ingredientModOptionsUpdater(ingredientModOptions, newTag) {
+  if (INGREDIENT_MODIFICATION === newTag.tagType) {
+    return [
+      ...ingredientModOptions,
+      { value: newTag.id, label: newTag.name },
+    ]
+  }
+  return ingredientModOptions
+}
+
 export default function tagsReducer(store, action = {}) {
   const state = { ...initialState, ...store }
   switch (action.type) {
@@ -93,38 +125,6 @@ export default function tagsReducer(store, action = {}) {
     default:
       return state
   }
-}
-
-function ingredientOptionsUpdater(ingredientOptions, newTag) {
-  if (INGREDIENT_TYPES.includes(newTag.tagType)) {
-    return [
-      ...ingredientOptions,
-      { value: newTag.id, label: newTag.name },
-    ]
-  }
-  return ingredientOptions
-}
-
-// Helpers
-
-function tagOptionsUpdater(tagOptions, newTag) {
-  return {
-    ...tagOptions,
-    [newTag.tagType]: [
-      ...tagOptions[newTag.tagType],
-      { id: newTag.id, name: newTag.name },
-    ],
-  }
-}
-
-function ingredientModOptionsUpdater(ingredientModOptions, newTag) {
-  if (INGREDIENT_MODIFICATION === newTag.tagType) {
-    return [
-      ...ingredientModOptions,
-      { value: newTag.id, label: newTag.name },
-    ]
-  }
-  return ingredientModOptions
 }
 
 // Action Creators

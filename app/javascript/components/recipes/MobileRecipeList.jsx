@@ -8,8 +8,8 @@ import styled from 'styled-components'
 
 const Footer = styled.div`
   width: 100%;
-  position: sticky;
-  bottom: 0px;
+  position: fixed;
+  bottom: 1px;
   z-index: 1;
 `
 const Header = styled.div`
@@ -24,9 +24,11 @@ const Body = styled.div`
   overflow: scroll; 
 `
 
-// TODO: add og meta tags to this page
-
 class MobileRecipeList extends React.Component {
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
+
   componentDidUpdate(lastProps) {
     const {
       loadRecipes, loadTagInfo, location, match,
@@ -94,6 +96,7 @@ class MobileRecipeList extends React.Component {
 
   render() {
     const {
+      drawerValueFromStore,
       loading,
       mobileDrawerState,
       noRecipes,
@@ -116,6 +119,7 @@ class MobileRecipeList extends React.Component {
           <MobileNavDrawer
             mobileDrawerState={mobileDrawerState}
             updateMobileDrawerState={updateMobileDrawerState}
+            drawerValueFromStore={drawerValueFromStore}
           />
         </Footer>
       </div>
@@ -133,6 +137,7 @@ MobileRecipeList.propTypes = {
   loading: PropTypes.bool,
   noRecipes: PropTypes.bool,
   updateMobileDrawerState: PropTypes.func.isRequired,
+  drawerValueFromStore: PropTypes.number,
   clearErrors: PropTypes.func.isRequired,
   loadRecipes: PropTypes.func.isRequired,
   loadTagInfo: PropTypes.func.isRequired,
@@ -168,6 +173,7 @@ MobileRecipeList.defaultProps = {
   recipesLoaded: false,
   loading: true,
   noRecipes: true,
+  drawerValueFromStore: -1,
 }
 
 export default MobileRecipeList

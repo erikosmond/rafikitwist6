@@ -19,12 +19,6 @@ const playlistAddIcon = `M14 10H2v2h12v-2zm0-4H2v2h12V6zm4
 const commentIcon = `M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9
                      2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z`
 
-const renderStyles = (props) => {
-  const { classes, fullRecipe } = props
-  const cName = fullRecipe ? classes.actions : ''
-  return renderBody(props, cName)
-}
-
 const renderBody = (props, cName) => {
   const {
     ratings,
@@ -66,6 +60,12 @@ const renderBody = (props, cName) => {
       />
     </div>
   )
+}
+
+const renderStyles = (props) => {
+  const { classes, fullRecipe } = props
+  const cName = fullRecipe ? classes.actions : ''
+  return renderBody(props, cName)
 }
 
 const RecipeHeaderActions = (props) => {

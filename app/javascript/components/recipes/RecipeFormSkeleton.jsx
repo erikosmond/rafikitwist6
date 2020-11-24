@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import RecipeForm from './RecipeForm'
+import RecipeForm from 'containers/RecipeFormContainer'
 
 // Remove the props from the container that are simply being passed through to RecipeForm component.
 class RecipeFormSkeleton extends React.Component {
@@ -20,6 +20,13 @@ class RecipeFormSkeleton extends React.Component {
     }
   }
 
+  componentDidUpdate(lastProps) {
+    const { history, savedRecipeId } = this.props
+    if (lastProps.savedRecipeId !== savedRecipeId) {
+      history.push(`/recipes/${savedRecipeId}`)
+    }
+  }
+
   submit = (values) => {
     // send the values to the store
     const { handleRecipeSubmit } = this.props
@@ -29,28 +36,22 @@ class RecipeFormSkeleton extends React.Component {
   render() {
     const {
       edit,
-      handleTagFormModal,
-      handleRecipeIsIngredient,
       ingredientOptions,
       ingredientModificationOptions,
       recipeFormData,
-      recipeIsIngredient,
       tagOptions,
     } = this.props
     if (edit && !recipeFormData.id) {
       return null
     }
-    if (ingredientOptions.length > 0 && ingredientModificationOptions.length > 0) {
+    if (
+      ingredientOptions.length > 0 &&
+      ingredientModificationOptions.length > 0 &&
+      Object.keys(tagOptions).length > 0
+    ) {
       return (
         <RecipeForm
-          initialValues={recipeFormData}
-          handleTagFormModal={handleTagFormModal}
-          handleRecipeIsIngredient={handleRecipeIsIngredient}
-          ingredientOptions={ingredientOptions}
-          ingredientModificationOptions={ingredientModificationOptions}
-          tagOptions={tagOptions}
           onSubmit={this.submit}
-          recipeIsIngredient={recipeIsIngredient}
         />
       )
     }
@@ -61,6 +62,9 @@ class RecipeFormSkeleton extends React.Component {
 RecipeFormSkeleton.propTypes = {
   edit: PropTypes.bool,
   handleRecipeSubmit: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   ingredientOptions: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
@@ -72,11 +76,9 @@ RecipeFormSkeleton.propTypes = {
   loadEditForm: PropTypes.func.isRequired,
   loadIngredientOptions: PropTypes.func.isRequired,
   loadTagOptions: PropTypes.func.isRequired,
-  tagOptions: PropTypes.shape(),
   recipeFormData: PropTypes.shape(),
-  handleTagFormModal: PropTypes.func.isRequired,
-  handleRecipeIsIngredient: PropTypes.func.isRequired,
-  recipeIsIngredient: PropTypes.bool,
+  savedRecipeId: PropTypes.number,
+  tagOptions: PropTypes.shape(),
   match: PropTypes.shape({
     params: PropTypes.shape({
       recipeId: PropTypes.string,
@@ -88,8 +90,8 @@ RecipeFormSkeleton.defaultProps = {
   edit: false,
   ingredientOptions: [],
   ingredientModificationOptions: [],
-  recipeIsIngredient: false,
   recipeFormData: {},
+  savedRecipeId: undefined,
   tagOptions: {},
   match: { params: { recipeId: null } },
 }
