@@ -18,6 +18,7 @@ const FilterWrapper = styled.div`
 
 class MobileNavDrawer extends React.Component {
   static updateDrawerState(newValue) {
+    // TODO: rewrite this to be a single object with values as the function call
     switch (newValue) {
       case 0:
         return {
@@ -53,6 +54,13 @@ class MobileNavDrawer extends React.Component {
     }
     this.setDrawerState = this.setDrawerState.bind(this)
     this.changeDrawerState = this.changeDrawerState.bind(this)
+  }
+
+  componentDidUpdate() {
+    const { drawerState } = this.state
+    if (this.props.drawerValueFromStore !== drawerState) {
+      this.setDrawerState(this.props.drawerValueFromStore)
+    }
   }
 
   setDrawerState(value) {
@@ -150,6 +158,7 @@ MobileNavDrawer.propTypes = {
   }),
   updateMobileDrawerState: PropTypes.func.isRequired,
   visibleFilterTags: PropTypes.shape({}),
+  drawerValueFromStore: PropTypes.number,
 }
 
 MobileNavDrawer.defaultProps = {
@@ -159,4 +168,5 @@ MobileNavDrawer.defaultProps = {
     similar: false,
   },
   visibleFilterTags: {},
+  drawerValueFromStore: -1,
 }

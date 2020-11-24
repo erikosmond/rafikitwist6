@@ -25,6 +25,7 @@ export default withRouter(connect(
     visibleFilterTags: state.recipesReducer.visibleFilterTags,
     pagedRecipeCount: state.recipesReducer.pagedRecipeCount,
     mobileDrawerState: state.recipesReducer.mobileDrawerState,
+    drawerValueFromStore: state.recipesReducer.drawerValueFromStore,
   }),
   {
     clearErrors,

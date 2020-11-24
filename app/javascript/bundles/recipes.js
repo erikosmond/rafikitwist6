@@ -126,6 +126,12 @@ export default function recipesReducer(store, action = {}) {
         recipesLoaded: true,
         loading: false,
         noRecipes: false,
+        drawerValueFromStore: -1,
+        mobileDrawerState: {
+          filters: false,
+          search: false,
+          similar: false,
+        },
       }
     case NO_RECIPES_FOUND:
       return {
@@ -142,6 +148,12 @@ export default function recipesReducer(store, action = {}) {
       return {
         ...state,
         recipe: action.payload.recipe,
+        drawerValueFromStore: -1,
+        mobileDrawerState: {
+          filters: false,
+          search: false,
+          similar: false,
+        },
       }
     case LOAD_RECIPE_OPTIONS_SUCCESS:
       return {
