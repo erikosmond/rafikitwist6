@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import SearchIcon from '@material-ui/icons/Search'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
@@ -11,9 +11,18 @@ import NavMenus from 'containers/NavMenusContainer'
 import FilterByIngredients from 'containers/FilterByIngredientsContainer'
 import styled from 'styled-components'
 
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = () => ({
+  root: {
+    backgroundColor: 'lavender',
+    marginLeft: '-20px',
+  },
+})
 
 const FilterWrapper = styled.div`
   max-height: 500px;
+  min-height: 450px;
 `
 
 class MobileNavDrawer extends React.Component {
@@ -57,9 +66,10 @@ class MobileNavDrawer extends React.Component {
   }
 
   componentDidUpdate() {
+    const { drawerValueFromStore } = this.props
     const { drawerState } = this.state
-    if (this.props.drawerValueFromStore !== drawerState) {
-      this.setDrawerState(this.props.drawerValueFromStore)
+    if (drawerValueFromStore !== drawerState) {
+      this.setDrawerState(drawerValueFromStore)
     }
   }
 
@@ -75,6 +85,7 @@ class MobileNavDrawer extends React.Component {
     const noop = () => { }
 
     const {
+      classes,
       mobileDrawerState,
       updateMobileDrawerState,
     } = this.props
@@ -107,7 +118,9 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <NavMenus mobile />
+          <FilterWrapper>
+            <NavMenus mobile />
+          </FilterWrapper>
         </SwipeableDrawer>
 
         <SwipeableDrawer
@@ -116,13 +129,16 @@ class MobileNavDrawer extends React.Component {
           onClose={handleDrawerState(-1)}
           onOpen={noop}
         >
-          <AccountMenu mobile />
+          <FilterWrapper>
+            <AccountMenu mobile />
+          </FilterWrapper>
         </SwipeableDrawer>
 
         <BottomNavigation
           value={drawerState}
           onChange={this.changeDrawerState()}
           showLabels
+          className={classes.root}
         >
           <BottomNavigationAction
             onClick={handleDrawerState(0)}
@@ -145,9 +161,10 @@ class MobileNavDrawer extends React.Component {
   }
 }
 
-export default MobileNavDrawer
+export default withStyles(styles)(MobileNavDrawer)
 
 MobileNavDrawer.propTypes = {
+  classes: PropTypes.shape().isRequired,
   mobileDrawerState: PropTypes.shape({
     filters: PropTypes.bool,
     search: PropTypes.bool,

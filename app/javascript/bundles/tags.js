@@ -4,6 +4,7 @@ import {
 import { callApi } from 'services/rest'
 import { loading, noRecipesFound, notLoading } from 'bundles/recipes'
 
+export const LOAD_RECIPE_SUCCESS = 'recipes/loadRecipeSuccess'
 const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
 const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
 const LOAD_TAG_OPTIONS = 'tags/loadTagOptions'
@@ -20,6 +21,7 @@ const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'tags/loadIngredientOptionsSuccess'
 const LOAD_CATEGORY_OPTIONS_SUCCESS = 'tags/loadCategoriesOptionsSuccess'
 const LOAD_INGREDIENT_OPTIONS = 'tags/loadIngredientOptions'
 const INGREDIENT_MODIFICATION = 'ingredientModification'
+const SET_TAG_ALERT = 'tags/setTagAlert'
 const INGREDIENT_TYPES = ['ingredient', 'ingredientCategory', 'ingredientFamily', 'ingredientType']
 
 // Reducer
@@ -71,6 +73,11 @@ export default function tagsReducer(store, action = {}) {
         ...state,
         tagFormModalOpen: action.payload.tagFormModalOpen,
       }
+    case LOAD_RECIPE_SUCCESS:
+      return {
+        ...state,
+        selectedTag: {},
+      }
     case LOAD_TAG_OPTIONS_SUCCESS:
       return {
         ...state,
@@ -85,6 +92,11 @@ export default function tagsReducer(store, action = {}) {
       return {
         ...state,
         selectedTag: {},
+      }
+    case SET_TAG_ALERT:
+      return {
+        ...state,
+        alert: action.payload.alert,
       }
     case LOAD_TAG_INFO_SUCCESS:
       return {
@@ -205,6 +217,13 @@ function noTagsFound() {
   }
 }
 
+function setTagAlert(alert) {
+  return {
+    type: SET_TAG_ALERT,
+    payload: { alert },
+  }
+}
+
 function loadTagInfoSuccess({ tag }) {
   return {
     type: LOAD_TAG_INFO_SUCCESS,
@@ -271,8 +290,9 @@ function* handleTagSubmitTask({ payload }) {
   const result = yield call(callApi, url, params)
   if (result.success) {
     yield put(tagSumbitSuccess(result.data))
+  } else {
+    yield put(setTagAlert('Unable to update tag'))
   }
-  console.log(result)
 }
 
 function* loadTagInfoTask({ payload }) {

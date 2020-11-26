@@ -49,7 +49,7 @@ const NavMenus = (props) => {
     )
   }
   const renderRelatedTags = () => {
-    if (mobile) {
+    if (mobile && Object.keys(selectedTag).length > 0) {
       return (
         <div>
           <h3>Related</h3>

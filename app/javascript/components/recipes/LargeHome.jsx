@@ -8,6 +8,7 @@ import {
 
 import styled from 'styled-components'
 
+import Alert from 'containers/AlertContainer'
 import CommentModal from 'containers/CommentModalContainer'
 import TagFormModal from 'containers/TagFormContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
@@ -32,6 +33,7 @@ const LargeHome = () => (
     <HeaderWrapper>
       <NavMenus />
     </HeaderWrapper>
+    <Alert />
     <CommentModal />
     <TagFormModal />
 

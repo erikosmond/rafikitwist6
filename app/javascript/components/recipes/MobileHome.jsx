@@ -8,6 +8,7 @@ import {
 
 import styled from 'styled-components'
 
+import Alert from 'containers/AlertContainer'
 import CommentModal from 'containers/CommentModalContainer'
 import MobileRecipeListSkeleton from 'containers/MobileRecipeListSkeletonContainer'
 import TagFormModal from 'containers/TagFormContainer'
@@ -21,6 +22,7 @@ const SmallHome = () => (
   <Router>
     <CommentModal />
     <TagFormModal />
+    <Alert />
 
     <StyledContent>
       <Switch>
