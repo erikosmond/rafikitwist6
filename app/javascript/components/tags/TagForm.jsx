@@ -40,7 +40,7 @@ let TagForm = (props) => {
         <div className={classes.tagType}>
           <label>Tag Type</label>
           <Field name="tagTypeId" component="select">
-            <option></option>
+            <option />
             {tagTypes.map((tagType) => (
 
               <option key={tagType.id} value={tagType.id}>

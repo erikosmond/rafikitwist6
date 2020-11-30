@@ -12,6 +12,7 @@ import Alert from 'containers/AlertContainer'
 import CommentModal from 'containers/CommentModalContainer'
 import MobileRecipeListSkeleton from 'containers/MobileRecipeListSkeletonContainer'
 import TagFormModal from 'containers/TagFormContainer'
+import TagFormSkeleton from 'containers/TagFormSkeletonContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormSkeletonContainer'
 
@@ -29,6 +30,10 @@ const SmallHome = () => (
         <Route
           path="/tags/:tagId/recipes"
           component={MobileRecipeListSkeleton}
+        />
+        <Route
+          path="/tags/:tagId/edit"
+          render={() => <TagFormSkeleton edit />}
         />
         <Route
           path="/recipes/new"

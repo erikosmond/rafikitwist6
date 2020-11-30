@@ -11,6 +11,7 @@ import styled from 'styled-components'
 import Alert from 'containers/AlertContainer'
 import CommentModal from 'containers/CommentModalContainer'
 import TagFormModal from 'containers/TagFormContainer'
+import TagFormSkeleton from 'containers/TagFormSkeletonContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormSkeletonContainer'
 import RecipeListSkeleton from 'containers/RecipeListSkeletonContainer'
@@ -42,6 +43,10 @@ const LargeHome = () => (
         <Route
           path="/tags/:tagId/recipes"
           component={RecipeListSkeleton}
+        />
+        <Route
+          path="/tags/:tagId/edit"
+          render={() => <TagFormSkeleton edit />}
         />
         <Route
           path="/recipes/new"

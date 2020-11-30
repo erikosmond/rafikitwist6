@@ -7,6 +7,8 @@ import { loading, noRecipesFound, notLoading } from 'bundles/recipes'
 export const LOAD_RECIPE_SUCCESS = 'recipes/loadRecipeSuccess'
 const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
 const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
+const LOAD_EDIT_TAG_FORM = 'tags/loadEditTagForm'
+const LOAD_EDIT_TAG_FORM_SUCCESS = 'tags/loadEditTagFormSuccess'
 const LOAD_TAG_OPTIONS = 'tags/loadTagOptions'
 const LOAD_TAG_OPTIONS_SUCCESS = 'recipes/loadTagOptionsSuccess'
 const LOAD_TAG_TYPES = 'tags/loadTagTypes'
@@ -133,6 +135,11 @@ export default function tagsReducer(store, action = {}) {
       return {
         ...state,
         noTags: true,
+      }
+    case LOAD_EDIT_TAG_FORM_SUCCESS:
+      return {
+        ...state,
+        tagFormData: action.payload.tagFormData,
       }
     default:
       return state
@@ -262,7 +269,31 @@ export function loadIngredientOptions(payload) {
   }
 }
 
+export function loadEditTagForm(id) {
+  return {
+    type: LOAD_EDIT_TAG_FORM,
+    payload: id,
+  }
+}
+
+function loadEditTagFormSuccess(tagFormData) {
+  return {
+    type: LOAD_EDIT_TAG_FORM_SUCCESS,
+    payload: { tagFormData },
+  }
+}
+
 // Sagas
+
+function* loadEditTagFormTask({ payload }) {
+  const url = `/api/recipes/${payload}/edit`
+  const result = yield call(callApi, url)
+  if (result.success) {
+    yield put(loadEditTagFormSuccess(result.data))
+  } else {
+    yield put(notLoading())
+  }
+}
 
 function* loadTagOptionsTask() {
   const url = '/api/tag_types?grouped=true'
@@ -351,6 +382,7 @@ export function* tagsSaga() {
   yield takeLatest(LOAD_TAG_INFO, loadTagInfoTask)
   yield takeEvery(LOAD_TAG_OPTIONS, loadTagOptionsTask)
   yield takeEvery(LOAD_TAG_TYPES, loadTagTypesTask)
+  yield takeEvery(LOAD_EDIT_TAG_FORM, loadEditTagFormTask)
   yield takeEvery(LOAD_INGREDIENT_OPTIONS, loadIngredientOptionsTask)
   yield takeLatest(HANDLE_TAG_SUBMIT, handleTagSubmitTask)
 }

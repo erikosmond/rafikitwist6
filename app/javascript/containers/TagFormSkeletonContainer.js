@@ -1,28 +1,31 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import RecipeFormSkeleton from 'components/recipes/RecipeFormSkeleton'
+import TagFormSkeleton from 'components/tags/TagFormSkeleton'
 
 import {
   handleRecipeSubmit,
-  loadEditForm,
   loadRecipeFormData,
 } from 'bundles/recipes'
 
 import {
   loadIngredientOptions,
   loadTagOptions,
+  loadTagTypes,
+  loadEditTagForm,
+  submitTagForm,
 } from 'bundles/tags'
 
 export default withRouter(connect(
   (state) => ({
-    formData: state.recipesReducer.tagFormData,
+    formData: state.tagsReducer.formData,
     ingredientModificationOptions: state.tagsReducer.ingredientModificationOptions,
     ingredientOptions: state.tagsReducer.ingredientOptions,
     recipe: state.recipesReducer.recipe,
     recipeFormData: state.recipesReducer.recipeFormData,
     savedRecipeId: state.recipesReducer.savedRecipeId,
     tagOptions: state.tagsReducer.tagOptions,
+    tagTypes: state.tagsReducer.tagTypes,
   }),
   {
     handleRecipeSubmit,
@@ -30,5 +33,7 @@ export default withRouter(connect(
     loadIngredientOptions,
     loadRecipeFormData,
     loadTagOptions,
+    loadTagTypes,
+    submitTagForm,
   },
-)(RecipeFormSkeleton))
+)(TagFormSkeleton))

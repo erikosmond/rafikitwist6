@@ -35,10 +35,19 @@ module Api
       render json: result.tag
     end
 
+    def edit
+      result = TagForm.call(
+        action: :edit,
+        params: tag_params,
+        user: current_user
+      )
+      render json: result.tag
     private
 
       def tag_params
-        allowed_columns = [:name, :tag_type_id, :description, parent_tags: %i[id name]]
+        allowed_columns = [
+          :id, :name, :tag_type_id, :description, parent_tags: %i[id name]
+        ]
         params.permit allowed_columns
       end
 

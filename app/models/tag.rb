@@ -115,4 +115,15 @@ class Tag < ApplicationRecord
   def self.ingredient
     singleton_class::INGREDIENT
   end
+
+  def as_json(options = {})
+    super({
+      include: {
+        parent_tags: {
+          only: %i[id name]
+        }
+      },
+      only: %i[id name description tag_type_id]
+    }.merge(options))
+  end
 end
