@@ -27,6 +27,8 @@ let TagForm = (props) => {
         <Field className={classes.nameField} name="name" component="input" type="text" />
         <div className={classes.descriptionLabel} htmlFor="description">Description</div>
         <Field className={classes.descriptionField} name="description" component="input" type="text" />
+        <div className={classes.recipeIdLabel} htmlFor="recipeId">Recipe ID</div>
+        <Field className={classes.recipeIdField} name="recipeId" component="input" type="text" />
         <div className={classes.parentTags}>
           <Field
             name="parentTags"

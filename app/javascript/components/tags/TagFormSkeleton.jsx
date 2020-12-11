@@ -7,13 +7,11 @@ export default class TagFormSkeleton extends React.Component {
     const {
       edit,
       loadEditTagForm,
-      loadIngredientOptions,
       loadTagOptions,
       match,
       loadTagTypes,
       tagTypes,
     } = this.props
-    loadIngredientOptions('Ingredients')
     loadTagOptions()
     if (tagTypes.length === 0) {
       loadTagTypes()
@@ -55,6 +53,7 @@ export default class TagFormSkeleton extends React.Component {
 TagFormSkeleton.propTypes = {
   edit: PropTypes.bool,
   loadEditTagForm: PropTypes.func.isRequired,
+  loadTagOptions: PropTypes.func.isRequired,
   loadTagTypes: PropTypes.func.isRequired,
   submitTagForm: PropTypes.func.isRequired,
   tagTypes: PropTypes.arrayOf(PropTypes.shape({})),

@@ -37,27 +37,21 @@ module Api
     end
 
     def edit
-      recipe = Recipe.find params.permit(:id)['id']
-      if current_user.present? && Permissions.new(current_user).can_edit?(recipe)
-        render json: RecipeForm.call(
-          action: :edit, params: { recipe: recipe }, user: current_user
-        ).result
-      else
-        render json: {}, status: :unauthorized
-      end
+      recipe = Recipe.find_by_id params.permit(:id)['id']
+      current_user.present? && Permissions.new(current_user).can_edit!(recipe)
+      render json: RecipeForm.call(
+        action: :edit, params: { recipe: recipe }, user: current_user
+      ).result
     end
 
     def update
-      recipe = Recipe.find update_recipe_params['id']
-      if current_user.present? && Permissions.new(current_user).can_edit?(recipe)
-        render json: RecipeForm.call(
-          action: :update,
-          params: { recipe: recipe, form_fields: update_recipe_params },
-          user: current_user
-        ).result
-      else
-        render json: {}, status: :unauthorized
-      end
+      recipe = Recipe.find_by_id update_recipe_params['id']
+      current_user.present? && Permissions.new(current_user).can_edit!(recipe)
+      render json: RecipeForm.call(
+        action: :update,
+        params: { recipe: recipe, form_fields: update_recipe_params },
+        user: current_user
+      ).result
     end
   end
 end

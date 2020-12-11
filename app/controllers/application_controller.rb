@@ -6,6 +6,14 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  rescue_from Error401 do |_exception|
+    render json: {}, status: :unauthorized
+  end
+
+  rescue_from Error404 do |_exception|
+    render json: {}, status: :not_found
+  end
+
   protected
 
     def configure_permitted_parameters

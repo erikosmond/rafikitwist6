@@ -29,7 +29,7 @@ export default withRouter(connect(
   }),
   {
     handleRecipeSubmit,
-    loadEditForm,
+    loadEditTagForm,
     loadIngredientOptions,
     loadRecipeFormData,
     loadTagOptions,
