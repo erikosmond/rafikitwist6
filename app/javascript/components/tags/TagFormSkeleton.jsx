@@ -24,11 +24,12 @@ export default class TagFormSkeleton extends React.Component {
 
   render() {
     const {
+      formData,
       submitTagForm,
       tagTypes,
       tagOptions,
     } = this.props
-    debugger
+
     if (tagTypes.length === 0 || Object.keys(tagOptions).length === 0) {
       return null
     }
@@ -43,6 +44,7 @@ export default class TagFormSkeleton extends React.Component {
         <TagForm
           tagOptions={tagOptions}
           tagTypes={tagTypes}
+          initialValues={formData}
           onSubmit={submit}
         />
       </div>
@@ -52,6 +54,7 @@ export default class TagFormSkeleton extends React.Component {
 
 TagFormSkeleton.propTypes = {
   edit: PropTypes.bool,
+  formData: PropTypes.shape({}),
   loadEditTagForm: PropTypes.func.isRequired,
   loadTagOptions: PropTypes.func.isRequired,
   loadTagTypes: PropTypes.func.isRequired,
@@ -67,6 +70,7 @@ TagFormSkeleton.propTypes = {
 
 TagFormSkeleton.defaultProps = {
   edit: false,
+  formData: {},
   tagTypes: [],
   tagOptions: {},
   match: { params: { tagId: null } },

@@ -123,7 +123,7 @@ class Tag < ApplicationRecord
           only: %i[id name]
         }
       },
-      only: %i[id name description tag_type_id]
+      only: %i[id name description tag_type_id recipe_id]
     }.merge(options))
   end
 end

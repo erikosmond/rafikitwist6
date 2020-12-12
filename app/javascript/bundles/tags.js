@@ -286,7 +286,7 @@ function loadEditTagFormSuccess(tagFormData) {
 // Sagas
 
 function* loadEditTagFormTask({ payload }) {
-  const url = `/api/recipes/${payload}/edit`
+  const url = `/api/tags/${payload}/edit`
   const result = yield call(callApi, url)
   if (result.success) {
     yield put(loadEditTagFormSuccess(result.data))

@@ -10,7 +10,7 @@ import styled from 'styled-components'
 
 import Alert from 'containers/AlertContainer'
 import CommentModal from 'containers/CommentModalContainer'
-import TagFormModal from 'containers/TagFormContainer'
+import TagFormModal from 'containers/TagFormModalContainer'
 import TagFormSkeleton from 'containers/TagFormSkeletonContainer'
 import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormSkeletonContainer'

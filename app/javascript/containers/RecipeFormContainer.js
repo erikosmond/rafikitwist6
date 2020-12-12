@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import RecipeFormSkeleton from 'components/recipes/RecipeForm'
+import RecipeForm from 'components/recipes/RecipeForm'
 
 import {
   handleRecipeIsIngredient,
@@ -23,4 +23,4 @@ export default withRouter(connect(
     handleTagFormModal,
     handleRecipeIsIngredient,
   },
-)(RecipeFormSkeleton))
+)(RecipeForm))

@@ -9,8 +9,8 @@ class Permissions
   end
 
   def can_edit!(record)
-    raise 401 unless record.respond_to? :access
-    raise 401 unless @user.admin? || record&.access&.user_id == @user.id
-    raise Error404, 'Record does not exist' unless record.present
+    raise Error406 unless record.respond_to? :access
+    raise Error403 unless @user.admin? || record&.access&.user_id == @user.id
+    raise Error404, 'Record does not exist' unless record.present?
   end
 end

@@ -38,12 +38,11 @@ module Api
     def edit
       tag = Tag.find_by_id params.permit(:id)['id']
       current_user.present? && Permissions.new(current_user).can_edit!(tag)
-      result = TagForm.call(
+      render json: TagForm.call(
         action: :edit,
         params: tag_params,
         user: current_user
-      )
-      render json: result.tag
+      ).result
     end
 
     private

@@ -54,7 +54,7 @@ class TagForm < GeneralForm
     end
 
     def edit(params)
-      Tag.find(params.id).as_json
+      Tag.find(params['id']).as_json
     end
 
     def update(params)
