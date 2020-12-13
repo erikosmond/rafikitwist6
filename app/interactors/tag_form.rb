@@ -57,7 +57,16 @@ class TagForm < GeneralForm
     end
 
     def edit(params)
-      Tag.find(params['id']).as_json
+      Tag.find(params['id']).as_json(
+        {
+          include: {
+            parent_tags: {
+              only: %i[id name]
+            }
+          },
+          only: %i[id name description tag_type_id recipe_id]
+        }
+      )
     end
 
     def update(params)
