@@ -119,6 +119,7 @@ export default function tagsReducer(store, action = {}) {
         ingredientOptions: ingredientOptionsUpdater(state.ingredientOptions, action.payload),
         ingredientModificationOptions:
           ingredientModOptionsUpdater(state.ingredientModificationOptions, action.payload),
+        savedTagId: action.payload.id,
       }
     case LOAD_INGREDIENT_OPTIONS_SUCCESS:
       return {
@@ -316,8 +317,10 @@ function* loadTagTypesTask() {
 }
 
 function* handleTagSubmitTask({ payload }) {
-  const url = '/api/tags'
-  const params = { data: payload, method: 'POST' }
+  const method = payload.id ? 'PUT' : 'POST'
+  const id = payload.id ? `/${payload.id}` : ''
+  const url = `/api/tags${id}`
+  const params = { method, data: payload }
   const result = yield call(callApi, url, params)
   if (result.success) {
     yield put(tagSumbitSuccess(result.data))

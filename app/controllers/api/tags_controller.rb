@@ -45,11 +45,21 @@ module Api
       ).result
     end
 
+    def update
+      tag = Tag.find_by_id tag_params['id']
+      current_user.present? && Permissions.new(current_user).can_edit!(recipe)
+      render json: TagForm.call(
+        action: :update,
+        params: { tag: tag, form_fields: tag_params },
+        user: current_user
+      ).result
+    end
+
     private
 
       def tag_params
         allowed_columns = [
-          :id, :name, :tag_type_id, :description, parent_tags: %i[id name]
+          :id, :name, :tag_type_id, :description, :recipe_id, parent_tags: %i[id name]
         ]
         params.permit allowed_columns
       end

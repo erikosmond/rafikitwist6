@@ -10,16 +10,6 @@ import {
   submitTagForm,
 } from 'bundles/tags'
 
-// existingTagformData
-// tagOptions
-// tagTypes
-
-// loadExistingTag
-// loadTagOptions
-// loadTagTypes
-// submitTagForm
-
-
 export default withRouter(connect(
   (state) => ({
     formData: state.tagsReducer.tagFormData,

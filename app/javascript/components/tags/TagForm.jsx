@@ -14,15 +14,14 @@ let TagForm = (props) => {
     handleSubmit,
     tagTypes,
   } = props
-  // add id field -- when id field is present make sure the bundle uses put instead of post
   const buildParentTagDropdown =
     tagOptions.ingredientCategory
       .concat(tagOptions.ingredientFamily)
       .concat(tagOptions.ingredientType)
-
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
+        <Field name="id" component="input" type="hidden" />
         <div className={classes.nameLabel} htmlFor="tagName">Tag Name</div>
         <Field className={classes.nameField} name="name" component="input" type="text" />
         <div className={classes.descriptionLabel} htmlFor="description">Description</div>
@@ -61,7 +60,7 @@ let TagForm = (props) => {
 
 TagForm = reduxForm({
   form: 'tagForm',
-  enableReinitialize: true,
+  // enableReinitialize: true,
 })(TagForm)
 
 TagForm.propTypes = {
@@ -69,6 +68,8 @@ TagForm.propTypes = {
     container: PropTypes.string,
     nameLabel: PropTypes.string,
     nameField: PropTypes.string,
+    recipeIdLabel: PropTypes.string,
+    recipeIdField: PropTypes.string,
     descriptionLabel: PropTypes.string,
     descriptionField: PropTypes.string,
     parentTags: PropTypes.string,

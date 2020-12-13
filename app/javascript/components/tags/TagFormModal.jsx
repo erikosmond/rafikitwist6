@@ -43,6 +43,7 @@ const TagFormModal = (props) => {
       >
         <div style={getModalStyle()}>
           <TagFormSkeleton
+            modal
             handleTagFormModal={handleTagFormModal}
           />
         </div>

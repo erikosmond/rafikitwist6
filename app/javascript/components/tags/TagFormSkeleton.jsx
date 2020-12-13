@@ -25,13 +25,23 @@ export default class TagFormSkeleton extends React.Component {
   render() {
     const {
       formData,
+      modal,
+      savedTagId,
       submitTagForm,
       tagTypes,
       tagOptions,
     } = this.props
 
-    if (tagTypes.length === 0 || Object.keys(tagOptions).length === 0) {
+    if (
+      tagTypes.length === 0 ||
+      Object.keys(tagOptions).length === 0 ||
+      Object.keys(formData).length === 0
+    ) {
       return null
+    }
+
+    if (!modal && savedTagId) {
+      console.log('TODO: update url to saved tag id')
     }
 
     const submit = (values) => {
@@ -58,6 +68,8 @@ TagFormSkeleton.propTypes = {
   loadEditTagForm: PropTypes.func.isRequired,
   loadTagOptions: PropTypes.func.isRequired,
   loadTagTypes: PropTypes.func.isRequired,
+  modal: PropTypes.bool,
+  savedTagId: PropTypes.number,
   submitTagForm: PropTypes.func.isRequired,
   tagTypes: PropTypes.arrayOf(PropTypes.shape({})),
   tagOptions: PropTypes.shape({}),
@@ -71,6 +83,8 @@ TagFormSkeleton.propTypes = {
 TagFormSkeleton.defaultProps = {
   edit: false,
   formData: {},
+  modal: false,
+  savedTagId: null,
   tagTypes: [],
   tagOptions: {},
   match: { params: { tagId: null } },

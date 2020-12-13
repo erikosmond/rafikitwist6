@@ -8,6 +8,8 @@ class TagForm < GeneralForm
                        create(context.params)
                      when :edit
                        edit(context.params)
+                     when :update
+                       update(context.params)
                      end
   end
 
@@ -32,6 +34,7 @@ class TagForm < GeneralForm
           recipe_id: recipe_id(params)
         }
       )
+      tag
     end
 
     def create_parent_tags(params, tag)
@@ -49,7 +52,7 @@ class TagForm < GeneralForm
     end
 
     def recipe_id(params)
-      id = params['recipe_id']&.to_i
+      id = params['recipe_id'].to_i
       id.zero? ? nil : id
     end
 
@@ -61,7 +64,7 @@ class TagForm < GeneralForm
       ActiveRecord::Base.transaction do
         existing_tag = Tag.find params.id
         tag = assign_tag_attrs!(existing_tag, params)
-        update_parent_tags(params, tag)
+        update_parent_tags(tag, params)
         context.tag = tag_with_type(tag)
       end
     end

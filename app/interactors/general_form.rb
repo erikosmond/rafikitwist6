@@ -18,4 +18,13 @@ class GeneralForm
     def user
       context.user
     end
+
+    def update_parent_tags(record, form)
+      non_ingredient_form_ids = form_tag_ids(form)
+      non_ingredient_tags = recipe_non_ingredient_tags(record)
+      tag_ids_to_create = new_tags(non_ingredient_tags, non_ingredient_form_ids).compact
+      tag_ids_to_delete = old_tags(non_ingredient_tags, non_ingredient_form_ids).compact
+      create_new_tags(tag_ids_to_create, record)
+      delete_tag_selections(record, tag_ids_to_delete)
+    end
 end
