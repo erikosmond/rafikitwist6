@@ -22,7 +22,6 @@ const TagFormModal = (props) => {
     handleTagFormModal,
     tagFormModalOpen,
   } = props
-
   if (!tagFormModalOpen) {
     return null
   }

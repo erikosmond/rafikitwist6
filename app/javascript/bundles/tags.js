@@ -19,6 +19,7 @@ const LOAD_TAG_INFO = 'tags/loadTagInfo'
 const LOAD_TAG_INFO_SUCCESS = 'tags/loadTagInfoSuccess'
 const NO_TAGS = 'tags/noTags'
 const TAG_SUBMIT_SUCCESS = 'tags/tagSubmitSuccess'
+const TAG_UPDATE_SUCCESS = 'tags/tagUpdateSuccess'
 const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'tags/loadIngredientOptionsSuccess'
 const LOAD_CATEGORY_OPTIONS_SUCCESS = 'tags/loadCategoriesOptionsSuccess'
 const LOAD_INGREDIENT_OPTIONS = 'tags/loadIngredientOptions'
@@ -94,6 +95,7 @@ export default function tagsReducer(store, action = {}) {
       return {
         ...state,
         selectedTag: {},
+        savedTagId: null,
       }
     case SET_TAG_ALERT:
       return {
@@ -119,6 +121,11 @@ export default function tagsReducer(store, action = {}) {
         ingredientOptions: ingredientOptionsUpdater(state.ingredientOptions, action.payload),
         ingredientModificationOptions:
           ingredientModOptionsUpdater(state.ingredientModificationOptions, action.payload),
+        savedTagId: action.payload.id,
+      }
+    case TAG_UPDATE_SUCCESS:
+      return {
+        ...state,
         savedTagId: action.payload.id,
       }
     case LOAD_INGREDIENT_OPTIONS_SUCCESS:
@@ -216,6 +223,13 @@ function tagSumbitSuccess(payload) {
   return {
     payload,
     type: TAG_SUBMIT_SUCCESS,
+  }
+}
+
+function tagUpdateSuccess(payload) {
+  return {
+    payload,
+    type: TAG_UPDATE_SUCCESS,
   }
 }
 
@@ -323,7 +337,11 @@ function* handleTagSubmitTask({ payload }) {
   const params = { method, data: payload }
   const result = yield call(callApi, url, params)
   if (result.success) {
-    yield put(tagSumbitSuccess(result.data))
+    if (method === 'PUT') {
+      yield put(tagUpdateSuccess(result.data))
+    } else {
+      yield put(tagSumbitSuccess(result.data))
+    }
   } else {
     yield put(setTagAlert('Unable to update tag'))
   }

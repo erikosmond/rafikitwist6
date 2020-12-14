@@ -71,19 +71,15 @@ class TagForm < GeneralForm
 
     def update(params)
       ActiveRecord::Base.transaction do
-        existing_tag = Tag.find params.id
-        tag = assign_tag_attrs!(existing_tag, params)
-        update_parent_tags(tag, params)
+        existing_tag = Tag.find params[:form_fields]['id']
+        tag = assign_tag_attrs!(existing_tag, params[:form_fields])
+        update_parent_tags(tag, params[:form_fields])
         context.tag = tag_with_type(tag)
       end
     end
 
     def update_parent_tags(record, form)
-      non_ingredient_form_ids = form_tag_ids(form)
-      non_ingredient_tags = recipe_non_ingredient_tags(record)
-      tag_ids_to_create = new_tags(non_ingredient_tags, non_ingredient_form_ids).compact
-      tag_ids_to_delete = old_tags(non_ingredient_tags, non_ingredient_form_ids).compact
-      create_new_tags(tag_ids_to_create, record)
-      delete_tag_selections(record, tag_ids_to_delete)
+      parent_tag_ids = form['parent_tags']&.map { |t| t['id'] } || []
+      record.parent_tags = Tag.where(id: parent_tag_ids)
     end
 end

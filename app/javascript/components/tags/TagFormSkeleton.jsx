@@ -24,7 +24,9 @@ export default class TagFormSkeleton extends React.Component {
 
   render() {
     const {
+      edit,
       formData,
+      history,
       modal,
       savedTagId,
       submitTagForm,
@@ -35,13 +37,13 @@ export default class TagFormSkeleton extends React.Component {
     if (
       tagTypes.length === 0 ||
       Object.keys(tagOptions).length === 0 ||
-      Object.keys(formData).length === 0
+      (edit && Object.keys(formData).length === 0)
     ) {
       return null
     }
 
     if (!modal && savedTagId) {
-      console.log('TODO: update url to saved tag id')
+      history.push(`/tags/${savedTagId}/recipes`)
     }
 
     const submit = (values) => {
@@ -65,6 +67,9 @@ export default class TagFormSkeleton extends React.Component {
 TagFormSkeleton.propTypes = {
   edit: PropTypes.bool,
   formData: PropTypes.shape({}),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   loadEditTagForm: PropTypes.func.isRequired,
   loadTagOptions: PropTypes.func.isRequired,
   loadTagTypes: PropTypes.func.isRequired,

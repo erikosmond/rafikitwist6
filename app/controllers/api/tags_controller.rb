@@ -47,7 +47,7 @@ module Api
 
     def update
       tag = Tag.find_by_id tag_params['id']
-      current_user.present? && Permissions.new(current_user).can_edit!(recipe)
+      current_user.present? && Permissions.new(current_user).can_edit!(tag)
       render json: TagForm.call(
         action: :update,
         params: { tag: tag, form_fields: tag_params },
