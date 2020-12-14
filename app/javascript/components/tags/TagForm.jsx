@@ -60,7 +60,6 @@ let TagForm = (props) => {
 
 TagForm = reduxForm({
   form: 'tagForm',
-  // enableReinitialize: true,
 })(TagForm)
 
 TagForm.propTypes = {
