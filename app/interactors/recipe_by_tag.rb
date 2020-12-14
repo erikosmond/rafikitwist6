@@ -94,9 +94,9 @@ class RecipeByTag
     def recipe_detail_joins
       [
         :access,
-        recipe: {
+        { recipe: {
           tag_selections: recipes_with_parent_detail_joins
-        }
+        } }
       ]
     end
 

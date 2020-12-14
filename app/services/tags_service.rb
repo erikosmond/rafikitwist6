@@ -18,8 +18,7 @@ module TagsService
 
   def all_tags_with_hierarchy(current_user)
     tag = Tag.first
-    all_tags = true
-    tag.tag_with_hierarchy(current_user, all_tags)
+    tag.tag_with_hierarchy(current_user, all_tags: true)
   end
 
   def all_family_tags_with_hierarchy(current_user)

@@ -9,18 +9,18 @@ module RecipeControllerHelper
   def shared_columns
     [
       :recipe_name, :description, :instructions, :is_ingredient,
-      ingredients: ingredient_fields,
-      sources: %i[id name], vessels: %i[id name], recipe_types: %i[id name],
-      menus: %i[id name], preparations: %i[id name], flavors: %i[id name],
-      components: %i[id name], parent_tags: %i[id name]
+      { ingredients: ingredient_fields,
+        sources: %i[id name], vessels: %i[id name], recipe_types: %i[id name],
+        menus: %i[id name], preparations: %i[id name], flavors: %i[id name],
+        components: %i[id name], parent_tags: %i[id name] }
     ]
   end
 
   def ingredient_fields
     [
       :ingredient_amount, :ingredient_prep,
-      ingredient_modification: %i[label value],
-      ingredient: %i[label value]
+      { ingredient_modification: %i[label value],
+        ingredient: %i[label value] }
     ]
   end
 

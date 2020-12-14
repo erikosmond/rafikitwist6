@@ -59,7 +59,7 @@ module Api
 
       def tag_params
         allowed_columns = [
-          :id, :name, :tag_type_id, :description, :recipe_id, parent_tags: %i[id name]
+          :id, :name, :tag_type_id, :description, :recipe_id, { parent_tags: %i[id name] }
         ]
         params.permit allowed_columns
       end

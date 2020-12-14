@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative '../contexts/tag_context.rb'
-require_relative '../contexts/recipe_context.rb'
+require_relative '../contexts/tag_context'
+require_relative '../contexts/recipe_context'
 
 # rubocop: disable Metrics/BlockLength
 describe Tag, type: :model do

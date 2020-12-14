@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative '../contexts/basic_setup_context.rb'
+require_relative '../contexts/basic_setup_context'
 
 # rubocop: disable Metrics/BlockLength
 RSpec.describe RecipeByTag, type: :interactor do
