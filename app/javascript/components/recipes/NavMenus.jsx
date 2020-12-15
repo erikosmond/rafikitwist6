@@ -74,6 +74,7 @@ const NavMenus = (props) => {
         placeholder="Recipes"
         updateHistory={updateRecipes}
         className={mobile ? classes.searchWidth : ''}
+        mobile={mobile}
       />
       <HeaderDropdown
         dropdownOptions={ingredientOptions}
@@ -81,6 +82,7 @@ const NavMenus = (props) => {
         placeholder="Ingredients"
         updateHistory={updateTags}
         className={mobile ? classes.searchWidth : ''}
+        mobile={mobile}
       />
       <HeaderDropdown
         dropdownOptions={categoryOptions}
@@ -88,6 +90,7 @@ const NavMenus = (props) => {
         placeholder="More"
         updateHistory={updateTags}
         className={mobile ? classes.searchMargin : ''}
+        mobile={mobile}
       />
       {renderRelatedTags()}
       {renderAccount()}
