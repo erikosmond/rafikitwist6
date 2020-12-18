@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     resources :recipes, only: %i[create edit index show update]
 
-    resources :tags, only: %i[create index show] do
+    resources :tags, except: :destroy do
       resources :recipes, only: %i[index]
     end
 

@@ -6,6 +6,10 @@ class TagForm < GeneralForm
     context.result = case context.action
                      when :create
                        create(context.params)
+                     when :edit
+                       edit(context.params)
+                     when :update
+                       update(context.params)
                      end
   end
 
@@ -13,21 +17,24 @@ class TagForm < GeneralForm
 
     def create(params)
       ActiveRecord::Base.transaction do
-        tag = create_tag!(params)
+        new_tag = Tag.new
+        tag = assign_tag_attrs!(new_tag, params)
         create_parent_tags(params, tag)
         create_access(tag)
         context.tag = tag_with_type(tag)
       end
     end
 
-    def create_tag!(params)
-      Tag.create!(
+    def assign_tag_attrs!(tag, params)
+      tag.update!(
         {
           name: params['name'],
           tag_type_id: params['tag_type_id'],
-          description: params['description']
+          description: params['description'],
+          recipe_id: recipe_id(params)
         }
       )
+      tag
     end
 
     def create_parent_tags(params, tag)
@@ -42,5 +49,37 @@ class TagForm < GeneralForm
       result = tag.as_json
       result['tag_type'] = tag.tag_type.name.camelize(:lower)
       result
+    end
+
+    def recipe_id(params)
+      id = params['recipe_id'].to_i
+      id.zero? ? nil : id
+    end
+
+    def edit(params)
+      Tag.find(params['id']).as_json(
+        {
+          include: {
+            parent_tags: {
+              only: %i[id name]
+            }
+          },
+          only: %i[id name description tag_type_id recipe_id]
+        }
+      )
+    end
+
+    def update(params)
+      ActiveRecord::Base.transaction do
+        existing_tag = Tag.find params[:form_fields]['id']
+        tag = assign_tag_attrs!(existing_tag, params[:form_fields])
+        update_parent_tags(tag, params[:form_fields])
+        context.tag = tag_with_type(tag)
+      end
+    end
+
+    def update_parent_tags(record, form)
+      parent_tag_ids = form['parent_tags']&.map { |t| t['id'] } || []
+      record.parent_tags = Tag.where(id: parent_tag_ids)
     end
 end

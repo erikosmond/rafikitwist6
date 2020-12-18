@@ -12,6 +12,21 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import styled from 'styled-components'
 import { allIngredients } from 'services/recipes'
 
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = () => ({
+  root: {
+    backgroundColor: 'lavender',
+    marginLeft: '-20px',
+    marginRight: '-8px',
+  },
+})
+
+const FilterWrapper = styled.div`
+  max-height: 500px;
+  min-height: 450px;
+`
+
 const Header = styled.div`
   width: 100%;
   position: sticky;
@@ -84,6 +99,7 @@ class Recipe extends React.Component {
     if (!mobile) {
       return null
     }
+    const { classes } = this.props
     const { drawerState } = this.state
     const noop = () => {
     }
@@ -101,12 +117,15 @@ class Recipe extends React.Component {
           onClose={handleDrawerState(false)}
           onOpen={noop}
         >
-          <NavMenus mobile />
+          <FilterWrapper>
+            <NavMenus mobile />
+          </FilterWrapper>
         </SwipeableDrawer>
         <BottomNavigation
           value={drawerState}
           onChange={this.changeDrawerState()}
           showLabels
+          className={classes.root}
         >
           <BottomNavigationAction
             onClick={handleDrawerState(true)}
@@ -152,6 +171,7 @@ class Recipe extends React.Component {
 }
 
 Recipe.propTypes = {
+  classes: PropTypes.shape().isRequired,
   recipe: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string.isRequired,
@@ -188,4 +208,4 @@ Recipe.defaultProps = {
   mobile: false,
 }
 
-export default Recipe
+export default withStyles(styles)(Recipe)

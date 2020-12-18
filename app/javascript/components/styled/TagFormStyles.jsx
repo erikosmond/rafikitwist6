@@ -2,7 +2,7 @@ export default {
   container: {
     display: 'grid',
     gridTemplateColumns: '10% 40% auto',
-    gridTemplateRows: '20% 20% 20% 20% auto',
+    gridTemplateRows: '16% 16% 16% 16% 16% auto',
     gridRowGap: '20px',
     height: 'auto',
   },
@@ -32,23 +32,36 @@ export default {
     gridRowStart: 2,
     gridRowEnd: 3,
   },
-  parentTags: {
+  recipeIdLabel: {
     gridColumnStart: 2,
     gridColumnEnd: 3,
     gridRowStart: 3,
     gridRowEnd: 4,
+    alignSelf: 'center',
   },
-  tagType: {
+  recipeIdField: {
+    gridColumnStart: 3,
+    gridColumnEnd: 4,
+    gridRowStart: 3,
+    gridRowEnd: 4,
+  },
+  parentTags: {
     gridColumnStart: 2,
     gridColumnEnd: 3,
     gridRowStart: 4,
     gridRowEnd: 5,
   },
-  saveButton: {
+  tagType: {
     gridColumnStart: 2,
     gridColumnEnd: 3,
     gridRowStart: 5,
     gridRowEnd: 6,
+  },
+  saveButton: {
+    gridColumnStart: 2,
+    gridColumnEnd: 3,
+    gridRowStart: 6,
+    gridRowEnd: 7,
     justifySelf: 'left',
   },
 }

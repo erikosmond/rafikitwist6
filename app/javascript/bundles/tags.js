@@ -4,8 +4,11 @@ import {
 import { callApi } from 'services/rest'
 import { loading, noRecipesFound, notLoading } from 'bundles/recipes'
 
+export const LOAD_RECIPE_SUCCESS = 'recipes/loadRecipeSuccess'
 const HANDLE_TAG_FORM_MODAL = 'tags/handleTagFormModal'
 const HANDLE_TAG_SUBMIT = 'tags/handleTagSubmit'
+const LOAD_EDIT_TAG_FORM = 'tags/loadEditTagForm'
+const LOAD_EDIT_TAG_FORM_SUCCESS = 'tags/loadEditTagFormSuccess'
 const LOAD_TAG_OPTIONS = 'tags/loadTagOptions'
 const LOAD_TAG_OPTIONS_SUCCESS = 'recipes/loadTagOptionsSuccess'
 const LOAD_TAG_TYPES = 'tags/loadTagTypes'
@@ -16,10 +19,12 @@ const LOAD_TAG_INFO = 'tags/loadTagInfo'
 const LOAD_TAG_INFO_SUCCESS = 'tags/loadTagInfoSuccess'
 const NO_TAGS = 'tags/noTags'
 const TAG_SUBMIT_SUCCESS = 'tags/tagSubmitSuccess'
+const TAG_UPDATE_SUCCESS = 'tags/tagUpdateSuccess'
 const LOAD_INGREDIENT_OPTIONS_SUCCESS = 'tags/loadIngredientOptionsSuccess'
 const LOAD_CATEGORY_OPTIONS_SUCCESS = 'tags/loadCategoriesOptionsSuccess'
 const LOAD_INGREDIENT_OPTIONS = 'tags/loadIngredientOptions'
 const INGREDIENT_MODIFICATION = 'ingredientModification'
+const SET_TAG_ALERT = 'tags/setTagAlert'
 const INGREDIENT_TYPES = ['ingredient', 'ingredientCategory', 'ingredientFamily', 'ingredientType']
 
 // Reducer
@@ -71,6 +76,11 @@ export default function tagsReducer(store, action = {}) {
         ...state,
         tagFormModalOpen: action.payload.tagFormModalOpen,
       }
+    case LOAD_RECIPE_SUCCESS:
+      return {
+        ...state,
+        selectedTag: {},
+      }
     case LOAD_TAG_OPTIONS_SUCCESS:
       return {
         ...state,
@@ -85,6 +95,12 @@ export default function tagsReducer(store, action = {}) {
       return {
         ...state,
         selectedTag: {},
+        savedTagId: null,
+      }
+    case SET_TAG_ALERT:
+      return {
+        ...state,
+        alert: action.payload.alert,
       }
     case LOAD_TAG_INFO_SUCCESS:
       return {
@@ -105,6 +121,12 @@ export default function tagsReducer(store, action = {}) {
         ingredientOptions: ingredientOptionsUpdater(state.ingredientOptions, action.payload),
         ingredientModificationOptions:
           ingredientModOptionsUpdater(state.ingredientModificationOptions, action.payload),
+        savedTagId: action.payload.id,
+      }
+    case TAG_UPDATE_SUCCESS:
+      return {
+        ...state,
+        savedTagId: action.payload.id,
       }
     case LOAD_INGREDIENT_OPTIONS_SUCCESS:
       return {
@@ -121,6 +143,11 @@ export default function tagsReducer(store, action = {}) {
       return {
         ...state,
         noTags: true,
+      }
+    case LOAD_EDIT_TAG_FORM_SUCCESS:
+      return {
+        ...state,
+        tagFormData: action.payload.tagFormData,
       }
     default:
       return state
@@ -199,9 +226,23 @@ function tagSumbitSuccess(payload) {
   }
 }
 
+function tagUpdateSuccess(payload) {
+  return {
+    payload,
+    type: TAG_UPDATE_SUCCESS,
+  }
+}
+
 function noTagsFound() {
   return {
     type: NO_TAGS,
+  }
+}
+
+function setTagAlert(alert) {
+  return {
+    type: SET_TAG_ALERT,
+    payload: { alert },
   }
 }
 
@@ -243,7 +284,31 @@ export function loadIngredientOptions(payload) {
   }
 }
 
+export function loadEditTagForm(id) {
+  return {
+    type: LOAD_EDIT_TAG_FORM,
+    payload: id,
+  }
+}
+
+function loadEditTagFormSuccess(tagFormData) {
+  return {
+    type: LOAD_EDIT_TAG_FORM_SUCCESS,
+    payload: { tagFormData },
+  }
+}
+
 // Sagas
+
+function* loadEditTagFormTask({ payload }) {
+  const url = `/api/tags/${payload}/edit`
+  const result = yield call(callApi, url)
+  if (result.success) {
+    yield put(loadEditTagFormSuccess(result.data))
+  } else {
+    yield put(notLoading())
+  }
+}
 
 function* loadTagOptionsTask() {
   const url = '/api/tag_types?grouped=true'
@@ -266,13 +331,20 @@ function* loadTagTypesTask() {
 }
 
 function* handleTagSubmitTask({ payload }) {
-  const url = '/api/tags'
-  const params = { data: payload, method: 'POST' }
+  const method = payload.id ? 'PUT' : 'POST'
+  const id = payload.id ? `/${payload.id}` : ''
+  const url = `/api/tags${id}`
+  const params = { method, data: payload }
   const result = yield call(callApi, url, params)
   if (result.success) {
-    yield put(tagSumbitSuccess(result.data))
+    if (method === 'PUT') {
+      yield put(tagUpdateSuccess(result.data))
+    } else {
+      yield put(tagSumbitSuccess(result.data))
+    }
+  } else {
+    yield put(setTagAlert('Unable to update tag'))
   }
-  console.log(result)
 }
 
 function* loadTagInfoTask({ payload }) {
@@ -331,6 +403,7 @@ export function* tagsSaga() {
   yield takeLatest(LOAD_TAG_INFO, loadTagInfoTask)
   yield takeEvery(LOAD_TAG_OPTIONS, loadTagOptionsTask)
   yield takeEvery(LOAD_TAG_TYPES, loadTagTypesTask)
+  yield takeEvery(LOAD_EDIT_TAG_FORM, loadEditTagFormTask)
   yield takeEvery(LOAD_INGREDIENT_OPTIONS, loadIngredientOptionsTask)
   yield takeLatest(HANDLE_TAG_SUBMIT, handleTagSubmitTask)
 }

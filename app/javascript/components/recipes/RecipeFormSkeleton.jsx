@@ -47,7 +47,7 @@ class RecipeFormSkeleton extends React.Component {
     if (
       ingredientOptions.length > 0 &&
       ingredientModificationOptions.length > 0 &&
-      Object.keys(tagOptions).length > 0
+      Object.keys(tagOptions).length > 1
     ) {
       return (
         <RecipeForm

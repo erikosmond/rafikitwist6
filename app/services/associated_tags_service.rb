@@ -4,7 +4,7 @@
 
 # Helper methods to generate SQL to connect tags to their related tags.
 module AssociatedTagsService
-  def tag_with_hierarchy(current_user, all_tags = false)
+  def tag_with_hierarchy(current_user, all_tags: false)
     hierarchy = Tag.select(
       tag_hierarchy_select
     ).left_outer_joins(
@@ -66,9 +66,9 @@ module AssociatedTagsService
     def tag_hierarchy_join
       join_tables = [
         :tag_type,
-        child_tag_selections: [:access, { tag: :child_tags }],
-        parent_tags: :parent_tags,
-        tag_selections: :modifications
+        { child_tag_selections: [:access, { tag: :child_tags }],
+          parent_tags: :parent_tags,
+          tag_selections: :modifications }
       ]
       join_tables << :modified_tags if modification_tag?
       join_tables

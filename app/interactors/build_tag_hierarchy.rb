@@ -13,7 +13,9 @@ class BuildTagHierarchy
 
     context.tags_with_hierarchy = filter_tags(hierarchy)
 
-    context.sister_tags = sister_tags
+    context.sister_tags = sister_tags.reject do |t|
+      TagType.ingredient_category_id == t.tag_type_id
+    end
   end
 
   private
@@ -23,8 +25,7 @@ class BuildTagHierarchy
       sisters.reject! { |s| s.id == context.tag.id }
       accessible_sisters = TagSelection.joins(:access).where(tag_id: sisters.pluck(:id)).
                            where(accesses_predicate).includes(:tag)
-      tags = accessible_sisters.first ? accessible_sisters&.map(&:tag) : friends
-      tags.reject { |t| TagType.ingredient_category_id == t.tag_type_id }
+      accessible_sisters.first ? accessible_sisters&.map(&:tag) : friends
     end
 
     def friends
@@ -99,9 +100,9 @@ class BuildTagHierarchy
     def tag_hierarchy_join
       join_tables = [
         :tag_type,
-        child_tag_selections: child_tag_joins,
-        parent_tags: :parent_tags,
-        tag_selections: :modifications
+        { child_tag_selections: child_tag_joins,
+          parent_tags: :parent_tags,
+          tag_selections: :modifications }
       ]
       join_tables << :modified_tags if modification_tag?
       join_tables

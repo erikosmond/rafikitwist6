@@ -10,18 +10,22 @@ class PagesController < ApplicationController
     assign_meta_tag_name
     priority_tags = TagType.find_by_name(PRIORITY_TAG_NAME).tags
     rating_tags = TagType.find_by_name(RATING_TAG_NAME).tags
-    set_home_vars(rating_tags, priority_tags)
+    set_home_vars
     set_constant_tags
+    set_subjective_tags(rating_tags, priority_tags)
   end
 
   private
 
-    def set_home_vars(rating_tags, priority_tags)
+    def set_home_vars
       @first_name = current_user&.first_name
       @home_tag_id = (Tag.find_by_name(HOME_TAG_NAME) || Tag.first).id
+      @signed_in = current_user&.id&.to_i&.positive?
+    end
+
+    def set_subjective_tags(rating_tags, priority_tags)
       @priorities = priority_tags.each_with_object({}) { |t, obj| obj[t.name] = t.id }
       @ratings = rating_tags.each_with_object({}) { |t, obj| obj[t.name] = t.id }
-      @signed_in = current_user&.id&.to_i&.positive?
     end
 
     def set_constant_tags

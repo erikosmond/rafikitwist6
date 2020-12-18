@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'rails_helper'
 
-require_relative '../contexts/tag_context.rb'
+require_relative '../contexts/tag_context'
 
 describe Api::TagTypesController, type: :controller do
   before(:each) do

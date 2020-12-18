@@ -4,7 +4,7 @@
 # access on the tag and accesses on the taggings
 
 require 'rails_helper'
-require_relative '../contexts/tag_type_context.rb'
+require_relative '../contexts/tag_type_context'
 
 # rubocop: disable Metrics/BlockLength
 RSpec.describe TagsByType, type: :interactor do

@@ -14,19 +14,20 @@ let TagForm = (props) => {
     handleSubmit,
     tagTypes,
   } = props
-
   const buildParentTagDropdown =
     tagOptions.ingredientCategory
       .concat(tagOptions.ingredientFamily)
       .concat(tagOptions.ingredientType)
-
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.container}>
+        <Field name="id" component="input" type="hidden" />
         <div className={classes.nameLabel} htmlFor="tagName">Tag Name</div>
         <Field className={classes.nameField} name="name" component="input" type="text" />
         <div className={classes.descriptionLabel} htmlFor="description">Description</div>
         <Field className={classes.descriptionField} name="description" component="input" type="text" />
+        <div className={classes.recipeIdLabel} htmlFor="recipeId">Recipe ID</div>
+        <Field className={classes.recipeIdField} name="recipeId" component="input" type="text" />
         <div className={classes.parentTags}>
           <Field
             name="parentTags"
@@ -34,13 +35,14 @@ let TagForm = (props) => {
             props={{
               tagOptions: buildParentTagDropdown,
               title: 'Parent Tags',
+              id: 'parentTags',
             }}
           />
         </div>
         <div className={classes.tagType}>
           <label>Tag Type</label>
           <Field name="tagTypeId" component="select">
-            <option></option>
+            <option />
             {tagTypes.map((tagType) => (
 
               <option key={tagType.id} value={tagType.id}>
@@ -65,6 +67,8 @@ TagForm.propTypes = {
     container: PropTypes.string,
     nameLabel: PropTypes.string,
     nameField: PropTypes.string,
+    recipeIdLabel: PropTypes.string,
+    recipeIdField: PropTypes.string,
     descriptionLabel: PropTypes.string,
     descriptionField: PropTypes.string,
     parentTags: PropTypes.string,

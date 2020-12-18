@@ -7,14 +7,13 @@ import {
   selectedRecipeService,
   visibleFilterService,
 } from 'services/recipeFilters'
-import { loadIngredientOptionsTask } from 'bundles/tags'
+import { loadIngredientOptionsTask, LOAD_RECIPE_SUCCESS } from 'bundles/tags'
 
 // Actions
 const LOAD_RECIPES = 'recipes/loadRecipes'
 const LOAD_RECIPES_SUCCESS = 'recipes/loadRecipesSuccess'
 const NO_RECIPES_FOUND = 'recipes/noRecipesFound'
 const LOAD_RECIPE = 'recipes/loadRecipe'
-const LOAD_RECIPE_SUCCESS = 'recipes/loadRecipeSuccess'
 const LOAD_RECIPE_OPTIONS = 'recipes/loadRecipeOptions'
 const LOAD_RECIPE_OPTIONS_SUCCESS = 'recipes/loadRecipeOptionsSuccess'
 const NO_RECIPE_FOUND = 'recipes/noRecipeFound'
@@ -41,6 +40,7 @@ const UPDATE_MOBILE_DRAWER_STATE = 'recipes/updateMobileDrawerState'
 const DEFAULT_PAGED_RECIPE_COUNT = 10
 const CLEAR_ERRORS = 'recipes/clearErrors'
 const RECIPE_SUBMIT_SUCCESS = 'recipes/recipeSubmitSuccess'
+const SET_RECIPE_ALERT = 'recipes/setRecipeAlert'
 
 // Reducer
 const initialState = {
@@ -155,6 +155,11 @@ export default function recipesReducer(store, action = {}) {
           similar: false,
         },
       }
+    case SET_RECIPE_ALERT:
+      return {
+        ...state,
+        alert: action.payload.alert,
+      }
     case LOAD_RECIPE_OPTIONS_SUCCESS:
       return {
         ...state,
@@ -201,6 +206,7 @@ export default function recipesReducer(store, action = {}) {
         ...state,
         noRecipes: false,
         loading: false,
+        // TODO: selectedTag is in the tags bundle
         selectedTag: {},
         recipesLoaded: false,
       }
@@ -440,6 +446,13 @@ export function updateMobileDrawerState(mobileDrawerState) {
   }
 }
 
+function setRecipeAlert(alert) {
+  return {
+    type: SET_RECIPE_ALERT,
+    payload: { alert },
+  }
+}
+
 export function updateTagSelectionSuccess(taggableType, taggableId, tagType, tagId, id) {
   return {
     type: UPDATE_RECIPE_TAG_SUCCESS,
@@ -622,7 +635,7 @@ function* updateTagSelectionTask({
     ))
     yield call(loadIngredientOptionsTask, { payload: { ingredientType: 'More' } })
   } else {
-    console.log('Unable to update recipe')
+    yield put(setRecipeAlert('Unable to update recipe'))
   }
 }
 
@@ -658,7 +671,7 @@ function* submitRecipeCommentTask({
       taggableType, taggableId, 'newComment', commentTagId, body, result.data.id,
     ))
   } else {
-    console.log('Unable to save comment')
+    yield put(setRecipeAlert('Unable to save comment'))
   }
 }
 

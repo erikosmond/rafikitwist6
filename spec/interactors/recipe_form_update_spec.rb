@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative '../contexts/tag_type_context.rb'
-require_relative '../contexts/recipe_form_context.rb'
+require_relative '../contexts/tag_type_context'
+require_relative '../contexts/recipe_form_context'
 
 # rubocop: disable Metrics/BlockLength
 RSpec.describe RecipeForm, type: :interactor do

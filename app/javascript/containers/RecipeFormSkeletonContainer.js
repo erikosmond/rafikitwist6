@@ -16,7 +16,7 @@ import {
 
 export default withRouter(connect(
   (state) => ({
-    formData: state.recipesReducer.formData,
+    formData: state.tagsReducer.tagFormData,
     ingredientModificationOptions: state.tagsReducer.ingredientModificationOptions,
     ingredientOptions: state.tagsReducer.ingredientOptions,
     recipe: state.recipesReducer.recipe,

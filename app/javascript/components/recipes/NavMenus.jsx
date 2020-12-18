@@ -49,7 +49,7 @@ const NavMenus = (props) => {
     )
   }
   const renderRelatedTags = () => {
-    if (mobile) {
+    if (mobile && Object.keys(selectedTag).length > 0) {
       return (
         <div>
           <h3>Related</h3>
@@ -74,6 +74,7 @@ const NavMenus = (props) => {
         placeholder="Recipes"
         updateHistory={updateRecipes}
         className={mobile ? classes.searchWidth : ''}
+        mobile={mobile}
       />
       <HeaderDropdown
         dropdownOptions={ingredientOptions}
@@ -81,6 +82,7 @@ const NavMenus = (props) => {
         placeholder="Ingredients"
         updateHistory={updateTags}
         className={mobile ? classes.searchWidth : ''}
+        mobile={mobile}
       />
       <HeaderDropdown
         dropdownOptions={categoryOptions}
@@ -88,6 +90,7 @@ const NavMenus = (props) => {
         placeholder="More"
         updateHistory={updateTags}
         className={mobile ? classes.searchMargin : ''}
+        mobile={mobile}
       />
       {renderRelatedTags()}
       {renderAccount()}
