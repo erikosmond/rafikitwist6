@@ -44,7 +44,7 @@ RSpec.describe GroupTags, type: :interactor do
     let(:expected_ingredient_result) do
       {
         'child_tags' => {},
-        'description' => nil,
+        'description' => 'a bit nutty',
         'grandchild_tags' => {},
         'grandparent_tags' => { protein.id => 'Protein' },
         'id' => almond.id,
@@ -52,7 +52,7 @@ RSpec.describe GroupTags, type: :interactor do
         'modified_tags' => {},
         'name' => 'Almond',
         'parent_tags' => { nut.id => 'Nut' },
-        'recipe_id' => nil,
+        'recipe_id' => 1,
         'sister_tags' => {},
         'tag_type_id' => almond.tag_type_id,
         'tags' => { almond.id => 'Almond' }

@@ -108,6 +108,7 @@ describe Api::TagsController, type: :controller do
 
     describe 'returns data for an ingredient type tag' do
       let!(:params) { { id: nut.id } }
+      # TODO: add sister tags
       let!(:expected_response) do
         {
           'id' => nut.id,
@@ -152,6 +153,28 @@ describe Api::TagsController, type: :controller do
       it 'returns the correct name, id, and type' do
         body = JSON.parse(response.body)
         expect(body).to eq expected_response
+      end
+    end
+  end
+
+  describe 'GET - edit' do
+    before do
+      sign_in user
+      get :edit,
+          params: params,
+          format: 'json'
+    end
+
+    describe 'returns data for an ingredient tag' do
+      let!(:params) { { id: almond.id } }
+      it 'returns the correct name, id, and type' do
+        body = JSON.parse(response.body)
+        expect(body['id']).to eq almond.id
+        expect(body['name']).to eq almond.name
+        expect(body['tag_type_id']).to eq almond.tag_type_id
+        expect(body['description']).to eq almond.description
+        expect(body['recipe_id']).to eq almond.recipe_id
+        expect(body['parent_tags']).to eq [{ 'id' => nut.id, 'name' => nut.name }]
       end
     end
   end
