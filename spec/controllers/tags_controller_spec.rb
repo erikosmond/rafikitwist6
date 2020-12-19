@@ -210,6 +210,34 @@ describe Api::TagsController, type: :controller do
     end
   end
 
+  describe 'PUT - update - missing permissions' do
+    before do
+      sign_in other_user
+      put :update,
+          params: params,
+          format: 'json'
+    end
+
+    describe 'returns data for an ingredient tag' do
+      let!(:other_user) { create :user }
+      let!(:params) do
+        {
+          id: almond.id,
+          name: 'almond2',
+          description: 'desc2',
+          recipe_id: 2,
+          tag_type_id: almond.tag_type_id + 1,
+          parent_tags: [{ 'id' => protein.id, 'name' => protein.name }]
+        }
+      end
+      it 'returns the correct name, id, and type' do
+        body = JSON.parse(response.body)
+        expect(body).to eq({})
+        expect(response.status).to eq 403
+      end
+    end
+  end
+
   describe 'POST - create' do
     before do
       sign_in user
