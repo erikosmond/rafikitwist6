@@ -1,6 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import SearchIcon from '@material-ui/icons/Search'
+import { withStyles } from '@material-ui/core/styles'
 import StyledSelect from '../styled/StyledSelect'
+
+
+const styles = () => ({
+  searchIcon: {
+    position: 'relative',
+    top: '4px',
+  },
+})
 
 class HeaderDropdown extends React.Component {
   constructor(props) {
@@ -23,9 +33,22 @@ class HeaderDropdown extends React.Component {
     }
   }
 
+  placeholderWithIcon = (placeholder, classes) => {
+    return (
+      <h2>
+        <div>
+          <SearchIcon className={classes.searchIcon} />
+          &nbsp;
+          {placeholder}
+        </div>
+      </h2>
+    )
+  }
+
   render() {
     const { selectedOption } = this.state
     const {
+      classes,
       dropdownOptions,
       placeholder,
       className,
@@ -37,7 +60,7 @@ class HeaderDropdown extends React.Component {
         value={selectedOption}
         onChange={this.handleChange}
         options={options}
-        placeholder={placeholder}
+        placeholder={this.placeholderWithIcon(placeholder, classes)}
         isSearchable
         isClearable
         className={className}
@@ -47,9 +70,12 @@ class HeaderDropdown extends React.Component {
   }
 }
 
-export default HeaderDropdown
+export default withStyles(styles)(HeaderDropdown)
 
 HeaderDropdown.propTypes = {
+  classes: PropTypes.shape({
+    root: PropTypes.string.isRequired, chip: PropTypes.string.isRequired,
+  }).isRequired,
   loadOptions: PropTypes.func.isRequired,
   updateHistory: PropTypes.func.isRequired,
   dropdownOptions: PropTypes.arrayOf(PropTypes.shape(
