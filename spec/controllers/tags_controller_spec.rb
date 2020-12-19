@@ -178,5 +178,68 @@ describe Api::TagsController, type: :controller do
       end
     end
   end
+
+  describe 'PUT - update' do
+    before do
+      sign_in user
+      put :update,
+          params: params,
+          format: 'json'
+    end
+
+    describe 'returns data for an ingredient tag' do
+      let!(:params) do
+        {
+          id: almond.id,
+          name: 'almond2',
+          description: 'desc2',
+          recipe_id: 2,
+          tag_type_id: almond.tag_type_id + 1,
+          parent_tags: [{ 'id' => protein.id, 'name' => protein.name }]
+        }
+      end
+      it 'returns the correct name, id, and type' do
+        body = JSON.parse(response.body)
+        expect(body['id']).to eq almond.id
+        expect(body['name']).to eq 'almond2'
+        expect(body['tag_type_id']).to eq almond.tag_type_id + 1
+        expect(body['description']).to eq 'desc2'
+        expect(body['recipe_id']).to eq 2
+        expect(body['parent_tags']).to eq [{ 'id' => protein.id, 'name' => protein.name }]
+      end
+    end
+  end
+
+  describe 'POST - create' do
+    before do
+      sign_in user
+      post :create,
+           params: params,
+           format: 'json'
+    end
+
+    describe 'returns data for an ingredient tag' do
+      let!(:params) do
+        {
+          name: 'hazelnut',
+          description: 'descHazel',
+          recipe_id: 3,
+          tag_type_id: almond.tag_type_id,
+          parent_tags: [{ 'id' => protein.id, 'name' => protein.name }]
+        }
+      end
+      it 'returns the correct name, id, and type' do
+        body = JSON.parse(response.body)
+        expect(body['id']).to be_a_kind_of(Integer)
+        expect(body['name']).to eq 'hazelnut'
+        expect(body['tag_type_id']).to eq almond.tag_type_id
+        expect(body['description']).to eq 'descHazel'
+        expect(body['recipe_id']).to eq 3
+        expect(body['parent_tags']).to eq [{ 'id' => protein.id, 'name' => protein.name }]
+      end
+    end
+  end
+
+  # TODO: ensure permissions are enforced for update
 end
 # rubocop: enable Metrics/BlockLength
