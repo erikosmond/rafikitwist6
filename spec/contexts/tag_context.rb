@@ -11,7 +11,13 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   let(:protein) { create(:tag, tag_type: type_ingredient_family, name: 'Protein') }
   let(:nut) { create(:tag, tag_type: type_ingredient_type, name: 'Nut') }
   let(:vodka) { create(:tag, tag_type: type_ingredient, name: 'Vodka') }
-  let(:almond) { create :tag, tag_type: type_ingredient, name: 'Almond' }
+  let(:almond) do
+    create :tag,
+           tag_type: type_ingredient,
+           name: 'Almond',
+           recipe_id: 1,
+           description: 'a bit nutty'
+  end
   let!(:tag_selection1) { create :tag_selection, tag: nut, taggable: almond }
   let!(:tag_selection2) { create :tag_selection, tag: protein, taggable: nut }
   let!(:tag_selection3) { create :tag_selection, tag: plants, taggable: protein }

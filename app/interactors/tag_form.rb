@@ -46,7 +46,7 @@ class TagForm < GeneralForm
     end
 
     def tag_with_type(tag)
-      result = tag.as_json
+      result = tag.as_json({ include: { parent_tags: { only: %i[id name] } } })
       result['tag_type'] = tag.tag_type.name.camelize(:lower)
       result
     end
