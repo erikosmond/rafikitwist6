@@ -267,7 +267,5 @@ describe Api::TagsController, type: :controller do
       end
     end
   end
-
-  # TODO: ensure permissions are enforced for update
 end
 # rubocop: enable Metrics/BlockLength

@@ -74,7 +74,7 @@ export default withStyles(styles)(HeaderDropdown)
 
 HeaderDropdown.propTypes = {
   classes: PropTypes.shape({
-    root: PropTypes.string.isRequired, chip: PropTypes.string.isRequired,
+    searchIcon: PropTypes.string.isRequired,
   }).isRequired,
   loadOptions: PropTypes.func.isRequired,
   updateHistory: PropTypes.func.isRequired,
