@@ -5,7 +5,7 @@
 # parent tags do not get accesses in production and it works properly
 
 # TODO: double check everything here & outline tests i will write
-RSpec.shared_context 'recipes', shared_context: :metadata do
+RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
   let!(:ingredient_tag_type) { create(:tag_type, name: 'Ingredient') }
@@ -30,7 +30,7 @@ RSpec.shared_context 'recipes', shared_context: :metadata do
   end
   let(:nut) { create(:tag, name: 'nut', tag_type: ingredient_type_tag_type) }
   let!(:nut1_access) { create(:access, accessible: nut, user: user1, status: 'PRIVATE') }
-  let!(:nut_to_protein) { create(:tag_selection, tag: protein, taggable: nut) }
+  let!(:nut_to_protein) { create(:tag_selection, tag: plant_protein, taggable: nut) }
 
   let(:grains) { create(:tag, name: 'grains', tag_type: ingredient_family_tag_type) }
   let!(:g1_access) { create(:access, accessible: grains, user: user1, status: 'PUBLIC') }
@@ -49,7 +49,7 @@ RSpec.shared_context 'recipes', shared_context: :metadata do
     create(:access, accessible: baking_soda, user: user1, status: 'PUBLIC')
   end
 
-  let(:self_rising_flour_recipe) { create(:recipe, name: 'self-rising flour') }
+  let!(:self_rising_flour_recipe) { create(:recipe, name: 'self-rising flour') }
   let!(:srf1_access) do
     create(:access, accessible: self_rising_flour_recipe, user: user1, status: 'PUBLIC')
   end

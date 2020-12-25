@@ -16,6 +16,7 @@ module Api
 
     def show
       recipe = Recipe.find_by_id(params.permit(:id)[:id])
+      Permissions.new(current_user).can_view!(recipe)
       if recipe&.tags&.first
         # Fetch all the universal recipe tags like ingredients, but also user
         # tags like ratings.
@@ -38,7 +39,7 @@ module Api
 
     def edit
       recipe = Recipe.find_by_id params.permit(:id)['id']
-      current_user.present? && Permissions.new(current_user).can_edit!(recipe)
+      Permissions.new(current_user).can_edit!(recipe)
       render json: RecipeForm.call(
         action: :edit, params: { recipe: recipe }, user: current_user
       ).result
@@ -46,7 +47,7 @@ module Api
 
     def update
       recipe = Recipe.find_by_id update_recipe_params['id']
-      current_user.present? && Permissions.new(current_user).can_edit!(recipe)
+      Permissions.new(current_user).can_edit!(recipe)
       render json: RecipeForm.call(
         action: :update,
         params: { recipe: recipe, form_fields: update_recipe_params },

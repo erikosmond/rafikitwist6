@@ -83,5 +83,11 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   let!(:access14) do
     create(:access, user: user, accessible: toasted, status: 'PUBLIC')
   end
+  let!(:access15) do
+    create(:access, user: user, accessible: protein, status: 'PUBLIC')
+  end
+  let!(:access16) do
+    create(:access, user: user, accessible: nut, status: 'PUBLIC')
+  end
 end
 # rubocop: enable Metrics/BlockLength
