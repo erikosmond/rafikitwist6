@@ -21,15 +21,31 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:low_priority) { create(:tag, name: 'low priority', tag_type: priority_type) }
   let!(:smokey) { create(:tag, name: 'smokey', tag_type: flavor_type) }
 
+  let!(:one_star_access) do
+    create(:access, accessible: one_star, user: user1, status: 'PUBLIC')
+  end
+  let!(:five_star_access) do
+    create(:access, accessible: five_star, user: user1, status: 'PUBLIC')
+  end
+  let!(:high_priority_access) do
+    create(:access, accessible: high_priority, user: user1, status: 'PUBLIC')
+  end
+  let!(:low_priority_access) do
+    create(:access, accessible: low_priority, user: user1, status: 'PUBLIC')
+  end
+  let!(:smokey_access) do
+    create(:access, accessible: smokey, user: user1, status: 'PUBLIC')
+  end
+
   # Ingredient family
   let(:plant_protein) do
     create(:tag, name: 'plant protein', tag_type: ingredient_family_tag_type)
   end
   let!(:pp1_access) do
-    create(:access, accessible: plant_protein, user: user1, status: 'PRIVATE')
+    create(:access, accessible: plant_protein, user: user2, status: 'PRIVATE')
   end
   let(:nut) { create(:tag, name: 'nut', tag_type: ingredient_type_tag_type) }
-  let!(:nut1_access) { create(:access, accessible: nut, user: user1, status: 'PRIVATE') }
+  let!(:nut1_access) { create(:access, accessible: nut, user: user2, status: 'PRIVATE') }
   let!(:nut_to_protein) { create(:tag_selection, tag: plant_protein, taggable: nut) }
 
   let(:grains) { create(:tag, name: 'grains', tag_type: ingredient_family_tag_type) }
@@ -45,12 +61,12 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let(:water) { create(:tag, name: 'water', tag_type: ingredient_tag_type) }
   let!(:w1_access) { create(:access, accessible: water, user: user1, status: 'PUBLIC') }
   let(:baking_soda) { create(:tag, name: 'baking soda', tag_type: ingredient_tag_type) }
-  let!(:w1_access) do
+  let!(:baking_soda_access) do
     create(:access, accessible: baking_soda, user: user1, status: 'PUBLIC')
   end
 
   let!(:self_rising_flour_recipe) { create(:recipe, name: 'self-rising flour') }
-  let!(:srf1_access) do
+  let!(:srfr1_access) do
     create(:access, accessible: self_rising_flour_recipe, user: user1, status: 'PUBLIC')
   end
   let!(:srf1_ing1) do
@@ -74,7 +90,7 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   end
 
   let(:pizza_dough_recipe) { create(:recipe, name: 'pizza dough') }
-  let!(:srf1_access) do
+  let!(:pdr1_access) do
     create(:access, accessible: pizza_dough_recipe, user: user1, status: 'PUBLIC')
   end
   let!(:pdr1_ing1) do
@@ -98,15 +114,15 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   end
 
   let(:almond) { create(:tag, name: 'almond', tag_type: ingredient_tag_type) }
-  let!(:f1_access) { create(:access, accessible: almond, user: user1, status: 'PRIVATE') }
+  let!(:a5_access) { create(:access, accessible: almond, user: user2, status: 'PRIVATE') }
   let(:sugar) { create(:tag, name: 'sugar', tag_type: ingredient_tag_type) }
-  let!(:s2_access) { create(:access, accessible: sugar, user: user1, status: 'PRIVATE') }
+  let!(:s2_access) { create(:access, accessible: sugar, user: user2, status: 'PRIVATE') }
   let!(:almond_to_nut) { create(:tag_selection, tag: nut, taggable: almond) }
 
   # Ingredient Parent Tags
   let(:almond_milk_recipe) { create(:recipe, name: 'almond milk') }
-  let!(:am1_access) do
-    create(:access, accessible: almond_milk_recipe, user: user1, status: 'PRIVATE')
+  let!(:amr1_access) do
+    create(:access, accessible: almond_milk_recipe, user: user2, status: 'PRIVATE')
   end
   let!(:am1_ing1) { create(:tag_selection, tag: almond, taggable: almond_milk_recipe) }
   let!(:am1_ing2) { create(:tag_selection, tag: water, taggable: almond_milk_recipe) }
@@ -121,12 +137,12 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
     )
   end
   let!(:am1_access) do
-    create(:access, accessible: almond_milk, user: user1, status: 'PRIVATE')
+    create(:access, accessible: almond_milk, user: user2, status: 'PRIVATE')
   end
 
   let(:orgeat_recipe) { create(:recipe, name: 'orgeat') }
-  let!(:am1_access) do
-    create(:access, accessible: orgeat_recipe, user: user1, status: 'PRIVATE')
+  let!(:orgr1_access) do
+    create(:access, accessible: orgeat_recipe, user: user2, status: 'PRIVATE')
   end
   let!(:org1_ing1) { create(:tag_selection, tag: almond_milk, taggable: orgeat_recipe) }
   let!(:org1_ing2) { create(:tag_selection, tag: sugar, taggable: orgeat_recipe) }
@@ -137,7 +153,7 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
     )
   end
   let!(:org1_access) do
-    create(:access, accessible: orgeat, user: user1, status: 'PRIVATE')
+    create(:access, accessible: orgeat, user: user2, status: 'PRIVATE')
   end
 
   # Ingredients with access
@@ -162,7 +178,7 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let(:clove) { create(:tag, name: 'clove', tag_type: ingredient_tag_type) }
   let!(:c3_access) { create(:access, accessible: clove, user: user1, status: 'PRIVATE') }
   let(:rum) { create(:tag, name: 'captain morgan rum', tag_type: ingredient_tag_type) }
-  let!(:r3_access) { create(:access, accessible: rum, user: user1, status: 'PRIVATE') }
+  let!(:r3_access) { create(:access, accessible: rum, user: user2, status: 'PRIVATE') }
 
   # Recipes with access
   ## Pizza - showing public nested recipe tags
@@ -189,7 +205,7 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
 
   ## Pumpkin Pie
   let(:pumpkin_pie) { create(:recipe, name: 'Pumpkin Pie') }
-  let!(:vp1_access) do
+  let!(:pp2_access) do
     create(:access, accessible: pumpkin_pie, user: user1, status: 'PRIVATE')
   end
   let!(:p4ts1) { create(:tag_selection, taggable: pumpkin_pie, tag: pumpkin) }
@@ -197,7 +213,7 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
 
   ## Mashed Potatoes
   let(:mashed_potatoes) { create(:recipe, name: 'Mashed Potatoes') }
-  let!(:vp1_access) do
+  let!(:mp1_access) do
     create(:access, accessible: mashed_potatoes, user: user1, status: 'PRIVATE')
   end
   let!(:p5ts1) { create(:tag_selection, taggable: mashed_potatoes, tag: potato) }
@@ -205,7 +221,7 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
 
   ## Awesome Blossom
   let(:awesome_blossom) { create(:recipe, name: 'Awesome Blossom') }
-  let!(:vp1_access) do
+  let!(:appb1_access) do
     create(:access, accessible: awesome_blossom, user: user2, status: 'PRIVATE')
   end
   let!(:p6ts1) { create(:tag_selection, taggable: awesome_blossom, tag: onion) }

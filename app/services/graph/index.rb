@@ -2,7 +2,7 @@
 
 module Graph
   # Parent class for organizing resources based on user ownership.
-  class UserAccessIndex
+  class Index
     attr_reader :hash
 
     private_class_method :new
