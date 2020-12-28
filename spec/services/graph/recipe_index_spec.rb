@@ -4,7 +4,7 @@ require 'rails_helper'
 require_relative '../../contexts/graph_index_context'
 
 # temp rubocop: disable Metrics/BlockLength
-describe Graph::UserAccessRecipeIndex do
+describe Graph::RecipeIndex do
   include_context 'graph_index_context'
   let(:expected_hash) do
     {
@@ -24,8 +24,8 @@ describe Graph::UserAccessRecipeIndex do
     }
   end
 
-  it 'generates and returns the user access recipes index' do
-    expect(Graph::UserAccessRecipeIndex.cache.hash).to eq expected_hash
+  it 'generates and returns the recipes index' do
+    expect(Graph::RecipeIndex.cache.hash).to eq expected_hash
   end
 end
 # temp rubocop: enable Metrics/BlockLength

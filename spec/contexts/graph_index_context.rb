@@ -15,6 +15,8 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:rating_type) { create(:tag_type, name: 'Rating') }
   let!(:flavor_type) { create(:tag_type, name: 'Flavor') }
 
+  # TODO: - add at least one ingredient modification in a recipe
+  # TODO: - add some user ratings and priorities
   let!(:one_star) { create(:tag, name: '1 star', tag_type: rating_type) }
   let!(:five_star) { create(:tag, name: '5 star', tag_type: rating_type) }
   let!(:high_priority) { create(:tag, name: 'high priority', tag_type: priority_type) }

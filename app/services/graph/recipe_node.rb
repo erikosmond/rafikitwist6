@@ -3,10 +3,27 @@
 module Graph
   # In memory model for recipes in the graph.
   class RecipeNode
-    attr_accessor %i[id name instructions description objective_tag_ids]
-    def initialize(id)
-      @id = id
+    delegate :id, :name, :instructions, :description, to: :@recipe
+    attr_reader :objective_tag_ids, :ingredients, :tag_ids_by_type
+
+    def initialize(recipe)
+      @recipe = recipe
       @objective_tag_ids = []
+      @ingredients = []
+      @tags_ids_by_type = Hash.new { |hsh, key| hsh[key] = [] }
+      organize_associations
+    end
+
+    # tag_selections: [:modification_selections, { tag: :tag_type }])
+    def organize_associations
+      @recipe.tag_selections.each do |ts|
+        @objective_tag_ids << ts.tag_id
+        if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
+          ingredients << Ingredient(ts)
+        else
+          @tags_by_type[ts.tag.tag_type.name.underscore.pluralize] << ts.tag_id
+        end
+      end
     end
 
     def filter_tags
