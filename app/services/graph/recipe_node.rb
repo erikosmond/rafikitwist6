@@ -19,7 +19,7 @@ module Graph
       @recipe.tag_selections.each do |ts|
         @objective_tag_ids << ts.tag_id
         if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
-          ingredients << Ingredient(ts)
+          ingredients << Ingredient.new(ts)
         else
           @tags_by_type[ts.tag.tag_type.name.underscore.pluralize] << ts.tag_id
         end

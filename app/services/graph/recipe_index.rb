@@ -15,9 +15,9 @@ module Graph
 
       def recipes_with_objective_tags
         Recipe.left_joins(tag_selections:
-          [:tag_attributes, { tag: :tag_type, modification_selections: tag }]).
+          [:tag_attributes, { tag: :tag_type, modification_selections: :tag }]).
           preload(tag_selections:
-          [:tag_attributes, { tag: :tag_type, modification_selections: tag }]).
+          [:tag_attributes, { tag: :tag_type, modification_selections: :tag }]).
           where("tag_types.name NOT IN ('Comment', 'Priority', 'Rating')")
       end
   end

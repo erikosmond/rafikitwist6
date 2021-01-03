@@ -14,8 +14,8 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:priority_type) { create(:tag_type, name: 'Priority') }
   let!(:rating_type) { create(:tag_type, name: 'Rating') }
   let!(:flavor_type) { create(:tag_type, name: 'Flavor') }
+  let!(:mod_type) { create(:tag_type, name: 'IngredientModification') }
 
-  # TODO: - add at least one ingredient modification in a recipe
   # TODO: - add some user ratings and priorities
   let!(:one_star) { create(:tag, name: '1 star', tag_type: rating_type) }
   let!(:five_star) { create(:tag, name: '5 star', tag_type: rating_type) }
@@ -37,6 +37,10 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   end
   let!(:smokey_access) do
     create(:access, accessible: smokey, user: user1, status: 'PUBLIC')
+  end
+  let!(:bleached) { create(:tag, name: 'bleached', tag_type: mod_type) }
+  let!(:bleached_access) do
+    create(:access, accessible: bleached, user: user1, status: 'PUBLIC')
   end
 
   # Ingredient family
@@ -72,7 +76,19 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
     create(:access, accessible: self_rising_flour_recipe, user: user1, status: 'PUBLIC')
   end
   let!(:srf1_ing1) do
-    create(:tag_selection, tag: flour, taggable: self_rising_flour_recipe)
+    create(:tag_selection, tag: flour, taggable: self_rising_flour_recipe, body: 'sifted')
+  end
+  let!(:srf1_ing1_attr1) do
+    create(
+      :tag_attribute,
+      tag_attributable: srf1_ing1, property: 'amount', value: '1 cup'
+    )
+  end
+  let!(:srf1_ing1_attr2) do
+    create(:tag_attribute, tag_attributable: srf1_ing1, property: 'o prop', value: 'val')
+  end
+  let!(:srf1_ing1_mod) do
+    create(:tag_selection, taggable: srf1_ing1, tag: bleached)
   end
   let!(:srf1_ing2) do
     create(:tag_selection, tag: baking_soda, taggable: self_rising_flour_recipe)
@@ -226,8 +242,8 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:appb1_access) do
     create(:access, accessible: awesome_blossom, user: user2, status: 'PRIVATE')
   end
-  let!(:p6ts1) { create(:tag_selection, taggable: awesome_blossom, tag: onion) }
-  let!(:p6ts2) { create(:tag_selection, taggable: awesome_blossom, tag: pepper) }
+  let!(:ab1ts1) { create(:tag_selection, taggable: awesome_blossom, tag: onion) }
+  let!(:ab1ts2) { create(:tag_selection, taggable: awesome_blossom, tag: pepper) }
 
   ## Mai Tai - showing private nested recipe tags
   let(:mai_tai) { create(:recipe, name: 'Mai Tai') }

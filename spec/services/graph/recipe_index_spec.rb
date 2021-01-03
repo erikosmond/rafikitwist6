@@ -3,7 +3,7 @@
 require 'rails_helper'
 require_relative '../../contexts/graph_index_context'
 
-# temp rubocop: disable Metrics/BlockLength
+# rubocop: disable Metrics/BlockLength
 describe Graph::RecipeIndex do
   include_context 'graph_index_context'
   let(:expected_hash) do
@@ -23,9 +23,33 @@ describe Graph::RecipeIndex do
       ]
     }
   end
+  let(:index) { Graph::RecipeIndex.cache.hash }
 
+  # TODO: make sure the associations of the recipe are `loaded?`
   it 'generates and returns the recipes index' do
-    expect(Graph::RecipeIndex.cache.hash).to eq expected_hash
+    expect(index.values.map(&:name).sort).to eq [
+      'Awesome Blossom',
+      'Mai Tai',
+      'Mashed Potatoes',
+      'Pizza',
+      'Pumpkin Pie',
+      'Veggie Plate',
+      'Veggie Soup',
+      'almond milk',
+      'orgeat',
+      'pizza dough',
+      'self-rising flour'
+    ]
+  end
+
+  it 'loads recipes with associations' do
+    # binding.pry
+    expect(index.first.second.ingredients.first.amount).to eq '1 cup'
+    expect(index.first.second.ingredients.first.name).to eq 'flour'
+    expect(index.first.second.ingredients.first.modification_name).to eq 'bleached'
+    expect(index.first.second.ingredients.first.modification_id).to eq bleached.id
+    expect(index.first.second.ingredients.first.body).to eq 'sifted'
+    expect(index.first.second.ingredients.first.id).to eq flour.id
   end
 end
-# temp rubocop: enable Metrics/BlockLength
+# rubocop: enable Metrics/BlockLength
