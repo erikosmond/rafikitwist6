@@ -14,6 +14,8 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:priority_type) { create(:tag_type, name: 'Priority') }
   let!(:rating_type) { create(:tag_type, name: 'Rating') }
   let!(:flavor_type) { create(:tag_type, name: 'Flavor') }
+  let!(:vessel_type) { create(:tag_type, name: 'Vessel') }
+  let!(:source_type) { create(:tag_type, name: 'Source') }
   let!(:mod_type) { create(:tag_type, name: 'IngredientModification') }
 
   # TODO: - add some user ratings and priorities
@@ -22,6 +24,8 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:high_priority) { create(:tag, name: 'high priority', tag_type: priority_type) }
   let!(:low_priority) { create(:tag, name: 'low priority', tag_type: priority_type) }
   let!(:smokey) { create(:tag, name: 'smokey', tag_type: flavor_type) }
+  let!(:bowl) { create(:tag, name: 'bowl', tag_type: vessel_type) }
+  let!(:cook_book) { create(:tag, name: 'Cook Book', tag_type: source_type) }
 
   let!(:one_star_access) do
     create(:access, accessible: one_star, user: user1, status: 'PUBLIC')
@@ -37,6 +41,12 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   end
   let!(:smokey_access) do
     create(:access, accessible: smokey, user: user1, status: 'PUBLIC')
+  end
+  let!(:bowl_access) do
+    create(:access, accessible: bowl, user: user1, status: 'PUBLIC')
+  end
+  let!(:cook_book_access) do
+    create(:access, accessible: cook_book, user: user1, status: 'PUBLIC')
   end
   let!(:bleached) { create(:tag, name: 'bleached', tag_type: mod_type) }
   let!(:bleached_access) do
@@ -77,6 +87,12 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   end
   let!(:srf1_ing1) do
     create(:tag_selection, tag: flour, taggable: self_rising_flour_recipe, body: 'sifted')
+  end
+  let!(:srf1_bowl) do
+    create(:tag_selection, tag: bowl, taggable: self_rising_flour_recipe)
+  end
+  let!(:srf1_source) do
+    create(:tag_selection, tag: cook_book, taggable: self_rising_flour_recipe)
   end
   let!(:srf1_ing1_attr1) do
     create(

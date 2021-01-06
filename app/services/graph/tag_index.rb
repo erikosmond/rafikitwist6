@@ -8,10 +8,20 @@ module Graph
     private
 
       def generate_index
-        {
-          0 => [1, 2, 3],
-          1 => [1, 2, 5]
-        }
+        index = Tag.all.each_with_object({}) do |t, obj|
+          obj[t.id] = TagNode.new(t)
+        end
+        objective_tag_selections.each do |ts|
+          index[ts.taggable_id].add_parent_tag_id(ts.tag_id)
+          index[ts.tag_id].add_child_tag_id(ts.taggable_id)
+        end
+        index
+      end
+
+      def objective_tag_selections
+        TagSelection.
+          where("taggable_type = 'Tag").
+          where("tag_types.name NOT IN ('Comment', 'Priority', 'Rating')")
       end
   end
 end
