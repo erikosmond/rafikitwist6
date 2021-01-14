@@ -23,7 +23,7 @@ describe Graph::RecipeIndex do
       ]
     }
   end
-  let(:index) { Graph::RecipeIndex.cache }
+  let(:index) { Graph::RecipeIndex.instance }
 
   # TODO: make sure the associations of the recipe are `loaded?`
   it 'generates and returns the recipes index' do
@@ -68,9 +68,51 @@ describe Graph::RecipeIndex do
 
   it 'loads filter tag ids' do
     index.reset
-    binding.pry
     expect(index.hash[self_rising_flour_recipe.id].filter_tag_ids).
-      to eq([flour.id, bowl.id, cook_book.id, baking_soda.id])
+      to eq([flour.id, wheat.id, grains.id, bowl.id, cook_book.id, baking_soda.id])
+  end
+
+  it 'loads filter tag ids with nested recipes' do
+    index.reset
+    expect(index.hash[mai_tai.id].filter_tag_ids.sort).
+      to eq([
+        plant_protein.id, nut.id, water.id, almond.id,
+        sugar.id, almond_milk.id, orgeat.id, rum.id
+      ].sort)
+  end
+
+  it 'shows tag modifications by user' do
+    index.reset
+    modified = Graph::UserAccessModifiedTagIndex.instance.hash
+    modifications = Graph::UserAccessModificationTagIndex.instance.hash
+    flour_tag = Graph::TagIndex.instance.fetch_by_user_id(flour.id, user1.id)
+    expect(modified).to eq(
+      {
+        0 => { bleached.id => [flour.id] }, user2.id =>
+        {
+          dry_roasted.id => [almond.id], distilled.id => [water.id]
+        }
+      }
+    )
+
+    expect(modifications).to eq(
+      {
+        0 => { flour.id => [bleached.id] }, user2.id =>
+        {
+          almond.id => [dry_roasted.id], water.id => [distilled.id]
+        }
+      }
+    )
+    almond_tag = Graph::TagIndex.instance.fetch_by_user_id(almond.id, user2.id)
+    fr = almond_tag.full_response(user2.id)
+    binding.pry
+    'show flour tag_modifications'
+    expect(fr).to eq(
+      {
+        name: almond.name,
+        description: almond.description
+      }
+    )
   end
 end
 # rubocop: enable Metrics/BlockLength

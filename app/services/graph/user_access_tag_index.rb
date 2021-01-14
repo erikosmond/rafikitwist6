@@ -3,8 +3,6 @@
 module Graph
   # Singleton to index recipe ownership by user_id. user_id 0 are for public recipes.
   class UserAccessTagIndex < Index
-    @instance_mutex = Mutex.new
-
     private
 
       def generate_index

@@ -3,8 +3,6 @@
 module Graph
   # Singleton to index recipe ownership by user_id. user_id 0 are for public recipes.
   class RecipeIndex < Index
-    @instance_mutex = Mutex.new
-
     private
 
       def generate_index
@@ -14,9 +12,9 @@ module Graph
       end
 
       def recipes_with_objective_tags
-        Recipe.left_joins(tag_selections:
+        Recipe.left_joins(:access, tag_selections:
           [:tag_attributes, { tag: :tag_type, modification_selections: :tag }]).
-          preload(tag_selections:
+          preload(:access, tag_selections:
           [:tag_attributes, { tag: :tag_type, modification_selections: :tag }]).
           where("tag_types.name NOT IN ('Comment', 'Priority', 'Rating')")
       end

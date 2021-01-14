@@ -1,38 +1,64 @@
 # frozen_string_literal: true
 
 module Graph
-  # Parent class for organizing resources based on user ownership.
+  # Parent class for organizing resources in a cache.
   class Index
     include Singleton
-    # TODO: maybe don't expose :hash so we can enforce the mutex in this class
+
     attr_reader :hash
 
-    private_class_method :new
-
     def initialize
-      Rails.logger.warn('creating index')
       @hash = generate_index
     end
 
-    def self.cache
-      return @cache if @cache
-
-      @instance_mutex.synchronize do
-        @cache ||= new
-      end
-
-      @cache
+    def fetch(id)
+      from_hash(id)
     end
 
-    def self.fetch(id)
-      binding.pry
-      @instance_mutex.synchronize do
-        Index.cache.hash[id]
-      end
+    def fetch_by_user_id(id, user_id)
+      node = from_hash(id)
+      return node if node.viewable?(user_id)
+    end
+
+    def fetch_mods_by_user_id(id, user_id = 0)
+      mods = @hash[user_id.to_i].try(:[], id.to_i) || []
+      return mods if user_id.to_i.zero?
+
+      public_mods = @hash[0].try(:[], id.to_i) || []
+      (mods + public_mods).uniq.compact
     end
 
     def reset
+      # As resources are rebuilt for different test cases,
+      # the index must be updated to reflect the new records
       @hash = generate_index if Rails.env.test?
     end
+
+    def user_id_key(access)
+      return 0 if access.status == 'PUBLIC'
+
+      access.user_id
+    end
+
+    protected
+
+      def add_to_hash(value_id, key_id, access)
+        # TODO: why is this getting called so many times
+        user_hash = @hash[user_id_key(access)] || {}
+        modifications = user_hash[key_id] || []
+        modifications << value_id
+        user_hash[key_id] = modifications.uniq.compact
+        @hash.merge!({ user_id_key(access) => user_hash })
+      end
+
+    private
+
+      def from_hash(id)
+        @hash[id.to_i]
+      end
+
+      def generate_index
+        raise ::NotImplementedError
+      end
   end
 end

@@ -14,10 +14,10 @@ module Api
     end
 
     def show
-      tag = Tag.find_by_id(params.permit(:id)[:id])
+      tag = Graph::TagIndex.instance.fetch(params.permit(:id)[:id])
       Permissions.new(current_user).can_view!(tag)
-      render json: {}, status: :not_found and return unless tag.present?
-
+      # render(json: tag.full_response(current_user.id))
+      tag = Tag.find_by_id(params.permit(:id)[:id])
       hierarchy_result = BuildTagHierarchy.call(
         tag: tag,
         current_user: current_user

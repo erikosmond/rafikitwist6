@@ -3,12 +3,10 @@
 module Graph
   # Singleton to index recipe ownership by user_id. user_id 0 are for public recipes.
   class TagIndex < Index
-    @instance_mutex = Mutex.new
-
     private
 
       def generate_index
-        index = Tag.all.each_with_object({}) do |t, obj|
+        index = Tag.joins(:access).preload(:access).each_with_object({}) do |t, obj|
           obj[t.id] = TagNode.new(t)
         end
         objective_tag_selections.each do |ts|
@@ -20,7 +18,8 @@ module Graph
 
       def objective_tag_selections
         TagSelection.
-          where("taggable_type = 'Tag").
+          joins(tag: :tag_type).
+          where("taggable_type = 'Tag'").
           where("tag_types.name NOT IN ('Comment', 'Priority', 'Rating')")
       end
   end

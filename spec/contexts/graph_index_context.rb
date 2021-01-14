@@ -53,6 +53,16 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
     create(:access, accessible: bleached, user: user1, status: 'PUBLIC')
   end
 
+  let!(:dry_roasted) { create(:tag, name: 'dry roasted', tag_type: mod_type) }
+  let!(:dry_roasted_access) do
+    create(:access, accessible: dry_roasted, user: user2, status: 'PRIVATE')
+  end
+
+  let!(:distilled) { create(:tag, name: 'distilled', tag_type: mod_type) }
+  let!(:distilled_access) do
+    create(:access, accessible: distilled, user: user2, status: 'PRIVATE')
+  end
+
   # Ingredient family
   let(:plant_protein) do
     create(:tag, name: 'plant protein', tag_type: ingredient_family_tag_type)
@@ -70,6 +80,18 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:w2_access) { create(:access, accessible: wheat, user: user1, status: 'PUBLIC') }
   let!(:wheat_to_grains) { create(:tag_selection, tag: grains, taggable: wheat) }
   let!(:flour_to_wheat) { create(:tag_selection, tag: wheat, taggable: flour) }
+
+  let(:barley) { create(:tag, name: 'barley', tag_type: ingredient_type_tag_type) }
+  let!(:barley2_access) do
+    create(:access, accessible: barley, user: user1, status: 'PUBLIC')
+  end
+  let!(:barley_to_grains) { create(:tag_selection, tag: grains, taggable: barley) }
+
+  let(:spelt) { create(:tag, name: 'spelt', tag_type: ingredient_type_tag_type) }
+  let!(:spelt_access) do
+    create(:access, accessible: spelt, user: user1, status: 'PUBLIC')
+  end
+  let!(:spelt_to_grains) { create(:tag_selection, tag: grains, taggable: spelt) }
 
   # Ingredient recipes with access
   let(:flour) { create(:tag, name: 'flour', tag_type: ingredient_tag_type) }
@@ -147,7 +169,12 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
     create(:access, accessible: pizza_dough, user: user1, status: 'PUBLIC')
   end
 
-  let(:almond) { create(:tag, name: 'almond', tag_type: ingredient_tag_type) }
+  let(:almond) do
+    create(
+      :tag,
+      name: 'almond', tag_type: ingredient_tag_type, description: 'white inside'
+    )
+  end
   let!(:a5_access) { create(:access, accessible: almond, user: user2, status: 'PRIVATE') }
   let(:sugar) { create(:tag, name: 'sugar', tag_type: ingredient_tag_type) }
   let!(:s2_access) { create(:access, accessible: sugar, user: user2, status: 'PRIVATE') }
@@ -172,6 +199,12 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   end
   let!(:am1_access) do
     create(:access, accessible: almond_milk, user: user2, status: 'PRIVATE')
+  end
+  let!(:am1_ing1_mod) do
+    create(:tag_selection, taggable: am1_ing1, tag: dry_roasted)
+  end
+  let!(:am1_ing2_mod) do
+    create(:tag_selection, taggable: am1_ing2, tag: distilled)
   end
 
   let(:orgeat_recipe) { create(:recipe, name: 'orgeat') }
