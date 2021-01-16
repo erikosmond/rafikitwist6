@@ -176,9 +176,32 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
     )
   end
   let!(:a5_access) { create(:access, accessible: almond, user: user2, status: 'PRIVATE') }
+  let!(:almond_to_nut) { create(:tag_selection, tag: nut, taggable: almond) }
+
+  let(:hazelnut) do
+    create(
+      :tag,
+      name: 'hazelnut', tag_type: ingredient_tag_type, description: 'dark outside'
+    )
+  end
+  let!(:hz_access) do
+    create(:access, accessible: hazelnut, user: user1, status: 'PRIVATE')
+  end
+  let!(:hazelnut_to_nut) { create(:tag_selection, tag: nut, taggable: hazelnut) }
+
+  let(:cashew) do
+    create(
+      :tag,
+      name: 'cashew', tag_type: ingredient_tag_type, description: 'cresent shape'
+    )
+  end
+  let!(:cashew_access) do
+    create(:access, accessible: cashew, user: user1, status: 'PUBLIC')
+  end
+  let!(:cashew_to_nut) { create(:tag_selection, tag: nut, taggable: cashew) }
+
   let(:sugar) { create(:tag, name: 'sugar', tag_type: ingredient_tag_type) }
   let!(:s2_access) { create(:access, accessible: sugar, user: user2, status: 'PRIVATE') }
-  let!(:almond_to_nut) { create(:tag_selection, tag: nut, taggable: almond) }
 
   # Ingredient Parent Tags
   let(:almond_milk_recipe) { create(:recipe, name: 'almond milk') }

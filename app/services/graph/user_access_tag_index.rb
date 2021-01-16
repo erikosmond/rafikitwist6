@@ -2,6 +2,8 @@
 
 module Graph
   # Singleton to index recipe ownership by user_id. user_id 0 are for public recipes.
+
+  # TODO: almost definitely remove this, I don't think I'm using it
   class UserAccessTagIndex < Index
     private
 

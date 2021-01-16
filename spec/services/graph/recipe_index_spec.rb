@@ -85,7 +85,7 @@ describe Graph::RecipeIndex do
     index.reset
     modified = Graph::UserAccessModifiedTagIndex.instance.hash
     modifications = Graph::UserAccessModificationTagIndex.instance.hash
-    flour_tag = Graph::TagIndex.instance.fetch_by_user_id(flour.id, user1.id)
+    flour_tag = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
     expect(modified).to eq(
       {
         0 => { bleached.id => [flour.id] }, user2.id =>
@@ -103,16 +103,46 @@ describe Graph::RecipeIndex do
         }
       }
     )
-    almond_tag = Graph::TagIndex.instance.fetch_by_user_id(almond.id, user2.id)
-    fr = almond_tag.full_response(user2.id)
-    binding.pry
-    'show flour tag_modifications'
-    expect(fr).to eq(
+    almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
+    almond_user2 = almond_tag.api_response(user2.id)
+    expect(almond_user2).to eq(
       {
+        modification_tags: { dry_roasted.id => dry_roasted.name },
+        modified_tags: {},
+        description: almond.description,
+        id: almond.id,
         name: almond.name,
-        description: almond.description
+        recipe_id: nil,
+        tag_type_id: ingredient_tag_type.id,
+        tags: { almond.id => almond.name },
+        child_tags: {},
+        grandchild_tags: {},
+        grandparent_tags: { plant_protein.id => plant_protein.name },
+        parent_tags: { nut.id => nut.name },
+        sister_tags: { cashew.id => cashew.name }
       }
     )
+
+    almond_user1 = almond_tag.api_response(user1.id)
+    expect(almond_user1[:sister_tags]).to eq(
+      { cashew.id => cashew.name, hazelnut.id => hazelnut.name }
+    )
+
+    dr = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
+    expect(dr.api_response(user2)[:modified_tags]).to eq(
+      { almond.id => almond.name }
+    )
+
+    expect(dr.api_response(user1)[:modified_tags]).to eq({})
+
+    binding.pry
+
+    nr = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2 )
+    expect(nr.api_response(user1)[:modified_tags]).to eq(
+      { nut.id => almond.name }
+    )
+
+    expect(nr.api_response(user1)[:modified_tags]).to eq({})
   end
 end
 # rubocop: enable Metrics/BlockLength

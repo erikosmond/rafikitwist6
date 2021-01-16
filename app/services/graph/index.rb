@@ -15,9 +15,9 @@ module Graph
       from_hash(id)
     end
 
-    def fetch_by_user_id(id, user_id)
+    def fetch_by_user(id, user)
       node = from_hash(id)
-      return node if node.viewable?(user_id)
+      return node if node.viewable?(user)
     end
 
     def fetch_mods_by_user_id(id, user_id = 0)

@@ -19,7 +19,7 @@ module Graph
     # tag_selections: [:modification_selections, { tag: :tag_type }])
     def organize_associations
       @recipe.tag_selections.each do |ts|
-        @objective_tag_ids << ts.tag_id
+        @objective_tag_ids << ts.tag_id.to_i
         if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
           @ingredients << Ingredient.new(ts, @access)
         else
@@ -36,12 +36,16 @@ module Graph
       @filter_tag_hash ||= filter_tag_ids.reduce({}) { |h, id| h.merge({ id => true }) }
     end
 
+    def contains_tag_id?(id)
+      @filter_tag_hash[id.to_i]
+    end
+
     def objective_tags
       # All tags that are not rating, priority, or comments
       objective_tag_ids.map { |t_id| TagIndex.instance.fetch(t_id) }
     end
 
-    def full_response
+    def api_response
       @tag_ids_by_type.merge(
         {
           ingredients: @ingredients,
