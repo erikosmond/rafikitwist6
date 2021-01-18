@@ -4,7 +4,6 @@
 
 # parent tags do not get accesses in production and it works properly
 
-# TODO: double check everything here & outline tests i will write
 RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
@@ -13,12 +12,14 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:ingredient_family_tag_type) { create(:tag_type, name: 'IngredientFamily') }
   let!(:priority_type) { create(:tag_type, name: 'Priority') }
   let!(:rating_type) { create(:tag_type, name: 'Rating') }
+  let!(:comment_type) { create(:tag_type, name: 'Comment') }
   let!(:flavor_type) { create(:tag_type, name: 'Flavor') }
   let!(:vessel_type) { create(:tag_type, name: 'Vessel') }
   let!(:source_type) { create(:tag_type, name: 'Source') }
   let!(:mod_type) { create(:tag_type, name: 'IngredientModification') }
 
-  # TODO: - add some user ratings and priorities
+  # TODO: - add some user ratings and priorities for user 2 on almond_milk recipe and maitai 
+  let!(:comment_tag) { create(:tag, name: 'Comment', tag_type: comment_type) }
   let!(:one_star) { create(:tag, name: '1 star', tag_type: rating_type) }
   let!(:five_star) { create(:tag, name: '5 star', tag_type: rating_type) }
   let!(:high_priority) { create(:tag, name: 'high priority', tag_type: priority_type) }
@@ -324,5 +325,37 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   end
   let!(:p6ts1) { create(:tag_selection, taggable: mai_tai, tag: orgeat) }
   let!(:p6ts2) { create(:tag_selection, taggable: mai_tai, tag: rum) }
+
+  let!(:almond_milk_comment) do
+    create(:tag_selection, tag: comment_tag, taggable: almond_milk_recipe, body: 'milky')
+  end
+  let!(:almond_milk_comment_access) do
+    create(:access, user: user2, status: 'PRIVATE', accessible: almond_milk_comment)
+  end
+  let!(:almond_milk_comment_u1) do
+    create(:tag_selection, tag: comment_tag, taggable: almond_milk_recipe, body: 'dry')
+  end
+  let!(:almond_milk_comment_u1_access) do
+    create(:access, user: user1, status: 'PRIVATE', accessible: almond_milk_comment_u1)
+  end
+  let!(:almond_milk_priority) do
+    create(:tag_selection, tag: low_priority, taggable: almond_milk_recipe)
+  end
+  let!(:almond_milk_priority_access) do
+    create(:access, user: user2, status: 'PRIVATE', accessible: almond_milk_priority)
+  end
+  let!(:almond_milk_rating) do
+    create(:tag_selection, tag: one_star, taggable: almond_milk_recipe)
+  end
+  let!(:almond_milk_rating_access) do
+    create(:access, user: user2, status: 'PRIVATE', accessible: almond_milk_rating)
+  end
+
+    # TODO: - add some user ratings and priorities for user 2 on almond_milk recipe and maitai 
+    # let!(:comment_tag) { create(:tag, name: 'Comment', tag_type: comment_type) }
+    # let!(:one_star) { create(:tag, name: '1 star', tag_type: rating_type) }
+    # let!(:five_star) { create(:tag, name: '5 star', tag_type: rating_type) }
+    # let!(:high_priority) { create(:tag, name: 'high priority', tag_type: priority_type) }
+    # let!(:low_priority) { create(:tag, name: 'low priority', tag_type: priority_type) }
 end
 # rubocop: enable Metrics/BlockLength

@@ -83,9 +83,14 @@ describe Graph::RecipeIndex do
 
   it 'shows tag modifications by user' do
     index.reset
+
+    almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
+    almond_recipes = almond_tag.api_response_recipes(user2.id)
+
+    binding.pry
+
     modified = Graph::UserAccessModifiedTagIndex.instance.hash
     modifications = Graph::UserAccessModificationTagIndex.instance.hash
-    flour_tag = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
     expect(modified).to eq(
       {
         0 => { bleached.id => [flour.id] }, user2.id =>
@@ -128,21 +133,89 @@ describe Graph::RecipeIndex do
       { cashew.id => cashew.name, hazelnut.id => hazelnut.name }
     )
 
-    dr = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
-    expect(dr.api_response(user2)[:modified_tags]).to eq(
+    dr1 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
+    expect(dr1.api_response(user1)[:modified_tags]).to eq({})
+
+    dr2 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
+    expect(dr2.api_response(user2)[:modified_tags]).to eq(
       { almond.id => almond.name }
     )
 
-    expect(dr.api_response(user1)[:modified_tags]).to eq({})
-
-    binding.pry
-
-    nr = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2 )
-    expect(nr.api_response(user1)[:modified_tags]).to eq(
-      { nut.id => almond.name }
+    b1 = Graph::TagIndex.instance.fetch_by_user(bleached.id, user1)
+    expect(b1.api_response(user1)[:modified_tags]).to eq(
+      { flour.id => flour.name }
     )
 
-    expect(nr.api_response(user1)[:modified_tags]).to eq({})
+    b2 = Graph::TagIndex.instance.fetch_by_user(bleached.id, user2)
+    expect(b2.api_response(user2)[:modified_tags]).to eq(
+      { flour.id => flour.name }
+    )
+
+    f1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
+    expect(f1.api_response(user1)[:modification_tags]).to eq(
+      { bleached.id => bleached.name }
+    )
+
+    f2 = Graph::TagIndex.instance.fetch_by_user(flour.id, user2)
+    expect(f2.api_response(user2)[:modification_tags]).to eq(
+      { bleached.id => bleached.name }
+    )
+
+    nr1 = Graph::TagIndex.instance.fetch_by_user(nut.id, user2)
+    expect(nr1.api_response(user1)[:child_tags]).to eq(
+      { cashew.id => cashew.name, hazelnut.id => hazelnut.name }
+    )
+
+    nr2 = Graph::TagIndex.instance.fetch_by_user(nut.id, user2)
+    expect(nr2.api_response(user2)).to eq(
+      modification_tags: {},
+      modified_tags: {},
+      description: nil,
+      id: nut.id,
+      name: nut.name,
+      recipe_id: nil,
+      tag_type_id: ingredient_type_tag_type.id,
+      tags: { nut.id => nut.name },
+      child_tags: { cashew.id => cashew.name, almond.id => almond.name },
+      grandchild_tags: {},
+      grandparent_tags: {},
+      parent_tags: { plant_protein.id => plant_protein.name },
+      sister_tags: {}
+    )
+
+    pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
+    expect(pp.api_response(user2)).to eq(
+      modification_tags: {},
+      modified_tags: {},
+      description: nil,
+      id: plant_protein.id,
+      name: plant_protein.name,
+      recipe_id: nil,
+      tag_type_id: ingredient_family_tag_type.id,
+      tags: { plant_protein.id => plant_protein.name },
+      child_tags: { nut.id => nut.name },
+      grandchild_tags: { cashew.id => cashew.name, almond.id => almond.name },
+      grandparent_tags: {},
+      parent_tags: {},
+      sister_tags: {}
+    )
+
+    pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
+    expect(pp.api_response(user2)).to eq(
+      modification_tags: {},
+      modified_tags: {},
+      description: nil,
+      id: plant_protein.id,
+      name: plant_protein.name,
+      recipe_id: nil,
+      tag_type_id: ingredient_family_tag_type.id,
+      tags: { plant_protein.id => plant_protein.name },
+      child_tags: { nut.id => nut.name },
+      grandchild_tags: { cashew.id => cashew.name, almond.id => almond.name },
+      grandparent_tags: {},
+      parent_tags: {},
+      sister_tags: {}
+    )
   end
 end
 # rubocop: enable Metrics/BlockLength

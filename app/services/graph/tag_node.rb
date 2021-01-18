@@ -58,44 +58,85 @@ module Graph
       RecipeIndex.instance.fetch(@tag.recipe_id)
     end
 
+    def recipes
+      RecipeIndex.instance.hash.values.select { |r| r.contains_tag_id?(id) }
+    end
+
+    def user_recipes(user)
+      recipes.select { |r| r.viewable?(user) }
+    end
+
     def api_response(user_id)
       # recipe_dropdown = ->(t) { { id: t.id, name: t.name } }
-      user = User.left_joins(:roles).preload(:roles).find_by_id(user_id)
+      user = user_with_role(user_id)
       mods_hash(user).merge(attrs_hash).merge(family_hash(user))
     end
 
     def api_response_recipes(user_id)
-      user = User.joins(:roles).preload(:roles).find_by_id(user_id)
-      # TODO: when i fetch the recipes, make sure they are clones so i can add subjective data
-      recipes = RecipeIndex.instance.hash.values.select { |r| r.contains_tag_id?(id) }
-      user_recipes = recipes.select { |r| r.viewable?(user) }
-      subjective_data = subjective_tags(user_recipes.map(&:id), user)
-      subjective_recipe_enrichment(user_recipes, subjective_data)
+      user = user_with_role(user_id)
+      viewable_recipes = user_recipes(user)
+      subjective_data = subjective_tags(viewable_recipes.map(&:id), user)
+      enriched_recipes = subjective_enrichment(viewable_recipes, subjective_data)
+      enriched_recipes.map(&:api_response)
     end
 
     private
 
+      def user_with_role(user_id)
+        User.left_joins(:roles).preload(:roles).find_by_id(user_id)
+      end
+
       def subjective_tags(recipe_ids, user)
         return [] unless user
 
-        ::Access.select('tags.id, tag_selections.body, tag_selections.taggable_id, tag_types.name').
-          joins(tag_selections: { tag: :tag_type }).
+        # TODO: improve: call out to async class that queries subjective tags
+        ::TagSelection.
+          select('tag_selections.id, tags.id AS tag_id, tag_selections.body,
+                         tag_selections.taggable_id, tag_types.name').
+          joins([:access, { tag: :tag_type }]).
           where("accesses.user_id = #{user.id}").
           where("tag_selections.taggable_type = 'Recipe'").
+          where("accesses.accessible_type = 'TagSelection'").
           where("tag_selections.taggable_id IN (#{recipe_ids.join(', ')})")
-        # probably not necissary to filter to subjective tag types, because what else would come back?
+        # maybe not necissary to filter by tag types, cuz what else would return?
         # where("tag_types.name IN ('#{::Tag::SUBJECTIVE_TAG_TYPES.join("', '")}')")
-        # TODO: call out to async class that queries subjective tags
       end
 
-      def subjective_recipe_enrichment(recipes, subjective_data)
+      def subjective_enrichment(recipes, subjective_data)
         cloned_recipes = recipes.map(&:clone)
         recipe_id_hash = cloned_recipes.group_by(&:id)
-        binding.pry
-        'hi'
+        subjective_data.each do |sd|
+          recipe_list = recipe_id_hash[sd.taggable_id]
+          subjective_assignment(recipe_list&.first, sd)
+        end
+        cloned_recipes
+      end
+
+      def subjective_assignment(recipe, row)
+        return unless recipe
+
+        hash = subjective_hash(row)
+
+        case row.name
+        when 'Comment'
+          recipe.append_comment_tag_hash_array(hash)
+        when 'Priority'
+          recipe.append_priority_tag_hash_array(hash)
+        when 'Rating'
+          recipe.append_rating_tag_hash_array(hash)
+        end
+      end
+
+      def subjective_hash(data)
+        {
+          id: data.id,
+          tag_id: data.tag_id,
+          body: data.body
+        }
       end
 
       def mods_hash(user)
+        # user_recipes(user).map(&modifications)
         {
           modification_tags:
             with_tag_names(
@@ -144,7 +185,7 @@ module Graph
       end
 
       def recipe_filter_tag_ids
-        recipe_objective_tags.flat_map(&:filter_tag_ids)
+        recipe_objective_tags.compact.flat_map(&:filter_tag_ids)
       end
 
       def parent_tags

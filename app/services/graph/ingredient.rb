@@ -4,12 +4,13 @@ module Graph
   # Ingredients as part of a recipe.
   class Ingredient
     delegate :body, to: :@tag_selection
-    delegate :id, :name, to: :@tag
+    delegate :id, :name, :tag_type_id, to: :@tag
 
-    def initialize(tag_selection, access)
+    def initialize(tag_selection, access, objective_tag_ids)
       @tag_selection = tag_selection
       @tag = tag_selection.tag
       @access = access
+      @objective_tag_ids = objective_tag_ids
       index_modifications
     end
 
@@ -25,11 +26,28 @@ module Graph
       modification&.name
     end
 
+    def api_response
+      { "#{id}mod#{modification_id}" => {
+        body: body,
+        id: @tag_selection.taggable_id,
+        modification_id: modification_id,
+        modification_name: modification_name,
+        property: "amount",
+        recipe_name: name,
+        tag_description: null,
+        tag_id: id,
+        tag_name: name,
+        tag_type_id: tag_type_id,
+        value: amount
+    }}
+    end
+
     private
 
       def index_modifications
         return unless modification
 
+        @objective_tag_ids << modification.id
         UserAccessModifiedTagIndex.instance.
           add_modifier_tag(@tag.id, modification_id, @access)
         UserAccessModificationTagIndex.instance.

@@ -5,13 +5,15 @@ module Graph
   class RecipeNode < Node
     delegate :id, :name, :instructions, :description, to: :@recipe
     attr_reader :objective_tag_ids, :ingredients, :tag_ids_by_type
-    attr_writer :priorities, :ratings, :comments
 
     def initialize(recipe)
       @recipe = recipe
       @access = recipe.access
       @objective_tag_ids = []
       @ingredients = []
+      @comment_tag_hash_array = []
+      @priority_tag_hash_array = []
+      @rating_tag_hash_array = []
       @tag_ids_by_type = Hash.new { |hsh, key| hsh[key] = [] }
       organize_associations
     end
@@ -19,17 +21,22 @@ module Graph
     # tag_selections: [:modification_selections, { tag: :tag_type }])
     def organize_associations
       @recipe.tag_selections.each do |ts|
-        @objective_tag_ids << ts.tag_id.to_i
+        @objective_tag_ids << ts.tag_id.to_i if ts.tag_id
         if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
-          @ingredients << Ingredient.new(ts, @access)
+          # TODO: save modifications and modifieds
+          @ingredients << Ingredient.new(ts, @access, @objective_tag_ids)
         else
-          @tag_ids_by_type[ts.tag.tag_type.name.underscore.pluralize] << ts.tag_id
+          tag_id_by_type(ts)
         end
       end
     end
 
+    def tag_id_by_type(tag_selection)
+      @tag_ids_by_type[ts.tag.tag_type.name.underscore.pluralize] << {tag_id: ts.tag_id}
+    end
+
     def filter_tag_ids
-      objective_tags.flat_map(&:filter_tag_ids).uniq
+      objective_tags.compact.flat_map(&:filter_tag_ids).uniq
     end
 
     def filter_tag_hash
@@ -37,23 +44,46 @@ module Graph
     end
 
     def contains_tag_id?(id)
-      @filter_tag_hash[id.to_i]
+      filter_tag_hash[id.to_i]
     end
 
     def objective_tags
       # All tags that are not rating, priority, or comments
-      objective_tag_ids.map { |t_id| TagIndex.instance.fetch(t_id) }
+      objective_tag_ids.compact.uniq.map { |t_id| TagIndex.instance.fetch(t_id) }
+    end
+
+    def append_comment_tag_hash_array(hash)
+      @comment_tag_hash_array << hash
+    end
+
+    def append_priority_tag_hash_array(hash)
+      @priority_tag_hash_array << hash
+    end
+
+    def append_rating_tag_hash_array(hash)
+      @rating_tag_hash_array << hash
     end
 
     def api_response
-      @tag_ids_by_type.merge(
+      # priorities, ratings should send the key tag_id
+      attrs.merge(@tag_ids_by_type).merge(
         {
           ingredients: @ingredients,
-          priorities: @priority_tag_ids,
-          ratings: @rating_tag_ids,
-          comments: @comment_bodies
+          priorities: @priority_tag_hash_array,
+          ratings: @rating_tag_hash_array,
+          comments: @comment_tag_hash_array
         }
       )
+    end
+
+    def attrs
+      {
+        id: id,
+        name: name,
+        instructions: instructions,
+        description: description,
+        tag_ids: filter_tag_hash
+      }
     end
   end
 end
