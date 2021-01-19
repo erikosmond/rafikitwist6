@@ -21,6 +21,7 @@ module Graph
     # tag_selections: [:modification_selections, { tag: :tag_type }])
     def organize_associations
       @recipe.tag_selections.each do |ts|
+        append_objective_tags(ts)
         @objective_tag_ids << ts.tag_id.to_i if ts.tag_id
         if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
           # TODO: save modifications and modifieds
@@ -29,10 +30,6 @@ module Graph
           tag_id_by_type(ts)
         end
       end
-    end
-
-    def tag_id_by_type(tag_selection)
-      @tag_ids_by_type[ts.tag.tag_type.name.underscore.pluralize] << {tag_id: ts.tag_id}
     end
 
     def filter_tag_ids
@@ -68,7 +65,7 @@ module Graph
       # priorities, ratings should send the key tag_id
       attrs.merge(@tag_ids_by_type).merge(
         {
-          ingredients: @ingredients,
+          ingredients: @ingredients.map(&:api_response),
           priorities: @priority_tag_hash_array,
           ratings: @rating_tag_hash_array,
           comments: @comment_tag_hash_array
@@ -76,14 +73,34 @@ module Graph
       )
     end
 
-    def attrs
-      {
-        id: id,
-        name: name,
-        instructions: instructions,
-        description: description,
-        tag_ids: filter_tag_hash
-      }
-    end
+    private
+
+      def append_objective_tags(tag_selection)
+        return if subjective_tag?(tag_selection)
+
+        @objective_tag_ids << tag_selection.tag_id.to_i if tag_selection.tag_id
+      end
+
+      def tag_id_by_type(tag_selection)
+        return if subjective_tag?(tag_selection)
+
+        @tag_ids_by_type[
+          tag_selection.tag.tag_type.name.underscore.pluralize
+        ] << { tag_id: tag_selection.tag_id, tag_name: tag_selection.tag.name }
+      end
+
+      def subjective_tag?(tag_selection)
+        ::TagsService::SUBJECTIVE_TAG_TYPES.include? tag_selection.tag.tag_type.name
+      end
+
+      def attrs
+        {
+          id: id,
+          name: name,
+          instructions: instructions,
+          description: description,
+          tag_ids: filter_tag_hash
+        }
+      end
   end
 end

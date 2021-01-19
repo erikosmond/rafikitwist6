@@ -18,7 +18,7 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:source_type) { create(:tag_type, name: 'Source') }
   let!(:mod_type) { create(:tag_type, name: 'IngredientModification') }
 
-  # TODO: - add some user ratings and priorities for user 2 on almond_milk recipe and maitai 
+  # TODO: - add some user ratings and priorities for user 2 on almond_milk recipe and maitai
   let!(:comment_tag) { create(:tag, name: 'Comment', tag_type: comment_type) }
   let!(:one_star) { create(:tag, name: '1 star', tag_type: rating_type) }
   let!(:five_star) { create(:tag, name: '5 star', tag_type: rating_type) }
@@ -277,6 +277,44 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:p6_access) { create(:access, accessible: pizza, user: user1, status: 'PUBLIC') }
   let!(:p1ts1) { create(:tag_selection, taggable: pizza, tag: pizza_dough) }
   let!(:p1ts2) { create(:tag_selection, taggable: pizza, tag: tomato) }
+
+  let!(:pizza_comment1) do
+    create(:tag_selection, tag: comment_tag, taggable: pizza, body: 'hot')
+  end
+  let!(:pizza_comment1_access) do
+    create(:access, user: user1, status: 'PRIVATE', accessible: pizza_comment1)
+  end
+  let!(:pizza_rating1) do
+    create(:tag_selection, tag: five_star, taggable: pizza)
+  end
+  let!(:pizza_rating1_access) do
+    create(:access, user: user1, status: 'PRIVATE', accessible: pizza_rating1)
+  end
+  let!(:pizza_priority1) do
+    create(:tag_selection, tag: high_priority, taggable: pizza)
+  end
+  let!(:pizza_priority1_access) do
+    create(:access, user: user1, status: 'PRIVATE', accessible: pizza_priority1)
+  end
+
+  let!(:pizza_comment2) do
+    create(:tag_selection, tag: comment_tag, taggable: pizza, body: 'cheesy')
+  end
+  let!(:pizza_comment2_access) do
+    create(:access, user: user2, status: 'PRIVATE', accessible: pizza_comment2)
+  end
+  let!(:pizza_rating2) do
+    create(:tag_selection, tag: one_star, taggable: pizza, body: 'cheesy')
+  end
+  let!(:pizza_rating2_access) do
+    create(:access, user: user2, status: 'PRIVATE', accessible: pizza_rating2)
+  end
+  let!(:pizza_priority2) do
+    create(:tag_selection, tag: low_priority, taggable: pizza)
+  end
+  let!(:pizza_priority2_access) do
+    create(:access, user: user2, status: 'PRIVATE', accessible: pizza_priority2)
+  end
 
   ## Veggie Soup
   let(:veggie_soup) { create(:recipe, name: 'Veggie Soup') }

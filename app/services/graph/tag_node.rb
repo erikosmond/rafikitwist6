@@ -87,7 +87,7 @@ module Graph
       end
 
       def subjective_tags(recipe_ids, user)
-        return [] unless user
+        return [] if user.nil? || recipe_ids.empty?
 
         # TODO: improve: call out to async class that queries subjective tags
         ::TagSelection.

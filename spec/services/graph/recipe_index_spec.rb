@@ -80,15 +80,68 @@ describe Graph::RecipeIndex do
         sugar.id, almond_milk.id, orgeat.id, rum.id
       ].sort)
   end
-
+  
   it 'shows tag modifications by user' do
     index.reset
 
     almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
     almond_recipes = almond_tag.api_response_recipes(user2.id)
 
-    binding.pry
+    expect(almond_recipes.length).to eq(3)
+    expect(almond_recipes.first).to eq(
+      {
+        id: almond_milk_recipe.id,
+        name: almond_milk_recipe.name,
+        instructions: almond_milk_recipe.instructions,
+        description: almond_milk_recipe.description,
+        tag_ids: {
+          one_star.id => true, low_priority.id => true, dry_roasted.id => true,
+          distilled.id => true, plant_protein.id => true, nut.id => true,
+          water.id => true, almond.id => true
+        },
+        ingredients: [
+          {
+            "#{almond.id}mod#{dry_roasted.id}" =>
+            {
+              body: nil,
+              id: almond_milk_recipe.id,
+              modification_id: dry_roasted.id,
+              modification_name: dry_roasted.name,
+              property: 'amount',
+              tag_name: almond.name,
+              value: nil,
+              tag_description: almond.description,
+              tag_id: almond.id,
+              tag_type_id: ingredient_tag_type.id
+            }
+          },
+          {
+            "#{water.id}mod#{distilled.id}" =>
+            {
+              body: nil,
+              id: almond_milk_recipe.id,
+              modification_id: distilled.id,
+              modification_name: distilled.name,
+              property: 'amount',
+              tag_name: water.name,
+              value: nil,
+              tag_description: nil,
+              tag_id: water.id,
+              tag_type_id: ingredient_tag_type.id
+            }
+          }
+        ],
+        priorities: [{ id: almond_milk_priority.id, tag_id: low_priority.id, body: nil }],
+        ratings: [{ id: almond_milk_rating.id, tag_id: one_star.id, body: nil }],
+        comments: [{
+          id: almond_milk_comment.id, tag_id: comment_tag.id,
+          body: almond_milk_comment.body
+        }]
+      }
+    )
 
+    # TODO: test pizza for both users and ensure correct ratings, priorities, comments
+    
     modified = Graph::UserAccessModifiedTagIndex.instance.hash
     modifications = Graph::UserAccessModificationTagIndex.instance.hash
     expect(modified).to eq(

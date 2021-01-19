@@ -4,7 +4,7 @@ module Graph
   # Ingredients as part of a recipe.
   class Ingredient
     delegate :body, to: :@tag_selection
-    delegate :id, :name, :tag_type_id, to: :@tag
+    delegate :id, :name, :tag_type_id, :description, to: :@tag
 
     def initialize(tag_selection, access, objective_tag_ids)
       @tag_selection = tag_selection
@@ -27,22 +27,31 @@ module Graph
     end
 
     def api_response
-      { "#{id}mod#{modification_id}" => {
-        body: body,
-        id: @tag_selection.taggable_id,
-        modification_id: modification_id,
-        modification_name: modification_name,
-        property: "amount",
-        recipe_name: name,
-        tag_description: null,
-        tag_id: id,
-        tag_name: name,
-        tag_type_id: tag_type_id,
-        value: amount
-    }}
+      { "#{id}mod#{modification_id}" => attrs.merge(tag_data) }
     end
 
     private
+
+      def attrs
+        {
+          body: body,
+          id: @tag_selection.taggable_id,
+          modification_id: modification_id,
+          modification_name: modification_name,
+          property: 'amount',
+          tag_name: name,
+          value: amount
+        }
+      end
+
+      def tag_data
+        {
+          tag_description: description,
+          tag_id: id,
+          tag_name: name,
+          tag_type_id: tag_type_id
+        }
+      end
 
       def index_modifications
         return unless modification
