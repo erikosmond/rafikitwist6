@@ -140,25 +140,32 @@ describe Graph::RecipeIndex do
       }
     )
 
-    # TODO: test pizza for both users and ensure correct ratings, priorities, comments
-
     flour_tag1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
     flour_recipes1 = flour_tag1.api_response_recipes(user1.id)
 
-    # expect(flour_recipes1.last[:priorities].size).to eq 1
-    # expect(flour_recipes1.last[:priorities].first[:tag_id]).to eq(five_star.id)
+    expect(flour_recipes1.first['vessels'].first[:tag_id]).to eq(bowl.id)
+    expect(flour_recipes1.first['sources'].first[:tag_id]).to eq(cook_book.id)
 
-    flour_recipes1.last[:ratings]
-    flour_recipes1.last[:comments]
+    expect(flour_recipes1.last[:ratings].size).to eq 1
+    expect(flour_recipes1.last[:ratings].first[:tag_id]).to eq(five_star.id)
+
+    expect(flour_recipes1.last[:priorities].size).to eq 1
+    expect(flour_recipes1.last[:priorities].first[:tag_id]).to eq(high_priority.id)
+
+    expect(flour_recipes1.last[:comments].size).to eq 1
+    expect(flour_recipes1.last[:comments].first[:body]).to eq('hot')
 
     flour_tag2 = Graph::TagIndex.instance.fetch_by_user(flour.id, user2)
     flour_recipes2 = flour_tag2.api_response_recipes(user2.id)
 
-    flour_recipes2.last[:priorities]
-    flour_recipes2.last[:ratings]
-    flour_recipes2.last[:comments]
+    expect(flour_recipes2.last[:ratings].size).to eq 1
+    expect(flour_recipes2.last[:ratings].first[:tag_id]).to eq(one_star.id)
 
-    binding.pry
+    expect(flour_recipes2.last[:priorities].size).to eq 1
+    expect(flour_recipes2.last[:priorities].first[:tag_id]).to eq(low_priority.id)
+
+    expect(flour_recipes2.last[:comments].size).to eq 1
+    expect(flour_recipes2.last[:comments].first[:body]).to eq('cheesy')
 
     modified = Graph::UserAccessModifiedTagIndex.instance.hash
     modifications = Graph::UserAccessModificationTagIndex.instance.hash
