@@ -103,7 +103,10 @@ module Graph
       end
 
       def subjective_enrichment(recipes, subjective_data)
-        cloned_recipes = recipes.map(&:clone)
+        # It looks like I'm going to have to write my own copy method for recipes as clone and dup are not working
+        # The dup is not working as i'd like it to. i just have to clear the subjective tags everytime before I use a recipe
+        # Play around with a recipe in the console and see what's going on
+        cloned_recipes = recipes.map(&:copy)
         recipe_id_hash = cloned_recipes.group_by(&:id)
         subjective_data.each do |sd|
           recipe_list = recipe_id_hash[sd.taggable_id]

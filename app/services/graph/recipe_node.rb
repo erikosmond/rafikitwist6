@@ -4,7 +4,8 @@ module Graph
   # In memory model for recipes in the graph.
   class RecipeNode < Node
     delegate :id, :name, :instructions, :description, to: :@recipe
-    attr_reader :objective_tag_ids, :ingredients, :tag_ids_by_type
+    attr_reader :objective_tag_ids, :ingredients, :tag_ids_by_type, :access,
+                :tag_selections
 
     def initialize(recipe)
       @recipe = recipe
@@ -71,6 +72,10 @@ module Graph
           comments: @comment_tag_hash_array
         }
       )
+    end
+
+    def copy
+      RecipeNode.new(@recipe)
     end
 
     private

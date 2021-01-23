@@ -80,7 +80,7 @@ describe Graph::RecipeIndex do
         sugar.id, almond_milk.id, orgeat.id, rum.id
       ].sort)
   end
-  
+
   it 'shows tag modifications by user' do
     index.reset
 
@@ -141,7 +141,25 @@ describe Graph::RecipeIndex do
     )
 
     # TODO: test pizza for both users and ensure correct ratings, priorities, comments
-    
+
+    flour_tag1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
+    flour_recipes1 = flour_tag1.api_response_recipes(user1.id)
+
+    # expect(flour_recipes1.last[:priorities].size).to eq 1
+    # expect(flour_recipes1.last[:priorities].first[:tag_id]).to eq(five_star.id)
+
+    flour_recipes1.last[:ratings]
+    flour_recipes1.last[:comments]
+
+    flour_tag2 = Graph::TagIndex.instance.fetch_by_user(flour.id, user2)
+    flour_recipes2 = flour_tag2.api_response_recipes(user2.id)
+
+    flour_recipes2.last[:priorities]
+    flour_recipes2.last[:ratings]
+    flour_recipes2.last[:comments]
+
+    binding.pry
+
     modified = Graph::UserAccessModifiedTagIndex.instance.hash
     modifications = Graph::UserAccessModificationTagIndex.instance.hash
     expect(modified).to eq(

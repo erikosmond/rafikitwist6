@@ -304,7 +304,7 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
     create(:access, user: user2, status: 'PRIVATE', accessible: pizza_comment2)
   end
   let!(:pizza_rating2) do
-    create(:tag_selection, tag: one_star, taggable: pizza, body: 'cheesy')
+    create(:tag_selection, tag: one_star, taggable: pizza)
   end
   let!(:pizza_rating2_access) do
     create(:access, user: user2, status: 'PRIVATE', accessible: pizza_rating2)
