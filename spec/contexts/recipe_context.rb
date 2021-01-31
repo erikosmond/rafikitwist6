@@ -123,7 +123,37 @@ RSpec.shared_context 'recipes', shared_context: :metadata do
     create(:access, user: user, accessible: lemon_verbena, status: 'PUBLIC')
   end
 
-  let!(:access2) { create(:access, user: user, accessible: soup, status: 'PUBLIC') }
+  let!(:access4b) do
+    create(:access, user: user, accessible: ingredient1, status: 'PUBLIC')
+  end
+
+  let!(:access4c) do
+    create(:access, user: user, accessible: ingredient2, status: 'PUBLIC')
+  end
+
+  let!(:access4d) do
+    create(:access, user: user, accessible: source1, status: 'PUBLIC')
+  end
+
+  let!(:access4e) do
+    create(:access, user: user, accessible: source2, status: 'PUBLIC')
+  end
+
+  let!(:access4f) do
+    create(:access, user: user, accessible: ingredient1_type, status: 'PUBLIC')
+  end
+
+  let!(:access4g) do
+    create(:access, user: user, accessible: ingredient1_family, status: 'PUBLIC')
+  end
+
+  let!(:access4h) do
+    create(:access, user: user, accessible: modification, status: 'PUBLIC')
+  end
+
+  let!(:chestnut_soup_access) do
+    create(:access, user: user, accessible: soup, status: 'PUBLIC')
+  end
   let!(:recipes) { RecipeByTag.call(tag: tag_subject, current_user: user).result }
 end
 # rubocop: enable Metrics/BlockLength

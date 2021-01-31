@@ -49,7 +49,8 @@ module Graph
           tag_description: description,
           tag_id: id,
           tag_name: name,
-          tag_type_id: tag_type_id
+          tag_type_id: tag_type_id,
+          tag_type: @tag.tag_type.name
         }
       end
 
@@ -64,6 +65,7 @@ module Graph
       end
 
       def modification
+        # UI does not currently support multiple modification selections per ingredient
         @tag_selection.modification_selections.first&.tag
       end
   end

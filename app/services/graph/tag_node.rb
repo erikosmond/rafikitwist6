@@ -5,10 +5,12 @@ module Graph
   class TagNode < Node
     delegate :id, :name, :description, :present?, :tag_type_id, :recipe_id, to: :@tag
     attr_accessor :parent_tag_ids, :child_tag_ids, :recipe_ids, :modification_tag_ids
+    attr_reader :tag_type
 
     def initialize(tag)
       @tag = tag
       @access = tag.access
+      @tag_type = tag.tag_type
       @parent_tag_ids = []
       @child_tag_ids = []
       @recipe_ids = []
@@ -80,7 +82,35 @@ module Graph
       enriched_recipes.map(&:api_response)
     end
 
+    def mods_hash(user)
+      children = child_tag_ids.map { |cid| TagIndex.instance.fetch(cid).mods_hash(user) }
+      child_values = merge_hash_values(children)
+      {
+        modification_tags:
+          with_tag_names(
+            UserAccessModificationTagIndex.instance.fetch_mods_by_user_id(id, user.id) + child_values[:modification_tags]
+          ),
+        modified_tags:
+          with_tag_names(
+            UserAccessModifiedTagIndex.instance.fetch_mods_by_user_id(id, user.id) + child_values[:modified_tags]
+          )
+      }
+    end
+
     private
+
+      def merge_hash_values(hash_array)
+        modification_tags = []
+        modified_tags = []
+        hash_array.each do |h|
+          modification_tags << h[:modification_tags] unless h[:modification_tags] == {}
+          modified_tags << h[:modified_tags] unless h[:modified_tags] == {}
+        end
+        {
+          modification_tags: modification_tags,
+          modified_tags: modified_tags
+        }
+      end
 
       def user_with_role(user_id)
         User.left_joins(:roles).preload(:roles).find_by_id(user_id)
@@ -103,9 +133,6 @@ module Graph
       end
 
       def subjective_enrichment(recipes, subjective_data)
-        # It looks like I'm going to have to write my own copy method for recipes as clone and dup are not working
-        # The dup is not working as i'd like it to. i just have to clear the subjective tags everytime before I use a recipe
-        # Play around with a recipe in the console and see what's going on
         cloned_recipes = recipes.map(&:copy)
         recipe_id_hash = cloned_recipes.group_by(&:id)
         subjective_data.each do |sd|
@@ -135,20 +162,6 @@ module Graph
           id: data.id,
           tag_id: data.tag_id,
           body: data.body
-        }
-      end
-
-      def mods_hash(user)
-        # user_recipes(user).map(&modifications)
-        {
-          modification_tags:
-            with_tag_names(
-              UserAccessModificationTagIndex.instance.fetch_mods_by_user_id(id, user.id)
-            ),
-          modified_tags:
-            with_tag_names(
-              UserAccessModifiedTagIndex.instance.fetch_mods_by_user_id(id, user.id)
-            )
         }
       end
 

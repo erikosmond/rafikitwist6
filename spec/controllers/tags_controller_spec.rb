@@ -12,6 +12,9 @@ describe Api::TagsController, type: :controller do
   end
   include_context 'tags'
   let!(:user) { create(:user) }
+  let(:recipe_index) { Graph::RecipeIndex.instance }
+  let(:tag_index) { Graph::TagIndex.instance }
+
 
   describe 'GET - index' do
     before do
@@ -53,8 +56,10 @@ describe Api::TagsController, type: :controller do
       end
       it 'responds with tags user has access to' do
         body = JSON.parse(response.body)
-        expect(body['tags'].size).to eq 3
-        expect(body['tags'].map { |t| t['Value'] } - [almond.id, vodka.id, toasted.id]).
+        expect(body['tags'].size).to eq 5
+        expect(body['tags'].map { |t| t['Value'] } - [
+          almond.id, vodka.id, toasted.id, nut.id, protein.id
+        ]).
           to eq([])
       end
     end
@@ -90,6 +95,8 @@ describe Api::TagsController, type: :controller do
 
   describe 'GET - show' do
     before do
+      recipe_index.reset
+      tag_index.reset
       sign_in user
       get :show,
           params: params,
@@ -114,15 +121,15 @@ describe Api::TagsController, type: :controller do
           'id' => nut.id,
           'name' => 'Nut',
           'description' => nil,
+          'grandchild_tags' => {},
+          'grandparent_tags' => {},
           'tag_type_id' => nut.tag_type_id,
           'recipe_id' => nil,
           'sister_tags' => {},
           'tags' => { nut.id.to_s => 'Nut' },
           'child_tags' => { almond.id.to_s => 'Almond' },
           'parent_tags' => { protein.id.to_s => 'Protein' },
-          'modification_tags' => {
-            toasted.id.to_s => 'toasted', crushed.id.to_s => 'crushed'
-          },
+          'modification_tags' => { crushed.id.to_s => 'crushed' },
           'modified_tags' => {}
         }
       end

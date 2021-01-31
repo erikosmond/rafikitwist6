@@ -32,6 +32,9 @@ describe Api::RecipesController, type: :controller do
   let!(:access_cocktail) do
     create(:access, accessible: tag_selection_cocktail, user: user, status: 'PUBLIC')
   end
+  let!(:access_menu_tag) do
+    create(:access, accessible: menu_tag, user: user, status: 'PRIVATE')
+  end
   let!(:access_rating) do
     create(
       :access,
@@ -47,9 +50,16 @@ describe Api::RecipesController, type: :controller do
     create(:access, accessible: recipe, user: user, status: 'PRIVATE')
   end
   let(:tag_subject) { create(:tag, name: 'Rice', tag_type: tag_type_ingredient_type) }
+  let!(:access_rice) do
+    create(:access, accessible: tag_subject, user: user, status: 'PUBLIC')
+  end
+  let(:tag_index) { Graph::TagIndex.instance }
+  let(:recipe_index) { Graph::RecipeIndex.instance }
 
   describe 'GET - show' do
     before do
+      tag_index.reset
+      recipe_index.reset
       sign_in user
       get :show,
           params: { id: recipe.id },
@@ -81,6 +91,8 @@ describe Api::RecipesController, type: :controller do
     let!(:access4) { create(:access, accessible: pineapple_selection2) }
     let!(:access5) { create(:access, accessible: modification_selection) }
     it 'returns multiple ingredients if they are of the same tag' do
+      tag_index.reset
+      recipe_index.reset
       sign_in user
       get :show, params: { id: recipe_multi.id }, format: 'json'
       body = JSON.parse(response.body)
@@ -91,6 +103,8 @@ describe Api::RecipesController, type: :controller do
 
   describe 'GET - edit' do
     before do
+      tag_index.reset
+      recipe_index.reset
       sign_in user
       get :edit,
           params: { id: recipe.id },
@@ -103,7 +117,9 @@ describe Api::RecipesController, type: :controller do
   end
 
   describe 'GET - index' do
-    before do
+    before :each do
+      tag_index.reset
+      recipe_index.reset
       sign_in user
       get :index,
           params: { tag_id: tag_subject.id },
@@ -141,11 +157,12 @@ describe Api::RecipesController, type: :controller do
       pizza = body['recipes'].find { |r| r['name'] == 'Pizza' }
       expect(pizza['ingredients']["#{lemon_verbena.id}mod"]['tag_type']).
         to eq 'Ingredient'
-      expect(pizza['ingredient_types'].first['tag_name']).to eq('Rice')
+      # TODO: I don't THINK i need to support ingredient types and ingredient families on recipes anymore - everything will show up in ingredients
+      # expect(pizza['ingredient_types'].first['tag_name']).to eq('Rice')
     end
     it 'returns the filter tags' do
       body = JSON.parse(response.body)
-      expect(body['filter_tags'] - filter_array).to eq([])
+      expect(body['filter_tags'].sort).to eq(filter_array.sort)
     end
   end
 
@@ -172,6 +189,8 @@ describe Api::RecipesController, type: :controller do
     end
 
     before do
+      tag_index.reset
+      recipe_index.reset
       sign_in user
       get :index,
           params: { tag_id: tag_subject.id },
@@ -187,14 +206,9 @@ describe Api::RecipesController, type: :controller do
   end
 
   describe 'GET - index for user with no recipe associations' do
-    let(:tag_subject) do
-      create(:tag, name: 'Chamomile', tag_type: tag_type_modifiction_type)
-    end
-    let!(:mod_selection) do
-      create(:tag_selection, tag: tag_subject, taggable: tag_selection1)
-    end
-
     before do
+      tag_index.reset
+      recipe_index.reset
       sign_in no_data_user
       get :index,
           params: { tag_id: menu_tag.id },
@@ -210,6 +224,8 @@ describe Api::RecipesController, type: :controller do
 
   describe 'GET - index (ingredient_type)' do
     before do
+      tag_index.reset
+      recipe_index.reset
       sign_in user
       get :index,
           params: { tag_id: ingredient1_type.id },
@@ -219,7 +235,7 @@ describe Api::RecipesController, type: :controller do
     it 'returns recipe details' do
       body = JSON.parse(response.body)
       expect(body['recipes'].size).to eq(1)
-      expect(body['recipes'].first['ingredients'].keys.size).to eq(2)
+      expect(body['recipes'].first['ingredients'].keys.size).to eq(3)
     end
     it 'returns filter tags' do
       body = JSON.parse(response.body)
@@ -229,6 +245,8 @@ describe Api::RecipesController, type: :controller do
 
   describe 'GET - index (ingredient_family)' do
     before do
+      tag_index.reset
+      recipe_index.reset
       sign_in user
       get :index,
           params: { tag_id: ingredient1_family.id },
@@ -238,7 +256,7 @@ describe Api::RecipesController, type: :controller do
     it 'returns recipe details' do
       body = JSON.parse(response.body)
       expect(body['recipes'].size).to eq(1)
-      expect(body['recipes'].first['ingredients'].keys.size).to eq(2)
+      expect(body['recipes'].first['ingredients'].keys.size).to eq(3)
     end
     it 'returns filter tags' do
       body = JSON.parse(response.body)
@@ -248,6 +266,8 @@ describe Api::RecipesController, type: :controller do
 
   describe 'GET - index (all recipes dropdown)' do
     before do
+      tag_index.reset
+      recipe_index.reset
       sign_in user
       get :index,
           params: {},
@@ -256,7 +276,7 @@ describe Api::RecipesController, type: :controller do
 
     it 'returns recipe names' do
       body = JSON.parse(response.body)
-      expect(body['recipes'].size).to eq(3)
+      expect(body['recipes'].size).to eq(10)
       expect(body['recipes'].first.keys.size).to eq(2)
     end
   end

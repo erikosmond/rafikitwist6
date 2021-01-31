@@ -16,14 +16,15 @@ module Api
     def show
       tag = Graph::TagIndex.instance.fetch(params.permit(:id)[:id])
       Permissions.new(current_user).can_view!(tag)
-      # render(json: tag.api_response(current_user.id))
-      tag = Tag.find_by_id(params.permit(:id)[:id])
-      hierarchy_result = BuildTagHierarchy.call(
-        tag: tag,
-        current_user: current_user
-      )
-      result = GroupTags.call(hierarchy_context_params(hierarchy_result))
-      render(json: result.json)
+      render(json: tag.api_response(current_user.id))
+
+      # tag = Tag.find_by_id(params.permit(:id)[:id])
+      # hierarchy_result = BuildTagHierarchy.call(
+      #   tag: tag,
+      #   current_user: current_user
+      # )
+      # result = GroupTags.call(hierarchy_context_params(hierarchy_result))
+      # render(json: result.json)
     end
 
     def create

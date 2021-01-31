@@ -10,7 +10,7 @@ module Graph
     def initialize(recipe)
       @recipe = recipe
       @access = recipe.access
-      @objective_tag_ids = []
+      @objective_tag_ids = Set.new
       @ingredients = []
       @comment_tag_hash_array = []
       @priority_tag_hash_array = []
@@ -23,7 +23,6 @@ module Graph
     def organize_associations
       @recipe.tag_selections.each do |ts|
         append_objective_tags(ts)
-        @objective_tag_ids << ts.tag_id.to_i if ts.tag_id
         if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
           # TODO: save modifications and modifieds
           @ingredients << Ingredient.new(ts, @access, @objective_tag_ids)
@@ -34,7 +33,8 @@ module Graph
     end
 
     def filter_tag_ids
-      objective_tags.compact.flat_map(&:filter_tag_ids).uniq
+      # TODO: filter tag ids need to contain subjective tags too
+      objective_tags.compact.flat_map(&:filter_tag_ids).uniq + subjective_tag_ids
     end
 
     def filter_tag_hash
@@ -47,7 +47,7 @@ module Graph
 
     def objective_tags
       # All tags that are not rating, priority, or comments
-      objective_tag_ids.compact.uniq.map { |t_id| TagIndex.instance.fetch(t_id) }
+      objective_tag_ids.map { |t_id| TagIndex.instance.fetch(t_id) }
     end
 
     def append_comment_tag_hash_array(hash)
@@ -63,10 +63,9 @@ module Graph
     end
 
     def api_response
-      # priorities, ratings should send the key tag_id
       attrs.merge(@tag_ids_by_type).merge(
         {
-          ingredients: @ingredients.map(&:api_response),
+          ingredients: @ingredients.reduce({}) { |h, i| h.merge(i.api_response) },
           priorities: @priority_tag_hash_array,
           ratings: @rating_tag_hash_array,
           comments: @comment_tag_hash_array
@@ -79,6 +78,14 @@ module Graph
     end
 
     private
+
+      def subjective_tag_hash_array
+        @rating_tag_hash_array + @priority_tag_hash_array + @comment_tag_hash_array
+      end
+
+      def subjective_tag_ids
+        subjective_tag_hash_array.map { |h| h['tag_id'] }
+      end
 
       def append_objective_tags(tag_selection)
         return if subjective_tag?(tag_selection)

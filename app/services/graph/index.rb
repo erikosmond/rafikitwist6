@@ -28,6 +28,10 @@ module Graph
       (mods + public_mods).uniq.compact
     end
 
+    def all_by_user(user)
+      @hash.values.select { |i| i.viewable?(user) }
+    end
+
     def reset
       # As resources are rebuilt for different test cases,
       # the index must be updated to reflect the new records
@@ -43,7 +47,6 @@ module Graph
     protected
 
       def add_to_hash(value_id, key_id, access)
-        # TODO: why is this getting called so many times
         user_hash = @hash[user_id_key(access)] || {}
         modifications = user_hash[key_id] || []
         modifications << value_id

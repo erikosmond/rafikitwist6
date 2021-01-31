@@ -6,9 +6,12 @@ module Api
     include RecipeControllerHelper
     def index
       tag_id = params.permit(:tag_id)[:tag_id]
-      recipes = recipes_by_tag(tag_id)
-      if recipes
-        render json: recipes
+      # recipes = recipes_by_tag(tag_id)
+      # render(json: TagInteractor.call(tag: tag, current_user: current_user))
+      recipes = TagInteractor.call(tag_id: tag_id, current_user: current_user)
+      # binding.pry
+      if recipes.result
+        render json: recipes.result
       else
         render json: { tag_id: tag_id.to_s }, status: :not_found
       end

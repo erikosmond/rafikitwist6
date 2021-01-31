@@ -23,11 +23,12 @@ describe Graph::RecipeIndex do
       ]
     }
   end
-  let(:index) { Graph::RecipeIndex.instance }
+  let(:recipe_index) { Graph::RecipeIndex.instance }
+  let(:tag_index) { Graph::TagIndex.instance }
 
   # TODO: make sure the associations of the recipe are `loaded?`
   it 'generates and returns the recipes index' do
-    expect(index.hash.values.map(&:name).sort).to eq [
+    expect(recipe_index.hash.values.map(&:name).sort).to eq [
       'Awesome Blossom',
       'Mai Tai',
       'Mashed Potatoes',
@@ -43,46 +44,55 @@ describe Graph::RecipeIndex do
   end
 
   it 'assigns appropriate attributes' do
-    index.reset
-    expect(index.hash[self_rising_flour_recipe.id].ingredients.first.amount).to eq '1 cup'
-    expect(index.hash[self_rising_flour_recipe.id].ingredients.first.name).to eq 'flour'
-    expect(index.hash[self_rising_flour_recipe.id].ingredients.first.modification_name).
+    recipe_index.reset
+    tag_index.reset
+    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.amount).to eq '1 cup'
+    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.name).to eq 'flour'
+    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.modification_name).
       to eq 'bleached'
-    expect(index.hash[self_rising_flour_recipe.id].ingredients.first.modification_id).
+    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.modification_id).
       to eq bleached.id
-    expect(index.hash[self_rising_flour_recipe.id].ingredients.first.body).to eq 'sifted'
-    expect(index.hash[self_rising_flour_recipe.id].ingredients.first.id).to eq flour.id
+    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.body).to eq 'sifted'
+    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.id).to eq flour.id
   end
 
   it 'loads tag ids by type' do
-    index.reset
-    expect(index.hash[self_rising_flour_recipe.id].tag_ids_by_type).
-      to eq({ 'vessels' => [bowl.id], 'sources' => [cook_book.id] })
+    recipe_index.reset
+    tag_index.reset
+    expect(recipe_index.hash[self_rising_flour_recipe.id].tag_ids_by_type).
+      to eq({ 'vessels' => [{ tag_id: bowl.id, tag_name: bowl.name }], 'sources' => [{ tag_id: cook_book.id, tag_name: cook_book.name }] })
   end
 
   it 'loads objective tag ids' do
-    index.reset
-    expect(index.hash[self_rising_flour_recipe.id].objective_tag_ids).
-      to eq([flour.id, bowl.id, cook_book.id, baking_soda.id])
+    recipe_index.reset
+    tag_index.reset
+    expect(recipe_index.hash[self_rising_flour_recipe.id].objective_tag_ids.sort).
+      to eq([flour.id, bowl.id, cook_book.id, baking_soda.id, bleached.id].sort)
   end
 
   it 'loads filter tag ids' do
-    index.reset
-    expect(index.hash[self_rising_flour_recipe.id].filter_tag_ids).
-      to eq([flour.id, wheat.id, grains.id, bowl.id, cook_book.id, baking_soda.id])
+    recipe_index.reset
+    tag_index.reset
+    expect(recipe_index.hash[self_rising_flour_recipe.id].filter_tag_ids.sort).
+      to eq([
+        flour.id, wheat.id, grains.id, bowl.id, cook_book.id, baking_soda.id, bleached.id
+      ].sort)
   end
 
   it 'loads filter tag ids with nested recipes' do
-    index.reset
-    expect(index.hash[mai_tai.id].filter_tag_ids.sort).
+    # TODO: write a test that returns subjective tags with filter tag ids
+    recipe_index.reset
+    tag_index.reset
+    expect(recipe_index.hash[mai_tai.id].filter_tag_ids.sort).
       to eq([
-        plant_protein.id, nut.id, water.id, almond.id,
-        sugar.id, almond_milk.id, orgeat.id, rum.id
+        plant_protein.id, nut.id, water.id, almond.id, dry_roasted.id,
+        sugar.id, almond_milk.id, orgeat.id, rum.id, distilled.id
       ].sort)
   end
 
   it 'shows tag modifications by user' do
-    index.reset
+    recipe_index.reset
+    tag_index.reset
 
     almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
     almond_recipes = almond_tag.api_response_recipes(user2.id)
@@ -99,7 +109,7 @@ describe Graph::RecipeIndex do
           distilled.id => true, plant_protein.id => true, nut.id => true,
           water.id => true, almond.id => true
         },
-        ingredients: [
+        ingredients:
           {
             "#{almond.id}mod#{dry_roasted.id}" =>
             {
@@ -109,13 +119,12 @@ describe Graph::RecipeIndex do
               modification_name: dry_roasted.name,
               property: 'amount',
               tag_name: almond.name,
+              tag_type: 'Ingredient',
               value: nil,
               tag_description: almond.description,
               tag_id: almond.id,
               tag_type_id: ingredient_tag_type.id
-            }
-          },
-          {
+            },
             "#{water.id}mod#{distilled.id}" =>
             {
               body: nil,
@@ -124,13 +133,13 @@ describe Graph::RecipeIndex do
               modification_name: distilled.name,
               property: 'amount',
               tag_name: water.name,
+              tag_type: 'Ingredient',
               value: nil,
               tag_description: nil,
               tag_id: water.id,
               tag_type_id: ingredient_tag_type.id
             }
-          }
-        ],
+          },
         priorities: [{ id: almond_milk_priority.id, tag_id: low_priority.id, body: nil }],
         ratings: [{ id: almond_milk_rating.id, tag_id: one_star.id, body: nil }],
         comments: [{
@@ -143,9 +152,12 @@ describe Graph::RecipeIndex do
     flour_tag1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
     flour_recipes1 = flour_tag1.api_response_recipes(user1.id)
 
-    expect(flour_recipes1.first['vessels'].first[:tag_id]).to eq(bowl.id)
-    expect(flour_recipes1.first['sources'].first[:tag_id]).to eq(cook_book.id)
-
+    expect(flour_recipes1.first['vessels'].first).to eq(
+      { tag_id: bowl.id, tag_name: bowl.name }
+    )
+    expect(flour_recipes1.first['sources'].first[:tag_id]).to eq(
+      { tag_id: cook_book.id, tag_name: cook_book.name }
+    )
     expect(flour_recipes1.last[:ratings].size).to eq 1
     expect(flour_recipes1.last[:ratings].first[:tag_id]).to eq(five_star.id)
 
