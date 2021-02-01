@@ -98,6 +98,8 @@ describe Graph::RecipeIndex do
     almond_recipes = almond_tag.api_response_recipes(user2.id)
 
     expect(almond_recipes.length).to eq(3)
+    binding.pry
+    # TODO: tag_ids does not match, make sure i'm not adding nils to tag ids
     expect(almond_recipes.first).to eq(
       {
         id: almond_milk_recipe.id,

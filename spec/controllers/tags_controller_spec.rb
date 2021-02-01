@@ -15,7 +15,6 @@ describe Api::TagsController, type: :controller do
   let(:recipe_index) { Graph::RecipeIndex.instance }
   let(:tag_index) { Graph::TagIndex.instance }
 
-
   describe 'GET - index' do
     before do
       sign_in user
@@ -40,7 +39,6 @@ describe Api::TagsController, type: :controller do
     let(:non_ingredient_tags) do
       [
         { 'Label' => 'plants', 'Value' => plants.id },
-        { 'Label' => 'toasted', 'Value' => toasted.id },
         { 'Label' => 'crushed', 'Value' => crushed.id }
       ]
     end
@@ -55,10 +53,11 @@ describe Api::TagsController, type: :controller do
         expect(body['tag_groups']).to eq(tag_groups)
       end
       it 'responds with tags user has access to' do
+        # returning tags that have no recipes so they can be added in recipes form
         body = JSON.parse(response.body)
-        expect(body['tags'].size).to eq 5
+        expect(body['tags'].size).to eq 6
         expect(body['tags'].map { |t| t['Value'] } - [
-          almond.id, vodka.id, toasted.id, nut.id, protein.id
+          almond.id, vodka.id, toasted.id, crushed.id, nut.id, protein.id
         ]).
           to eq([])
       end
@@ -87,7 +86,7 @@ describe Api::TagsController, type: :controller do
       end
       it 'responds with tags' do
         body = JSON.parse(response.body)
-        expect(body['tags'].size).to eq 3
+        expect(body['tags'].size).to eq 2
         expect(body['tags'] - non_ingredient_tags).to eq([])
       end
     end
@@ -153,7 +152,8 @@ describe Api::TagsController, type: :controller do
           'child_tags' => { nut.id.to_s => 'Nut' },
           'grandchild_tags' => { almond.id.to_s => 'Almond' },
           'grandparent_tags' => {},
-          'modification_tags' => {},
+          "parent_tags" => {},
+          'modification_tags' => { crushed.id.to_s => crushed.name },
           'modified_tags' => {}
         }
       end

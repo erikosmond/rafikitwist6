@@ -38,7 +38,9 @@ module Graph
     end
 
     def filter_tag_hash
-      @filter_tag_hash ||= filter_tag_ids.reduce({}) { |h, id| h.merge({ id => true }) }
+      @filter_tag_hash ||= filter_tag_ids.compact.reduce({}) do |h, id|
+        h.merge({ id => true })
+      end
     end
 
     def contains_tag_id?(id)

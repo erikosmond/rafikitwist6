@@ -100,6 +100,7 @@ module Graph
     private
 
       def merge_hash_values(hash_array)
+        # TODO: refactor
         modification_tags = []
         modified_tags = []
         hash_array.each do |h|
@@ -107,8 +108,8 @@ module Graph
           modified_tags << h[:modified_tags] unless h[:modified_tags] == {}
         end
         {
-          modification_tags: modification_tags,
-          modified_tags: modified_tags
+          modification_tags: modification_tags.flat_map(&:keys),
+          modified_tags: modified_tags.flat_map(&:keys)
         }
       end
 
@@ -187,7 +188,7 @@ module Graph
       end
 
       def with_tag_names(tag_ids)
-        tag_ids.reduce({}) do |h, id|
+        tag_ids.compact.reduce({}) do |h, id|
           h.merge({ id => TagIndex.instance.fetch(id).name })
         end
       end
