@@ -86,7 +86,7 @@ module Graph
       end
 
       def subjective_tag_ids
-        subjective_tag_hash_array.map { |h| h['tag_id'] }
+        subjective_tag_hash_array.map { |h| h[:tag_id] }.compact.uniq
       end
 
       def append_objective_tags(tag_selection)

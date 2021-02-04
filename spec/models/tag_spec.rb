@@ -70,14 +70,15 @@ describe Tag, type: :model do
       expect(Tag.ingredient_group_hierarchy_filters(user)).to eq(expected)
     end
 
-    it 'returns no ingredient filters' do
-      expected = {}
+    it 'returns ingredient filters for non_active_user' do
+      expected = { protein.id => { nut.id => [almond.id] } }
       expect(Tag.ingredient_group_hierarchy_filters(non_active_user)).to eq(expected)
     end
 
     it 'returns tags_by_type' do
-      expected = { alteration.id => [toasted.id, crushed.id] }
-      expect(Tag.tags_by_type).to eq(expected)
+      expected = [toasted.id, crushed.id].sort
+      expect(Tag.tags_by_type.keys.size).to eq 1
+      expect(Tag.tags_by_type[alteration.id].sort).to eq(expected)
     end
 
     it 'has parent_tags' do

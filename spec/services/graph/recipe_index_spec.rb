@@ -93,13 +93,16 @@ describe Graph::RecipeIndex do
   it 'shows tag modifications by user' do
     recipe_index.reset
     tag_index.reset
+    modified = Graph::UserAccessModifiedTagIndex.instance
+    modifications = Graph::UserAccessModificationTagIndex.instance
+    modified.reset
+    modifications.reset
 
     almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
     almond_recipes = almond_tag.api_response_recipes(user2.id)
 
     expect(almond_recipes.length).to eq(3)
-    binding.pry
-    # TODO: tag_ids does not match, make sure i'm not adding nils to tag ids
+    # TODO: tag_ids does not match, it doesn't include the subjective tags
     expect(almond_recipes.first).to eq(
       {
         id: almond_milk_recipe.id,
@@ -109,7 +112,7 @@ describe Graph::RecipeIndex do
         tag_ids: {
           one_star.id => true, low_priority.id => true, dry_roasted.id => true,
           distilled.id => true, plant_protein.id => true, nut.id => true,
-          water.id => true, almond.id => true
+          water.id => true, almond.id => true, comment_tag.id => true
         },
         ingredients:
           {
@@ -157,7 +160,7 @@ describe Graph::RecipeIndex do
     expect(flour_recipes1.first['vessels'].first).to eq(
       { tag_id: bowl.id, tag_name: bowl.name }
     )
-    expect(flour_recipes1.first['sources'].first[:tag_id]).to eq(
+    expect(flour_recipes1.first['sources'].first).to eq(
       { tag_id: cook_book.id, tag_name: cook_book.name }
     )
     expect(flour_recipes1.last[:ratings].size).to eq 1
@@ -181,9 +184,7 @@ describe Graph::RecipeIndex do
     expect(flour_recipes2.last[:comments].size).to eq 1
     expect(flour_recipes2.last[:comments].first[:body]).to eq('cheesy')
 
-    modified = Graph::UserAccessModifiedTagIndex.instance.hash
-    modifications = Graph::UserAccessModificationTagIndex.instance.hash
-    expect(modified).to eq(
+    expect(modified.hash).to eq(
       {
         0 => { bleached.id => [flour.id] }, user2.id =>
         {
@@ -192,7 +193,7 @@ describe Graph::RecipeIndex do
       }
     )
 
-    expect(modifications).to eq(
+    expect(modifications.hash).to eq(
       {
         0 => { flour.id => [bleached.id] }, user2.id =>
         {
@@ -260,7 +261,7 @@ describe Graph::RecipeIndex do
 
     nr2 = Graph::TagIndex.instance.fetch_by_user(nut.id, user2)
     expect(nr2.api_response(user2)).to eq(
-      modification_tags: {},
+      modification_tags: { dry_roasted.id => dry_roasted.name },
       modified_tags: {},
       description: nil,
       id: nut.id,
@@ -277,7 +278,7 @@ describe Graph::RecipeIndex do
 
     pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
     expect(pp.api_response(user2)).to eq(
-      modification_tags: {},
+      modification_tags: { dry_roasted.id => dry_roasted.name },
       modified_tags: {},
       description: nil,
       id: plant_protein.id,
@@ -294,7 +295,7 @@ describe Graph::RecipeIndex do
 
     pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
     expect(pp.api_response(user2)).to eq(
-      modification_tags: {},
+      modification_tags: { dry_roasted.id => dry_roasted.name },
       modified_tags: {},
       description: nil,
       id: plant_protein.id,
