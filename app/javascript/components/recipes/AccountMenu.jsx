@@ -90,7 +90,7 @@ class AccountMenu extends React.Component {
     return (
       <StyledIcon>
         <IconButton
-          aria-label="Your Account"
+          aria-label="Account"
           aria-owns={open ? 'long-menu' : undefined}
           aria-haspopup="true"
           onClick={this.handleClick}

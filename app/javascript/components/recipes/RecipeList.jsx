@@ -71,7 +71,6 @@ class RecipeList extends React.Component {
     }
     return (
       <div>
-        <h4>{selectedTag.name}</h4>
         {selectedTag.description && selectedTag.description.length > 0 && (
           <div>
             {selectedTag.description}

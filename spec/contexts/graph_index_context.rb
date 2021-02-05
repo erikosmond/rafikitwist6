@@ -18,7 +18,6 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:source_type) { create(:tag_type, name: 'Source') }
   let!(:mod_type) { create(:tag_type, name: 'IngredientModification') }
 
-  # TODO: - add some user ratings and priorities for user 2 on almond_milk recipe and maitai
   let!(:comment_tag) { create(:tag, name: 'Comment', tag_type: comment_type) }
   let!(:one_star) { create(:tag, name: '1 star', tag_type: rating_type) }
   let!(:five_star) { create(:tag, name: '5 star', tag_type: rating_type) }
@@ -388,12 +387,5 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:almond_milk_rating_access) do
     create(:access, user: user2, status: 'PRIVATE', accessible: almond_milk_rating)
   end
-
-    # TODO: - add some user ratings and priorities for user 2 on almond_milk recipe and maitai 
-    # let!(:comment_tag) { create(:tag, name: 'Comment', tag_type: comment_type) }
-    # let!(:one_star) { create(:tag, name: '1 star', tag_type: rating_type) }
-    # let!(:five_star) { create(:tag, name: '5 star', tag_type: rating_type) }
-    # let!(:high_priority) { create(:tag, name: 'high priority', tag_type: priority_type) }
-    # let!(:low_priority) { create(:tag, name: 'low priority', tag_type: priority_type) }
 end
 # rubocop: enable Metrics/BlockLength

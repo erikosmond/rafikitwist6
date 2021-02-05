@@ -43,10 +43,13 @@ module Graph
     end
 
     def sister_tags_by_user(user)
+      # TODO: if ['IngredientFamily', 'IngredientType', 'Ingredient'].include? tag.tag_type
       parent_child_tags = @parent_tag_ids.flat_map do |p_id|
         TagIndex.instance.fetch(p_id).child_tags_by_user(user)
       end.uniq.compact
       parent_child_tags.reject { |tag| tag.id == id }
+      # ELSE:
+      # return all other tags of that group that the user has associated recipes for
     end
 
     def child_tags_by_user(user)

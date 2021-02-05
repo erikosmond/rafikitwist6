@@ -35,7 +35,6 @@ class TagInteractor
     end
 
     def filter_tags(recipes)
-      # TODO: pass user into filter_tag_ids method
       recipes.flat_map(&:filter_tag_ids).compact.uniq.map do |t_id|
         [t_id, Graph::TagIndex.instance.fetch(t_id).name]
       end

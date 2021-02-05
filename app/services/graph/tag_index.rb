@@ -10,7 +10,6 @@ module Graph
         objective_tag_selections.each do |ts|
           next unless index[ts.taggable_id]
 
-          # TODO: index[ts.taggable_id] is returning nil
           index[ts.taggable_id].add_parent_tag_id(ts.tag_id)
           index[ts.tag_id].add_child_tag_id(ts.taggable_id)
         end

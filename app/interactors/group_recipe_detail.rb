@@ -28,8 +28,6 @@ class GroupRecipeDetail
     end
 
     def collect_tags_by_recipe!(recipes)
-      # TODO: add nested recipe tag ids - this is the object that the filter checks
-      # mutates recipes object
       recipes.each do |k, v|
         ids = v.each_with_object({}) do |r, tag_ids|
           tag_ids[r.tag_id] = true

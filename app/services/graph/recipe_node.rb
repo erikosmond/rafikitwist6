@@ -24,7 +24,6 @@ module Graph
       @recipe.tag_selections.each do |ts|
         append_objective_tags(ts)
         if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
-          # TODO: save modifications and modifieds
           @ingredients << Ingredient.new(ts, @access, @objective_tag_ids)
         else
           tag_id_by_type(ts)
@@ -33,7 +32,6 @@ module Graph
     end
 
     def filter_tag_ids
-      # TODO: filter tag ids need to contain subjective tags too
       objective_tags.compact.flat_map(&:filter_tag_ids).uniq + subjective_tag_ids
     end
 

@@ -33,6 +33,7 @@ class HeaderDropdown extends React.Component {
     }
   }
 
+  // TODO: use Input Adornment instead
   placeholderWithIcon = (placeholder, classes) => {
     return (
       <h2>

@@ -157,8 +157,6 @@ describe Api::RecipesController, type: :controller do
       pizza = body['recipes'].find { |r| r['name'] == 'Pizza' }
       expect(pizza['ingredients']["#{lemon_verbena.id}mod"]['tag_type']).
         to eq 'Ingredient'
-      # TODO: I don't THINK i need to support ingredient types and ingredient families on recipes anymore - everything will show up in ingredients
-      # expect(pizza['ingredient_types'].first['tag_name']).to eq('Rice')
     end
     it 'returns the filter tags' do
       body = JSON.parse(response.body)

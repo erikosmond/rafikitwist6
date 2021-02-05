@@ -102,7 +102,6 @@ describe Graph::RecipeIndex do
     almond_recipes = almond_tag.api_response_recipes(user2.id)
 
     expect(almond_recipes.length).to eq(3)
-    # TODO: tag_ids does not match, it doesn't include the subjective tags
     expect(almond_recipes.first.api_response).to eq(
       {
         id: almond_milk_recipe.id,

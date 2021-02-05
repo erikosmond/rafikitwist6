@@ -101,10 +101,6 @@ class RecipeByTag
     end
 
     def filter_tags(recipes)
-      # TODO: add ingredients from tag.recipe_id recipes
-      # Return tags associated with the recipe but also those tags' parents
-      # to allow for less specific filtering, i.e. allowing a recipe containing
-      # 'apples' to be returned when filtering by 'fruit'.
       result = recipes.each_with_object({}) do |r, tags|
         tags[r.tag_id] = r.tag_name
         tags[r.parent_tag_id] = r.parent_tag
