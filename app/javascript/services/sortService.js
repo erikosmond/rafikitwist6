@@ -10,6 +10,10 @@ function compareName(a, b) {
   return compare(aname, bname)
 }
 
+function hasItem(arr) {
+  return arr && arr[0]
+}
+
 const compareTagName = (allTags) => (a, b) => compare(allTags[a], allTags[b])
 
 const priotiesRanks = {
@@ -29,18 +33,18 @@ export function sortByTagName(array, allTags) {
 }
 
 function compareRecipeTagsAndName(a, b) {
-  if (a.priorities && a.priorities[0].tagName === 'On Deck') return 1
-  if (b.priorities && b.priorities[0].tagName === 'On Deck') return -1
-  if (a.ratings && !b.ratings) return -1
-  if (!a.ratings && b.ratings) return 1
-  if (a.ratings && b.ratings) {
+  if (hasItem(a.priorities) && a.priorities[0].tagName === 'On Deck') return 1
+  if (hasItem(b.priorities) && b.priorities[0].tagName === 'On Deck') return -1
+  if (hasItem(a.ratings) && !hasItem(b.ratings)) return -1
+  if (!hasItem(a.ratings) && hasItem(b.ratings)) return 1
+  if (hasItem(a.ratings) && hasItem(b.ratings)) {
     if (a.ratings[0].tagName > b.ratings[0].tagName) return -1
     if (a.ratings[0].tagName < b.ratings[0].tagName) return 1
   }
 
-  if (a.priorities && !b.priorities) return -1
-  if (!a.priorities && b.priorities) return 1
-  if (a.priorities && b.priorities) {
+  if (hasItem(a.priorities) && !hasItem(b.priorities)) return -1
+  if (hasItem(!a.priorities) && hasItem(b.priorities)) return 1
+  if (hasItem(a.priorities) && hasItem(b.priorities)) {
     if (priotiesRanks[a.priorities[0].tagName] > priotiesRanks[b.priorities[0].tagName]) return -1
     if (priotiesRanks[a.priorities[0].tagName] < priotiesRanks[b.priorities[0].tagName]) return 1
   }

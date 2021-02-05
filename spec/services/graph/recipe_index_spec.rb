@@ -103,7 +103,7 @@ describe Graph::RecipeIndex do
 
     expect(almond_recipes.length).to eq(3)
     # TODO: tag_ids does not match, it doesn't include the subjective tags
-    expect(almond_recipes.first).to eq(
+    expect(almond_recipes.first.api_response).to eq(
       {
         id: almond_milk_recipe.id,
         name: almond_milk_recipe.name,
@@ -295,6 +295,23 @@ describe Graph::RecipeIndex do
 
     pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
     expect(pp.api_response(user2)).to eq(
+      modification_tags: { dry_roasted.id => dry_roasted.name },
+      modified_tags: {},
+      description: nil,
+      id: plant_protein.id,
+      name: plant_protein.name,
+      recipe_id: nil,
+      tag_type_id: ingredient_family_tag_type.id,
+      tags: { plant_protein.id => plant_protein.name },
+      child_tags: { nut.id => nut.name },
+      grandchild_tags: { cashew.id => cashew.name, almond.id => almond.name },
+      grandparent_tags: {},
+      parent_tags: {},
+      sister_tags: {}
+    )
+
+    fivestar = Graph::TagIndex.instance.fetch_by_user(five_star.id, user1)
+    expect(fivestar.api_response(user1)).to eq(
       modification_tags: { dry_roasted.id => dry_roasted.name },
       modified_tags: {},
       description: nil,

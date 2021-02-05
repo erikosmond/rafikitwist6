@@ -16,6 +16,7 @@ RSpec.describe BuildTagHierarchy, type: :interactor do
     let(:expected_modifications) { [toasted.id, crushed.id, nil] }
 
     it "returns correct number of tag's parent and child tags" do
+      binding.pry
       expect(result.tags_with_hierarchy.size).to eq 3
     end
     it 'returns correct grandparent tag' do

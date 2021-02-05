@@ -19,7 +19,8 @@ class TagInteractor
   private
 
     def all_recipes
-      recipes = Graph::TagIndex.instance.all_by_user(context.current_user).map do |r|
+      recipes = Graph::RecipeIndex.instance.all_by_user(context.current_user).
+                sort_by(&:name).map do |r|
         { 'Label' => r.name, 'Value' => r.id }
       end
       context.result = { tag: { name: 'All Recipes' }, recipes: recipes }
@@ -43,18 +44,22 @@ class TagInteractor
     def objective_api_resonse
       return api_response([], {}) unless context.tag.viewable?(context.current_user)
 
-      api_response(context.tag.user_recipes(context.current_user))
+      api_response(context.tag.api_response_recipes(context.current_user.id))
     end
 
     def subjective_api_response
-      recipes = subjective_recipes.map do |recipe|
-        Graph::RecipeIndex.instance.fetch(recipe.id)
+      recipes = subjective_recipes.map do |recipe_id|
+        Graph::RecipeIndex.instance.fetch(recipe_id)
       end
-      api_resonse(recipes)
+
+      subjective_data = Graph::Node.subjective_tags(
+        recipes.map(&:id), context.current_user
+      )
+      api_response(Graph::Node.subjective_enrichment(recipes, subjective_data))
     end
 
     def subjective_recipes
-      Recipe.joins(accesses: :tag).
+      Recipe.joins(tag_selections: %i[tag access]).
         where("tags.id = #{context.tag.id.to_i}").
         where("accesses.user_id = #{user_id.to_i}").
         pluck(:id)
