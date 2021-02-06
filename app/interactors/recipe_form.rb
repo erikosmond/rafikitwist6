@@ -11,8 +11,9 @@ class RecipeForm < GeneralForm
   end
 
   def call
-    raise StandardError, 'Not signed in' unless context.user.present?
+    raise Error401, 'Not signed in' unless context.user.present?
 
+    # TODO: update index on recipe update
     context.result = case context.action
                      when :create
                        CreateRecipeForm.new(context).create

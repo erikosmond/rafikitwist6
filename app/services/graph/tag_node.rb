@@ -43,13 +43,14 @@ module Graph
     end
 
     def sister_tags_by_user(user)
-      # TODO: if ['IngredientFamily', 'IngredientType', 'Ingredient'].include? tag.tag_type
-      parent_child_tags = @parent_tag_ids.flat_map do |p_id|
-        TagIndex.instance.fetch(p_id).child_tags_by_user(user)
-      end.uniq.compact
-      parent_child_tags.reject { |tag| tag.id == id }
-      # ELSE:
-      # return all other tags of that group that the user has associated recipes for
+      if TagType::INGREDIENT_TYPES.include? @tag_type.name
+        parent_child_tags = @parent_tag_ids.flat_map do |p_id|
+          TagIndex.instance.fetch(p_id).child_tags_by_user(user)
+        end.uniq.compact
+        parent_child_tags.reject { |tag| tag.id == id }
+      else
+        group_tags_by_user
+      end
     end
 
     def child_tags_by_user(user)
@@ -100,6 +101,14 @@ module Graph
     end
 
     private
+
+      def group_tags_by_user
+        return []
+
+        # TODO: implement - i.e. if tag is 2 stars, return other ratings that user has
+        TagSelection.select("tags.id, tags.name").distinct.join(:access, tag: :tag_type).
+        where(["tag_types.name = ?", @tag_type.name]).where("accesses.user_id = #{context.current_user.id.to_i}")
+      end
 
       def merge_hash_values(hash_array)
         # TODO: refactor

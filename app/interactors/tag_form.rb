@@ -23,6 +23,7 @@ class TagForm < GeneralForm
         create_access(tag)
         context.tag = tag_with_type(tag)
       end
+      Graph::TagIndex.add(context.tag)
     end
 
     def assign_tag_attrs!(tag, params)
