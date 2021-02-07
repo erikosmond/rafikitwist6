@@ -67,6 +67,7 @@ module Api
       end
 
       def check_type(tag_type, current_user)
+        # TODO: move this logic to an interactor
         if tag_type
           TagsByType.call(tag_type: tag_type, current_user: current_user)
         else
@@ -77,14 +78,14 @@ module Api
         end
       end
 
-      def hierarchy_context_params(hierarchy_result)
-        # This just makes it clearer what is being passed into GroupTags.call
-        {
-          tag: hierarchy_result.tag,
-          tags_with_hierarchy: hierarchy_result.tags_with_hierarchy,
-          sister_tags: hierarchy_result.sister_tags
-        }
-      end
+      # def hierarchy_context_params(hierarchy_result)
+      #   # This just makes it clearer what is being passed into GroupTags.call
+      #   {
+      #     tag: hierarchy_result.tag,
+      #     tags_with_hierarchy: hierarchy_result.tags_with_hierarchy,
+      #     sister_tags: hierarchy_result.sister_tags
+      #   }
+      # end
 
       def render_tags(tag_type, tags, current_user)
         if tag_type

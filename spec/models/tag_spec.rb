@@ -67,6 +67,7 @@ describe Tag, type: :model do
 
     it 'returns all ingredient filters' do
       expected = { protein.id => { nut.id => [almond.id] } }
+      # TODO: rewrite these tests to use the new graph solution
       expect(Tag.ingredient_group_hierarchy_filters(user)).to eq(expected)
     end
 

@@ -49,7 +49,7 @@ module Graph
         end.uniq.compact
         parent_child_tags.reject { |tag| tag.id == id }
       else
-        group_tags_by_user
+        group_tags_by_user(user)
       end
     end
 
@@ -102,12 +102,13 @@ module Graph
 
     private
 
-      def group_tags_by_user
-        return []
-
-        # TODO: implement - i.e. if tag is 2 stars, return other ratings that user has
-        TagSelection.select("tags.id, tags.name").distinct.join(:access, tag: :tag_type).
-        where(["tag_types.name = ?", @tag_type.name]).where("accesses.user_id = #{context.current_user.id.to_i}")
+      def group_tags_by_user(user)
+        TagSelection.select('tags.id').distinct.
+          joins(:access, tag: :tag_type).
+          where(['tag_types.name = ?', @tag_type.name]).
+          where("accesses.user_id = #{user.id.to_i}").
+          map { |tag| TagIndex.instance.fetch(tag.id) }.
+          reject { |like_tag| like_tag.id == id }
       end
 
       def merge_hash_values(hash_array)
