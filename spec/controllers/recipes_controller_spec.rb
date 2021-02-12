@@ -274,7 +274,7 @@ describe Api::RecipesController, type: :controller do
 
     it 'returns recipe names' do
       body = JSON.parse(response.body)
-      expect(body['recipes'].size).to eq(10)
+      expect(body['recipes'].size).to eq(3)
       expect(body['recipes'].first.keys.size).to eq(2)
     end
   end

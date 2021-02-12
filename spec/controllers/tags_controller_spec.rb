@@ -17,6 +17,8 @@ describe Api::TagsController, type: :controller do
 
   describe 'GET - index' do
     before do
+      recipe_index.reset
+      tag_index.reset
       sign_in user
       get :index,
           params: params,

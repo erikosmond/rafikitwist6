@@ -4,9 +4,9 @@ module Graph
   # Singleton to index recipe ownership by user_id. user_id 0 are for public recipes.
   class TagIndex < Index
     def add(tag)
-      tag_node = TagNode.new(new_tag_query(tag.id))
-      tag_node.parent_tags.each do |pt|
-        tag_node.add_parent_tag_id << pt.id
+      tag_node = TagNode.new(new_tag_query(tag.id).first)
+      tag_node.parent_tag_ids.each do |pti|
+        tag_node.add_parent_tag_id << pti
       end
       @hash[tag.id] = tag_node
     end
@@ -29,8 +29,8 @@ module Graph
       end
 
       def new_tag_query(tag_id)
-        tags_with_assoc_query.joins(:parent_tags).preloads(:parent_tags).
-          where(["tags.id = ?", tag_ig])
+        tags_with_assoc_query.joins(:parent_tags).preload(:parent_tags).
+          where(["tags.id = ?", tag_id])
       end
 
       def tags_with_assoc

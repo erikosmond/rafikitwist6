@@ -156,32 +156,36 @@ describe Graph::RecipeIndex do
     flour_tag1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
     flour_recipes1 = flour_tag1.api_response_recipes(user1.id)
 
-    expect(flour_recipes1.first['vessels'].first).to eq(
+    expect(flour_recipes1.first.api_response['vessels'].first).to eq(
       { tag_id: bowl.id, tag_name: bowl.name }
     )
-    expect(flour_recipes1.first['sources'].first).to eq(
+    expect(flour_recipes1.first.api_response['sources'].first).to eq(
       { tag_id: cook_book.id, tag_name: cook_book.name }
     )
-    expect(flour_recipes1.last[:ratings].size).to eq 1
-    expect(flour_recipes1.last[:ratings].first[:tag_id]).to eq(five_star.id)
+    expect(flour_recipes1.last.api_response[:ratings].size).to eq 1
+    expect(flour_recipes1.last.api_response[:ratings].first[:tag_id]).to eq(five_star.id)
 
-    expect(flour_recipes1.last[:priorities].size).to eq 1
-    expect(flour_recipes1.last[:priorities].first[:tag_id]).to eq(high_priority.id)
+    expect(flour_recipes1.last.api_response[:priorities].size).to eq 1
+    expect(flour_recipes1.last.api_response[:priorities].first[:tag_id]).to eq(
+      high_priority.id
+    )
 
-    expect(flour_recipes1.last[:comments].size).to eq 1
-    expect(flour_recipes1.last[:comments].first[:body]).to eq('hot')
+    expect(flour_recipes1.last.api_response[:comments].size).to eq 1
+    expect(flour_recipes1.last.api_response[:comments].first[:body]).to eq('hot')
 
     flour_tag2 = Graph::TagIndex.instance.fetch_by_user(flour.id, user2)
     flour_recipes2 = flour_tag2.api_response_recipes(user2.id)
 
-    expect(flour_recipes2.last[:ratings].size).to eq 1
-    expect(flour_recipes2.last[:ratings].first[:tag_id]).to eq(one_star.id)
+    expect(flour_recipes2.last.api_response[:ratings].size).to eq 1
+    expect(flour_recipes2.last.api_response[:ratings].first[:tag_id]).to eq(one_star.id)
 
-    expect(flour_recipes2.last[:priorities].size).to eq 1
-    expect(flour_recipes2.last[:priorities].first[:tag_id]).to eq(low_priority.id)
+    expect(flour_recipes2.last.api_response[:priorities].size).to eq 1
+    expect(flour_recipes2.last.api_response[:priorities].first[:tag_id]).to eq(
+      low_priority.id
+    )
 
-    expect(flour_recipes2.last[:comments].size).to eq 1
-    expect(flour_recipes2.last[:comments].first[:body]).to eq('cheesy')
+    expect(flour_recipes2.last.api_response[:comments].size).to eq 1
+    expect(flour_recipes2.last.api_response[:comments].first[:body]).to eq('cheesy')
 
     expect(modified.hash).to eq(
       {
@@ -310,7 +314,7 @@ describe Graph::RecipeIndex do
     )
 
     fivestar = Graph::TagIndex.instance.fetch_by_user(five_star.id, user1)
-    expect(fivestar.api_response(user1)).to eq(
+    expect(fivestar.api_response_recipes(user1)).to eq([
       modification_tags: { dry_roasted.id => dry_roasted.name },
       modified_tags: {},
       description: nil,
@@ -324,7 +328,7 @@ describe Graph::RecipeIndex do
       grandparent_tags: {},
       parent_tags: {},
       sister_tags: {}
-    )
+    ])
   end
 end
 # rubocop: enable Metrics/BlockLength

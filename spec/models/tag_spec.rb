@@ -6,6 +6,9 @@ require_relative '../contexts/recipe_context'
 
 # rubocop: disable Metrics/BlockLength
 describe Tag, type: :model do
+  let(:recipe_index) { Graph::RecipeIndex.instance }
+  let(:tag_index) { Graph::TagIndex.instance }
+
   before(:each) do
     TagType.delete_cache
   end
@@ -66,12 +69,16 @@ describe Tag, type: :model do
     end
 
     it 'returns all ingredient filters' do
+      recipe_index.reset
+      tag_index.reset
       expected = { protein.id => { nut.id => [almond.id] } }
       # TODO: rewrite these tests to use the new graph solution
       expect(Tag.ingredient_group_hierarchy_filters(user)).to eq(expected)
     end
 
     it 'returns ingredient filters for non_active_user' do
+      recipe_index.reset
+      tag_index.reset
       expected = { protein.id => { nut.id => [almond.id] } }
       expect(Tag.ingredient_group_hierarchy_filters(non_active_user)).to eq(expected)
     end
