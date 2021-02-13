@@ -43,7 +43,7 @@ class TagInteractor
     def objective_api_resonse
       return api_response([], {}) unless context.tag.viewable?(context.current_user)
 
-      api_response(context.tag.api_response_recipes(context.current_user.id))
+      api_response(context.tag.api_response_recipes(context.current_user&.id))
     end
 
     def subjective_api_response

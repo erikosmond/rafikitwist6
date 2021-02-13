@@ -4,18 +4,18 @@
 class GroupTags
   include Interactor
 
-  def call
-    json_fields = %i[id name description tag_type_id recipe_id]
-    tag_json = context.tag.as_json(only: json_fields)
-    context.tags_with_hierarchy.each do |t|
-      tag_groups.each do |g|
-        tag_json["#{g}s"] ||= {}
-        group_tags(tag_json, t, g)
-      end
-    end
-    sister_tags(tag_json)
-    context.json = tag_json
-  end
+  # def call
+  #   json_fields = %i[id name description tag_type_id recipe_id]
+  #   tag_json = context.tag.as_json(only: json_fields)
+  #   context.tags_with_hierarchy.each do |t|
+  #     tag_groups.each do |g|
+  #       tag_json["#{g}s"] ||= {}
+  #       group_tags(tag_json, t, g)
+  #     end
+  #   end
+  #   sister_tags(tag_json)
+  #   context.json = tag_json
+  # end
 
   private
 

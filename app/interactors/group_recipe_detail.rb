@@ -5,14 +5,14 @@
 class GroupRecipeDetail
   include Interactor
 
-  def call
-    recipes = group_by_recipe_details(context.recipe_details.dup)
-    collect_tags_by_recipe!(recipes)
-    recipes = group_by_recipe_tag_type(recipes) # Ingredients, vs Menus, etc.
-    recipes = merge_recipe_data(recipes)
-    hash_ingredients_by_tag_selection_id!(recipes)
-    context.result = recipes
-  end
+  # def call
+  #   recipes = group_by_recipe_details(context.recipe_details.dup)
+  #   collect_tags_by_recipe!(recipes)
+  #   recipes = group_by_recipe_tag_type(recipes) # Ingredients, vs Menus, etc.
+  #   recipes = merge_recipe_data(recipes)
+  #   hash_ingredients_by_tag_selection_id!(recipes)
+  #   context.result = recipes
+  # end
 
   private
 

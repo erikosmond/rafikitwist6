@@ -4,19 +4,19 @@
 class BuildTagHierarchy
   include Interactor
 
-  def call
-    hierarchy = Tag.
-                select(tag_hierarchy_select).
-                left_outer_joins(tag_hierarchy_join).
-                where(accesses_predicate).
-                order('tags.id, child_tags.id, child_tags_tags.id')
+  # def call
+  #   hierarchy = Tag.
+  #               select(tag_hierarchy_select).
+  #               left_outer_joins(tag_hierarchy_join).
+  #               where(accesses_predicate).
+  #               order('tags.id, child_tags.id, child_tags_tags.id')
 
-    context.tags_with_hierarchy = filter_tags(hierarchy)
+  #   context.tags_with_hierarchy = filter_tags(hierarchy)
 
-    context.sister_tags = sister_tags.reject do |t|
-      TagType.ingredient_category_id == t.tag_type_id
-    end
-  end
+  #   context.sister_tags = sister_tags.reject do |t|
+  #     TagType.ingredient_category_id == t.tag_type_id
+  #   end
+  # end
 
   private
 

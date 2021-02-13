@@ -6,16 +6,16 @@ class RecipeDetail
   include AssociatedRecipesService
   include Interactor
 
-  def call
-    context.result =
-      context.recipe.tag_selections.
-      select(recipes_select_tags + tag_details_select + tag_selections_attrs).
-      left_outer_joins(detail_joins).
-      where(
-        "accesses.user_id =
-        #{context.current_user&.id.to_i} OR accesses.status = 'PUBLIC'"
-      )
-  end
+  # def call
+  #   context.result =
+  #     context.recipe.tag_selections.
+  #     select(recipes_select_tags + tag_details_select + tag_selections_attrs).
+  #     left_outer_joins(detail_joins).
+  #     where(
+  #       "accesses.user_id =
+  #       #{context.current_user&.id.to_i} OR accesses.status = 'PUBLIC'"
+  #     )
+  # end
 
   private
 

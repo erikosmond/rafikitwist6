@@ -68,7 +68,7 @@ describe Api::RecipesController, type: :controller do
     it 'returns a 200' do
       body = JSON.parse(response.body)
       expect(body['ingredients']["#{ingredient.id}mod"]['id']).to eq(tag_selection_ing.id)
-      expect(body['ratings']).to be_nil
+      expect(body['ratings']).to eq []
       expect(body['recipe_types'].first['tag_id']).to eq cocktail.id
     end
   end

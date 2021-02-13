@@ -73,6 +73,12 @@ module Graph
       )
     end
 
+    def subjective_api_response(user)
+      subjective_data = Graph::Node.subjective_tags([id], user)
+      subjective_recipe = Graph::Node.subjective_enrichment([self], subjective_data).first
+      subjective_recipe.api_response
+    end
+
     def copy
       RecipeNode.new(@recipe)
     end

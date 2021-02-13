@@ -18,17 +18,21 @@ module Api
     end
 
     def show
-      recipe = Recipe.find_by_id(params.permit(:id)[:id])
+      # TODO: use graph
+      recipe = Graph::RecipeIndex.instance.fetch(params.permit(:id)[:id])
+      # recipe = Recipe.find_by_id(params.permit(:id)[:id])
       Permissions.new(current_user).can_view!(recipe)
-      if recipe&.tags&.first
+      render json: recipe.subjective_api_response(current_user)
+      # if recipe&.tags&.first
         # Fetch all the universal recipe tags like ingredients, but also user
         # tags like ratings.
-        detail = RecipeDetail.call(recipe: recipe, current_user: current_user)
-        grouped_detail = GroupRecipeDetail.call(recipe_details: detail.result)
-        render json: grouped_detail.result.first.merge(recipe.as_json)
-      else
-        render json: {}, status: :not_found
-      end
+        # detail = RecipeDetail.call(recipe: recipe, current_user: current_user)
+        # grouped_detail = GroupRecipeDetail.call(recipe_details: detail.result)
+        # render json: grouped_detail.result.first.merge(recipe.as_json)
+      #   recipe.subjective_api_response(current_user)
+      # else
+      #   render json: {}, status: :not_found
+      # end
     end
 
     def create

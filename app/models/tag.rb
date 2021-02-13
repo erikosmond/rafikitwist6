@@ -43,50 +43,50 @@ class Tag < ApplicationRecord
   has_many :recipe_tag_selections,
            through: :recipes,
            source: :tag_selections
-  has_many :modified_recipes,
-           through: :tag_selections,
-           source: :modified_recipes
-  has_many :modified_recipe_tag_selections,
-           -> { where(taggable_type: 'Recipe') },
-           through: :modified_recipes,
-           source: :tag_selections
-  has_many :modified_tags,
-           through: :tag_selections,
-           source: :modified_tags
-  has_many :modified_tag_tag_selections,
-           -> { where(taggable_type: 'TagSelection') },
-           through: :modified_tags,
-           source: :tag_selections
-  has_many :child_tags,
-           through: :tag_selections,
-           source: :taggable,
-           class_name: 'ChildTag',
-           source_type: 'Tag'
-  has_many :child_tag_selections,
-           through: :child_tags,
-           source: :tag_selections
-  has_many :child_recipes,
-           through: :child_tag_selections,
-           source: :taggable,
-           source_type: 'Recipe'
-  has_many :child_recipe_tag_selections,
-           through: :child_recipes,
-           source: :tag_selections
-  has_many :grandchild_tags,
-           through: :child_tag_selections,
-           source: :taggable,
-           class_name: 'GrandchildTag',
-           source_type: 'Tag'
-  has_many :grandchild_tag_selections,
-           through: :grandchild_tags,
-           source: :tag_selections
-  has_many :grandchild_recipes,
-           through: :grandchild_tag_selections,
-           source: :taggable,
-           source_type: 'Recipe'
-  has_many :grandchild_recipe_tag_selections,
-           through: :grandchild_recipes,
-           source: :tag_selections
+  # has_many :modified_recipes,
+  #          through: :tag_selections,
+  #          source: :modified_recipes
+  # has_many :modified_recipe_tag_selections,
+  #          -> { where(taggable_type: 'Recipe') },
+  #          through: :modified_recipes,
+  #          source: :tag_selections
+  # has_many :modified_tags,
+  #          through: :tag_selections,
+  #          source: :modified_tags
+  # has_many :modified_tag_tag_selections,
+  #          -> { where(taggable_type: 'TagSelection') },
+  #          through: :modified_tags,
+  #          source: :tag_selections
+  # has_many :child_tags,
+  #          through: :tag_selections,
+  #          source: :taggable,
+  #          class_name: 'ChildTag',
+  #          source_type: 'Tag'
+  # has_many :child_tag_selections,
+  #          through: :child_tags,
+  #          source: :tag_selections
+  # has_many :child_recipes,
+  #          through: :child_tag_selections,
+  #          source: :taggable,
+  #          source_type: 'Recipe'
+  # has_many :child_recipe_tag_selections,
+  #          through: :child_recipes,
+  #          source: :tag_selections
+  # has_many :grandchild_tags,
+  #          through: :child_tag_selections,
+  #          source: :taggable,
+  #          class_name: 'GrandchildTag',
+  #          source_type: 'Tag'
+  # has_many :grandchild_tag_selections,
+  #          through: :grandchild_tags,
+  #          source: :tag_selections
+  # has_many :grandchild_recipes,
+  #          through: :grandchild_tag_selections,
+  #          source: :taggable,
+  #          source_type: 'Recipe'
+  # has_many :grandchild_recipe_tag_selections,
+  #          through: :grandchild_recipes,
+  #          source: :tag_selections
 
   # Tags that are assigned to this tag, like Ingredient Type for an Ingredient
   has_many :taggings,
@@ -98,12 +98,12 @@ class Tag < ApplicationRecord
   has_many :parent_tags,
            through: :taggings,
            source: 'tag'
-  has_many :parent_taggings,
-           through: :parent_tags,
-           source: :taggings
-  has_many :grandparent_tags,
-           through: :parent_taggings,
-           source: 'tag'
+  # has_many :parent_taggings,
+  #          through: :parent_tags,
+  #          source: :taggings
+  # has_many :grandparent_tags,
+  #          through: :parent_taggings,
+  #          source: 'tag'
 
   has_one :access, as: :accessible, dependent: :destroy
 

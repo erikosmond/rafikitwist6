@@ -91,11 +91,11 @@ module Graph
       {
         modification_tags:
           with_tag_names(
-            UserAccessModificationTagIndex.instance.fetch_mods_by_user_id(id, user.id) + child_values[:modification_tags]
+            UserAccessModificationTagIndex.instance.fetch_mods_by_user_id(id, user&.id) + child_values[:modification_tags]
           ),
         modified_tags:
           with_tag_names(
-            UserAccessModifiedTagIndex.instance.fetch_mods_by_user_id(id, user.id) + child_values[:modified_tags]
+            UserAccessModifiedTagIndex.instance.fetch_mods_by_user_id(id, user&.id) + child_values[:modified_tags]
           )
       }
     end
