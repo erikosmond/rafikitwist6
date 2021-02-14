@@ -6,10 +6,7 @@ module Api
     include RecipeControllerHelper
     def index
       tag_id = params.permit(:tag_id)[:tag_id]
-      # recipes = recipes_by_tag(tag_id)
-      # render(json: TagInteractor.call(tag: tag, current_user: current_user))
       recipes = TagInteractor.call(tag_id: tag_id, current_user: current_user)
-      # binding.pry
       if recipes.result
         render json: recipes.result
       else
@@ -18,21 +15,9 @@ module Api
     end
 
     def show
-      # TODO: use graph
       recipe = Graph::RecipeIndex.instance.fetch(params.permit(:id)[:id])
-      # recipe = Recipe.find_by_id(params.permit(:id)[:id])
       Permissions.new(current_user).can_view!(recipe)
       render json: recipe.subjective_api_response(current_user)
-      # if recipe&.tags&.first
-        # Fetch all the universal recipe tags like ingredients, but also user
-        # tags like ratings.
-        # detail = RecipeDetail.call(recipe: recipe, current_user: current_user)
-        # grouped_detail = GroupRecipeDetail.call(recipe_details: detail.result)
-        # render json: grouped_detail.result.first.merge(recipe.as_json)
-      #   recipe.subjective_api_response(current_user)
-      # else
-      #   render json: {}, status: :not_found
-      # end
     end
 
     def create

@@ -17,14 +17,6 @@ module Api
       tag = Graph::TagIndex.instance.fetch(params.permit(:id)[:id])
       Permissions.new(current_user).can_view!(tag)
       render(json: tag.api_response(current_user&.id))
-
-      # tag = Tag.find_by_id(params.permit(:id)[:id])
-      # hierarchy_result = BuildTagHierarchy.call(
-      #   tag: tag,
-      #   current_user: current_user
-      # )
-      # result = GroupTags.call(hierarchy_context_params(hierarchy_result))
-      # render(json: result.json)
     end
 
     def create
@@ -77,15 +69,6 @@ module Api
           tag_json.map { |r| { 'Label' => r['name'], 'Value' => r['id'] } }
         end
       end
-
-      # def hierarchy_context_params(hierarchy_result)
-      #   # This just makes it clearer what is being passed into GroupTags.call
-      #   {
-      #     tag: hierarchy_result.tag,
-      #     tags_with_hierarchy: hierarchy_result.tags_with_hierarchy,
-      #     sister_tags: hierarchy_result.sister_tags
-      #   }
-      # end
 
       def render_tags(tag_type, tags, current_user)
         if tag_type

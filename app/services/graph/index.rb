@@ -21,7 +21,6 @@ module Graph
     end
 
     def fetch_mods_by_user_id(id, user_id = 0)
-      binding.pry
       mods = @hash[user_id.to_i].try(:[], id.to_i) || []
       return mods if user_id.to_i.zero?
 
