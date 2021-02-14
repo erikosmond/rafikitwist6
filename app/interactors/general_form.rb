@@ -7,6 +7,7 @@ class GeneralForm
   protected
 
     def create_access(accessible, status = nil)
+      # TODO: find out when subjective tags are saved and getting public statuses
       status ||= access_status
       AccessService.create_access!(user.id, accessible, status)
     end

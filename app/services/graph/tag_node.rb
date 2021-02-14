@@ -106,7 +106,7 @@ module Graph
         TagSelection.select('tags.id').distinct.
           joins(:access, tag: :tag_type).
           where(['tag_types.name = ?', @tag_type.name]).
-          where("accesses.user_id = #{user.id.to_i}").
+          where("(accesses.user_id = #{user&.id.to_i} OR accesses.status = 'PUBLIC')").
           map { |tag| TagIndex.instance.fetch(tag.id) }.
           reject { |like_tag| like_tag.id == id }
       end

@@ -16,6 +16,7 @@ class TagsByType
   private
 
     def tags_by_type_ids(type_ids)
+      # why is this returning 2 stars 
       result = Tag.joins(tag_selections: :access).
                where(tag_type_id: type_ids).
                where("accesses.status = 'PUBLIC' OR accesses.user_id =
@@ -31,6 +32,8 @@ class TagsByType
       elsif tag_type.to_s.casecmp('ingredient_modifications').zero?
         [{ id: TagType.modification_id }]
       elsif tag_type
+        # TODO: do not return subjective tags if the user doesn't have that subjective tag
+        # but tags_by_type_ids should be accounting for this
         TagType.where.not(name: ingredient_types)
       else
         TagType.all

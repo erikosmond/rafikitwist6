@@ -61,6 +61,7 @@ class TagInteractor
       Recipe.joins(tag_selections: %i[tag access]).
         where("tags.id = #{context.tag.id.to_i}").
         where("accesses.user_id = #{user_id.to_i}").
+        # where("(accesses.user_id = #{user_id.to_i} OR accesses.status = 'PUBLIC')").
         pluck(:id)
     end
 

@@ -11,7 +11,8 @@ const IngredientListItem = ({ ingredient }) => {
     value,
   } = ingredient
   const amount = value || ''
-  const presentModificationName = (modificationName === null) ? '' : modificationName
+  // const presentModificationName = (modificationName === null) ? '' : modificationName
+  const presentModificationName = modificationName || ''
   const instruction = body || ''
   const ingredientDetails = (modificationName === 'Juice of') ?
     `${amount} ${tagName} Juice` :
