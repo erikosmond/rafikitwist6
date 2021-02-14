@@ -19,37 +19,37 @@ class GroupTags
 
   private
 
-    def sister_tags(tag_json)
-      tag_json['sister_tags'] = {}
-      context.sister_tags.each do |s|
-        tag_json['sister_tags'][s.id] = s.name
-      end
-    end
+    # def sister_tags(tag_json)
+    #   tag_json['sister_tags'] = {}
+    #   context.sister_tags.each do |s|
+    #     tag_json['sister_tags'][s.id] = s.name
+    #   end
+    # end
 
-    def group_tags(tags_json, tags, group)
-      return unless tags["#{group}_id"] && tags["#{group}_name"]
+    # def group_tags(tags_json, tags, group)
+    #   return unless tags["#{group}_id"] && tags["#{group}_name"]
 
-      tags_json["#{group}s"][tags["#{group}_id"]] = tags["#{group}_name"]
-    end
+    #   tags_json["#{group}s"][tags["#{group}_id"]] = tags["#{group}_name"]
+    # end
 
-    def tag_groups
-      groups = %i[
-        tag
-        child_tag
-        modification_tag
-        modified_tag
-      ]
-      groups << :grandchild_tag unless ingredient_type?
-      groups << :grandparent_tag unless ingredient_type?
-      groups << :parent_tag unless family_type?
-      groups
-    end
+    # def tag_groups
+    #   groups = %i[
+    #     tag
+    #     child_tag
+    #     modification_tag
+    #     modified_tag
+    #   ]
+    #   groups << :grandchild_tag unless ingredient_type?
+    #   groups << :grandparent_tag unless ingredient_type?
+    #   groups << :parent_tag unless family_type?
+    #   groups
+    # end
 
-    def ingredient_type?
-      context.tag.tag_type_id == TagType.type_id
-    end
+    # def ingredient_type?
+    #   context.tag.tag_type_id == TagType.type_id
+    # end
 
-    def family_type?
-      context.tag.tag_type_id == TagType.family_id
-    end
+    # def family_type?
+    #   context.tag.tag_type_id == TagType.family_id
+    # end
 end

@@ -71,14 +71,6 @@ module TagsService
   # end
 
   def ingredient_group_hierarchy_filters(current_user)
-    # hierarchy = all_family_tags_with_hierarchy(current_user)
-    # groups = grandparent_tags_with_grouped_children(hierarchy)
-    # group_grandparent_hierarchy_by_id(groups.sort_by(&:name))
-    # TODO: replace with code from filter_heirarchy(current_user)
-    filter_heirarchy(current_user)
-  end
-
-  def filter_heirarchy(current_user)
     ::Graph::TagIndex.instance.family_tags.reduce({}) do |fh, fam|
       child_tags = fam.child_tags_by_user(current_user)
       child_hash = child_tags.reduce({}) do |ch, child|
@@ -86,7 +78,6 @@ module TagsService
       end
       fh.merge({ fam.id => child_hash })
     end
-    # tags_by_type is handled in the Tag class
   end
 
   # def new_family_tag(result)

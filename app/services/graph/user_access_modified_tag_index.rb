@@ -12,7 +12,7 @@ module Graph
     private
 
       def generate_index
-        {}
+        @hash || {}
       end
   end
 end

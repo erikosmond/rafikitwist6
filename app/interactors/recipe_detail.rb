@@ -19,16 +19,16 @@ class RecipeDetail
 
   private
 
-    def detail_joins
-      [
-        { tag: :tag_type },
-        :tag_attributes,
-        :modifications,
-        :access
-      ]
-    end
+    # def detail_joins
+    #   [
+    #     { tag: :tag_type },
+    #     :tag_attributes,
+    #     :modifications,
+    #     :access
+    #   ]
+    # end
 
-    def tag_selections_attrs
-      ['tag_selections.id', 'tag_selections.body']
-    end
+    # def tag_selections_attrs
+    #   ['tag_selections.id', 'tag_selections.body']
+    # end
 end
