@@ -203,6 +203,10 @@ describe Api::RecipesController, type: :controller do
     end
   end
 
+  describe 'GET - index (rating)' do
+    # todo: implement
+  end
+
   describe 'GET - index for user with no recipe associations' do
     before do
       tag_index.reset

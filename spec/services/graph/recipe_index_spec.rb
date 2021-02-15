@@ -94,10 +94,6 @@ describe Graph::RecipeIndex do
   it 'shows tag modifications by user' do
     recipe_index.reset
     tag_index.reset
-    modified = Graph::UserAccessModifiedTagIndex.instance
-    modifications = Graph::UserAccessModificationTagIndex.instance
-    modified.reset
-    modifications.reset
 
     almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
     almond_recipes = almond_tag.api_response_recipes(user2.id)
@@ -153,7 +149,11 @@ describe Graph::RecipeIndex do
         }]
       }
     )
+  end
 
+  it 'shows recipe properties in api response for recipe owner' do
+    recipe_index.reset
+    tag_index.reset
     flour_tag1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
     flour_recipes1 = flour_tag1.api_response_recipes(user1.id)
 
@@ -173,7 +173,11 @@ describe Graph::RecipeIndex do
 
     expect(flour_recipes1.last.api_response[:comments].size).to eq 1
     expect(flour_recipes1.last.api_response[:comments].first[:body]).to eq('hot')
+  end
 
+  it 'shows recipe properties in api response for non-owner user of recipe' do
+    recipe_index.reset
+    tag_index.reset
     flour_tag2 = Graph::TagIndex.instance.fetch_by_user(flour.id, user2)
     flour_recipes2 = flour_tag2.api_response_recipes(user2.id)
 
@@ -187,7 +191,14 @@ describe Graph::RecipeIndex do
 
     expect(flour_recipes2.last.api_response[:comments].size).to eq 1
     expect(flour_recipes2.last.api_response[:comments].first[:body]).to eq('cheesy')
-
+  end
+  it 'resets modifications' do
+    modified = Graph::UserAccessModifiedTagIndex.instance
+    modifications = Graph::UserAccessModificationTagIndex.instance
+    modified.reset
+    modifications.reset
+    tag_index.reset
+    recipe_index.reset
     expect(modified.hash).to eq(
       {
         0 => { bleached.id => [flour.id] }, user2.id =>
@@ -205,6 +216,12 @@ describe Graph::RecipeIndex do
         }
       }
     )
+  end
+
+  it 'shows recipe properties for private tag' do
+    recipe_index.reset
+    tag_index.reset
+
     almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
     almond_user2 = almond_tag.api_response(user2.id)
     expect(almond_user2).to eq(
@@ -229,10 +246,23 @@ describe Graph::RecipeIndex do
     expect(almond_user1[:sister_tags]).to eq(
       { cashew.id => cashew.name, hazelnut.id => hazelnut.name }
     )
-
+  end
+  
+  it 'shows properties for modification tag' do
+    recipe_index.reset
+    tag_index.reset
     dr1 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
     expect(dr1.api_response(user1)[:modified_tags]).to eq({})
+  end
 
+  it 'everything else so far' do
+    modified = Graph::UserAccessModifiedTagIndex.instance
+    modifications = Graph::UserAccessModificationTagIndex.instance
+    modified.reset
+    modifications.reset
+    recipe_index.reset
+    tag_index.reset
+    
     dr2 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
     expect(dr2.api_response(user2)[:modified_tags]).to eq(
       { almond.id => almond.name }
@@ -257,6 +287,7 @@ describe Graph::RecipeIndex do
     expect(f2.api_response(user2)[:modification_tags]).to eq(
       { bleached.id => bleached.name }
     )
+
 
     nr1 = Graph::TagIndex.instance.fetch_by_user(nut.id, user2)
     expect(nr1.api_response(user1)[:child_tags]).to eq(
@@ -313,23 +344,6 @@ describe Graph::RecipeIndex do
       parent_tags: {},
       sister_tags: {}
     )
-
-    fivestar = Graph::TagIndex.instance.fetch_by_user(five_star.id, user2)
-    expect(fivestar.api_response_recipes(user2.id)).to eq([
-      modification_tags: { dry_roasted.id => dry_roasted.name },
-      modified_tags: {},
-      description: nil,
-      id: plant_protein.id,
-      name: plant_protein.name,
-      recipe_id: nil,
-      tag_type_id: ingredient_family_tag_type.id,
-      tags: { plant_protein.id => plant_protein.name },
-      child_tags: { nut.id => nut.name },
-      grandchild_tags: { cashew.id => cashew.name, almond.id => almond.name },
-      grandparent_tags: {},
-      parent_tags: {},
-      sister_tags: {}
-    ])
   end
 end
 # rubocop: enable Metrics/BlockLength

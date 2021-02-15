@@ -10,6 +10,10 @@ module Graph
       add_to_hash(modifier_id, modified_id, access)
     end
 
+    def reset
+      @hash = {} if Rails.env.test?
+    end
+
     private
 
       def generate_index
