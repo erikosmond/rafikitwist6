@@ -31,7 +31,7 @@ class RecipeForm < GeneralForm
       description: recipe.description,
       instructions: recipe.instructions,
       recipe_name: recipe.name,
-      ingredients: recipe.ingredient_tag_selections.map(&:recipe_form_ingredient)
+      ingredients: recipe.ingredients.map(&:recipe_form_ingredient)
     }.merge(property_tags(recipe))
   end
 

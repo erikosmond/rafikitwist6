@@ -28,6 +28,7 @@ describe Graph::RecipeIndex do
 
   # TODO: make sure the associations of the recipe are `loaded?`
   it 'generates and returns the recipes index' do
+    recipe_index.reset
     expect(recipe_index.hash.values.map(&:name).sort).to eq [
       'Awesome Blossom',
       'Mai Tai',
@@ -109,16 +110,16 @@ describe Graph::RecipeIndex do
         instructions: almond_milk_recipe.instructions,
         description: almond_milk_recipe.description,
         tag_ids: {
-          one_star.id => true, low_priority.id => true, dry_roasted.id => true,
+          comment_tag.id => true, one_star.id => true, low_priority.id => true, dry_roasted.id => true,
           distilled.id => true, plant_protein.id => true, nut.id => true,
-          water.id => true, almond.id => true, comment_tag.id => true
+          water.id => true, almond.id => true
         },
         ingredients:
           {
             "#{almond.id}mod#{dry_roasted.id}" =>
             {
               body: nil,
-              id: almond_milk_recipe.id,
+              id: am1_ing1.id,
               modification_id: dry_roasted.id,
               modification_name: dry_roasted.name,
               property: 'amount',
@@ -132,7 +133,7 @@ describe Graph::RecipeIndex do
             "#{water.id}mod#{distilled.id}" =>
             {
               body: nil,
-              id: almond_milk_recipe.id,
+              id: am1_ing2.id,
               modification_id: distilled.id,
               modification_name: distilled.name,
               property: 'amount',
@@ -144,11 +145,11 @@ describe Graph::RecipeIndex do
               tag_type_id: ingredient_tag_type.id
             }
           },
-        priorities: [{ id: almond_milk_priority.id, tag_id: low_priority.id, body: nil }],
-        ratings: [{ id: almond_milk_rating.id, tag_id: one_star.id, body: nil }],
+        priorities: [{ id: almond_milk_priority.id, tag_id: low_priority.id, body: nil, tag_name: low_priority.name }],
+        ratings: [{ id: almond_milk_rating.id, tag_id: one_star.id, body: nil, tag_name: one_star.name }],
         comments: [{
           id: almond_milk_comment.id, tag_id: comment_tag.id,
-          body: almond_milk_comment.body
+          body: almond_milk_comment.body, tag_name: 'Comment'
         }]
       }
     )
@@ -313,8 +314,8 @@ describe Graph::RecipeIndex do
       sister_tags: {}
     )
 
-    fivestar = Graph::TagIndex.instance.fetch_by_user(five_star.id, user1)
-    expect(fivestar.api_response_recipes(user1)).to eq([
+    fivestar = Graph::TagIndex.instance.fetch_by_user(five_star.id, user2)
+    expect(fivestar.api_response_recipes(user2.id)).to eq([
       modification_tags: { dry_roasted.id => dry_roasted.name },
       modified_tags: {},
       description: nil,

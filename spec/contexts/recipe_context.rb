@@ -154,6 +154,6 @@ RSpec.shared_context 'recipes', shared_context: :metadata do
   let!(:chestnut_soup_access) do
     create(:access, user: user, accessible: soup, status: 'PUBLIC')
   end
-  let!(:recipes) { RecipeByTag.call(tag: tag_subject, current_user: user).result }
+  let!(:recipes) { Graph::TagNode.new(tag_subject).api_response_recipes(user.id) }
 end
 # rubocop: enable Metrics/BlockLength

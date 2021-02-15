@@ -30,7 +30,7 @@ class Permissions
     end
 
     def can_edit?(record)
-      return false unless @user.present?
+      @user.admin? || record.access.user_id == @user.id
     end
 
     def verify!(record)

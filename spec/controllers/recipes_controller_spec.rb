@@ -213,10 +213,8 @@ describe Api::RecipesController, type: :controller do
           format: 'json'
     end
 
-    it 'returns a 200' do
-      body = JSON.parse(response.body)
-      expect(body['recipes'].size).to eq(0)
-      expect(response.status).to eq(200)
+    it 'returns a 403' do
+      expect(response.status).to eq(403)
     end
   end
 

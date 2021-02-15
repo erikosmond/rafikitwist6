@@ -3,7 +3,8 @@
 module Graph
   # In memory model for recipes in the graph.
   class RecipeNode < Node
-    delegate :id, :name, :instructions, :description, to: :@recipe
+    include ::RecipeTagsService
+    delegate :id, :name, :instructions, :description, :tags, to: :@recipe
     attr_reader :objective_tag_ids, :ingredients, :tag_ids_by_type, :access,
                 :tag_selections
 
@@ -46,6 +47,7 @@ module Graph
     end
 
     def objective_tags
+      # TODO: must check if tag selection is public or belongs to user
       # All tags that are not rating, priority, or comments
       objective_tag_ids.map { |t_id| TagIndex.instance.fetch(t_id) }
     end

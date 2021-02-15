@@ -45,6 +45,7 @@ const renderBody = (props, cName) => {
       <RecipeHeaderAction
         label="Rating"
         iconSvgPath={starIcon}
+        // TODO: options - filter ratings that contain the substring 'star' -- to avoid Been Made
         options={ratings}
         selectedOption={rating}
         recipeId={recipeId}

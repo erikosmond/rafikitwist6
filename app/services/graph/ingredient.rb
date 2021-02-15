@@ -30,7 +30,21 @@ module Graph
       { "#{id}mod#{modification_id}" => attrs.merge(tag_data) }
     end
 
+    def recipe_form_ingredient
+      {
+        ingredient_amount: amount,
+        ingredient: { value: id, label: name },
+        ingredient_prep: body
+      }.merge(modification_tag)
+    end
+
     private
+
+      def modification_tag
+        return {} unless modification
+    
+        { ingredient_modification: { value: modification_id, label: modification_name } }
+      end
 
       def attrs
         {

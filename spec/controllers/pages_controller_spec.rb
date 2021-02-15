@@ -92,15 +92,33 @@ describe PagesController, type: :controller do
     it { expect(assigns[:all_tags]).to eq(tags_by_id) }
     it { expect(assigns[:home_tag_id]).to eq(tag.id) }
     it { expect(assigns[:all_tag_types]).to eq(tag_types_by_id) }
-    it 'assigns tag groups' do
-      tag_index.reset
-      expect(assigns[:tag_groups]).to eq(tag_groups)
-    end
     it { expect(assigns[:ratings]).to eq(rating_tag.name => rating_tag.id) }
     it { expect(assigns[:tags_by_type]).to eq(tags_by_type) }
     it { expect(assigns[:priorities]).to eq(priority_tag.name => priority_tag.id) }
 
     it { is_expected.to render_template :home }
+  end
+
+  describe 'GET - tag_groups' do
+    before(:each) do
+      TagType.delete_cache
+    end
+    before do
+      sign_in user
+      get :home,
+          params: {
+            tag_selection: {
+              taggable_type: 'Recipe',
+              taggable_id: recipe.id,
+              tag_id: tag.id
+            }
+          },
+          format: 'html'
+    end
+
+    it 'assigns tag groups' do
+      expect(assigns[:tag_groups]).to eq(Tag.ingredient_group_hierarchy_filters(user))
+    end
   end
 end
 # rubocop: enable Metrics/BlockLength

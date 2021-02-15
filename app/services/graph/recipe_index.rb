@@ -4,14 +4,14 @@ module Graph
   # Singleton to index recipe ownership by user_id. user_id 0 are for public recipes.
   class RecipeIndex < Index
     def add(recipe)
-      @hash[recipe.id] = RecipeNode.new(recipe)
+      @hash[recipe.id] = Graph::RecipeNode.new(recipe)
     end
 
     private
 
       def generate_index
         recipes_with_objective_tags.each_with_object({}) do |r, obj|
-          obj[r.id] = RecipeNode.new(r)
+          obj[r.id] = Graph::RecipeNode.new(r)
         end
       end
 
