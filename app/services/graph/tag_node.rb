@@ -73,7 +73,6 @@ module Graph
     end
 
     def api_response(user_id)
-      # recipe_dropdown = ->(t) { { id: t.id, name: t.name } }
       user = user_with_role(user_id)
       mods_hash(user).merge(attrs_hash).merge(family_hash(user))
     end

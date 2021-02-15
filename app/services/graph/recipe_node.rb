@@ -47,7 +47,6 @@ module Graph
     end
 
     def objective_tags
-      # TODO: must check if tag selection is public or belongs to user
       # All tags that are not rating, priority, or comments
       objective_tag_ids.map { |t_id| TagIndex.instance.fetch(t_id) }
     end

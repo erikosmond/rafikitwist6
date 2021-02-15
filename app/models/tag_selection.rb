@@ -25,22 +25,12 @@ class TagSelection < ApplicationRecord
              foreign_type: 'taggable_type',
              class_name: 'Recipe'
 
-  # belongs_to :selected_recipe,
-  #            optional: true,
-  #            foreign_key: 'taggable_id',
-  #            foreign_type: 'taggable_type',
-  #            class_name: 'SelectedRecipe'
-
   # How a recipe ingredient is modified
   belongs_to :tag_selection,
              optional: true,
              foreign_key: 'taggable_id',
              foreign_type: 'taggable_type',
              class_name: 'TagSelection'
-
-  # belongs_to :child_tag,
-  #            foreign_key: 'tag_id',
-  #            class_name: 'ChildTag'
 
   has_many :modified_recipes,
            through: :tag_selection,
