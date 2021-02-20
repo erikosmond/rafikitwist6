@@ -25,7 +25,8 @@ class PagesController < ApplicationController
 
     def set_subjective_tags(rating_tags, priority_tags)
       @priorities = priority_tags.each_with_object({}) { |t, obj| obj[t.name] = t.id }
-      @ratings = rating_tags.each_with_object({}) { |t, obj| obj[t.name] = t.id }
+      @ratings = rating_tags.select { |r| r.name.include?('star') }.
+                 each_with_object({}) { |t, obj| obj[t.name] = t.id }
     end
 
     def set_constant_tags

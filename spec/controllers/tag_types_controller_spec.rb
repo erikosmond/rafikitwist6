@@ -28,7 +28,7 @@ describe Api::TagTypesController, type: :controller do
 
       it 'responds with tag_groups' do
         body = JSON.parse(response.body)
-        expect(body.keys.length).to eq 2
+        expect(body.keys.length).to eq 4
         expect(body['Ingredient'] - expected).to eq []
       end
     end

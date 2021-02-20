@@ -21,7 +21,9 @@ class TagSelectionFactory
       context.tag_selection = TagSelection.create!(params)
       context.tag_selection_access = AccessService.
                                      create_access!(
-                                       context.user&.id.to_i, context.tag_selection
+                                       context.user&.id.to_i,
+                                       context.tag_selection,
+                                       'PRIVATE'
                                      )
       invoke_side_effects
     end

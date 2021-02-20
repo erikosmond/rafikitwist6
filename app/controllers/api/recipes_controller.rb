@@ -6,25 +6,18 @@ module Api
     include RecipeControllerHelper
     def index
       tag_id = params.permit(:tag_id)[:tag_id]
-      recipes = recipes_by_tag(tag_id)
-      if recipes
-        render json: recipes
+      recipes = TagInteractor.call(tag_id: tag_id, current_user: current_user)
+      if recipes.result
+        render json: recipes.result
       else
         render json: { tag_id: tag_id.to_s }, status: :not_found
       end
     end
 
     def show
-      recipe = Recipe.find_by_id(params.permit(:id)[:id])
-      if recipe&.tags&.first
-        # Fetch all the universal recipe tags like ingredients, but also user
-        # tags like ratings.
-        detail = RecipeDetail.call(recipe: recipe, current_user: current_user)
-        grouped_detail = GroupRecipeDetail.call(recipe_details: detail.result)
-        render json: grouped_detail.result.first.merge(recipe.as_json)
-      else
-        render json: {}, status: :not_found
-      end
+      recipe = Graph::RecipeIndex.instance.fetch(params.permit(:id)[:id])
+      Permissions.new(current_user).can_view!(recipe)
+      render json: recipe.subjective_api_response(current_user)
     end
 
     def create
@@ -37,16 +30,16 @@ module Api
     end
 
     def edit
-      recipe = Recipe.find_by_id params.permit(:id)['id']
-      current_user.present? && Permissions.new(current_user).can_edit!(recipe)
+      recipe = Graph::RecipeIndex.instance.fetch(params.permit(:id)[:id])
+      Permissions.new(current_user).can_edit!(recipe)
       render json: RecipeForm.call(
         action: :edit, params: { recipe: recipe }, user: current_user
       ).result
     end
 
     def update
-      recipe = Recipe.find_by_id update_recipe_params['id']
-      current_user.present? && Permissions.new(current_user).can_edit!(recipe)
+      recipe = Recipe.find_by_id(update_recipe_params['id'])
+      Permissions.new(current_user).can_edit!(recipe)
       render json: RecipeForm.call(
         action: :update,
         params: { recipe: recipe, form_fields: update_recipe_params },

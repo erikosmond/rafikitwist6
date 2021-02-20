@@ -11,8 +11,9 @@ class RecipeForm < GeneralForm
   end
 
   def call
-    raise StandardError, 'Not signed in' unless context.user.present?
+    raise Error401, 'Not signed in' unless context.user.present?
 
+    # TODO: update index on recipe update
     context.result = case context.action
                      when :create
                        CreateRecipeForm.new(context).create
@@ -30,7 +31,7 @@ class RecipeForm < GeneralForm
       description: recipe.description,
       instructions: recipe.instructions,
       recipe_name: recipe.name,
-      ingredients: recipe.ingredient_tag_selections.map(&:recipe_form_ingredient)
+      ingredients: recipe.ingredients.map(&:recipe_form_ingredient)
     }.merge(property_tags(recipe))
   end
 
@@ -106,6 +107,7 @@ class RecipeForm < GeneralForm
     end
 
     def recipe_ingredient_tag_selections(recipe)
+      # TODO: update this to use tag graph
       recipe.tag_selections.joins(tag: :tag_type).
         where.not(tag_types: { name: tag_types })
     end

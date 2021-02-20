@@ -144,10 +144,12 @@ RSpec.describe RecipeForm, type: :interactor do
     end
     describe 'edit' do
       include_context 'recipe_form'
-      let(:params) { { recipe: recipe } }
-      let(:form) { RecipeForm.call(params: params, action: :edit, user: user) }
-
       it 'expects all recipe data ready for redux form' do
+        recipe_index = Graph::RecipeIndex.instance
+        recipe_index.reset
+        recipe_node = recipe_index.fetch(recipe.id)
+        params = { recipe: recipe_node }
+        form = RecipeForm.call(params: params, action: :edit, user: user)
         expected_sources = [
           { id: recipe_website.id, name: 'Recipe Website' },
           { id: recipe_book.id, name: 'Recipe Book' }

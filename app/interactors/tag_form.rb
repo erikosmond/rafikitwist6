@@ -16,6 +16,7 @@ class TagForm < GeneralForm
   private
 
     def create(params)
+      tag = nil
       ActiveRecord::Base.transaction do
         new_tag = Tag.new
         tag = assign_tag_attrs!(new_tag, params)
@@ -23,6 +24,7 @@ class TagForm < GeneralForm
         create_access(tag)
         context.tag = tag_with_type(tag)
       end
+      Graph::TagIndex.instance.add(tag)
     end
 
     def assign_tag_attrs!(tag, params)

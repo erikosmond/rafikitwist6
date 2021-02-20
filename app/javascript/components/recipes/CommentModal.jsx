@@ -10,7 +10,7 @@ function getModalStyle() {
     left: '30%',
     backgroundColor: 'white',
     border: '2px solid #000',
-    boxShadow: 4,
+    boxShadow: 5,
     padding: 3,
     width: 400,
   }

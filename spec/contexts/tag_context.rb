@@ -35,9 +35,10 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   let(:alteration) { create(:tag_type, name: 'Alteration') }
   let(:toasted) { create(:tag, tag_type: alteration, name: modification_name1) }
   let(:crushed) { create(:tag, tag_type: alteration, name: modification_name2) }
-  let!(:tag_selection_mod1) do
-    create(:tag_selection, tag: toasted, taggable: tag_selection4)
-  end
+  # UI does not support multiple modifications on the same ingredient
+  # let!(:tag_selection_mod1) do
+  #   create(:tag_selection, tag: toasted, taggable: tag_selection4)
+  # end
   let!(:tag_selection_mod2) do
     create(:tag_selection, tag: crushed, taggable: tag_selection4)
   end
@@ -48,7 +49,7 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   let!(:access3) { create(:access, user: user, accessible: manhattan) }
 
   let!(:access4) do
-    create(:access, user: user, accessible: tag_selection4, status: 'PRIVATE')
+    create(:access, user: user, accessible: tag_selection4, status: 'PUBLIC')
   end
   let!(:access4a) do
     create(:access, user: user, accessible: tag_selection4a, status: 'PUBLIC')
@@ -58,9 +59,6 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   end
   let!(:access6) do
     create(:access, user: user, accessible: tag_selection6, status: 'PRIVATE')
-  end
-  let!(:access7) do
-    create(:access, user: user, accessible: tag_selection_mod1, status: 'PRIVATE')
   end
   let!(:access8) do
     create(:access, user: user, accessible: tag_selection_mod2, status: 'PRIVATE')
@@ -80,8 +78,17 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   let!(:access13) do
     create(:access, user: user, accessible: almond, status: 'PUBLIC')
   end
-  let!(:access14) do
+  let!(:toasted_access) do
     create(:access, user: user, accessible: toasted, status: 'PUBLIC')
+  end
+  let!(:crushed_access) do
+    create(:access, user: user, accessible: crushed, status: 'PRIVATE')
+  end
+  let!(:access15) do
+    create(:access, user: user, accessible: protein, status: 'PUBLIC')
+  end
+  let!(:access16) do
+    create(:access, user: user, accessible: nut, status: 'PUBLIC')
   end
 end
 # rubocop: enable Metrics/BlockLength

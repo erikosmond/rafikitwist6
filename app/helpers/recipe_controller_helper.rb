@@ -24,24 +24,6 @@ module RecipeControllerHelper
     ]
   end
 
-  def recipes_by_tag(tag_id)
-    tag = Tag.find_by_id(tag_id)
-    if tag
-      tagged_recipes(tag)
-    elsif tag_id.nil?
-      { tag: { name: 'All Recipes' }, recipes: all_recipe_json }
-    end
-  end
-
-  def tagged_recipes(tag)
-    recipes = RecipeByTag.call(tag: tag, current_user: current_user)
-    {
-      tag: tag,
-      recipes: GroupRecipeDetail.call(recipe_details: recipes.result).result,
-      filter_tags: recipes.filter_tags
-    }
-  end
-
   def all_recipe_json
     # Used by drop down header to search all recipes a user has access to.
     recipe_json = Recipe.joins(:access).

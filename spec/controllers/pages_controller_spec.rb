@@ -11,7 +11,7 @@ describe PagesController, type: :controller do
   let!(:tag) { create(:tag) }
 
   let!(:ratings_type) { create(:tag_type, name: 'Rating') }
-  let!(:rating_tag) { create(:tag, tag_type: ratings_type, name: 'new rating') }
+  let!(:rating_tag) { create(:tag, tag_type: ratings_type, name: '2 stars') }
   let!(:priority_type) { create(:tag_type, name: 'Priority') }
   let!(:priority_tag) { create(:tag, tag_type: priority_type, name: 'a priority') }
   let!(:ing_family_type) { create(:tag_type, name: 'IngredientFamily') }
@@ -31,6 +31,9 @@ describe PagesController, type: :controller do
   let!(:access2) { create(:access, accessible: tag_selection, user: user) }
   let!(:access3) { create(:access, accessible: type_to_family, user: user) }
   let!(:access4) { create(:access, accessible: ing_to_type, user: user) }
+  let!(:access5) { create(:access, accessible: family_tag, user: user) }
+  let!(:access6) { create(:access, accessible: type_tag, user: user) }
+  let!(:access7) { create(:access, accessible: ing_tag, user: user) }
   let!(:all_tag_types) { TagType.all }
   let!(:all_tags) { Tag.all }
   let!(:tag_types_by_id) do
@@ -64,6 +67,8 @@ describe PagesController, type: :controller do
   let!(:tag_groups) do
     { family_tag.id => { type_tag.id => [ing_tag.id] } }
   end
+  let(:recipe_index) { Graph::RecipeIndex.instance }
+  let(:tag_index) { Graph::TagIndex.instance }
 
   describe 'GET - home' do
     before(:each) do
@@ -87,12 +92,33 @@ describe PagesController, type: :controller do
     it { expect(assigns[:all_tags]).to eq(tags_by_id) }
     it { expect(assigns[:home_tag_id]).to eq(tag.id) }
     it { expect(assigns[:all_tag_types]).to eq(tag_types_by_id) }
-    it { expect(assigns[:tag_groups]).to eq(tag_groups) }
     it { expect(assigns[:ratings]).to eq(rating_tag.name => rating_tag.id) }
     it { expect(assigns[:tags_by_type]).to eq(tags_by_type) }
     it { expect(assigns[:priorities]).to eq(priority_tag.name => priority_tag.id) }
 
     it { is_expected.to render_template :home }
+  end
+
+  describe 'GET - tag_groups' do
+    before(:each) do
+      TagType.delete_cache
+    end
+    before do
+      sign_in user
+      get :home,
+          params: {
+            tag_selection: {
+              taggable_type: 'Recipe',
+              taggable_id: recipe.id,
+              tag_id: tag.id
+            }
+          },
+          format: 'html'
+    end
+
+    it 'assigns tag groups' do
+      expect(assigns[:tag_groups]).to eq(Tag.ingredient_group_hierarchy_filters(user))
+    end
   end
 end
 # rubocop: enable Metrics/BlockLength

@@ -33,6 +33,7 @@ class HeaderDropdown extends React.Component {
     }
   }
 
+  // TODO: use Input Adornment instead
   placeholderWithIcon = (placeholder, classes) => {
     return (
       <h2>
@@ -74,7 +75,7 @@ export default withStyles(styles)(HeaderDropdown)
 
 HeaderDropdown.propTypes = {
   classes: PropTypes.shape({
-    root: PropTypes.string.isRequired, chip: PropTypes.string.isRequired,
+    searchIcon: PropTypes.string.isRequired,
   }).isRequired,
   loadOptions: PropTypes.func.isRequired,
   updateHistory: PropTypes.func.isRequired,

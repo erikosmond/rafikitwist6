@@ -23,7 +23,6 @@ RSpec.describe TagsByType, type: :interactor do
     end
     let(:not_ingredient_ids) do
       [
-        toasted.id,
         crushed.id,
         plants.id
       ]
@@ -41,7 +40,7 @@ RSpec.describe TagsByType, type: :interactor do
     describe 'not ingredients' do
       let(:tag_type) { 'not ingredients' }
       it 'returns the correct number of tags for given type' do
-        expect(result.size).to eq 3
+        expect(result.size).to eq 2
       end
       it 'returns the correct tags for given type' do
         expect(result.map { |r| r['Value'] } - not_ingredient_ids).to eq []
@@ -51,7 +50,7 @@ RSpec.describe TagsByType, type: :interactor do
     describe 'all tags' do
       let(:tag_type) { nil }
       it 'returns the correct number of tags for no type' do
-        expect(result.size).to eq 7
+        expect(result.size).to eq 6
       end
       it 'returns the correct tags for no type' do
         expect(result.map { |r| r['Value'] } - (not_ingredient_ids + ingredient_ids)).
