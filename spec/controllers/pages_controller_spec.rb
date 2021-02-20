@@ -11,7 +11,7 @@ describe PagesController, type: :controller do
   let!(:tag) { create(:tag) }
 
   let!(:ratings_type) { create(:tag_type, name: 'Rating') }
-  let!(:rating_tag) { create(:tag, tag_type: ratings_type, name: 'new rating') }
+  let!(:rating_tag) { create(:tag, tag_type: ratings_type, name: '2 stars') }
   let!(:priority_type) { create(:tag_type, name: 'Priority') }
   let!(:priority_tag) { create(:tag, tag_type: priority_type, name: 'a priority') }
   let!(:ing_family_type) { create(:tag_type, name: 'IngredientFamily') }

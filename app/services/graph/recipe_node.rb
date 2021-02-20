@@ -68,7 +68,7 @@ module Graph
         {
           ingredients: @ingredients.reduce({}) { |h, i| h.merge(i.api_response) },
           priorities: @priority_tag_hash_array,
-          ratings: @rating_tag_hash_array,
+          ratings: @rating_tag_hash_array.select { |h| h[:tag_name].include? 'star' },
           comments: @comment_tag_hash_array
         }
       )

@@ -38,7 +38,7 @@ module Api
     end
 
     def update
-      recipe = Graph::RecipeIndex.instance.fetch(update_recipe_params['id'])
+      recipe = Recipe.find_by_id(update_recipe_params['id'])
       Permissions.new(current_user).can_edit!(recipe)
       render json: RecipeForm.call(
         action: :update,

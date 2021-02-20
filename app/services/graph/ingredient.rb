@@ -49,7 +49,6 @@ module Graph
       def attrs
         {
           body: body,
-          # id: @tag_selection.taggable_id,
           id: @tag_selection.id,
           modification_id: modification_id,
           modification_name: modification_name,
