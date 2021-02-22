@@ -41,7 +41,6 @@ class Tag < ApplicationRecord
   has_many :taggings,
            -> { where(taggable_type: 'Tag') },
            foreign_key: :taggable_id,
-           foreign_type: 'Tag',
            class_name: 'TagSelection',
            dependent: :destroy
   has_many :parent_tags,
