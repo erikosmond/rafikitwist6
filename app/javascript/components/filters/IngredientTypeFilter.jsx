@@ -21,8 +21,8 @@ class IngredientTypeFilter extends React.Component {
   }
 
   hasVisibleChildren = () => {
-    const { childTags, visibleTags, id } = this.props
-    if (visibleTags[id]) {
+    const { childTags, visibleTags, id, isTagType } = this.props
+    if (visibleTags[id] && !isTagType) {
       return true
     }
     for (let ct = 0, n = childTags.length; ct < n; ct += 1) {
@@ -101,6 +101,7 @@ IngredientTypeFilter.propTypes = {
   tagNameById: PropTypes.func.isRequired,
   selectable: PropTypes.bool,
   label: PropTypes.string,
+  isTagType: PropTypes.bool,
   allTags: PropTypes.shape({
     id: PropTypes.number,
   }).isRequired,
@@ -110,6 +111,7 @@ IngredientTypeFilter.defaultProps = {
   childTags: [],
   selectedFilters: [],
   selectable: false,
+  isTagType: false,
   label: '',
 }
 
