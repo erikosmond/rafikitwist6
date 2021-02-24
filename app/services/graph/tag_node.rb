@@ -119,6 +119,7 @@ module Graph
           modified_tags << h[:modified_tags] unless h[:modified_tags] == {}
         end
         {
+          # modification_tags: modification_tags.select { |mt| mt != {} }.flatten,
           modification_tags: modification_tags.flat_map(&:keys),
           modified_tags: modified_tags.flat_map(&:keys)
         }

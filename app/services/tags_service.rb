@@ -17,7 +17,6 @@ module TagsService
   end
 
   def tags_by_type
-    # TODO: refactor to use graph code
     ingredient_and_comment_types = TagType::INGREDIENT_TYPES +
                                    ['IngredientCategory', COMMENT_TAG_NAME]
     type_ids = TagType.where.not(name: ingredient_and_comment_types).pluck(:id)

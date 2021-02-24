@@ -3,7 +3,7 @@
 module Api
   # Controller for recipes and recipes by tag
   class RecipesController < ApplicationController
-    include RecipeControllerHelper
+    include RecipesControllerHelper
     def index
       tag_id = params.permit(:tag_id)[:tag_id]
       recipes = TagInteractor.call(tag_id: tag_id, current_user: current_user)

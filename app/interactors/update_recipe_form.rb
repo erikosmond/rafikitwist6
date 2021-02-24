@@ -10,7 +10,9 @@ class UpdateRecipeForm < RecipeForm
       update_recipe_attrs(existing_recipe, recipe_form)
       update_recipe_tags(existing_recipe, recipe_form)
     end
-    params[:recipe].reload
+    recipe = params[:recipe].reload
+    Graph::RecipeIndex.instance.upsert(recipe)
+    recipe
   end
 
   private

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Handle nitty gritty detail for recipe controller
-module RecipeControllerHelper
+module RecipesControllerHelper
   def update_recipe_params
     params.permit shared_columns << :id
   end

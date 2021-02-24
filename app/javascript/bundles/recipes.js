@@ -206,8 +206,6 @@ export default function recipesReducer(store, action = {}) {
         ...state,
         noRecipes: false,
         loading: false,
-        // TODO: selectedTag is in the tags bundle
-        selectedTag: {},
         recipesLoaded: false,
       }
     case UPDATE_RECIPE_TAG_SUCCESS:
