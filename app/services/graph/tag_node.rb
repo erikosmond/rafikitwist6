@@ -111,16 +111,11 @@ module Graph
       end
 
       def merge_hash_values(hash_array)
-        # TODO: refactor
-        modification_tags = []
-        modified_tags = []
-        hash_array.each do |h|
-          modification_tags << h[:modification_tags] unless h[:modification_tags] == {}
-          modified_tags << h[:modified_tags] unless h[:modified_tags] == {}
-        end
         {
-          modification_tags: modification_tags.flat_map(&:keys),
-          modified_tags: modified_tags.flat_map(&:keys)
+          modification_tags: hash_array.map { |mt| mt.try(:[], :modification_tags) }.
+            compact.flat_map(&:keys),
+          modified_tags: hash_array.map { |mt| mt.try(:[], :modified_tags) }.
+            compact.flat_map(&:keys)
         }
       end
 

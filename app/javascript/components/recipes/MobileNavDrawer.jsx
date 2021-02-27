@@ -21,38 +21,16 @@ const styles = () => ({
 })
 
 const FilterWrapper = styled.div`
-  max-height: 500px;
+  max-height: 501px;
   min-height: 450px;
 `
 
 class MobileNavDrawer extends React.Component {
   static updateDrawerState(newValue) {
-    // TODO: rewrite this to be a single object with values as the function call
-    switch (newValue) {
-      case 0:
-        return {
-          filters: true,
-          search: false,
-          similar: false,
-        }
-      case 1:
-        return {
-          filters: false,
-          search: true,
-          similar: false,
-        }
-      case 2:
-        return {
-          filters: false,
-          search: false,
-          similar: true,
-        }
-      default:
-        return {
-          filters: false,
-          search: false,
-          similar: false,
-        }
+    return {
+      filters: newValue === 0,
+      search: newValue === 1,
+      similar: newValue === 2,
     }
   }
 

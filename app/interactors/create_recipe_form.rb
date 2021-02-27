@@ -12,7 +12,7 @@ class CreateRecipeForm < RecipeForm
       recipe = recipe.tap(&:save!).reload
       RecipesService.new(recipe).recipe_as_ingredient(@params)
     end
-    Graph::RecipeIndex.instance.add(recipe)
+    Graph::RecipeIndex.instance.upsert(recipe)
     recipe.reload
   end
 

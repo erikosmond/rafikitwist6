@@ -32,16 +32,11 @@ class Tag < ApplicationRecord
   has_many :modified_tags,
            through: :tag_selections,
            source: :modified_tags
-  # TODO: I think I can delete some of the associations below
-  has_many :recipe_tag_selections,
-           through: :recipes,
-           source: :tag_selections
 
   # Tags that are assigned to this tag, like Ingredient Type for an Ingredient
   has_many :taggings,
            -> { where(taggable_type: 'Tag') },
            foreign_key: :taggable_id,
-           foreign_type: 'Tag',
            class_name: 'TagSelection',
            dependent: :destroy
   has_many :parent_tags,

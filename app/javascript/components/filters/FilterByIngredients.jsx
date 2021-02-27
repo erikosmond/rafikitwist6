@@ -29,6 +29,7 @@ const FilterByIngredients = ({
         ))}
         {tagsByType && sortByTagName(Object.keys(tagsByType), allTagTypes).map((t) => (
           <IngredientTypeFilter
+            isTagType
             key={t}
             id={t}
             label={allTagTypes[t]}

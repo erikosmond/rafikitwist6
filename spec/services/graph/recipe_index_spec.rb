@@ -255,95 +255,105 @@ describe Graph::RecipeIndex do
     expect(dr1.api_response(user1)[:modified_tags]).to eq({})
   end
 
-  it 'everything else so far' do
-    modified = Graph::UserAccessModifiedTagIndex.instance
-    modifications = Graph::UserAccessModificationTagIndex.instance
-    modified.reset
-    modifications.reset
-    recipe_index.reset
-    tag_index.reset
-    
-    dr2 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
-    expect(dr2.api_response(user2)[:modified_tags]).to eq(
-      { almond.id => almond.name }
-    )
-
-    b1 = Graph::TagIndex.instance.fetch_by_user(bleached.id, user1)
-    expect(b1.api_response(user1)[:modified_tags]).to eq(
-      { flour.id => flour.name }
-    )
-
-    b2 = Graph::TagIndex.instance.fetch_by_user(bleached.id, user2)
-    expect(b2.api_response(user2)[:modified_tags]).to eq(
-      { flour.id => flour.name }
-    )
-
-    f1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
-    expect(f1.api_response(user1)[:modification_tags]).to eq(
-      { bleached.id => bleached.name }
-    )
-
-    f2 = Graph::TagIndex.instance.fetch_by_user(flour.id, user2)
-    expect(f2.api_response(user2)[:modification_tags]).to eq(
-      { bleached.id => bleached.name }
-    )
-
-
-    nr1 = Graph::TagIndex.instance.fetch_by_user(nut.id, user2)
-    expect(nr1.api_response(user1)[:child_tags]).to eq(
-      { cashew.id => cashew.name, hazelnut.id => hazelnut.name }
-    )
-
-    nr2 = Graph::TagIndex.instance.fetch_by_user(nut.id, user2)
-    expect(nr2.api_response(user2)).to eq(
-      modification_tags: { dry_roasted.id => dry_roasted.name },
-      modified_tags: {},
-      description: nil,
-      id: nut.id,
-      name: nut.name,
-      recipe_id: nil,
-      tag_type_id: ingredient_type_tag_type.id,
-      tags: { nut.id => nut.name },
-      child_tags: { cashew.id => cashew.name, almond.id => almond.name },
-      grandchild_tags: {},
-      grandparent_tags: {},
-      parent_tags: { plant_protein.id => plant_protein.name },
-      sister_tags: {}
-    )
-
-    pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
-    expect(pp.api_response(user2)).to eq(
-      modification_tags: { dry_roasted.id => dry_roasted.name },
-      modified_tags: {},
-      description: nil,
-      id: plant_protein.id,
-      name: plant_protein.name,
-      recipe_id: nil,
-      tag_type_id: ingredient_family_tag_type.id,
-      tags: { plant_protein.id => plant_protein.name },
-      child_tags: { nut.id => nut.name },
-      grandchild_tags: { cashew.id => cashew.name, almond.id => almond.name },
-      grandparent_tags: {},
-      parent_tags: {},
-      sister_tags: {}
-    )
-
-    pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
-    expect(pp.api_response(user2)).to eq(
-      modification_tags: { dry_roasted.id => dry_roasted.name },
-      modified_tags: {},
-      description: nil,
-      id: plant_protein.id,
-      name: plant_protein.name,
-      recipe_id: nil,
-      tag_type_id: ingredient_family_tag_type.id,
-      tags: { plant_protein.id => plant_protein.name },
-      child_tags: { nut.id => nut.name },
-      grandchild_tags: { cashew.id => cashew.name, almond.id => almond.name },
-      grandparent_tags: {},
-      parent_tags: {},
-      sister_tags: {}
-    )
+  describe '' do
+    before :each do
+      modified = Graph::UserAccessModifiedTagIndex.instance
+      modifications = Graph::UserAccessModificationTagIndex.instance
+      modified.reset
+      modifications.reset
+      recipe_index.reset
+      tag_index.reset
+    end
+    it 'permissions on modifications' do      
+      dr2 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
+      expect(dr2.api_response(user2)[:modified_tags]).to eq(
+        { almond.id => almond.name }
+      )
+    end
+    it 'permissions on modifications2' do
+      b1 = Graph::TagIndex.instance.fetch_by_user(bleached.id, user1)
+      expect(b1.api_response(user1)[:modified_tags]).to eq(
+        { flour.id => flour.name }
+      )
+    end
+    it 'permissions on modifications3' do
+      b2 = Graph::TagIndex.instance.fetch_by_user(bleached.id, user2)
+      expect(b2.api_response(user2)[:modified_tags]).to eq(
+        { flour.id => flour.name }
+      )
+    end
+    it 'permissions on modifications4' do
+      f1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
+      expect(f1.api_response(user1)[:modification_tags]).to eq(
+        { bleached.id => bleached.name }
+      )
+    end
+    it 'permissions on modifications5' do
+      f2 = Graph::TagIndex.instance.fetch_by_user(flour.id, user2)
+      expect(f2.api_response(user2)[:modification_tags]).to eq(
+        { bleached.id => bleached.name }
+      )
+    end
+    it 'permissions on modifications6' do
+      nr1 = Graph::TagIndex.instance.fetch_by_user(nut.id, user2)
+      expect(nr1.api_response(user1)[:child_tags]).to eq(
+        { cashew.id => cashew.name, hazelnut.id => hazelnut.name }
+      )
+    end
+    it 'permissions on modifications7' do
+      nr2 = Graph::TagIndex.instance.fetch_by_user(nut.id, user2)
+      expect(nr2.api_response(user2)).to eq(
+        modification_tags: { dry_roasted.id => dry_roasted.name },
+        modified_tags: {},
+        description: nil,
+        id: nut.id,
+        name: nut.name,
+        recipe_id: nil,
+        tag_type_id: ingredient_type_tag_type.id,
+        tags: { nut.id => nut.name },
+        child_tags: { cashew.id => cashew.name, almond.id => almond.name },
+        grandchild_tags: {},
+        grandparent_tags: {},
+        parent_tags: { plant_protein.id => plant_protein.name },
+        sister_tags: {}
+      )
+    end
+    it 'permissions on modifications8' do
+      pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
+      expect(pp.api_response(user2)).to eq(
+        modification_tags: { dry_roasted.id => dry_roasted.name },
+        modified_tags: {},
+        description: nil,
+        id: plant_protein.id,
+        name: plant_protein.name,
+        recipe_id: nil,
+        tag_type_id: ingredient_family_tag_type.id,
+        tags: { plant_protein.id => plant_protein.name },
+        child_tags: { nut.id => nut.name },
+        grandchild_tags: { cashew.id => cashew.name, almond.id => almond.name },
+        grandparent_tags: {},
+        parent_tags: {},
+        sister_tags: {}
+      )
+    end
+    it 'permissions on modifications9' do
+      pp = Graph::TagIndex.instance.fetch_by_user(plant_protein.id, user2)
+      expect(pp.api_response(user2)).to eq(
+        modification_tags: { dry_roasted.id => dry_roasted.name },
+        modified_tags: {},
+        description: nil,
+        id: plant_protein.id,
+        name: plant_protein.name,
+        recipe_id: nil,
+        tag_type_id: ingredient_family_tag_type.id,
+        tags: { plant_protein.id => plant_protein.name },
+        child_tags: { nut.id => nut.name },
+        grandchild_tags: { cashew.id => cashew.name, almond.id => almond.name },
+        grandparent_tags: {},
+        parent_tags: {},
+        sister_tags: {}
+      )
+    end
   end
 end
 # rubocop: enable Metrics/BlockLength
