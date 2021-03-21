@@ -29,7 +29,7 @@ module Graph
       end
 
       def new_tag_query(tag_id)
-        tags_with_assoc_query.joins(:parent_tags).preload(:parent_tags).
+        tags_with_assoc_query.left_joins(:parent_tags).preload(:parent_tags).
           where(["tags.id = ?", tag_id])
       end
 
