@@ -204,7 +204,22 @@ describe Api::RecipesController, type: :controller do
   end
 
   describe 'GET - index (rating)' do
-    # todo: implement
+    # let(:five_stars) { create(:tag, tag_type_id: tag_type_rating.id, name: '5 stars')}
+    before do
+      tag_index.reset
+      recipe_index.reset
+      sign_in user
+      get :index,
+          params: { tag_id: rating.id },
+          format: 'json'
+    end
+
+    it 'returns a 200' do
+      body = JSON.parse(response.body)
+      expect(body['recipes'].size).to eq(2)
+      expect(body['filter_tags'] - filter_array).to eq([])
+      expect(response.status).to eq(200)
+    end
   end
 
   describe 'GET - index for user with no recipe associations' do

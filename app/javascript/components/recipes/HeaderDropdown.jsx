@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SearchIcon from '@material-ui/icons/Search'
+// import { InputAdornment } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import StyledSelect from '../styled/StyledSelect'
 
@@ -33,7 +34,7 @@ class HeaderDropdown extends React.Component {
     }
   }
 
-  // TODO: use Input Adornment instead
+  // IMPROVE: use Input Adornment instead? - might not work with react-select
   placeholderWithIcon = (placeholder, classes) => {
     return (
       <h2>
