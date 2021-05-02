@@ -1,15 +1,6 @@
 # Base image
-FROM nginx
-
-# Install dependencies
-RUN apt-get update -qq && apt-get -y install apache2-utils
-
-# TSL cert dependencies
-RUN apt-get -y install wget --fix-missing
-RUN wget https://dl.eff.org/certbot-auto
-RUN mv certbot-auto /usr/local/bin/certbot-auto
-RUN chown root /usr/local/bin/certbot-auto
-RUN chmod 0755 /usr/local/bin/certbot-auto
+FROM nginx:1.17.6-alpine 
+RUN apk add inotify-tools certbot openssl bash certbot-nginx
 
 # establish where Nginx should look for files
 ENV RAILS_ROOT /recipes
