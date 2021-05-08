@@ -29,13 +29,16 @@ describe Api::RecipesController, type: :controller do
   let!(:access_ing) do
     create(:access, accessible: tag_selection_ing, user: user, status: 'PUBLIC')
   end
+  let!(:access_rating) do
+    create(:access, accessible: rating, user: user, status: 'PUBLIC')
+  end
   let!(:access_cocktail) do
     create(:access, accessible: tag_selection_cocktail, user: user, status: 'PUBLIC')
   end
   let!(:access_menu_tag) do
     create(:access, accessible: menu_tag, user: user, status: 'PRIVATE')
   end
-  let!(:access_rating) do
+  let!(:access_rating_sel) do
     create(
       :access,
       accessible: tag_selection_rating,
@@ -43,7 +46,7 @@ describe Api::RecipesController, type: :controller do
       status: 'PRIVATE'
     )
   end
-  let!(:access_rating) do
+  let!(:access_menu) do
     create(:access, accessible: tag_selection_menu, user: user, status: 'PRIVATE')
   end
   let!(:access_recipe) do
@@ -204,7 +207,23 @@ describe Api::RecipesController, type: :controller do
   end
 
   describe 'GET - index (rating)' do
-    # let(:five_stars) { create(:tag, tag_type_id: tag_type_rating.id, name: '5 stars')}
+    before do
+      tag_index.reset
+      recipe_index.reset
+      sign_in different_user
+      get :index,
+          params: { tag_id: rating.id },
+          format: 'json'
+    end
+
+    it 'returns a 200' do
+      body = JSON.parse(response.body)
+      expect(body['recipes'].size).to eq(1)
+      expect(body['recipes'].first['name']).to eq(recipe.name)
+    end
+  end
+
+  describe 'GET - index (no rating)' do
     before do
       tag_index.reset
       recipe_index.reset
@@ -216,8 +235,7 @@ describe Api::RecipesController, type: :controller do
 
     it 'returns a 200' do
       body = JSON.parse(response.body)
-      expect(body['recipes'].size).to eq(2)
-      expect(body['filter_tags'] - filter_array).to eq([])
+      expect(body['recipes'].size).to eq(0)
       expect(response.status).to eq(200)
     end
   end

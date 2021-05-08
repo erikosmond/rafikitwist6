@@ -154,6 +154,7 @@ RSpec.shared_context 'recipes', shared_context: :metadata do
   let!(:chestnut_soup_access) do
     create(:access, user: user, accessible: soup, status: 'PUBLIC')
   end
-  let!(:recipes) { Graph::TagNode.new(tag_subject).api_response_recipes(user.id) }
+  # TODO: it seems like tags added after this in spec files will not be in the index (makes sense)
+  # let!(:recipes) { Graph::TagNode.new(tag_subject).api_response_recipes(user.id) }
 end
 # rubocop: enable Metrics/BlockLength

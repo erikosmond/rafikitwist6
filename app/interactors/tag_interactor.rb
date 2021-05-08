@@ -6,7 +6,6 @@ class TagInteractor
 
   def call
     return all_recipes unless context.tag_id.present?
-
     context.tag = Graph::TagIndex.instance.fetch(context.tag_id)
     context.result = if %(Priority Rating).include?(context.tag.tag_type.name) &&
                         context.current_user.present?
