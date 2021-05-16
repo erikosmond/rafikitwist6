@@ -56,6 +56,7 @@ describe Api::RecipesController, type: :controller do
   let!(:access_rice) do
     create(:access, accessible: tag_subject, user: user, status: 'PUBLIC')
   end
+  let!(:access_ingredient) { create(:access, accessible: ingredient, user: user, status: 'PUBLIC') }
   let(:tag_index) { Graph::TagIndex.instance }
   let(:recipe_index) { Graph::RecipeIndex.instance }
 
@@ -207,6 +208,11 @@ describe Api::RecipesController, type: :controller do
   end
 
   describe 'GET - index (rating)' do
+    let(:expected_filter_tags) do 
+      [
+        [ingredient.id, "Mint"], [menu_tag.id, "menu"], [rating.id, "rating"]
+      ]
+    end
     before do
       tag_index.reset
       recipe_index.reset
@@ -220,6 +226,7 @@ describe Api::RecipesController, type: :controller do
       body = JSON.parse(response.body)
       expect(body['recipes'].size).to eq(1)
       expect(body['recipes'].first['name']).to eq(recipe.name)
+      expect(body['filter_tags'] - expected_filter_tags).to eq([])
     end
   end
 

@@ -10,6 +10,7 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   let(:plants) { create(:tag, tag_type: type_ingredient_category, name: 'plants') }
   let(:protein) { create(:tag, tag_type: type_ingredient_family, name: 'Protein') }
   let(:nut) { create(:tag, tag_type: type_ingredient_type, name: 'Nut') }
+  let(:soy) { create(:tag, tag_type: type_ingredient_type, name: 'Soy') }
   let(:vodka) { create(:tag, tag_type: type_ingredient, name: 'Vodka') }
   let(:almond) do
     create :tag,
@@ -19,6 +20,15 @@ RSpec.shared_context 'tags', shared_context: :metadata do
            description: 'a bit nutty'
   end
   let!(:tag_selection1) { create :tag_selection, tag: nut, taggable: almond }
+
+  let(:tofu) do
+    create :tag,
+           tag_type: type_ingredient,
+           name: 'Tofu',
+           description: 'a bit soft'
+  end
+  let!(:tag_selection1a) { create :tag_selection, tag: soy, taggable: tofu }
+  let!(:tag_selection1b) { create :tag_selection, tag: protein, taggable: soy }
   let!(:tag_selection2) { create :tag_selection, tag: protein, taggable: nut }
   let!(:tag_selection3) { create :tag_selection, tag: plants, taggable: protein }
 
@@ -89,6 +99,12 @@ RSpec.shared_context 'tags', shared_context: :metadata do
   end
   let!(:access16) do
     create(:access, user: user, accessible: nut, status: 'PUBLIC')
+  end
+  let!(:access17) do
+    create(:access, user: user, accessible: soy, status: 'PUBLIC')
+  end
+  let!(:access18) do
+    create(:access, user: user, accessible: tofu, status: 'PUBLIC')
   end
 end
 # rubocop: enable Metrics/BlockLength

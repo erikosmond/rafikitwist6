@@ -26,7 +26,7 @@ describe Graph::RecipeIndex do
   let(:recipe_index) { Graph::RecipeIndex.instance }
   let(:tag_index) { Graph::TagIndex.instance }
 
-  # TODO: make sure the associations of the recipe are `loaded?`
+  # IMPROVE: make sure the associations of the recipe are `loaded?`
   it 'generates and returns the recipes index' do
     recipe_index.reset
     expect(recipe_index.hash.values.map(&:name).sort).to eq [
@@ -81,7 +81,6 @@ describe Graph::RecipeIndex do
   end
 
   it 'loads filter tag ids with nested recipes' do
-    # TODO: write a test that returns subjective tags with filter tag ids
     recipe_index.reset
     tag_index.reset
     expect(recipe_index.hash[mai_tai.id].filter_tag_ids.sort).
