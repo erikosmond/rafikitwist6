@@ -26,9 +26,13 @@ describe Graph::RecipeIndex do
   let(:recipe_index) { Graph::RecipeIndex.instance }
   let(:tag_index) { Graph::TagIndex.instance }
 
+  before do
+    recipe_index.reset
+    tag_index.reset
+  end
+
   # IMPROVE: make sure the associations of the recipe are `loaded?`
   it 'generates and returns the recipes index' do
-    recipe_index.reset
     expect(recipe_index.hash.values.map(&:name).sort).to eq [
       'Awesome Blossom',
       'Mai Tai',
@@ -45,8 +49,6 @@ describe Graph::RecipeIndex do
   end
 
   it 'assigns appropriate attributes' do
-    recipe_index.reset
-    tag_index.reset
     expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.amount).to eq '1 cup'
     expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.name).to eq 'flour'
     expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.modification_name).
@@ -58,22 +60,16 @@ describe Graph::RecipeIndex do
   end
 
   it 'loads tag ids by type' do
-    recipe_index.reset
-    tag_index.reset
     expect(recipe_index.hash[self_rising_flour_recipe.id].tag_ids_by_type).
       to eq({ 'vessels' => [{ tag_id: bowl.id, tag_name: bowl.name }], 'sources' => [{ tag_id: cook_book.id, tag_name: cook_book.name }] })
   end
 
   it 'loads objective tag ids' do
-    recipe_index.reset
-    tag_index.reset
     expect(recipe_index.hash[self_rising_flour_recipe.id].objective_tag_ids.sort).
       to eq([flour.id, bowl.id, cook_book.id, baking_soda.id, bleached.id].sort)
   end
 
   it 'loads filter tag ids' do
-    recipe_index.reset
-    tag_index.reset
     expect(recipe_index.hash[self_rising_flour_recipe.id].filter_tag_ids.sort).
       to eq([
         flour.id, wheat.id, grains.id, bowl.id, cook_book.id, baking_soda.id, bleached.id
@@ -81,8 +77,6 @@ describe Graph::RecipeIndex do
   end
 
   it 'loads filter tag ids with nested recipes' do
-    recipe_index.reset
-    tag_index.reset
     expect(recipe_index.hash[mai_tai.id].filter_tag_ids.sort).
       to eq([
         plant_protein.id, nut.id, water.id, almond.id, dry_roasted.id,
@@ -91,68 +85,58 @@ describe Graph::RecipeIndex do
   end
 
   it 'shows tag modifications by user' do
-    recipe_index.reset
-    tag_index.reset
-
     almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
     almond_recipes = almond_tag.api_response_recipes(user2.id)
 
     expect(almond_recipes.length).to eq(3)
-    expect(almond_recipes.first.api_response).to eq(
+    api_response = almond_recipes.first.api_response
+    expect(api_response[:id]).to eq almond_milk_recipe.id
+    expect(api_response[:name]).to eq almond_milk_recipe.name
+    expect(api_response[:instructions]).to eq almond_milk_recipe.instructions
+    expect(api_response[:description]).to eq almond_milk_recipe.description
+    expect(api_response[:tag_ids]).to eq(
       {
-        id: almond_milk_recipe.id,
-        name: almond_milk_recipe.name,
-        instructions: almond_milk_recipe.instructions,
-        description: almond_milk_recipe.description,
-        tag_ids: {
-          comment_tag.id => true, one_star.id => true, low_priority.id => true, dry_roasted.id => true,
-          distilled.id => true, plant_protein.id => true, nut.id => true,
-          water.id => true, almond.id => true
-        },
-        ingredients:
-          {
-            "#{almond.id}mod#{dry_roasted.id}" =>
-            {
-              body: nil,
-              id: am1_ing1.id,
-              modification_id: dry_roasted.id,
-              modification_name: dry_roasted.name,
-              property: 'amount',
-              tag_name: almond.name,
-              tag_type: 'Ingredient',
-              value: nil,
-              tag_description: almond.description,
-              tag_id: almond.id,
-              tag_type_id: ingredient_tag_type.id
-            },
-            "#{water.id}mod#{distilled.id}" =>
-            {
-              body: nil,
-              id: am1_ing2.id,
-              modification_id: distilled.id,
-              modification_name: distilled.name,
-              property: 'amount',
-              tag_name: water.name,
-              tag_type: 'Ingredient',
-              value: nil,
-              tag_description: nil,
-              tag_id: water.id,
-              tag_type_id: ingredient_tag_type.id
-            }
-          },
-        priorities: [{ id: almond_milk_priority.id, tag_id: low_priority.id, body: nil, tag_name: low_priority.name }],
-        ratings: [{ id: almond_milk_rating.id, tag_id: one_star.id, body: nil, tag_name: one_star.name }],
-        comments: [{
-          id: almond_milk_comment.id, tag_id: comment_tag.id,
-          body: almond_milk_comment.body, tag_name: 'Comment'
-        }]
+        comment_tag.id => true, one_star.id => true, low_priority.id => true, dry_roasted.id => true,
+        distilled.id => true, plant_protein.id => true, nut.id => true,
+        water.id => true, almond.id => true
       }
     )
+    expect(api_response[:ingredients]).to eq(
+      {
+        "#{almond.id}mod#{dry_roasted.id}" => {
+          body: nil,
+          id: am1_ing1.id,
+          modification_id: dry_roasted.id,
+          modification_name: dry_roasted.name,
+          property: 'amount',
+          tag_name: almond.name,
+          tag_type: 'Ingredient',
+          value: nil,
+          tag_description: almond.description,
+          tag_id: almond.id,
+          tag_type_id: ingredient_tag_type.id
+        },
+        "#{water.id}mod#{distilled.id}" => {
+          body: nil,
+          id: am1_ing2.id,
+          modification_id: distilled.id,
+          modification_name: distilled.name,
+          property: 'amount',
+          tag_name: water.name,
+          tag_type: 'Ingredient',
+          value: nil,
+          tag_description: nil,
+          tag_id: water.id,
+          tag_type_id: ingredient_tag_type.id
+        }
+      }
+    )
+    expect(api_response[:priorities].first[:tag_name]).to eq(low_priority.name)
+    expect(api_response[:ratings].first[:tag_id]).to eq(one_star.id)
+    expect(api_response[:comments].first[:body]).to eq(almond_milk_comment.body)
   end
 
   it 'shows recipe properties in api response for recipe owner' do
-    recipe_index.reset
-    tag_index.reset
     flour_tag1 = Graph::TagIndex.instance.fetch_by_user(flour.id, user1)
     flour_recipes1 = flour_tag1.api_response_recipes(user1.id)
 
@@ -175,8 +159,6 @@ describe Graph::RecipeIndex do
   end
 
   it 'shows recipe properties in api response for non-owner user of recipe' do
-    recipe_index.reset
-    tag_index.reset
     flour_tag2 = Graph::TagIndex.instance.fetch_by_user(flour.id, user2)
     flour_recipes2 = flour_tag2.api_response_recipes(user2.id)
 
@@ -218,9 +200,6 @@ describe Graph::RecipeIndex do
   end
 
   it 'shows recipe properties for private tag' do
-    recipe_index.reset
-    tag_index.reset
-
     almond_tag = Graph::TagIndex.instance.fetch_by_user(almond.id, user2)
     almond_user2 = almond_tag.api_response(user2.id)
     expect(almond_user2).to eq(
@@ -248,8 +227,6 @@ describe Graph::RecipeIndex do
   end
   
   it 'shows properties for modification tag' do
-    recipe_index.reset
-    tag_index.reset
     dr1 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
     expect(dr1.api_response(user1)[:modified_tags]).to eq({})
   end

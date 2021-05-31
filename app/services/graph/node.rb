@@ -12,7 +12,8 @@ module Graph
       # IMPROVE: call out to async class that queries subjective tags
       ::TagSelection.
         select('tag_selections.id, tags.id AS tag_id, tag_selections.body,
-                tags.name AS tag_name, tag_selections.taggable_id, tag_types.name').
+                tags.name AS tag_name, tag_selections.taggable_id, tag_types.name,
+                tag_selections.updated_at').
         joins([:access, { tag: :tag_type }]).
         where("accesses.user_id = #{user.id} AND accesses.status = 'PRIVATE'").
         where("tag_selections.taggable_type = 'Recipe'").
@@ -51,7 +52,8 @@ module Graph
         id: data.id,
         tag_id: data.tag_id,
         body: data.body,
-        tag_name: data.tag_name
+        tag_name: data.tag_name,
+        updated_at: data.updated_at
       }
     end
 

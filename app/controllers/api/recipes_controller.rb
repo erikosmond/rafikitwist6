@@ -17,7 +17,7 @@ module Api
     def show
       recipe = Graph::RecipeIndex.instance.fetch(params.permit(:id)[:id])
       Permissions.new(current_user).can_view!(recipe)
-      render json: recipe.subjective_api_response(current_user)
+      render json: recipe_data_by_user(recipe, current_user)
     end
 
     def create
