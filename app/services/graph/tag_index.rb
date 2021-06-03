@@ -30,13 +30,13 @@ module Graph
 
       def new_tag_query(tag_id)
         tags_with_assoc_query.left_joins(:parent_tags).preload(:parent_tags).
-          where(["tags.id = ?", tag_id])
+          where(['tags.id = ?', tag_id])
       end
 
       def tags_with_assoc
-          tags_with_assoc_query.reduce({}) do |h, t|
-            h.merge({ t.id => TagNode.new(t) })
-          end
+        tags_with_assoc_query.reduce({}) do |h, t|
+          h.merge({ t.id => TagNode.new(t) })
+        end
       end
 
       def tags_with_assoc_query
@@ -47,7 +47,7 @@ module Graph
 
       def objective_tag_selections
         TagSelection.
-          joins(tag: [:access, :tag_type]).
+          joins(tag: %i[access tag_type]).
           where("taggable_type = 'Tag'").
           where("tag_types.name NOT IN ('Comment', 'Priority', 'Rating')")
       end

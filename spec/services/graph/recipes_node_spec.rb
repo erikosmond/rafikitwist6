@@ -15,7 +15,6 @@ describe Graph::RecipeNode do
   let(:rating_ts) { create(:tag_selection, tag: five_star) }
 
   describe 'context' do
-
     before do
       recipe_index.reset
       tag_index.reset
@@ -30,15 +29,14 @@ describe Graph::RecipeNode do
     it 'generates and returns filter_tag_hash' do
       rn = recipe_index.fetch(self_rising_flour_recipe.id)
       expect(rn.filter_tag_hash).to eq({
-        flour.id => true,
-        wheat.id => true,
-        bowl.id => true,
-        cook_book.id => true,
-        bleached.id => true,
-        grains.id => true,
-        baking_soda.id => true
-      })
-      
+                                         flour.id => true,
+                                         wheat.id => true,
+                                         bowl.id => true,
+                                         cook_book.id => true,
+                                         bleached.id => true,
+                                         grains.id => true,
+                                         baking_soda.id => true
+                                       })
     end
 
     it 'contains id true when present' do
@@ -57,8 +55,8 @@ describe Graph::RecipeNode do
     end
 
     it 'adds comment to the api response' do
-      # comments (and all subjective tags) are only added to copies of recipe nodes 
-      # that are about to be included in an api response, which has happened before 
+      # comments (and all subjective tags) are only added to copies of recipe nodes
+      # that are about to be included in an api response, which has happened before
       # calling this method. This is why there's no need to pass in a user id here
       rn = recipe_index.fetch(self_rising_flour_recipe.id)
       hash = {
@@ -69,7 +67,8 @@ describe Graph::RecipeNode do
       }
       rn.append_comment_tag_hash_array(hash)
       expect(rn.api_response[:comments]).to eq(
-        [{ body: 'yummy', id: comment_ts.id, tag_id: comment_tag.id, tag_name: 'Comment' }]
+        [{ body: 'yummy', id: comment_ts.id, tag_id: comment_tag.id,
+           tag_name: 'Comment' }]
       )
     end
 
@@ -103,8 +102,8 @@ describe Graph::RecipeNode do
       rn = recipe_index.fetch(self_rising_flour_recipe.id)
       expect(rn.api_response).to eq(
         {
-          "sources" => [{ tag_id: cook_book.id, tag_name: 'Cook Book' }],
-          "vessels" => [{ tag_id: bowl.id, tag_name: 'bowl' }],
+          'sources' => [{ tag_id: cook_book.id, tag_name: 'Cook Book' }],
+          'vessels' => [{ tag_id: bowl.id, tag_name: 'bowl' }],
           comments: [],
           description: 'pre-mixed',
           id: self_rising_flour_recipe.id,
@@ -122,8 +121,8 @@ describe Graph::RecipeNode do
               tag_type_id: ingredient_tag_type.id, value: nil
             }
           },
-          instructions: "Layer everything together",
-          name: "self-rising flour",
+          instructions: 'Layer everything together',
+          name: 'self-rising flour',
           priorities: [],
           ratings: [],
           tag_ids: {
@@ -143,3 +142,4 @@ describe Graph::RecipeNode do
     end
   end
 end
+# rubocop: enable Metrics/BlockLength

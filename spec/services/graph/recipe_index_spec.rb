@@ -49,19 +49,31 @@ describe Graph::RecipeIndex do
   end
 
   it 'assigns appropriate attributes' do
-    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.amount).to eq '1 cup'
-    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.name).to eq 'flour'
-    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.modification_name).
-      to eq 'bleached'
-    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.modification_id).
-      to eq bleached.id
-    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.body).to eq 'sifted'
-    expect(recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.id).to eq flour.id
+    expect(
+      recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.amount
+    ).to eq '1 cup'
+    expect(
+      recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.name
+    ).to eq 'flour'
+    expect(
+      recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.modification_name
+    ).to eq 'bleached'
+    expect(
+      recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.modification_id
+    ).to eq bleached.id
+    expect(
+      recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.body
+    ).to eq 'sifted'
+    expect(
+      recipe_index.hash[self_rising_flour_recipe.id].ingredients.first.id
+    ).to eq flour.id
   end
 
   it 'loads tag ids by type' do
     expect(recipe_index.hash[self_rising_flour_recipe.id].tag_ids_by_type).
-      to eq({ 'vessels' => [{ tag_id: bowl.id, tag_name: bowl.name }], 'sources' => [{ tag_id: cook_book.id, tag_name: cook_book.name }] })
+      to eq({ 'vessels' => [{ tag_id: bowl.id, tag_name: bowl.name }],
+              'sources' => [{ tag_id: cook_book.id,
+                              tag_name: cook_book.name }] })
   end
 
   it 'loads objective tag ids' do
@@ -96,9 +108,9 @@ describe Graph::RecipeIndex do
     expect(api_response[:description]).to eq almond_milk_recipe.description
     expect(api_response[:tag_ids]).to eq(
       {
-        comment_tag.id => true, one_star.id => true, low_priority.id => true, dry_roasted.id => true,
-        distilled.id => true, plant_protein.id => true, nut.id => true,
-        water.id => true, almond.id => true
+        comment_tag.id => true, one_star.id => true, low_priority.id => true,
+        dry_roasted.id => true, distilled.id => true, plant_protein.id => true,
+        nut.id => true, water.id => true, almond.id => true
       }
     )
     expect(api_response[:ingredients]).to eq(
@@ -225,7 +237,7 @@ describe Graph::RecipeIndex do
       { cashew.id => cashew.name, hazelnut.id => hazelnut.name }
     )
   end
-  
+
   it 'shows properties for modification tag' do
     dr1 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
     expect(dr1.api_response(user1)[:modified_tags]).to eq({})
@@ -240,7 +252,7 @@ describe Graph::RecipeIndex do
       recipe_index.reset
       tag_index.reset
     end
-    it 'permissions on modifications' do      
+    it 'permissions on modifications' do
       dr2 = Graph::TagIndex.instance.fetch_by_user(dry_roasted.id, user2)
       expect(dr2.api_response(user2)[:modified_tags]).to eq(
         { almond.id => almond.name }

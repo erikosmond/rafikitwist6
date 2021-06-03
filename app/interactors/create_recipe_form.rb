@@ -3,17 +3,16 @@
 # class for handling params from recipes form
 class CreateRecipeForm < RecipeForm
   def create
-    recipe = nil
     ActiveRecord::Base.transaction do
-      recipe = create_recipe!
-      create_access(recipe)
-      create_ingredients(recipe)
-      create_tags(recipe)
-      recipe = recipe.tap(&:save!).reload
-      RecipesService.new(recipe).recipe_as_ingredient(@params)
+      @recipe = create_recipe!
+      create_access(@recipe)
+      create_ingredients(@recipe)
+      create_tags(@recipe)
+      @recipe = @recipe.tap(&:save!).reload
+      RecipesService.new(@recipe).recipe_as_ingredient(@params)
     end
-    Graph::RecipeIndex.instance.upsert(recipe)
-    recipe.reload
+    Graph::RecipeIndex.instance.upsert(@recipe)
+    @recipe&.reload
   end
 
   private

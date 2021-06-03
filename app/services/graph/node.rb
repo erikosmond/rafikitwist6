@@ -10,16 +10,15 @@ module Graph
       return [] if user.nil? || recipe_ids.empty?
 
       # IMPROVE: call out to async class that queries subjective tags
-      ::TagSelection.
-        select('tag_selections.id, tags.id AS tag_id, tag_selections.body,
-                tags.name AS tag_name, tag_selections.taggable_id, tag_types.name,
-                tag_selections.updated_at').
+      ::TagSelection.select('tag_selections.id, tags.id AS tag_id, tag_selections.body,
+                             tags.name AS tag_name, tag_selections.taggable_id,
+                             tag_types.name, tag_selections.updated_at').
         joins([:access, { tag: :tag_type }]).
         where("accesses.user_id = #{user.id} AND accesses.status = 'PRIVATE'").
         where("tag_selections.taggable_type = 'Recipe'").
         where("accesses.accessible_type = 'TagSelection'").
-        where("tag_selections.taggable_id IN (#{recipe_ids.join(', ')})").
-        where("tag_types.name IN ('#{::TagsService::SUBJECTIVE_TAG_TYPES.join("', '")}')")
+        where("tag_selections.taggable_id IN (#{recipe_ids.map(&:to_i).join(', ')})").
+        where "tag_types.name IN ('#{::TagsService::SUBJECTIVE_TAG_TYPES.join("', '")}')"
     end
 
     def self.subjective_enrichment(recipes, subjective_data)

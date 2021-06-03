@@ -56,7 +56,9 @@ describe Api::RecipesController, type: :controller do
   let!(:access_rice) do
     create(:access, accessible: tag_subject, user: user, status: 'PUBLIC')
   end
-  let!(:access_ingredient) { create(:access, accessible: ingredient, user: user, status: 'PUBLIC') }
+  let!(:access_ingredient) do
+    create(:access, accessible: ingredient, user: user, status: 'PUBLIC')
+  end
   let(:tag_index) { Graph::TagIndex.instance }
   let(:recipe_index) { Graph::RecipeIndex.instance }
 
@@ -208,9 +210,9 @@ describe Api::RecipesController, type: :controller do
   end
 
   describe 'GET - index (rating)' do
-    let(:expected_filter_tags) do 
+    let(:expected_filter_tags) do
       [
-        [ingredient.id, "Mint"], [menu_tag.id, "menu"], [rating.id, "rating"]
+        [ingredient.id, 'Mint'], [menu_tag.id, 'menu'], [rating.id, 'rating']
       ]
     end
     before do

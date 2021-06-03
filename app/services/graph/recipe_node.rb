@@ -9,6 +9,7 @@ module Graph
                 :tag_selections
 
     def initialize(recipe)
+      super
       @recipe = recipe
       @access = recipe.access
       @objective_tag_ids = Set.new
@@ -75,7 +76,7 @@ module Graph
     private
 
       def most_recent(array)
-        [array.sort { |a,b| a[:updated_at] <=> b[:updated_at] }.last].compact
+        [array.max { |a, b| a[:updated_at] <=> b[:updated_at] }].compact
       end
 
       # tag_selections: [:modification_selections, { tag: :tag_type }])

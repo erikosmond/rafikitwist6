@@ -42,7 +42,7 @@ module Graph
 
       def modification_tag
         return {} unless modification
-    
+
         { ingredient_modification: { value: modification_id, label: modification_name } }
       end
 

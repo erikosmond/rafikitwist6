@@ -36,7 +36,7 @@ describe Api::TagsController, type: :controller do
         { 'Label' => 'Protein', 'Value' => protein.id },
         { 'Label' => 'Vodka', 'Value' => vodka.id },
         { 'Label' => 'Soy', 'Value' => soy.id },
-        { 'Label' => 'Tofu', 'Value' => tofu.id },
+        { 'Label' => 'Tofu', 'Value' => tofu.id }
       ]
     end
 
@@ -155,7 +155,7 @@ describe Api::TagsController, type: :controller do
           'child_tags' => { nut.id.to_s => 'Nut', soy.id.to_s => 'Soy' },
           'grandchild_tags' => { almond.id.to_s => 'Almond', tofu.id.to_s => 'Tofu' },
           'grandparent_tags' => {},
-          "parent_tags" => {},
+          'parent_tags' => {},
           'modification_tags' => { crushed.id.to_s => crushed.name },
           'modified_tags' => {}
         }
