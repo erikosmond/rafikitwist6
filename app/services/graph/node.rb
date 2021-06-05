@@ -17,8 +17,8 @@ module Graph
         where("accesses.user_id = #{user.id} AND accesses.status = 'PRIVATE'").
         where("tag_selections.taggable_type = 'Recipe'").
         where("accesses.accessible_type = 'TagSelection'").
-        where("tag_selections.taggable_id IN (#{recipe_ids.map(&:to_i).join(', ')})").
-        where "tag_types.name IN ('#{::TagsService::SUBJECTIVE_TAG_TYPES.join("', '")}')"
+        where(["tag_selections.taggable_id IN (?)", recipe_ids]).
+        where ["tag_types.name IN (?)", Node.subjective_tag_types]
     end
 
     def self.subjective_enrichment(recipes, subjective_data)
@@ -54,6 +54,14 @@ module Graph
         tag_name: data.tag_name,
         updated_at: data.updated_at
       }
+    end
+
+    def self.subjective_tag_types
+      ::TagsService::SUBJECTIVE_TAG_TYPES.join("', '")
+    end
+
+    def initialize(_element)
+      # make rubocop happy
     end
 
     def viewable?(user)

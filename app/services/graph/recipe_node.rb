@@ -45,11 +45,9 @@ module Graph
       attrs.merge(@tag_ids_by_type).merge(
         {
           ingredients: @ingredients.reduce({}) { |h, i| h.merge(i.api_response) },
-          priorities: most_recent(@priority_tag_hash_array),
-          ratings: most_recent(
-            @rating_tag_hash_array.select { |h| h[:tag_name].include? 'star' }
-          ),
-          comments: most_recent(@comment_tag_hash_array)
+          priorities: @priority_tag_hash_array,
+          ratings: @rating_tag_hash_array.select { |h| h[:tag_name].include? 'star' },
+          comments: @comment_tag_hash_array
         }
       )
     end
@@ -74,10 +72,6 @@ module Graph
     end
 
     private
-
-      def most_recent(array)
-        [array.max { |a, b| a[:updated_at] <=> b[:updated_at] }].compact
-      end
 
       # tag_selections: [:modification_selections, { tag: :tag_type }])
       def organize_associations
