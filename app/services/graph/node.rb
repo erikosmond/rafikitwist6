@@ -18,7 +18,7 @@ module Graph
         where("tag_selections.taggable_type = 'Recipe'").
         where("accesses.accessible_type = 'TagSelection'").
         where(["tag_selections.taggable_id IN (?)", recipe_ids]).
-        where ["tag_types.name IN (?)", Node.subjective_tag_types]
+        where ["tag_types.name IN (?)", ::TagsService::SUBJECTIVE_TAG_TYPES]
     end
 
     def self.subjective_enrichment(recipes, subjective_data)
@@ -54,10 +54,6 @@ module Graph
         tag_name: data.tag_name,
         updated_at: data.updated_at
       }
-    end
-
-    def self.subjective_tag_types
-      ::TagsService::SUBJECTIVE_TAG_TYPES.join("', '")
     end
 
     def initialize(_element)

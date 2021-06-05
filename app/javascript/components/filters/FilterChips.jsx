@@ -9,7 +9,7 @@ const styles = (theme) => ({
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    padding: theme.spacing(0.4),
+    padding: theme.spacing(0.5),
   },
   chip: {
     margin: theme.spacing(0.5),
