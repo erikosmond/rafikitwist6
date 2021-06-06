@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
+# rubocop: disable Metrics/ClassLength
 module Graph
-  # In memory model for tags in the graph.
+  # In memory model for tags in the graph. This class is a bit long. It has the core
+  # logic of the data model.
   class TagNode < Node
     delegate :id, :name, :description, :present?, :tag_type_id, :recipe_id, to: :@tag
     attr_accessor :parent_tag_ids, :child_tag_ids, :recipe_ids, :modification_tag_ids
     attr_reader :tag_type
 
     def initialize(tag)
+      super
       @tag = tag
       @access = tag.access
       @tag_type = tag.tag_type
@@ -27,30 +30,6 @@ module Graph
 
     def filter_tag_ids
       ([id] + parent_filter_tag_ids + recipe_filter_tag_ids).flatten.compact.uniq
-    end
-
-    def grandparent_ids
-      @parent_tag_ids.flat_map do |p_id|
-        TagIndex.instance.fetch(p_id).parent_tag_ids
-      end.uniq.compact
-    end
-
-    def grandchild_tags_by_user(user)
-      # find the interesection of grandchild tags and tags the user has
-      child_tags_by_user(user).flat_map do |tag|
-        tag.child_tags_by_user(user)
-      end.uniq.compact
-    end
-
-    def sister_tags_by_user(user)
-      if TagType::INGREDIENT_TYPES.include? @tag_type.name
-        parent_child_tags = @parent_tag_ids.flat_map do |p_id|
-          TagIndex.instance.fetch(p_id).child_tags_by_user(user)
-        end.uniq.compact
-        parent_child_tags.reject { |tag| tag.id == id }
-      else
-        group_tags_by_user(user)
-      end
     end
 
     def child_tags_by_user(user)
@@ -87,19 +66,41 @@ module Graph
     def mods_hash(user)
       children = child_tag_ids.map { |cid| TagIndex.instance.fetch(cid).mods_hash(user) }
       child_values = merge_hash_values(children)
-      {
-        modification_tags:
-          with_tag_names(
-            UserAccessModificationTagIndex.instance.fetch_mods_by_user_id(id, user&.id) + child_values[:modification_tags]
-          ),
-        modified_tags:
-          with_tag_names(
-            UserAccessModifiedTagIndex.instance.fetch_mods_by_user_id(id, user&.id) + child_values[:modified_tags]
-          )
-      }
+      { modification_tags: with_tag_names(
+          UserAccessModificationTagIndex.
+          instance.fetch_mods_by_user_id(id, user&.id) + child_values[:modification_tags]
+        ),
+        modified_tags: with_tag_names(
+          UserAccessModifiedTagIndex.
+          instance.fetch_mods_by_user_id(id, user&.id) + child_values[:modified_tags]
+        ) }
     end
 
     private
+
+      def sister_tags_by_user(user)
+        if TagType::INGREDIENT_TYPES.include? @tag_type.name
+          parent_child_tags = @parent_tag_ids.flat_map do |p_id|
+            TagIndex.instance.fetch(p_id).child_tags_by_user(user)
+          end.uniq.compact
+          parent_child_tags.reject { |tag| tag.id == id }
+        else
+          group_tags_by_user(user)
+        end
+      end
+
+      def grandchild_tags_by_user(user)
+        # find the interesection of grandchild tags and tags the user has
+        child_tags_by_user(user).flat_map do |tag|
+          tag.child_tags_by_user(user)
+        end.uniq.compact
+      end
+
+      def grandparent_ids
+        @parent_tag_ids.flat_map do |p_id|
+          TagIndex.instance.fetch(p_id).parent_tag_ids
+        end.uniq.compact
+      end
 
       def group_tags_by_user(user)
         TagSelection.select('tags.id').distinct.
@@ -171,3 +172,4 @@ module Graph
       end
   end
 end
+# rubocop: enable Metrics/ClassLength

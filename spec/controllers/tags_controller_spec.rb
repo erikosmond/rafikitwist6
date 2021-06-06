@@ -26,7 +26,7 @@ describe Api::TagsController, type: :controller do
     end
 
     let!(:tag_groups) do
-      { protein.id.to_s => { nut.id.to_s => [almond.id] } }
+      { protein.id.to_s => { nut.id.to_s => [almond.id], soy.id.to_s => [tofu.id] } }
     end
 
     let!(:ingredient_tags) do
@@ -34,7 +34,9 @@ describe Api::TagsController, type: :controller do
         { 'Label' => 'Nut', 'Value' => nut.id },
         { 'Label' => 'Almond', 'Value' => almond.id },
         { 'Label' => 'Protein', 'Value' => protein.id },
-        { 'Label' => 'Vodka', 'Value' => vodka.id }
+        { 'Label' => 'Vodka', 'Value' => vodka.id },
+        { 'Label' => 'Soy', 'Value' => soy.id },
+        { 'Label' => 'Tofu', 'Value' => tofu.id }
       ]
     end
 
@@ -57,9 +59,9 @@ describe Api::TagsController, type: :controller do
       it 'responds with tags user has access to' do
         # returning tags that have no recipes so they can be added in recipes form
         body = JSON.parse(response.body)
-        expect(body['tags'].size).to eq 6
+        expect(body['tags'].size).to eq 8
         expect(body['tags'].map { |t| t['Value'] } - [
-          almond.id, vodka.id, toasted.id, crushed.id, nut.id, protein.id
+          almond.id, vodka.id, toasted.id, crushed.id, nut.id, protein.id, soy.id, tofu.id
         ]).
           to eq([])
       end
@@ -74,7 +76,7 @@ describe Api::TagsController, type: :controller do
       end
       it 'responds with tags' do
         body = JSON.parse(response.body)
-        expect(body['tags'].size).to eq 4
+        expect(body['tags'].size).to eq 6
         expect(body['tags'] - ingredient_tags).to eq([])
       end
     end
@@ -116,7 +118,6 @@ describe Api::TagsController, type: :controller do
 
     describe 'returns data for an ingredient type tag' do
       let!(:params) { { id: nut.id } }
-      # TODO: add sister tags
       let!(:expected_response) do
         {
           'id' => nut.id,
@@ -126,7 +127,7 @@ describe Api::TagsController, type: :controller do
           'grandparent_tags' => {},
           'tag_type_id' => nut.tag_type_id,
           'recipe_id' => nil,
-          'sister_tags' => {},
+          'sister_tags' => { soy.id.to_s => 'Soy' },
           'tags' => { nut.id.to_s => 'Nut' },
           'child_tags' => { almond.id.to_s => 'Almond' },
           'parent_tags' => { protein.id.to_s => 'Protein' },
@@ -151,10 +152,10 @@ describe Api::TagsController, type: :controller do
           'recipe_id' => nil,
           'sister_tags' => {},
           'tags' => { protein.id.to_s => 'Protein' },
-          'child_tags' => { nut.id.to_s => 'Nut' },
-          'grandchild_tags' => { almond.id.to_s => 'Almond' },
+          'child_tags' => { nut.id.to_s => 'Nut', soy.id.to_s => 'Soy' },
+          'grandchild_tags' => { almond.id.to_s => 'Almond', tofu.id.to_s => 'Tofu' },
           'grandparent_tags' => {},
-          "parent_tags" => {},
+          'parent_tags' => {},
           'modification_tags' => { crushed.id.to_s => crushed.name },
           'modified_tags' => {}
         }

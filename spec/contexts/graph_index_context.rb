@@ -94,7 +94,9 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
   let!(:spelt_to_grains) { create(:tag_selection, tag: grains, taggable: spelt) }
 
   # Ingredient recipes with access
-  let(:flour) { create(:tag, name: 'flour', tag_type: ingredient_tag_type) }
+  let(:flour) do
+    create(:tag, name: 'flour', tag_type: ingredient_tag_type, description: 'powdery')
+  end
   let!(:f1_access) { create(:access, accessible: flour, user: user1, status: 'PUBLIC') }
   let(:water) { create(:tag, name: 'water', tag_type: ingredient_tag_type) }
   let!(:w1_access) { create(:access, accessible: water, user: user1, status: 'PUBLIC') }
@@ -103,7 +105,9 @@ RSpec.shared_context 'graph_index_context', shared_context: :metadata do
     create(:access, accessible: baking_soda, user: user1, status: 'PUBLIC')
   end
 
-  let!(:self_rising_flour_recipe) { create(:recipe, name: 'self-rising flour') }
+  let!(:self_rising_flour_recipe) do
+    create(:recipe, name: 'self-rising flour', description: 'pre-mixed')
+  end
   let!(:srfr1_access) do
     create(:access, accessible: self_rising_flour_recipe, user: user1, status: 'PUBLIC')
   end

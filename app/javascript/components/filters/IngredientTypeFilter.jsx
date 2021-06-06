@@ -21,7 +21,12 @@ class IngredientTypeFilter extends React.Component {
   }
 
   hasVisibleChildren = () => {
-    const { childTags, visibleTags, id, isTagType } = this.props
+    const {
+      childTags,
+      visibleTags,
+      id,
+      isTagType,
+    } = this.props
     if (visibleTags[id] && !isTagType) {
       return true
     }

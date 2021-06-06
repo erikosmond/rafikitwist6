@@ -6,6 +6,12 @@ module RecipesControllerHelper
     params.permit shared_columns << :id
   end
 
+  def recipe_data_by_user(recipe, user)
+    subjective_data = Graph::Node.subjective_tags([recipe.id], user)
+    subjective_recipe = Graph::Node.subjective_enrichment([recipe], subjective_data).first
+    subjective_recipe.api_response
+  end
+
   def shared_columns
     [
       :recipe_name, :description, :instructions, :is_ingredient,

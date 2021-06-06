@@ -22,7 +22,8 @@ describe Api::TagTypesController, type: :controller do
       let!(:expected) do
         [
           { 'id' => almond.id, 'name' => 'Almond' },
-          { 'id' => vodka.id, 'name' => 'Vodka' }
+          { 'id' => vodka.id, 'name' => 'Vodka' },
+          { 'id' => tofu.id, 'name' => 'Tofu' }
         ]
       end
 

@@ -12,7 +12,6 @@
 # But 'egg white', 'egg', and 'dairy' are all tags. This allows the user to filter by
 # 'dairy', for instance, and see all the recipes that contain the 'dairy' tag, but
 # also the 'egg' and 'egg white' tag.
-
 class Tag < ApplicationRecord
   extend TagsService
 

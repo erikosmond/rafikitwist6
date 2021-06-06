@@ -14,7 +14,8 @@ module TagTypeService
     def tag_types_with_access(current_user_id)
       Tag.preload(:tag_type).
         joins(:access).
-        where("accesses.user_id = #{current_user_id} OR accesses.status = 'PUBLIC'").
-        group_by { |t| t.tag_type.name }
+        where(
+          "accesses.user_id = #{current_user_id.to_i} OR accesses.status = 'PUBLIC'"
+        ).group_by { |t| t.tag_type.name }
     end
 end

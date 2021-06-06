@@ -4,7 +4,6 @@ import SearchIcon from '@material-ui/icons/Search'
 import { withStyles } from '@material-ui/core/styles'
 import StyledSelect from '../styled/StyledSelect'
 
-
 const styles = () => ({
   searchIcon: {
     position: 'relative',
@@ -33,18 +32,15 @@ class HeaderDropdown extends React.Component {
     }
   }
 
-  // TODO: use Input Adornment instead
-  placeholderWithIcon = (placeholder, classes) => {
-    return (
-      <h2>
-        <div>
-          <SearchIcon className={classes.searchIcon} />
-          &nbsp;
-          {placeholder}
-        </div>
-      </h2>
-    )
-  }
+  placeholderWithIcon = (placeholder, classes) => (
+    <h2>
+      <div>
+        <SearchIcon className={classes.searchIcon} />
+        &nbsp;
+        {placeholder}
+      </div>
+    </h2>
+  )
 
   render() {
     const { selectedOption } = this.state

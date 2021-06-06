@@ -3,8 +3,8 @@
 module Graph
   # Singleton to index tags that have been used to modify other tags.
 
-  # IMPROVE: consider getting rid of this. Check recipes' ingredients for modifications (cached in a hash)
-  # would have to update TagNode.mods_hash if removed
+  # IMPROVE: consider getting rid of this. Check recipes' ingredients for
+  # modifications (cached in a hash) would have to update TagNode.mods_hash if removed
   class UserAccessModificationTagIndex < Index
     def add_modification_tag(modified_id, modifier_id, access)
       add_to_hash(modifier_id, modified_id, access)

@@ -9,6 +9,7 @@ module Graph
                 :tag_selections
 
     def initialize(recipe)
+      super
       @recipe = recipe
       @access = recipe.access
       @objective_tag_ids = Set.new
@@ -18,18 +19,6 @@ module Graph
       @rating_tag_hash_array = []
       @tag_ids_by_type = Hash.new { |hsh, key| hsh[key] = [] }
       organize_associations
-    end
-
-    # tag_selections: [:modification_selections, { tag: :tag_type }])
-    def organize_associations
-      @recipe.tag_selections.each do |ts|
-        append_objective_tags(ts)
-        if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
-          @ingredients << Ingredient.new(ts, @access, @objective_tag_ids)
-        else
-          tag_id_by_type(ts)
-        end
-      end
     end
 
     def filter_tag_ids
@@ -51,6 +40,25 @@ module Graph
       objective_tag_ids.map { |t_id| TagIndex.instance.fetch(t_id) }
     end
 
+    # Called on recipes that have already been enriched with user data after being copied
+    def api_response
+      attrs.merge(@tag_ids_by_type).merge(
+        {
+          ingredients: @ingredients.reduce({}) { |h, i| h.merge(i.api_response) },
+          priorities: @priority_tag_hash_array,
+          ratings: @rating_tag_hash_array.select { |h| h[:tag_name].include? 'star' },
+          comments: @comment_tag_hash_array
+        }
+      )
+    end
+
+    def copy
+      RecipeNode.new(@recipe)
+    end
+
+    # Subjective tags are stored in an array for consistancy with objective tags,
+    # even though there should ever only be at most one element in an array
+    # of subjective tags
     def append_comment_tag_hash_array(hash)
       @comment_tag_hash_array << hash
     end
@@ -63,28 +71,19 @@ module Graph
       @rating_tag_hash_array << hash
     end
 
-    def api_response
-      attrs.merge(@tag_ids_by_type).merge(
-        {
-          ingredients: @ingredients.reduce({}) { |h, i| h.merge(i.api_response) },
-          priorities: @priority_tag_hash_array,
-          ratings: @rating_tag_hash_array.select { |h| h[:tag_name].include? 'star' },
-          comments: @comment_tag_hash_array
-        }
-      )
-    end
-
-    def subjective_api_response(user)
-      subjective_data = Graph::Node.subjective_tags([id], user)
-      subjective_recipe = Graph::Node.subjective_enrichment([self], subjective_data).first
-      subjective_recipe.api_response
-    end
-
-    def copy
-      RecipeNode.new(@recipe)
-    end
-
     private
+
+      # tag_selections: [:modification_selections, { tag: :tag_type }])
+      def organize_associations
+        @recipe.tag_selections.each do |ts|
+          append_objective_tags(ts)
+          if ::TagType::INGREDIENT_TYPES.include? ts.tag.tag_type.name
+            @ingredients << Ingredient.new(ts, @access, @objective_tag_ids)
+          else
+            tag_id_by_type(ts)
+          end
+        end
+      end
 
       def subjective_tag_hash_array
         @rating_tag_hash_array + @priority_tag_hash_array + @comment_tag_hash_array

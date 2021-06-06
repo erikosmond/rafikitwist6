@@ -8,15 +8,15 @@ class TagInteractor
     return all_recipes unless context.tag_id.present?
 
     context.tag = Graph::TagIndex.instance.fetch(context.tag_id)
-    context.result = if %(Priority Rating).include?(context.tag.tag_type.name) &&
-                        context.current_user.present?
-                       subjective_api_response
-                     else
-                       objective_api_resonse
-                     end
+    context.result = subjective_tag? ? subjective_api_response : objective_api_resonse
   end
 
   private
+
+    def subjective_tag?
+      %(Priority Rating).include?(context.tag.tag_type.name) &&
+        context.current_user.present?
+    end
 
     def all_recipes
       recipes = Graph::RecipeIndex.instance.all_by_user(context.current_user).
