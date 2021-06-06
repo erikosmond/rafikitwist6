@@ -76,7 +76,6 @@ class AccountMenu extends React.Component {
     )
   }
 
-
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)

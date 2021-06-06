@@ -1,10 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SearchIcon from '@material-ui/icons/Search'
-// import { InputAdornment } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import StyledSelect from '../styled/StyledSelect'
-
 
 const styles = () => ({
   searchIcon: {
@@ -34,18 +32,15 @@ class HeaderDropdown extends React.Component {
     }
   }
 
-  // IMPROVE: use Input Adornment instead? - might not work with react-select
-  placeholderWithIcon = (placeholder, classes) => {
-    return (
-      <h2>
-        <div>
-          <SearchIcon className={classes.searchIcon} />
-          &nbsp;
-          {placeholder}
-        </div>
-      </h2>
-    )
-  }
+  placeholderWithIcon = (placeholder, classes) => (
+    <h2>
+      <div>
+        <SearchIcon className={classes.searchIcon} />
+        &nbsp;
+        {placeholder}
+      </div>
+    </h2>
+  )
 
   render() {
     const { selectedOption } = this.state

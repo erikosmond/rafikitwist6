@@ -97,7 +97,7 @@ let RecipeForm = (props) => {
   }
   const recipeIsIngredientClick = (event) => {
     handleRecipeIsIngredient({
-      recipeIsIngredient: event.target.value === '' || event.target.value !== 'true'
+      recipeIsIngredient: event.target.value === '' || event.target.value !== 'true',
     })
   }
   const buildParentTagDropdown =
