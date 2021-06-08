@@ -21,6 +21,7 @@ class RecipeSkeleton extends React.Component {
 
   render() {
     const {
+      admin,
       recipe,
       noRecipe,
       clearRecipe,
@@ -31,6 +32,7 @@ class RecipeSkeleton extends React.Component {
     }
     return (
       <Recipe
+        admin={admin}
         recipe={recipe}
         noRecipe={noRecipe}
         clearRecipe={clearRecipe}
@@ -47,6 +49,7 @@ RecipeSkeleton.propTypes = {
     name: PropTypes.string,
     ingredients: PropTypes.shape({}),
   }),
+  admin: PropTypes.bool,
   mobile: PropTypes.bool,
   noRecipe: PropTypes.bool,
   clearRecipe: PropTypes.func.isRequired,
@@ -59,6 +62,7 @@ RecipeSkeleton.propTypes = {
 }
 
 RecipeSkeleton.defaultProps = {
+  admin: false,
   recipe: {},
   noRecipe: false,
   mobile: false,

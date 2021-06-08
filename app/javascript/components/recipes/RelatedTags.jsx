@@ -10,7 +10,7 @@ const useStyles = makeStyles({
 })
 
 const RelatedTags = ({ tags }) => {
-  if (tags) {
+  if (tags && Object.keys(tags).length > 0) {
     const classes = useStyles()
     return (
       <div>

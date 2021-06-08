@@ -5,6 +5,7 @@ import RelatedTags from 'components/recipes/RelatedTags'
 import FilterByIngredients from 'containers/FilterByIngredientsContainer'
 import FilterChips from 'containers/FilterChipsContainer'
 import { Link } from 'react-router-dom'
+import InnerContent from '../styled/InnerContent'
 import PaperContent from '../styled/PaperContent'
 import PaperSidebar from '../styled/PaperSidebar'
 
@@ -51,6 +52,7 @@ class RecipeList extends React.Component {
 
   render() {
     const {
+      admin,
       recipesLoaded,
       selectedTag,
       noRecipes,
@@ -85,6 +87,14 @@ class RecipeList extends React.Component {
             <br />
           </div>
         )}
+        {admin && (
+          <div>
+            <Link to={`/tags/${selectedTag.id}/edit`}>
+              Edit
+            </Link>
+            <br />
+          </div>
+        )}
         {(selectedTag.recipeId || selectedTag.description) && (
           <br />
         )}
@@ -97,14 +107,17 @@ class RecipeList extends React.Component {
         </PaperContent>
 
         <PaperSidebar>
-          <h2> Related </h2>
-          <RelatedTags tags={selectedTag.grandparentTags} />
-          <RelatedTags tags={selectedTag.parentTags} />
-          <RelatedTags tags={selectedTag.childTags} />
-          <RelatedTags tags={selectedTag.grandchildTags} />
-          <RelatedTags tags={selectedTag.sisterTags} />
-          <RelatedTags tags={selectedTag.modificationTags} />
-          <RelatedTags tags={selectedTag.modifiedTags} />
+          <InnerContent>
+            {/* wrap all this in a div to fix the layout to not overlap here */}
+            <h2> Related </h2>
+            <RelatedTags tags={selectedTag.grandparentTags} />
+            <RelatedTags tags={selectedTag.parentTags} />
+            <RelatedTags tags={selectedTag.childTags} />
+            <RelatedTags tags={selectedTag.grandchildTags} />
+            <RelatedTags tags={selectedTag.sisterTags} />
+            <RelatedTags tags={selectedTag.modificationTags} />
+            <RelatedTags tags={selectedTag.modifiedTags} />
+          </InnerContent>
         </PaperSidebar>
       </div>
     )
@@ -118,6 +131,7 @@ RecipeList.propTypes = {
   clearFilters: PropTypes.func.isRequired,
   resetPagedCount: PropTypes.func.isRequired,
   selectedRecipes: PropTypes.arrayOf(PropTypes.shape({})),
+  admin: PropTypes.bool,
   recipesLoaded: PropTypes.bool,
   loading: PropTypes.bool,
   visibleRecipeCount: PropTypes.number,
@@ -145,6 +159,7 @@ RecipeList.propTypes = {
 }
 
 RecipeList.defaultProps = {
+  admin: false,
   recipesLoaded: false,
   loading: true,
   noRecipes: true,
