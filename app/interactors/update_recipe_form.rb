@@ -51,7 +51,8 @@ class UpdateRecipeForm < RecipeForm
     end
 
     def update_modification(ingredient_tag, existing_modification, form_mod)
-      return unless form_mod.present?
+      existing_modification.destroy if existing_modification.present? && form_mod.blank?
+      return if form_mod.blank?
 
       if existing_modification.present?
         existing_modification.update(tag_id: form_mod['value'])

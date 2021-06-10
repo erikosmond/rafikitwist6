@@ -155,6 +155,10 @@ class Recipe extends React.Component {
               Edit
             </Link>
             <br />
+            <Link to={`/recipes/new`}>
+              New
+            </Link>
+            <br />
           </div>
         )}
         {Recipe.renderHeader(mobile, recipe)}
