@@ -108,7 +108,6 @@ class RecipeList extends React.Component {
 
         <PaperSidebar>
           <InnerContent>
-            {/* wrap all this in a div to fix the layout to not overlap here */}
             <h2> Related </h2>
             <RelatedTags tags={selectedTag.grandparentTags} />
             <RelatedTags tags={selectedTag.parentTags} />
