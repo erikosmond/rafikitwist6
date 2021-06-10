@@ -35,6 +35,7 @@ export default withRouter(connect(
     tagsByType: state.tagsReducer.tagsByType,
     selectedFilters: state.recipesReducer.selectedFilters,
     pagedRecipeCount: state.recipesReducer.pagedRecipeCount,
+    admin: state.recipesReducer.admin,
   }),
   {
     clearErrors,

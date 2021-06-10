@@ -2,8 +2,8 @@
 
 # rubocop: disable Metrics/ClassLength
 module Graph
-  # In memory model for tags in the graph. This class is a bit long. It has the core
-  # logic of the data model.
+  # In memory model for tags in the graph. This class is a bit long. It houses most of
+  # the data model's complexity.
   class TagNode < Node
     delegate :id, :name, :description, :present?, :tag_type_id, :recipe_id, to: :@tag
     attr_accessor :parent_tag_ids, :child_tag_ids, :recipe_ids, :modification_tag_ids

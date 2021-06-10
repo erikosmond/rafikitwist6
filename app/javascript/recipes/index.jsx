@@ -24,6 +24,7 @@ const myStore = {
     ratings: JSON.parse(home.dataset.ratings),
     priorities: JSON.parse(home.dataset.priorities),
     authenticated: home.dataset.authenticated === 'true',
+    admin: home.dataset.admin === 'true',
   },
   tagsReducer: {
     allTags: JSON.parse(home.dataset.allTags),

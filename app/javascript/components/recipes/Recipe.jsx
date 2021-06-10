@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import RecipeHeaderActions from 'containers/RecipeHeaderActionsContainer'
 import RecipeProperties from 'components/recipes/RecipeProperties'
 import RecipeInstructions from 'components/recipes/RecipeInstructions'
@@ -138,7 +139,7 @@ class Recipe extends React.Component {
   }
 
   render() {
-    const { recipe, noRecipe, mobile } = this.props
+    const { admin, recipe, noRecipe, mobile } = this.props
     if (noRecipe) {
       return (
         <div>
@@ -148,6 +149,18 @@ class Recipe extends React.Component {
     }
     return (
       <div>
+        {admin && (
+          <div>
+            <Link to={`/recipes/${recipe.id}/edit`}>
+              Edit
+            </Link>
+            <br />
+            <Link to={`/recipes/new`}>
+              New
+            </Link>
+            <br />
+          </div>
+        )}
         {Recipe.renderHeader(mobile, recipe)}
         {Recipe.renderActions(recipe)}
         <Body>
@@ -171,6 +184,7 @@ class Recipe extends React.Component {
 }
 
 Recipe.propTypes = {
+  admin: PropTypes.bool,
   classes: PropTypes.shape().isRequired,
   recipe: PropTypes.shape({
     id: PropTypes.number,
@@ -204,6 +218,7 @@ Recipe.defaultProps = {
     recipeTypes: [],
     components: [],
   },
+  admin: false,
   noRecipe: false,
   mobile: false,
 }

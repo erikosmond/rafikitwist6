@@ -36,7 +36,6 @@ export default withRouter(connect(
     ratings: state.recipesReducer.ratings,
     selectedFilters: state.recipesReducer.selectedFilters,
     pagedRecipeCount: state.recipesReducer.pagedRecipeCount,
-    // authenticated: state.recipesReducer.authenticated,
   }),
   {
     loadRecipes,

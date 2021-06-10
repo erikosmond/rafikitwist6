@@ -35,6 +35,7 @@ class PagesController < ApplicationController
       @comment_tag_id = Tag.comment_tag.id
       @tag_groups = Tag.ingredient_group_hierarchy_filters(current_user)
       @tags_by_type = Tag.tags_by_type
+      @admin = current_user&.admin?
     end
 
     def assign_meta_tag_name
