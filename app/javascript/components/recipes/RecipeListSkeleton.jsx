@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import RecipeList from 'containers/RecipeListContainer'
+import OuterWrapper from '../styled/OuterWrapper'
 
 class RecipeListSkeleton extends React.Component {
   static recipesReady(props) {
@@ -37,7 +38,9 @@ class RecipeListSkeleton extends React.Component {
   render() {
     if (RecipeListSkeleton.recipesReady(this.props)) {
       return (
-        <RecipeList />
+        <OuterWrapper>
+          <RecipeList />
+        </OuterWrapper>
       )
     }
     return (<div> Loading... </div>)

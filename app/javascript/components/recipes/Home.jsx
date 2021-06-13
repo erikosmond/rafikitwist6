@@ -4,8 +4,10 @@ import Media from 'react-media'
 import LargeHome from 'components/recipes/LargeHome'
 import MolbileHome from 'components/recipes/MobileHome'
 
+import TopLevel from '../styled/TopLevel'
+
 const Home = () => (
-  <div>
+  <TopLevel>
     <Media queries={{
       small: '(max-width: 599px)',
       large: '(min-width: 600px)',
@@ -18,7 +20,7 @@ const Home = () => (
         </>
       )}
     </Media>
-  </div>
+  </TopLevel>
 )
 
 export default Home

@@ -16,14 +16,18 @@ import RecipeSkeleton from 'containers/RecipeContainer'
 import RecipeFormSkeleton from 'containers/RecipeFormSkeletonContainer'
 import RecipeListSkeleton from 'containers/RecipeListSkeletonContainer'
 import NavMenus from 'containers/NavMenusContainer'
+import OuterWrapper from '../styled/OuterWrapper'
 
 const StyledContent = styled.div`
-  margin-top: 70px;
+  background-color: white;
 `
 
 const HeaderWrapper = styled.div`
     width: 100%;
-    position: fixed;
+    max-width: 1300px;
+    position: flex;
+    margin-left: auto;
+    margin-right: auto;
     top: 0px;
     background-color: white;
     z-index: 1;
@@ -31,9 +35,11 @@ const HeaderWrapper = styled.div`
 
 const LargeHome = () => (
   <Router>
-    <HeaderWrapper>
-      <NavMenus />
-    </HeaderWrapper>
+    <OuterWrapper>
+      <HeaderWrapper>
+        <NavMenus />
+      </HeaderWrapper>
+    </OuterWrapper>
     <Alert />
     <CommentModal />
     <TagFormModal />
