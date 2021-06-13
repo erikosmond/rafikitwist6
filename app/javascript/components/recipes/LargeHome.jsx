@@ -19,7 +19,7 @@ import NavMenus from 'containers/NavMenusContainer'
 import OuterWrapper from '../styled/OuterWrapper'
 
 const StyledContent = styled.div`
-  background-color: white;
+  background-color: lavendar;
 `
 
 const HeaderWrapper = styled.div`
