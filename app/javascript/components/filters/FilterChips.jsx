@@ -9,6 +9,7 @@ const styles = (theme) => ({
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
+    maxWidth: '1100px',
     padding: theme.spacing(0.5),
   },
   chip: {

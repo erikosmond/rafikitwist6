@@ -18,6 +18,7 @@ import RecipeFormSkeleton from 'containers/RecipeFormSkeletonContainer'
 
 const StyledContent = styled.div`
   margin-top: 1px;
+  background-color: white;
 `
 const SmallHome = () => (
   <Router>
